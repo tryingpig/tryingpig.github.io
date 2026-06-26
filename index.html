@@ -2,13 +2,38 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <title>tryingpig의 페이지</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>노력하는뚱땡이의 학습공간</title>
+  <style>
+    body { font-family: sans-serif; max-width: 700px; margin: 40px auto; padding: 0 16px; line-height: 1.6; }
+    h1 { border-bottom: 2px solid #333; padding-bottom: 8px; }
+    ul { list-style: none; padding: 0; }
+    li { padding: 12px 0; border-bottom: 1px solid #eee; }
+    .date { color: #888; font-size: 0.9em; margin-right: 8px; }
+    a { color: #0366d6; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+  </style>
 </head>
 <body>
-  <h1>tryingpig의 페이지</h1>
-  <p>여기에 글 목록이 쌓입니다.</p>
-  <ul>
-    <li><a href="post1.html">첫 번째 글</a></li>
-  </ul>
+  <h1>노력하는뚱땡이의 학습공간</h1>
+  <ul id="post-list"></ul>
+
+  <script>
+    fetch('posts.json')
+      .then(res => res.json())
+      .then(posts => {
+        posts.sort((a, b) => b.date.localeCompare(a.date));
+        const list = document.getElementById('post-list');
+        posts.forEach(post => {
+          const li = document.createElement('li');
+          li.innerHTML = '<span class="date">' + post.date + '</span>' +
+                         '<a href="' + post.file + '">' + post.title + '</a>';
+          list.appendChild(li);
+        });
+      })
+      .catch(() => {
+        document.getElementById('post-list').innerHTML = '<li>아직 글이 없습니다.</li>';
+      });
+  </script>
 </body>
 </html>

@@ -21,7 +21,17 @@
   <script>
     fetch('posts.json')
       .then(res => res.json())
-      .then(posts => {
+      .then(async posts => {
+        // 각 글 파일을 열어서 <title> 제목을 자동으로 읽어옴
+        for (const post of posts) {
+          try {
+            const html = await fetch(post.file).then(r => r.text());
+            const match = html.match(/<title>(.*?)<\/title>/i);
+            post.title = match ? match[1] : post.file;
+          } catch {
+            post.title = post.file;
+          }
+        }
         posts.sort((a, b) => b.date.localeCompare(a.date));
         const list = document.getElementById('post-list');
         posts.forEach(post => {

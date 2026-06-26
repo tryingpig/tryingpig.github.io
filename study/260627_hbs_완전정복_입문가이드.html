@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>반도체 HBS 완전 정복 — 비전공자 입문 가이드</title>
+<style>
+  :root{
+    --accent:#5a3fb5; --accent-dark:#3d2a85; --light:#efeafa; --light2:#f7f4fd;
+    --gray:#595959; --line:#d2c7ee; --ink:#1d2733;
+    --warn:#b5481f; --warnbg:#fdf1ec; --warnln:#e6b39e;
+  }
+  *{box-sizing:border-box;}
+  html{-webkit-print-color-adjust:exact; print-color-adjust:exact;}
+  body{font-family:"Malgun Gothic","맑은 고딕",-apple-system,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;
+    color:var(--ink); line-height:1.7; margin:0; background:#f5f6f8; font-size:16px;}
+  .page{max-width:820px; margin:24px auto; background:#fff; padding:56px 60px; box-shadow:0 1px 8px rgba(0,0,0,.08);}
+  h1{color:var(--accent-dark); font-size:1.5rem; border-bottom:3px solid var(--accent); padding-bottom:8px; margin:2.3em 0 .7em;}
+  h1:first-of-type{margin-top:.3em;}
+  h2{color:var(--accent); font-size:1.16rem; margin:1.5em 0 .45em;}
+  p{margin:.5em 0;} ul{margin:.4em 0 .9em; padding-left:1.3em;} li{margin:.3em 0;}
+  .em{color:var(--accent-dark); font-weight:700;}
+  .muted{color:var(--gray); font-size:.9rem;}
+  .callout{background:var(--light); border:1px solid var(--accent); border-left:6px solid var(--accent); border-radius:4px; padding:14px 18px; margin:1.1em 0;}
+  .callout .ct{font-weight:700; color:var(--accent-dark); margin-bottom:6px;}
+  .callout p{margin:.35em 0; font-size:.96rem;}
+  .warn{background:var(--warnbg); border:1px solid var(--warnln); border-left:6px solid var(--warn); border-radius:4px; padding:14px 18px; margin:1.1em 0;}
+  .warn .ct{font-weight:700; color:var(--warn); margin-bottom:6px;}
+  .warn p{font-size:.94rem; margin:.35em 0;}
+  table{border-collapse:collapse; width:100%; margin:1em 0; font-size:.85rem;}
+  th{background:var(--accent); color:#fff; font-weight:700; padding:9px 10px; text-align:center; border:1px solid var(--line);}
+  td{padding:8px 10px; border:1px solid var(--line); text-align:center; vertical-align:top;}
+  td:first-child{text-align:left; font-weight:700; background:#faf8fe;}
+  tbody tr:nth-child(even) td{background:var(--light2);}
+  tbody tr:nth-child(even) td:first-child{background:#efeafa;}
+  .cover{text-align:center; padding:115px 0 85px;}
+  .cover .big{font-size:2.5rem; font-weight:800; color:var(--accent-dark); letter-spacing:-1px;}
+  .cover .sub{font-size:1.25rem; color:var(--accent); margin-top:12px;}
+  .cover .sub2{font-size:1rem; color:var(--gray); margin-top:24px;}
+  .cover .tag{font-size:.95rem; color:var(--gray); font-style:italic; margin-top:64px;}
+  .cover .date{font-size:.88rem; color:var(--gray); margin-top:8px;}
+  .toc{background:var(--light2); border:1px solid var(--line); border-radius:6px; padding:18px 24px;}
+  .toc ol{margin:0; padding-left:1.4em;} .toc li{margin:.3em 0;}
+  a{color:var(--accent-dark); word-break:break-all;}
+  .src{font-size:.83rem;} .src li{margin:.4em 0;}
+  figure{margin:1.4em 0; text-align:center;}
+  figure svg{width:100%; max-width:700px; height:auto; display:block; margin:0 auto;}
+  figcaption{font-size:.85rem; color:var(--gray); margin-top:8px;}
+  .refimg{display:block; max-width:100%; height:auto; margin:0 auto; border:1px solid var(--line); border-radius:6px;}
+  @media print{
+    body{background:#fff; font-size:11pt;}
+    .page{box-shadow:none; margin:0; max-width:none; padding:0;}
+    .pb{page-break-before:always;}
+    h1,h2{page-break-after:avoid;} table,.callout,.warn{page-break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="cover">
+    <div class="big">반도체 HBS 완전 정복</div>
+    <div class="sub">High Bandwidth Storage · 고대역폭 스토리지</div>
+    <div class="sub2">비전공자를 위한 기초부터 고급까지 안내서</div>
+    <div class="tag">온디바이스(휴대폰·태블릿) AI 시대의 메모리</div>
+    <div class="date">2026년 6월 · 최신 동향 반영</div>
+  </div>
+
+  <!-- TOC -->
+  <div class="pb"></div>
+  <h1>목차</h1>
+  <div class="toc">
+    <ol>
+      <li>한눈에 보기 (3분 요약)</li>
+      <li>HBS란 무엇인가</li>
+      <li>왜 등장했나 — 휴대폰 속 AI의 병목</li>
+      <li>구조 들여다보기 — DRAM+NAND 한 패키지, 그리고 VFO</li>
+      <li>HBS의 장점과 한계</li>
+      <li>삼형제 비교 — HBM vs HBF vs HBS</li>
+      <li>누가 만드나 — 기업 동향과 로드맵</li>
+      <li>향후 전망</li>
+      <li>부록 — 미니 용어 사전 / 출처</li>
+    </ol>
+  </div>
+
+  <!-- 0 요약 -->
+  <div class="pb"></div>
+  <h1>한눈에 보기 (3분 요약)</h1>
+  <p><span class="em">HBS(High Bandwidth Storage, 고대역폭 스토리지)</span>는 휴대폰·태블릿 같은 ‘내 손안의 기기’에서 AI를 잘 돌리기 위해, <strong>모바일용 D램과 낸드를 한 패키지에 수직으로 쌓아 합친</strong> 차세대 메모리예요. SK하이닉스가 개발 중인 것으로 알려져 있습니다.</p>
+  <div class="callout">
+    <div class="ct">핵심을 한 문장으로</div>
+    <p><span class="em">HBS = 모바일 D램 + 낸드를 한 칩에 적층 (VFO 기술 사용).</span> 데이터센터용인 HBM·HBF와 달리, ‘기기 안에서 직접 돌리는 AI(온디바이스 AI)’를 위한 모바일 전용 해법.</p>
+  </div>
+  <p>앞서 본 HBM·HBF와 묶어 ‘고대역폭 삼형제’로 이해하면 쉽습니다. 셋 다 ‘칩을 쌓아 성능을 올린다’는 큰 줄기는 같지만, <strong>쓰이는 곳과 재료가 다릅니다.</strong></p>
+  <table>
+    <thead><tr><th></th><th>HBM</th><th>HBF</th><th>HBS</th></tr></thead>
+    <tbody>
+      <tr><td>주 무대</td><td>데이터센터 (AI 학습)</td><td>데이터센터 (AI 추론)</td><td>휴대폰·태블릿 (온디바이스 AI)</td></tr>
+      <tr><td>재료</td><td>D램</td><td>낸드</td><td>D램 + 낸드</td></tr>
+      <tr><td>연결 방식</td><td>TSV(관통전극)</td><td>TSV(관통전극)</td><td>VFO(수직 배선)</td></tr>
+      <tr><td>한마디로</td><td>가장 빠른 작업대</td><td>거대한 고속 창고</td><td>모바일용 올인원</td></tr>
+    </tbody>
+  </table>
+
+  <!-- 1 -->
+  <div class="pb"></div>
+  <h1>1장. HBS란 무엇인가</h1>
+  <p>HBS는 이름 그대로 ‘고대역폭 스토리지(저장장치)’입니다. 핵심은 그동안 <strong>따로 떨어져 있던 두 부품을 하나로 합쳤다</strong>는 점이에요.</p>
+  <ul>
+    <li><strong>모바일 D램(LPWIO):</strong> 휴대폰의 ‘작업 기억’ 역할. 저전력·넓은 통로(Wide I/O)를 가진 모바일용 D램.</li>
+    <li><strong>낸드 플래시:</strong> 전원을 꺼도 데이터가 남는 ‘저장’ 역할. 사진·앱·AI 모델을 담아두는 곳.</li>
+  </ul>
+  <p>지금 스마트폰은 이 둘을 별도 칩으로 두고 선으로 연결합니다. HBS는 이 둘을 <strong>한 패키지 안에 수직으로 쌓아(최대 16층) 짧고 굵게 연결</strong>해, 데이터가 오가는 속도와 효율을 끌어올린 구조예요. 그리고 이 묶음을 휴대폰의 두뇌인 <strong>AP(애플리케이션 프로세서)와 함께 패키징</strong>해 기기에 바로 넣습니다.</p>
+  <div class="callout">
+    <div class="ct">비유: 주방을 ‘한 칸’으로 합치다</div>
+    <p>기존 방식이 ‘냉장고(낸드)’와 ‘도마(D램)’가 멀리 떨어진 부엌이라면, HBS는 둘을 한 조리대에 위아래로 붙여 놓은 것과 같아요. 재료를 꺼내 손질하는 동선이 짧아져, 요리(AI 연산)가 빨라지고 전기도 덜 듭니다.</p>
+  </div>
+
+  <figure>
+    <svg viewBox="0 0 700 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="기존 방식과 HBS 통합 구조 비교">
+      <style>
+        .t{font-family:'Malgun Gothic',sans-serif;}
+        .lbl{font-size:14px;fill:#1d2733;}
+        .sm{font-size:12px;fill:#fff;font-weight:700;}
+        .hd{font-size:15px;font-weight:700;fill:#3d2a85;}
+        .cap{font-size:11px;fill:#595959;}
+      </style>
+      <!-- 기존 -->
+      <text class="t hd" x="175" y="28" text-anchor="middle">기존 방식</text>
+      <rect x="120" y="48" width="110" height="40" rx="6" fill="#8a8f98"/>
+      <text class="t sm" x="175" y="73" text-anchor="middle">AP (두뇌)</text>
+      <rect x="60" y="170" width="110" height="44" rx="6" fill="#5a3fb5"/>
+      <text class="t sm" x="115" y="197" text-anchor="middle">D램</text>
+      <rect x="190" y="170" width="110" height="44" rx="6" fill="#7a63c8"/>
+      <text class="t sm" x="245" y="197" text-anchor="middle">낸드</text>
+      <line x1="150" y1="88" x2="115" y2="170" stroke="#b9b9b9" stroke-width="3"/>
+      <line x1="200" y1="88" x2="245" y2="170" stroke="#b9b9b9" stroke-width="3"/>
+      <line x1="115" y1="214" x2="245" y2="214" stroke="#b9b9b9" stroke-width="3"/>
+      <text class="t cap" x="175" y="245" text-anchor="middle">칩이 떨어져 있어 연결선이 길다</text>
+      <text class="t cap" x="175" y="262" text-anchor="middle">→ 느리고 전력 소모 큼</text>
+      <!-- 화살표 -->
+      <text x="350" y="150" text-anchor="middle" font-size="34" fill="#5a3fb5">›</text>
+      <!-- HBS -->
+      <text class="t hd" x="525" y="28" text-anchor="middle">HBS 통합 구조</text>
+      <rect x="470" y="200" width="110" height="36" rx="6" fill="#8a8f98"/>
+      <text class="t sm" x="525" y="223" text-anchor="middle">AP (두뇌)</text>
+      <rect x="470" y="160" width="110" height="34" rx="4" fill="#7a63c8"/>
+      <text class="t sm" x="525" y="182" text-anchor="middle">낸드</text>
+      <rect x="470" y="122" width="110" height="34" rx="4" fill="#5a3fb5"/>
+      <text class="t sm" x="525" y="144" text-anchor="middle">D램</text>
+      <rect x="470" y="84" width="110" height="34" rx="4" fill="#5a3fb5"/>
+      <text class="t sm" x="525" y="106" text-anchor="middle">D램</text>
+      <rect x="462" y="78" width="126" height="164" rx="8" fill="none" stroke="#3d2a85" stroke-width="2.5" stroke-dasharray="5 4"/>
+      <text class="t cap" x="525" y="262" text-anchor="middle">한 패키지에 수직 적층 → 짧고 빠르고 저전력</text>
+    </svg>
+    <figcaption>그림 1. 기존에는 D램·낸드가 따로 떨어져 있지만, HBS는 한 패키지에 수직으로 쌓아 AP와 붙인다.</figcaption>
+  </figure>
+
+  <!-- 2 -->
+  <h1>2장. 왜 등장했나 — 휴대폰 속 AI의 병목</h1>
+  <p>요즘 스마트폰은 통역, 사진 보정, 요약, 음성 비서 같은 AI 기능을 <strong>인터넷 없이 기기 안에서 직접 처리(온디바이스 AI)</strong>하는 방향으로 가고 있어요. 그런데 AI 모델은 덩치가 크고, 데이터를 빠르게 많이 읽어야 합니다.</p>
+  <p>문제는 기존 모바일 메모리 구조로는 이 속도를 따라가기 어렵다는 점이에요. D램과 낸드가 떨어져 있어 데이터가 오가는 길이 길고, 그만큼 <strong>느리고 전력도 더 먹습니다.</strong> 배터리로 돌아가는 작은 기기에서는 ‘전력·발열·두께’가 늘 발목을 잡죠.</p>
+  <div class="callout">
+    <div class="ct">HBS가 풀려는 숙제</div>
+    <p>“작고 얇은 기기 안에서, 배터리를 덜 쓰면서, AI 모델 데이터를 빠르게 공급하기.” HBS는 D램과 낸드를 한 몸으로 합쳐 이 세 가지(속도·전력·두께)를 동시에 잡으려는 시도입니다.</p>
+  </div>
+
+  <!-- 3 -->
+  <div class="pb"></div>
+  <h1>3장. 구조 들여다보기 — DRAM+NAND 한 패키지, 그리고 VFO</h1>
+  <p>HBS를 이해하는 가장 중요한 키워드는 <span class="em">VFO</span>예요. HBM·HBF가 ‘TSV(칩에 구멍을 뚫는 관통전극)’로 쌓는다면, HBS는 <strong>TSV 없이 VFO라는 다른 방식</strong>으로 쌓습니다. 이 차이가 HBS의 정체성을 만듭니다.</p>
+  <h2>VFO(수직 배선 팬아웃)란?</h2>
+  <p>VFO(Vertical wire Fan-Out)는 SK하이닉스가 2023년 처음 선보인 패키징 기술이에요. 기존엔 칩과 칩을 ‘구부러진 와이어’로 이었는데, VFO는 이를 <strong>곧게 수직으로 세운 구리 배선</strong>으로 연결합니다. 계단처럼 쌓은 D램 사이에 수지(에폭시)를 채워 굳히고, 수직 기둥 배선으로 기판까지 잇는 방식이에요. 참고로 SK하이닉스는 이 VFO 기술을 애플 비전 프로용 D램 패키징에 공급한 적이 있고, HBS는 여기에 낸드까지 합친 형태입니다.</p>
+  <h2>VFO가 가져오는 이점 (SK하이닉스 발표 기준)</h2>
+  <ul>
+    <li><strong>배선 길이 약 4.6배 단축</strong> (기존의 1/4 이하로) → 신호가 빠르고 손실이 적음</li>
+    <li><strong>전력 효율 약 4.9% 개선</strong> → 배터리에 유리</li>
+    <li><strong>패키지 두께 약 27% 감소</strong> → 얇은 기기에 유리</li>
+    <li><strong>방열 특성 약 1.4% 개선</strong> → 발열 관리에 도움</li>
+  </ul>
+  <div class="callout">
+    <div class="ct">왜 ‘TSV를 안 쓰는 것’이 강점일까</div>
+    <p>TSV는 칩에 미세한 구멍을 뚫는 고난도·고비용 공정이에요. HBS는 TSV 없이 VFO로 쌓기 때문에 <strong>제조가 덜 까다롭고 수율이 높으며 비용이 낮습니다.</strong> 데이터센터용 HBM만큼의 극한 성능은 아니지만, 모바일에는 ‘적당한 성능 + 낮은 비용 + 얇은 두께’가 더 중요하다는 판단이죠.</p>
+  </div>
+
+  <figure>
+    <svg viewBox="0 0 700 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="TSV 방식과 VFO 방식의 적층 비교">
+      <style>
+        .t{font-family:'Malgun Gothic',sans-serif;}
+        .hd{font-size:15px;font-weight:700;fill:#3d2a85;}
+        .die{font-size:12px;fill:#1d2733;}
+        .cap{font-size:11px;fill:#595959;}
+        .leg{font-size:12px;fill:#1d2733;}
+      </style>
+      <!-- 좌: TSV -->
+      <text class="t hd" x="180" y="30" text-anchor="middle">HBM · HBF 방식 (TSV)</text>
+      <!-- dies stacked -->
+      <g>
+        <rect x="95" y="60" width="170" height="34" rx="3" fill="#cdbff0" stroke="#5a3fb5"/>
+        <rect x="95" y="100" width="170" height="34" rx="3" fill="#cdbff0" stroke="#5a3fb5"/>
+        <rect x="95" y="140" width="170" height="34" rx="3" fill="#cdbff0" stroke="#5a3fb5"/>
+        <rect x="95" y="180" width="170" height="34" rx="3" fill="#cdbff0" stroke="#5a3fb5"/>
+      </g>
+      <!-- TSV vertical holes through dies -->
+      <line x1="140" y1="60" x2="140" y2="214" stroke="#3d2a85" stroke-width="5"/>
+      <line x1="180" y1="60" x2="180" y2="214" stroke="#3d2a85" stroke-width="5"/>
+      <line x1="220" y1="60" x2="220" y2="214" stroke="#3d2a85" stroke-width="5"/>
+      <rect x="95" y="222" width="170" height="22" rx="3" fill="#8a8f98"/>
+      <text class="t die" x="180" y="237" text-anchor="middle" fill="#fff">기판</text>
+      <text class="t cap" x="180" y="270" text-anchor="middle">칩을 관통하는 구멍(전극)으로 연결</text>
+      <text class="t cap" x="180" y="287" text-anchor="middle">→ 초고속, 그러나 공정 난도·비용 높음</text>
+
+      <!-- 우: VFO -->
+      <text class="t hd" x="520" y="30" text-anchor="middle">HBS 방식 (VFO)</text>
+      <!-- stepped dies -->
+      <rect x="400" y="60" width="150" height="30" rx="3" fill="#cdbff0" stroke="#5a3fb5"/>
+      <rect x="415" y="96" width="150" height="30" rx="3" fill="#cdbff0" stroke="#5a3fb5"/>
+      <rect x="430" y="132" width="150" height="30" rx="3" fill="#cdbff0" stroke="#5a3fb5"/>
+      <rect x="445" y="168" width="150" height="30" rx="3" fill="#cdbff0" stroke="#5a3fb5"/>
+      <!-- vertical side wires (curved down to substrate) -->
+      <path d="M400 75 Q452 130 452 222" fill="none" stroke="#3d2a85" stroke-width="4"/>
+      <path d="M415 111 Q468 150 468 222" fill="none" stroke="#3d2a85" stroke-width="4"/>
+      <path d="M430 147 Q484 175 484 222" fill="none" stroke="#3d2a85" stroke-width="4"/>
+      <rect x="400" y="222" width="200" height="22" rx="3" fill="#8a8f98"/>
+      <text class="t die" x="500" y="237" text-anchor="middle" fill="#fff">기판</text>
+      <text class="t cap" x="500" y="270" text-anchor="middle">바깥쪽 수직 구리 배선으로 연결(구멍 X)</text>
+      <text class="t cap" x="500" y="287" text-anchor="middle">→ 공정 단순·고수율·저비용·얇음</text>
+      <!-- 범례 -->
+      <text class="t leg" x="350" y="312" text-anchor="middle">■ 보라=메모리 칩(다이)　│　■ 진보라 선=칩 간 연결</text>
+    </svg>
+    <figcaption>그림 2. HBM·HBF는 칩을 ‘관통’하는 TSV로, HBS는 칩 바깥의 ‘수직 배선’ VFO로 쌓는다. 이 차이가 HBS의 저비용·저전력·얇은 두께를 만든다.</figcaption>
+  </figure>
+
+  <!-- 4 -->
+  <h1>4장. HBS의 장점과 한계</h1>
+  <h2>장점</h2>
+  <ul>
+    <li><strong>통합·소형화:</strong> D램+낸드를 한 패키지로 합쳐 공간을 절약하고 두께를 줄임 → 얇은 휴대폰·태블릿에 적합.</li>
+    <li><strong>저전력:</strong> 배선이 짧아져 전력 효율이 좋아짐 → 배터리 기기에 유리.</li>
+    <li><strong>낮은 제조비:</strong> TSV가 없어 공정이 단순하고 수율이 높음 → 원가 경쟁력.</li>
+    <li><strong>온디바이스 AI 최적:</strong> AP 옆에 바로 붙여 기기 내 AI 연산에 데이터를 빠르게 공급.</li>
+  </ul>
+  <h2>한계</h2>
+  <ul>
+    <li><strong>데이터센터용은 아님:</strong> HBM·HBF만큼의 초고대역폭·대용량은 아니라, 대규모 AI 서버에는 부적합. 어디까지나 ‘모바일·엣지 전용’.</li>
+    <li><strong>폼팩터·발열 제약:</strong> 작은 기기 안에 넣어야 해 크기·열에 제약이 큼.</li>
+    <li><strong>아직 개발 초기:</strong> 상당 부분 ‘개발 중’ 단계의 보도로, 구체적 사양·출시 시점이 확정되지 않았음.</li>
+  </ul>
+
+  <!-- 5 -->
+  <div class="pb"></div>
+  <h1>5장. 삼형제 비교 — HBM vs HBF vs HBS</h1>
+  <p>셋은 경쟁이라기보다 ‘역할 분담’에 가까워요. AI 시스템의 각기 다른 자리를 채웁니다.</p>
+  <figure>
+    <svg viewBox="0 0 700 280" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="HBM HBF HBS 역할 분담">
+      <style>
+        .t{font-family:'Malgun Gothic',sans-serif;}
+        .zh{font-size:14px;font-weight:700;fill:#3d2a85;}
+        .bx{font-size:14px;font-weight:700;fill:#fff;}
+        .bs{font-size:11px;fill:#fff;}
+        .cap{font-size:11px;fill:#595959;}
+      </style>
+      <!-- 데이터센터 zone -->
+      <rect x="30" y="44" width="380" height="190" rx="10" fill="#f7f4fd" stroke="#5a3fb5" stroke-width="2"/>
+      <text class="t zh" x="220" y="68" text-anchor="middle">데이터센터 (큰 AI)</text>
+      <!-- GPU -->
+      <rect x="60" y="92" width="90" height="110" rx="8" fill="#8a8f98"/>
+      <text class="t bx" x="105" y="143" text-anchor="middle">GPU</text>
+      <text class="t bs" x="105" y="162" text-anchor="middle">연산</text>
+      <!-- HBM -->
+      <rect x="170" y="92" width="110" height="110" rx="8" fill="#5a3fb5"/>
+      <text class="t bx" x="225" y="130" text-anchor="middle">HBM</text>
+      <text class="t bs" x="225" y="150" text-anchor="middle">속도(학습)</text>
+      <text class="t bs" x="225" y="166" text-anchor="middle">가장 빠른 작업대</text>
+      <!-- HBF -->
+      <rect x="290" y="92" width="100" height="110" rx="8" fill="#7a63c8"/>
+      <text class="t bx" x="340" y="130" text-anchor="middle">HBF</text>
+      <text class="t bs" x="340" y="150" text-anchor="middle">용량(추론)</text>
+      <text class="t bs" x="340" y="166" text-anchor="middle">거대한 창고</text>
+      <text class="t cap" x="220" y="222" text-anchor="middle">HBM + HBF가 한 팀으로 큰 AI를 처리</text>
+
+      <!-- 모바일 zone -->
+      <rect x="450" y="44" width="220" height="190" rx="10" fill="#f7f4fd" stroke="#5a3fb5" stroke-width="2"/>
+      <text class="t zh" x="560" y="68" text-anchor="middle">내 손안의 기기</text>
+      <!-- phone -->
+      <rect x="512" y="86" width="96" height="120" rx="12" fill="#fff" stroke="#8a8f98" stroke-width="2"/>
+      <rect x="522" y="100" width="76" height="74" rx="4" fill="#5a3fb5"/>
+      <text class="t bx" x="560" y="132" text-anchor="middle">HBS</text>
+      <text class="t bs" x="560" y="150" text-anchor="middle">모바일 통합</text>
+      <circle cx="560" cy="192" r="6" fill="none" stroke="#8a8f98" stroke-width="2"/>
+      <text class="t cap" x="560" y="222" text-anchor="middle">HBS가 온디바이스 AI 담당</text>
+    </svg>
+    <figcaption>그림 3. HBM은 ‘속도’, HBF는 ‘용량’으로 데이터센터의 큰 AI를, HBS는 휴대폰·태블릿의 온디바이스 AI를 맡는다.</figcaption>
+  </figure>
+  <table>
+    <thead><tr><th></th><th>HBM</th><th>HBF</th><th>HBS</th></tr></thead>
+    <tbody>
+      <tr><td>풀네임</td><td>High Bandwidth Memory</td><td>High Bandwidth Flash</td><td>High Bandwidth Storage</td></tr>
+      <tr><td>핵심 역할</td><td>초고속 작업 메모리</td><td>대용량 고속 모델 저장</td><td>모바일 통합 메모리</td></tr>
+      <tr><td>주 용도</td><td>AI 학습 (데이터센터 GPU)</td><td>AI 추론 (데이터센터)</td><td>온디바이스/엣지 AI (모바일)</td></tr>
+      <tr><td>메모리 종류</td><td>적층 D램</td><td>적층 낸드 + 로직</td><td>모바일 D램 + 낸드</td></tr>
+      <tr><td>연결 기술</td><td>TSV + 인터포저</td><td>TSV + 인터포저</td><td>VFO (TSV 미사용)</td></tr>
+      <tr><td>대역폭</td><td>최대 ~2 TB/s급</td><td>~1.6~3.2 TB/s</td><td>모바일에 맞춘 수준</td></tr>
+      <tr><td>위치</td><td>GPU 바로 옆</td><td>GPU 옆/근처</td><td>모바일 AP와 한 패키지</td></tr>
+      <tr><td>주요 기업</td><td>SK하이닉스·삼성·마이크론</td><td>샌디스크·SK하이닉스·삼성·키오시아</td><td>SK하이닉스(주도)·삼성·마이크론</td></tr>
+    </tbody>
+  </table>
+  <div class="callout">
+    <div class="ct">한 문장 요약</div>
+    <p><span class="em">HBM은 ‘속도’, HBF는 ‘용량’, HBS는 ‘모바일 통합’.</span> 큰 AI는 데이터센터에서 HBM+HBF가, 내 손안의 AI는 기기에서 HBS가 맡는 그림입니다.</p>
+  </div>
+
+  <!-- 6 -->
+  <h1>6장. 누가 만드나 — 기업 동향과 로드맵</h1>
+  <ul>
+    <li><strong>SK하이닉스 (주도):</strong> HBS 개발을 이끄는 것으로 보도됨. 2023년 선보인 VFO 기술이 기반. 2025년 2월에는 HBF와 유사한 ‘LPW NAND’ 상표를 특허청(KIPO)에 출원. 2025년 11월 SK AI 서밋에서 맞춤형 메모리 로드맵(커스텀 HBM, AI-D램, AI-낸드)을 공개.</li>
+    <li><strong>삼성전자:</strong> LPDDR+UFS 통합 솔루션 강자로, 모바일 통합 메모리 흐름에서 경쟁 가능.</li>
+    <li><strong>마이크론:</strong> 모바일 적층 메모리 솔루션으로 거론됨.</li>
+  </ul>
+  <div class="warn">
+    <div class="ct">읽을 때 유의할 점</div>
+    <p>HBS는 현재 <strong>‘SK하이닉스가 개발 중’이라는 언론 보도(ETNews 등)에 기반</strong>한 정보가 대부분입니다. 정식 제품 발표나 표준화 단계인 HBM·HBF와 달리, 구체적 사양·출시 시점이 공식 확정되지 않았어요. 따라서 세부 수치는 바뀔 수 있습니다.</p>
+  </div>
+
+  <!-- 7 -->
+  <h1>7장. 향후 전망</h1>
+  <ul>
+    <li><strong>온디바이스 AI 확산과 함께 수요 기대:</strong> 휴대폰·태블릿·AR/VR 등에서 기기 내 AI가 표준이 될수록, 저전력·소형 통합 메모리 수요가 커질 수 있음.</li>
+    <li><strong>‘메모리 계층 완성’의 마지막 조각:</strong> HBM(학습)·HBF(추론)·HBS(엣지)가 합쳐져, 데이터센터부터 손안의 기기까지 아우르는 메모리 계층을 형성.</li>
+    <li><strong>아직은 지켜볼 단계:</strong> 개발 초기인 만큼, 실제 양산·채택 시점과 어떤 기기에 처음 들어갈지가 관전 포인트.</li>
+  </ul>
+  <div class="callout">
+    <div class="ct">마무리 한마디</div>
+    <p>HBS는 ‘데이터센터의 HBM·HBF 혁신을 모바일로 가져오려는 시도’입니다. 다만 모바일에 맞게 TSV 대신 VFO를 써서 ‘성능보다 저전력·소형·저비용’에 초점을 맞춘 점이 핵심 차별점이에요. 큰 흐름인 온디바이스 AI와 맞물려 주목받지만, 아직 개발 초기라는 점은 감안할 필요가 있습니다.</p>
+  </div>
+
+  <!-- 부록 -->
+  <div class="pb"></div>
+  <h1>부록. 비전공자용 미니 용어 사전</h1>
+  <table>
+    <thead><tr><th>용어</th><th>쉬운 설명</th></tr></thead>
+    <tbody>
+      <tr><td>HBS</td><td style="text-align:left">High Bandwidth Storage. 모바일 D램+낸드를 한 패키지에 쌓은 모바일 AI용 메모리.</td></tr>
+      <tr><td>온디바이스 AI</td><td style="text-align:left">인터넷 서버가 아니라 휴대폰·태블릿 ‘기기 안’에서 직접 돌리는 AI.</td></tr>
+      <tr><td>VFO</td><td style="text-align:left">Vertical Fan-Out. 칩을 곧은 수직 구리 배선으로 잇는 패키징. HBS의 핵심(TSV 대체).</td></tr>
+      <tr><td>TSV</td><td style="text-align:left">칩에 구멍을 뚫어 위아래를 잇는 관통전극. HBM·HBF가 사용(HBS는 미사용).</td></tr>
+      <tr><td>모바일 D램(LPWIO)</td><td style="text-align:left">저전력·넓은 통로를 가진 모바일용 D램. 휴대폰의 작업 기억.</td></tr>
+      <tr><td>AP</td><td style="text-align:left">애플리케이션 프로세서. 스마트폰의 두뇌 칩. HBS는 이것과 함께 패키징.</td></tr>
+      <tr><td>대역폭</td><td style="text-align:left">한 번에 보낼 수 있는 데이터 양. ‘도로 차선 수 × 속도’로 비유.</td></tr>
+      <tr><td>패키징</td><td style="text-align:left">여러 칩을 하나로 묶어 포장하는 공정. 적층·연결 방식이 성능을 좌우.</td></tr>
+    </tbody>
+  </table>
+
+  <!-- 참고 이미지 -->
+  <div class="pb"></div>
+  <h1>참고: 원본 보도 이미지</h1>
+  <p class="muted">아래는 원본 출처 사이트에서 직접 불러오는 이미지입니다(저작권은 각 출처에 있음). 인터넷 연결 상태에서 열어야 보이며, 사이트 정책에 따라 일부는 표시되지 않을 수 있어요. 그럴 때는 캡션의 링크를 눌러 원문에서 확인하세요.</p>
+
+  <figure>
+    <img class="refimg" src="https://img.trendforce.com/blog/wp-content/uploads/2025/11/10162045/SK-hynix-HBS-624x410.png" alt="SK hynix HBS 개념 이미지" loading="lazy">
+    <figcaption>참고 1. SK하이닉스 HBS 개념도 — 출처: <a href="https://www.trendforce.com/news/2025/11/11/news-sk-hynix-reportedly-explores-high-bandwidth-storage-stacking-nand-and-dram/">TrendForce (SK hynix 제공)</a></figcaption>
+  </figure>
+
+  <figure>
+    <img class="refimg" src="https://img.trendforce.com/blog/wp-content/uploads/2025/11/11133146/HBMHBFHBS%E6%AF%94%E8%BC%83-V2.jpg" alt="HBM HBF HBS 비교 이미지" loading="lazy">
+    <figcaption>참고 2. HBM·HBF·HBS 비교 — 출처: <a href="https://www.trendforce.com/news/2025/11/11/news-sk-hynix-reportedly-explores-high-bandwidth-storage-stacking-nand-and-dram/">TrendForce</a></figcaption>
+  </figure>
+
+  <figure>
+    <img class="refimg" src="https://www.lovechip.com/files/uploads/editor/b/2026012914425037-05.webp" alt="HBM HBF HBS 메모리 계층 도식" loading="lazy">
+    <figcaption>참고 3. HBM·HBF·HBS 메모리 계층 도식 — 출처: <a href="https://www.lovechip.com/blog/hbm-vs-hbf-vs-hbs">LoveChip</a></figcaption>
+  </figure>
+
+  <h1>출처</h1>
+  <ol class="src">
+    <li>TrendForce — SK hynix Reportedly Explores High-Bandwidth Storage Stacking NAND and DRAM (2025.11.11) — <a href="https://www.trendforce.com/news/2025/11/11/news-sk-hynix-reportedly-explores-high-bandwidth-storage-stacking-nand-and-dram/">link</a></li>
+    <li>LoveChip — HBM VS HBF VS HBS: Building the Memory Hierarchy for AI (2026.1.29) — <a href="https://www.lovechip.com/blog/hbm-vs-hbf-vs-hbs">link</a></li>
+    <li>Wccftech — SK hynix Developing High Bandwidth Storage (HBS) — <a href="https://wccftech.com/sk-hynix-developing-high-bandwith-storage-boost-ai-performance-of-smartphones-tablets/">link</a></li>
+    <li>Notebookcheck — SK hynix merges DRAM and NAND into unified HBS package — <a href="https://www.notebookcheck.net/SK-hynix-reportedly-merges-DRAM-and-NAND-into-unified-High-Bandwidth-Storage-package-to-boost-on-device-AI-performance.1161216.0.html">link</a></li>
+    <li>SK hynix Newsroom — VFO 관련(Small Size, Big Impact) — <a href="https://news.skhynix.com/small-size-big-impact/">link</a></li>
+    <li>SK hynix Newsroom — Next-Gen NAND Strategy at OCP 2025 — <a href="https://news.skhynix.com/sk-hynix-presents-next-generation-nand-storage-product-strategy-at-ocp-2025/">link</a></li>
+  </ol>
+  <p class="muted"><em>※ 본 문서는 공개된 보도·업계 분석을 교차 확인해 정리했습니다. HBS는 개발 초기 단계로, 일부 사양·일정은 향후 변동될 수 있습니다.</em></p>
+
+</div>
+</body>
+</html>

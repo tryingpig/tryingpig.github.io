@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HBS 국내 수혜 안내서 — 투자자를 위한 밸류체인 정리</title>
+<style>
+  :root{
+    --accent:#5a3fb5; --accent-dark:#3d2a85; --light:#efeafa; --light2:#f7f4fd;
+    --gray:#595959; --line:#d2c7ee; --ink:#1d2733;
+    --warn:#b5481f; --warnbg:#fdf1ec; --warnln:#e6b39e;
+  }
+  *{box-sizing:border-box;}
+  html{-webkit-print-color-adjust:exact; print-color-adjust:exact;}
+  body{font-family:"Malgun Gothic","맑은 고딕",-apple-system,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;
+    color:var(--ink); line-height:1.7; margin:0; background:#f5f6f8; font-size:16px;}
+  .page{max-width:820px; margin:24px auto; background:#fff; padding:56px 60px; box-shadow:0 1px 8px rgba(0,0,0,.08);}
+  h1{color:var(--accent-dark); font-size:1.5rem; border-bottom:3px solid var(--accent); padding-bottom:8px; margin:2.3em 0 .7em;}
+  h1:first-of-type{margin-top:.3em;}
+  h2{color:var(--accent); font-size:1.16rem; margin:1.5em 0 .45em;}
+  h3{color:var(--accent-dark); font-size:1.02rem; margin:1.1em 0 .3em;}
+  p{margin:.5em 0;} ul{margin:.4em 0 .9em; padding-left:1.3em;} li{margin:.3em 0;}
+  .em{color:var(--accent-dark); font-weight:700;}
+  .muted{color:var(--gray); font-size:.9rem;}
+  .callout{background:var(--light); border:1px solid var(--accent); border-left:6px solid var(--accent); border-radius:4px; padding:14px 18px; margin:1.1em 0;}
+  .callout .ct{font-weight:700; color:var(--accent-dark); margin-bottom:6px;}
+  .callout p{margin:.35em 0; font-size:.96rem;}
+  .warn{background:var(--warnbg); border:1px solid var(--warnln); border-left:6px solid var(--warn); border-radius:4px; padding:14px 18px; margin:1.1em 0;}
+  .warn .ct{font-weight:700; color:var(--warn); margin-bottom:6px;}
+  .warn p,.warn li{font-size:.94rem;}
+  table{border-collapse:collapse; width:100%; margin:1em 0; font-size:.86rem;}
+  th{background:var(--accent); color:#fff; font-weight:700; padding:9px 10px; text-align:center; border:1px solid var(--line);}
+  td{padding:8px 10px; border:1px solid var(--line); vertical-align:top;}
+  td:first-child{font-weight:700; background:#faf8fe;}
+  tbody tr:nth-child(even) td{background:var(--light2);}
+  tbody tr:nth-child(even) td:first-child{background:#efeafa;}
+  .tag{display:inline-block; font-size:.74rem; font-weight:700; padding:1px 8px; border-radius:10px; color:#fff; white-space:nowrap;}
+  .t-hi{background:#1e7a4d;} .t-mid{background:#c08a1e;} .t-low{background:#8a8f98;}
+  .cover{text-align:center; padding:110px 0 80px;}
+  .cover .big{font-size:2.35rem; font-weight:800; color:var(--accent-dark); letter-spacing:-1px;}
+  .cover .sub{font-size:1.2rem; color:var(--accent); margin-top:12px;}
+  .cover .sub2{font-size:1rem; color:var(--gray); margin-top:24px;}
+  .cover .date{font-size:.88rem; color:var(--gray); margin-top:60px;}
+  a{color:var(--accent-dark); word-break:break-all;}
+  .src{font-size:.83rem;} .src li{margin:.4em 0;}
+  figure{margin:1.4em 0; text-align:center;}
+  figure svg{width:100%; max-width:720px; height:auto; display:block; margin:0 auto;}
+  .refimg{display:block; max-width:100%; height:auto; margin:0 auto; border:1px solid var(--line); border-radius:6px;}
+  figcaption{font-size:.85rem; color:var(--gray); margin-top:8px;}
+  @media print{
+    body{background:#fff; font-size:11pt;}
+    .page{box-shadow:none; margin:0; max-width:none; padding:0;}
+    .pb{page-break-before:always;}
+    h1,h2,h3{page-break-after:avoid;} table,.callout,.warn,figure{page-break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="cover">
+    <div class="big">HBS 국내 수혜 안내서</div>
+    <div class="sub">고대역폭 스토리지 밸류체인 · 투자자를 위한 정리</div>
+    <div class="sub2">‘어디가 구조적으로 연관되는가’를 단계별로 살펴보기</div>
+    <div class="date">2026년 6월 · 최신 동향 반영 · 국내 시장 중심</div>
+  </div>
+
+  <!-- 면책 -->
+  <div class="pb"></div>
+  <h1>먼저 읽어주세요 (중요)</h1>
+  <div class="warn">
+    <div class="ct">이 문서는 투자 추천이 아니라 ‘정보 정리’입니다</div>
+    <p>저는 투자 자문가가 아니며, 아래 내용은 특정 종목의 매수·매도 권유가 아닙니다. ‘HBS 산업이 커질 때 어떤 분야·기업이 구조적으로 연관되는가’를 공개 자료로 정리한 참고용 자료예요.</p>
+    <p>특히 <strong>HBS는 HBF보다도 더 초기 단계입니다.</strong> 정식 발표·표준화가 진행 중인 HBM·HBF와 달리, HBS는 ‘SK하이닉스가 개발 중’이라는 보도(2025.11~12)에 기반한 정보가 대부분이고, 사양·일정·고객·양산 시점이 확정되지 않았습니다. 게다가 D램·낸드·VFO를 SK하이닉스가 직접 보유해 <strong>상당 부분 내재화(in-house)</strong>되는 구조라, 외부 기업의 실제 수혜는 더 불확실합니다. 최종 판단과 책임은 투자자 본인에게 있습니다.</p>
+  </div>
+
+  <!-- 한눈에 -->
+  <h1>한눈에 보기 — HBS 수혜의 큰 그림</h1>
+  <p>HBS 수혜를 이해하는 핵심은 <span class="em">“HBS는 HBF와 수혜 구조가 다르다”</span>는 점이에요. 둘 다 SK하이닉스가 주도하지만, <strong>만드는 방식이 완전히 다릅니다.</strong></p>
+  <table>
+    <thead><tr><th></th><th>HBF (앞서 정리)</th><th>HBS (이번 문서)</th></tr></thead>
+    <tbody>
+      <tr><td>핵심 공정</td><td>TSV 적층 (HBM과 동일)</td><td>VFO·팬아웃 (TSV 미사용)</td></tr>
+      <tr><td>주 수혜 분야</td><td>TC본더·TSV 약액</td><td>팬아웃 패키징·기판·와이어본딩</td></tr>
+      <tr><td>대표 거론 기업</td><td>한미반도체·솔브레인</td><td>네패스·하나마이크론·심텍</td></tr>
+      <tr><td>주 무대</td><td>데이터센터(AI 추론)</td><td>모바일·웨어러블(온디바이스 AI)</td></tr>
+    </tbody>
+  </table>
+  <div class="callout">
+    <div class="ct">왜 수혜 기업이 다른가</div>
+    <p>HBF는 HBM과 똑같이 ‘칩에 구멍을 뚫는 TSV’를 써서, TSV 장비(한미반도체)·약액(솔브레인) 생태계가 그대로 수혜였어요. 반면 <strong>HBS는 비싼 TSV를 일부러 피하고, ‘와이어 본딩 변형 + 팬아웃(FOWLP)’ 방식인 VFO</strong>를 씁니다. 따라서 수혜의 무게중심이 <strong>팬아웃 후공정·패키지 기판·본딩 소재</strong> 쪽으로 이동합니다.</p>
+  </div>
+
+  <!-- HBS 구조 도식 -->
+  <figure>
+    <svg viewBox="0 0 720 260" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="HBS 패키지 구조 개요">
+      <style>
+        .t{font-family:'Malgun Gothic',sans-serif;}
+        .hd{font-size:14px;font-weight:700;fill:#3d2a85;}
+        .bx{font-size:12px;font-weight:700;fill:#fff;}
+        .cap{font-size:11px;fill:#595959;}
+      </style>
+      <text class="t hd" x="360" y="26" text-anchor="middle">HBS 패키지 구조 (AP + 베이스 다이 + D램·낸드, 팬아웃)</text>
+      <!-- substrate -->
+      <rect x="90" y="190" width="540" height="26" rx="4" fill="#8a8f98"/>
+      <text class="t bx" x="360" y="208" text-anchor="middle">패키지 기판 (Substrate)</text>
+      <!-- AP -->
+      <rect x="120" y="120" width="150" height="62" rx="8" fill="#5a3fb5"/>
+      <text class="t bx" x="195" y="148" text-anchor="middle">AP</text>
+      <text class="t bx" x="195" y="166" text-anchor="middle" font-size="10">(두뇌)</text>
+      <!-- base die -->
+      <rect x="300" y="150" width="320" height="32" rx="5" fill="#a78fe0"/>
+      <text class="t bx" x="460" y="171" text-anchor="middle" fill="#23184a">베이스 다이</text>
+      <!-- DRAM/NAND stacked on base die -->
+      <rect x="330" y="118" width="120" height="28" rx="4" fill="#5a3fb5"/>
+      <text class="t bx" x="390" y="137" text-anchor="middle">D램</text>
+      <rect x="330" y="86" width="120" height="28" rx="4" fill="#7a63c8"/>
+      <text class="t bx" x="390" y="105" text-anchor="middle">낸드</text>
+      <rect x="470" y="118" width="120" height="28" rx="4" fill="#5a3fb5"/>
+      <text class="t bx" x="530" y="137" text-anchor="middle">D램</text>
+      <rect x="470" y="86" width="120" height="28" rx="4" fill="#7a63c8"/>
+      <text class="t bx" x="530" y="105" text-anchor="middle">낸드</text>
+      <!-- fan-out wires -->
+      <path d="M330 100 Q310 150 310 190" fill="none" stroke="#3d2a85" stroke-width="3"/>
+      <path d="M590 100 Q610 150 610 190" fill="none" stroke="#3d2a85" stroke-width="3"/>
+      <text class="t cap" x="360" y="240" text-anchor="middle">TSV(관통전극) 없이 바깥쪽 수직 팬아웃 배선으로 연결 → 저비용·얇음·저전력</text>
+    </svg>
+    <figcaption>그림 1. HBS는 AP 옆 베이스 다이에 D램·낸드를 붙이고, TSV 대신 팬아웃 배선으로 묶는 구조다. (개념도 — 보도 기반 재구성)</figcaption>
+  </figure>
+
+  <!-- 밸류체인 -->
+  <div class="pb"></div>
+  <h1>수혜 구조 — 밸류체인 단계별로 보기</h1>
+  <p>HBS가 만들어지는 흐름을 따라가며 국내 거론 기업을 정리했습니다. 확신 정도는 <span class="tag t-hi">직접·높음</span> <span class="tag t-mid">연관·중간</span> <span class="tag t-low">테마·거론</span> 으로 구분했어요. HBS는 초기 단계라 <strong>대부분 ‘연관·테마’ 수준</strong>임을 감안하세요.</p>
+
+  <figure>
+    <svg viewBox="0 0 720 150" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="HBS 밸류체인 흐름도">
+      <style>
+        .t{font-family:'Malgun Gothic',sans-serif;}
+        .s{font-size:12.5px;font-weight:700;fill:#fff;}
+        .c{font-size:10.5px;fill:#3d2a85;}
+      </style>
+      <g>
+        <rect x="8"  y="40" width="118" height="48" rx="8" fill="#5a3fb5"/>
+        <text class="t s" x="67" y="62" text-anchor="middle">① 메모리 제조</text>
+        <text class="t s" x="67" y="79" text-anchor="middle" font-size="10">SK하이닉스</text>
+        <rect x="148" y="40" width="118" height="48" rx="8" fill="#6b51c0"/>
+        <text class="t s" x="207" y="62" text-anchor="middle">② 팬아웃 패키징</text>
+        <text class="t s" x="207" y="79" text-anchor="middle" font-size="10">네패스·하나마이크론</text>
+        <rect x="288" y="40" width="118" height="48" rx="8" fill="#7a63c8"/>
+        <text class="t s" x="347" y="62" text-anchor="middle">③ 패키지 기판</text>
+        <text class="t s" x="347" y="79" text-anchor="middle" font-size="10">심텍·대덕전자</text>
+        <rect x="428" y="40" width="118" height="48" rx="8" fill="#8a74d0"/>
+        <text class="t s" x="487" y="62" text-anchor="middle">④ 소재·IP</text>
+        <text class="t s" x="487" y="79" text-anchor="middle" font-size="10">EMC·오픈엣지</text>
+        <rect x="568" y="40" width="118" height="48" rx="8" fill="#9a86d8"/>
+        <text class="t s" x="627" y="62" text-anchor="middle">⑤ 테스트</text>
+        <text class="t s" x="627" y="79" text-anchor="middle" font-size="10">ISC·리노공업</text>
+      </g>
+      <text class="t c" x="137" y="68" text-anchor="middle">›</text>
+      <text class="t c" x="277" y="68" text-anchor="middle">›</text>
+      <text class="t c" x="417" y="68" text-anchor="middle">›</text>
+      <text class="t c" x="557" y="68" text-anchor="middle">›</text>
+      <text class="t" x="360" y="120" text-anchor="middle" font-size="11" fill="#595959">HBF와 달리 ②팬아웃·③기판 단계가 수혜의 핵심으로 이동</text>
+    </svg>
+    <figcaption>그림 2. HBS 밸류체인 흐름. TSV가 빠지면서 ‘팬아웃 패키징·기판’ 비중이 커진다.</figcaption>
+  </figure>
+
+  <h2>1단계 · 메모리 제조 (HBS를 직접 만드는 당사자)</h2>
+  <h3>SK하이닉스 <span class="tag t-hi">직접·높음</span></h3>
+  <p>HBS 개발을 이끄는 당사자. 2023년 세계 최초로 VFO를 상용화한 원천기술 보유. 모바일 D램(LPWIO)·낸드·패키징을 모두 자체 보유해 ‘올인하우스’로 구현 가능. 단, 그만큼 외부 수혜 폭은 제한적일 수 있음.</p>
+  <h3>삼성전자 <span class="tag t-mid">연관·중간</span></h3>
+  <p>LPDDR+UFS 통합 솔루션 강자. 온디바이스 AI용 메모리(예: UFS 5.0)에서 경쟁. 다만 ‘삼성판 HBS’의 구체적 동향은 아직 확인되지 않음.</p>
+
+  <h2>2단계 · 팬아웃 후공정 (HBS 수혜의 핵심 이동 지점)</h2>
+  <h3>네패스 <span class="tag t-mid">연관·중간</span></h3>
+  <p>팬아웃 패널레벨 패키지(FOPLP)·SiP 등 팬아웃 패키징 역량 보유. HBS의 VFO가 FOWLP 기반이라 개념적 연관성이 큼.</p>
+  <h3>하나마이크론 <span class="tag t-mid">연관·중간</span></h3>
+  <p>웨이퍼 범핑·테스트부터 패키징·모듈까지 후공정 일괄 역량. 첨단 패키징 확대 수혜로 거론.</p>
+
+  <h2>3단계 · 패키지 기판(PCB)</h2>
+  <h3>심텍 <span class="tag t-mid">연관·중간</span></h3>
+  <p>반도체 패키지 기판 전문. 고성능 메모리 패키지 기판 수요 증가의 수혜로 거론. 팬아웃 구조에서 기판 역할이 중요.</p>
+  <h3>대덕전자 <span class="tag t-low">테마·거론</span></h3>
+  <p>패키지 기판(FC-BGA 등) 업체로 첨단 패키징 흐름에서 간접 거론.</p>
+
+  <h2>4단계 · 소재 / 설계 IP</h2>
+  <h3>EMC(에폭시 몰딩)·본딩 와이어 소재 <span class="tag t-low">테마·거론</span></h3>
+  <p>팬아웃·와이어 본딩에 쓰이는 봉지재(EMC)·본딩 와이어 수요가 거론됨. (솔브레인 등 공정 케미칼도 간접 거론.)</p>
+  <h3>오픈엣지테크놀로지 / 퀄리타스반도체 <span class="tag t-low">테마·거론</span></h3>
+  <p>LPDDR·NPU·인터커넥트 설계 IP. 온디바이스 AI 메모리 확대의 IP 측 수혜로 거론.</p>
+
+  <h2>5단계 · 테스트 (검사·소켓)</h2>
+  <h3>ISC · 티에스이 · 리노공업 <span class="tag t-low">테마·거론</span></h3>
+  <p>적층·통합 메모리 검사용 소켓·프로브 수요가 거론됨. 매출 기여 여부는 미확정.</p>
+
+  <!-- 종합표 -->
+  <div class="pb"></div>
+  <h1>국내 관련 기업 요약표</h1>
+  <table>
+    <thead><tr><th>단계</th><th>기업</th><th>역할 / 수혜 포인트</th><th>확신 정도</th></tr></thead>
+    <tbody>
+      <tr><td>제조</td><td>SK하이닉스</td><td>HBS 주도, VFO 원천기술 보유(2023 세계 최초)</td><td><span class="tag t-hi">직접·높음</span></td></tr>
+      <tr><td>제조</td><td>삼성전자</td><td>LPDDR+UFS 강자, 온디바이스 AI 메모리 경쟁</td><td><span class="tag t-mid">연관·중간</span></td></tr>
+      <tr><td>팬아웃 후공정</td><td>네패스</td><td>FOPLP·SiP 팬아웃 패키징 역량</td><td><span class="tag t-mid">연관·중간</span></td></tr>
+      <tr><td>팬아웃 후공정</td><td>하나마이크론</td><td>범핑·테스트·패키징 일괄 후공정</td><td><span class="tag t-mid">연관·중간</span></td></tr>
+      <tr><td>기판</td><td>심텍</td><td>패키지 기판 전문, 고성능 메모리 수요 수혜</td><td><span class="tag t-mid">연관·중간</span></td></tr>
+      <tr><td>기판</td><td>대덕전자</td><td>FC-BGA 등 패키지 기판</td><td><span class="tag t-low">테마·거론</span></td></tr>
+      <tr><td>소재</td><td>EMC·본딩와이어·솔브레인</td><td>봉지재·와이어·공정 케미칼</td><td><span class="tag t-low">테마·거론</span></td></tr>
+      <tr><td>설계 IP</td><td>오픈엣지·퀄리타스반도체</td><td>LPDDR·NPU·인터커넥트 IP</td><td><span class="tag t-low">테마·거론</span></td></tr>
+      <tr><td>테스트</td><td>ISC·티에스이·리노공업</td><td>검사 소켓·프로브 수요 거론</td><td><span class="tag t-low">테마·거론</span></td></tr>
+    </tbody>
+  </table>
+  <p class="muted">※ ‘확신 정도’는 공개 보도·발표의 직접성에 따른 본 문서의 분류일 뿐, 주가 상승을 보장하지 않습니다. HBS는 초기 단계라 ‘직접·높음’은 SK하이닉스뿐이며, 나머지는 연관성·테마 수준입니다.</p>
+
+  <!-- 투자 논리 -->
+  <h1>핵심 포인트 3가지</h1>
+  <ul>
+    <li><span class="em">① ‘HBF 수혜주 ≠ HBS 수혜주’.</span> TSV를 쓰는 HBF는 한미반도체·솔브레인이 핵심이지만, TSV를 안 쓰는 HBS는 팬아웃 패키징(네패스·하나마이크론)·기판(심텍)으로 무게가 옮겨갑니다. 같은 ‘쌓는 메모리’라도 수혜처가 다릅니다.</li>
+    <li><span class="em">② 내재화 비중이 높다.</span> SK하이닉스가 D램·낸드·VFO를 모두 보유해 상당 부분 자체 제작 → 외부 소부장 수혜 폭이 HBM·HBF보다 작을 수 있습니다.</li>
+    <li><span class="em">③ ‘온디바이스 AI’라는 큰 테마의 일부.</span> HBS 단독보다는, 스마트폰·웨어러블·로봇의 온디바이스 AI 확산이라는 더 큰 흐름 속에서 모바일 메모리·팬아웃·기판이 함께 거론됩니다.</li>
+  </ul>
+
+  <!-- 리스크 -->
+  <div class="pb"></div>
+  <h1>반드시 함께 볼 리스크</h1>
+  <div class="warn">
+    <div class="ct">‘초기 중의 초기’ 테마의 위험</div>
+    <ul>
+      <li><strong>공식화 정도가 낮음:</strong> HBM·HBF는 발표·표준화 단계지만, HBS는 임원 발언·보도 수준. 제품·일정·고객이 미확정.</li>
+      <li><strong>출시 시점 불명확:</strong> “고객과 구체화해 나가는 단계”라는 언급 — 양산 시점이 제시되지 않음.</li>
+      <li><strong>내재화 리스크:</strong> SK하이닉스가 자체 제작하면 외부 기업 수혜가 기대보다 작을 수 있음.</li>
+      <li><strong>테마주 변동성:</strong> ‘관련주’로 거론되는 종목은 뉴스에 급등락하기 쉽고, 실제 수주·매출과 주가가 따로 놀 수 있음. ‘거론’과 ‘실제 계약’은 다릅니다.</li>
+      <li><strong>시장 규모 미지수:</strong> 모바일·웨어러블향이라 데이터센터(HBM·HBF)만큼 단가·규모가 클지는 불확실.</li>
+    </ul>
+  </div>
+
+  <!-- 타임라인 -->
+  <h1>타임라인 (체크 포인트)</h1>
+  <table>
+    <thead><tr><th>시기</th><th>이벤트</th><th>투자자 관점 체크 포인트</th></tr></thead>
+    <tbody>
+      <tr><td>2023</td><td>SK하이닉스 VFO 세계 최초 상용화(애플 비전프로 D램 등)</td><td>기반 기술 확보</td></tr>
+      <tr><td>2025.2</td><td>‘LPW NAND’ 상표 출원(KIPO)</td><td>제품화 의지 신호</td></tr>
+      <tr><td>2025.11</td><td>HBS 개발 보도(ETNews 등)</td><td>개념 공개</td></tr>
+      <tr><td>2025.12</td><td>임원 발언: AP+베이스다이+멀티컬럼 팬아웃 구조 언급</td><td>구조·전략 구체화 시작</td></tr>
+      <tr><td>미정</td><td>고객 스펙 확정·양산</td><td>실제 수주·채택 뉴스 확인 필요</td></tr>
+    </tbody>
+  </table>
+
+  <!-- 체크리스트 -->
+  <h1>투자 전 스스로 점검할 체크리스트</h1>
+  <ul>
+    <li>이 기업의 HBS 연관이 <strong>‘실제 수주·공시’</strong>인가, <strong>‘언론·블로그 거론’</strong> 수준인가?</li>
+    <li>SK하이닉스 <strong>내재화</strong>로 외부 수혜가 줄어들 가능성은 반영했는가?</li>
+    <li>HBS 매출이 전체에서 차지할 비중·시점은 언제쯤인가? (현재 일정 미정)</li>
+    <li>이미 <strong>기대감이 주가에 반영(밸류 부담)</strong>되어 있지 않은가?</li>
+    <li>HBS가 늦어져도 버틸 <strong>본업(HBM·기판·후공정 등)</strong>이 탄탄한가?</li>
+  </ul>
+
+  <!-- 참고 이미지 -->
+  <div class="pb"></div>
+  <h1>참고: 원본 보도 이미지</h1>
+  <p class="muted">아래는 원본 출처 사이트에서 직접 불러오는 이미지입니다(저작권은 각 출처에 있음). 인터넷 연결 상태에서 열어야 보이며, 사이트 정책에 따라 일부는 표시되지 않을 수 있어요. 그럴 땐 캡션 링크로 원문에서 확인하세요.</p>
+  <figure>
+    <img class="refimg" src="https://img.etnews.com/news/article/2025/11/10/news-p.v1.20251110.19cd3d5b81ce4f2db4c52efeaaf4f2eb_P1.png" alt="SK하이닉스 HBS용 VFO 패키지" loading="lazy">
+    <figcaption>참고 1. SK하이닉스 HBS용 VFO(수직 와이어 팬아웃) 패키지 — 출처: <a href="https://www.etnews.com/20251110000320">전자신문(2025.11.10)</a></figcaption>
+  </figure>
+  <figure>
+    <img class="refimg" src="https://www.ddaily.co.kr/photos/2025/12/10/2025121017593406686_l.jpg" alt="HBS 패키지 구조 개요" loading="lazy">
+    <figcaption>참고 2. 온디바이스 AI용 HBS 구조 개요 — 출처: <a href="https://m.ddaily.co.kr/page/view/2025121018000529843">디지털데일리(2025.12.11)</a></figcaption>
+  </figure>
+  <figure>
+    <img class="refimg" src="https://img.trendforce.com/blog/wp-content/uploads/2025/11/10162045/SK-hynix-HBS-624x410.png" alt="SK hynix HBS 개념 이미지" loading="lazy">
+    <figcaption>참고 3. SK하이닉스 HBS 개념도 — 출처: <a href="https://www.trendforce.com/news/2025/11/11/news-sk-hynix-reportedly-explores-high-bandwidth-storage-stacking-nand-and-dram/">TrendForce</a></figcaption>
+  </figure>
+
+  <!-- 출처 -->
+  <h1>출처</h1>
+  <ol class="src">
+    <li>전자신문 — “D램에 낸드 쌓는다” SK하이닉스, ‘고대역폭스토리지’ 개발 (2025.11.10) — <a href="https://www.etnews.com/20251110000320">link</a></li>
+    <li>디지털데일리 — SK하이닉스 HBS, AP+베이스 다이+D램·낸드 ‘멀티컬럼 팬아웃’ 패키지로 (2025.12.11) — <a href="https://m.ddaily.co.kr/page/view/2025121018000529843">link</a></li>
+    <li>TrendForce — SK hynix Reportedly Explores High-Bandwidth Storage (2025.11.11) — <a href="https://www.trendforce.com/news/2025/11/11/news-sk-hynix-reportedly-explores-high-bandwidth-storage-stacking-nand-and-dram/">link</a></li>
+    <li>글로벌이코노믹 — SK하이닉스, HBS로 스마트폰 AI 병목 해소 (2025.11) — <a href="https://www.g-enews.com/article/Global-Biz/2025/11/202511110946333037fbbec65dfb_1">link</a></li>
+    <li>헤럴드경제 — 삼성전자, 온디바이스 AI 최적화 UFS 5.0 개발 — <a href="https://biz.heraldcorp.com/article/10784826">link</a></li>
+    <li>SK hynix Newsroom — VFO(Small Size, Big Impact) — <a href="https://news.skhynix.com/small-size-big-impact/">link</a></li>
+    <li>주식스토커 — 온디바이스 AI / LPDDR 관련주(국내 종목 거론, 참고용) — <a href="https://stockstalker.co.kr/on-device-ai/">link</a></li>
+  </ol>
+  <p class="muted"><em>※ 본 문서는 공개된 보도·업계 분석을 교차 확인해 정리한 참고 자료입니다. HBS는 개발 초기 단계로 종목 연관성 상당수가 ‘테마 거론’ 수준이며, 사실관계·시점은 변동될 수 있습니다. 본 문서는 투자 권유가 아니며, 투자 결정과 결과의 책임은 전적으로 투자자 본인에게 있습니다.</em></p>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>800 VDC 완전 정복 — 비전공자 입문 가이드</title>
+<style>
+  :root{
+    --accent:#e07b1a; --accent-dark:#a8550c; --light:#fdf0e2; --light2:#fdf7ef;
+    --gray:#595959; --line:#f3d3b0; --ink:#1d2733;
+  }
+  *{box-sizing:border-box;}
+  html{-webkit-print-color-adjust:exact; print-color-adjust:exact;}
+  body{font-family:"Malgun Gothic","맑은 고딕",-apple-system,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;
+    color:var(--ink); line-height:1.7; margin:0; background:#f5f6f8; font-size:16px;}
+  .page{max-width:820px; margin:24px auto; background:#fff; padding:56px 60px; box-shadow:0 1px 8px rgba(0,0,0,.08);}
+  h1{color:var(--accent-dark); font-size:1.5rem; border-bottom:3px solid var(--accent); padding-bottom:8px; margin:2.3em 0 .7em;}
+  h1:first-of-type{margin-top:.3em;}
+  h2{color:var(--accent); font-size:1.16rem; margin:1.5em 0 .45em;}
+  p{margin:.5em 0;} ul{margin:.4em 0 .9em; padding-left:1.3em;} li{margin:.3em 0;}
+  .em{color:var(--accent-dark); font-weight:700;}
+  .muted{color:var(--gray); font-size:.9rem;}
+  .callout{background:var(--light); border:1px solid var(--accent); border-left:6px solid var(--accent); border-radius:4px; padding:14px 18px; margin:1.1em 0;}
+  .callout .ct{font-weight:700; color:var(--accent-dark); margin-bottom:6px;}
+  .callout p{margin:.35em 0; font-size:.96rem;}
+  table{border-collapse:collapse; width:100%; margin:1em 0; font-size:.85rem;}
+  th{background:var(--accent); color:#fff; font-weight:700; padding:9px 10px; text-align:center; border:1px solid var(--line);}
+  td{padding:8px 10px; border:1px solid var(--line); text-align:center; vertical-align:top;}
+  td:first-child{text-align:left; font-weight:700; background:#fdf7ef;}
+  tbody tr:nth-child(even) td{background:var(--light2);}
+  tbody tr:nth-child(even) td:first-child{background:#fdf0e2;}
+  .cover{text-align:center; padding:115px 0 85px;}
+  .cover .big{font-size:2.5rem; font-weight:800; color:var(--accent-dark); letter-spacing:-1px;}
+  .cover .sub{font-size:1.25rem; color:var(--accent); margin-top:12px;}
+  .cover .sub2{font-size:1rem; color:var(--gray); margin-top:24px;}
+  .cover .tag{font-size:.95rem; color:var(--gray); font-style:italic; margin-top:64px;}
+  .cover .date{font-size:.88rem; color:var(--gray); margin-top:8px;}
+  .toc{background:var(--light2); border:1px solid var(--line); border-radius:6px; padding:18px 24px;}
+  .toc ol{margin:0; padding-left:1.4em;} .toc li{margin:.3em 0;}
+  a{color:var(--accent-dark); word-break:break-all;}
+  .src{font-size:.83rem;} .src li{margin:.4em 0;}
+  figure{margin:1.4em 0; text-align:center;}
+  figure svg{width:100%; max-width:720px; height:auto; display:block; margin:0 auto;}
+  .refimg{display:block; max-width:100%; height:auto; margin:0 auto; border:1px solid var(--line); border-radius:6px;}
+  figcaption{font-size:.85rem; color:var(--gray); margin-top:8px;}
+  .photogrid{display:grid; grid-template-columns:1fr 1fr; gap:18px; margin:1.2em 0;}
+  .photogrid figure{margin:0;}
+  .photogrid img{width:100%; height:auto; border:1px solid var(--line); border-radius:6px; display:block;}
+  .photogrid figcaption{font-size:.8rem; margin-top:6px;}
+  @media print{
+    body{background:#fff; font-size:11pt;}
+    .page{box-shadow:none; margin:0; max-width:none; padding:0;}
+    .pb{page-break-before:always;}
+    h1,h2{page-break-after:avoid;} table,.callout,figure{page-break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="cover">
+    <div class="big">800 VDC 완전 정복</div>
+    <div class="sub">고전압 직류(HVDC) · AI 데이터센터 전력 혁명</div>
+    <div class="sub2">비전공자를 위한 기초부터 고급까지 안내서</div>
+    <div class="tag">‘구리에서 전압으로’ — 1MW 랙 시대의 전력 설계</div>
+    <div class="date">2026년 6월 · 최신 동향 반영</div>
+  </div>
+
+  <!-- TOC -->
+  <div class="pb"></div>
+  <h1>목차</h1>
+  <div class="toc">
+    <ol>
+      <li>한눈에 보기 (3분 요약)</li>
+      <li>800 VDC란 무엇인가</li>
+      <li>왜 등장했나 — 54V의 한계와 ‘구리 과부하’</li>
+      <li>어떻게 바꾸나 — 전력 변환 사슬의 단축</li>
+      <li>핵심 부품 — 반도체 변압기(SST)와 SiC</li>
+      <li>장점과 한계</li>
+      <li>누가 만드나 — 엔비디아 생태계와 로드맵</li>
+      <li>향후 전망 / 부록 — 용어 사전 · 출처</li>
+    </ol>
+  </div>
+
+  <!-- 0 요약 -->
+  <div class="pb"></div>
+  <h1>한눈에 보기 (3분 요약)</h1>
+  <p><span class="em">800 VDC(800볼트 직류)</span>는 AI 데이터센터에 전기를 공급하는 ‘배전(전력 분배)’ 방식을 통째로 바꾸는 새 표준이에요. 엔비디아가 주도하며, 2027년 차세대 플랫폼(루빈/카이버)부터 본격 적용됩니다. 한마디로 <strong>“전압을 높여 전류를 낮추는” 전략</strong>입니다.</p>
+  <div class="callout">
+    <div class="ct">핵심을 한 문장으로</div>
+    <p><span class="em">800 VDC = 전압↑ → 전류↓ → 구리·발열·공간↓ + 효율↑.</span> 랙당 전력이 1MW(메가와트)로 치솟는 AI 시대에, 기존 54V 배전으로는 감당이 안 돼서 등장했어요.</p>
+  </div>
+  <table>
+    <thead><tr><th></th><th>기존: 54 VDC 배전</th><th>새 방식: 800 VDC</th></tr></thead>
+    <tbody>
+      <tr><td>설계 기준</td><td>수~수십 kW 랙</td><td>100kW~1MW 이상 랙</td></tr>
+      <tr><td>구리 사용량</td><td>많음(1MW에 ~200kg)</td><td>약 45% 감소</td></tr>
+      <tr><td>전력 효율</td><td>기준</td><td>최대 5%p 개선</td></tr>
+      <tr><td>유지보수비</td><td>기준</td><td>최대 70% 절감</td></tr>
+    </tbody>
+  </table>
+  <p class="muted">‘VDC’는 직류 전압(Volts of Direct Current)이에요. AC(교류)를 여러 번 바꾸던 과정을 줄여, 손실과 부품 수를 확 낮추는 게 핵심입니다.</p>
+
+  <!-- 1 -->
+  <div class="pb"></div>
+  <h1>1장. 800 VDC란 무엇인가</h1>
+  <p>먼저 세 단어만 알면 됩니다.</p>
+  <ul>
+    <li><strong>전압(V):</strong> 전기를 밀어내는 ‘압력’. 800V는 가정용 콘센트(220V)의 약 3.6배.</li>
+    <li><strong>전류(A):</strong> 실제로 흐르는 전기의 ‘양’. 전류가 많을수록 두꺼운 구리선과 더 많은 열이 필요.</li>
+    <li><strong>직류(DC):</strong> 한 방향으로 흐르는 전기. 콘센트의 교류(AC)와 달리 방향이 안 바뀜.</li>
+  </ul>
+  <p>핵심 공식은 <span class="em">전력 = 전압 × 전류 (P = V × I)</span> 예요. 같은 전력을 보낼 때 <strong>전압을 높이면 전류를 낮출 수 있습니다.</strong> 800 VDC는 바로 이 원리로, ‘높은 전압·낮은 전류’의 직류를 데이터센터 안에 흘려보내는 방식입니다.</p>
+  <div class="callout">
+    <div class="ct">비유: 같은 물을 나르는 두 가지 방법</div>
+    <p>같은 양의 물(전력)을 보낼 때, ‘굵은 호스로 천천히(저전압·고전류)’ 대신 ‘가는 호스로 세게(고전압·저전류)’ 보내는 거예요. 가는 호스(=얇은 구리)면 충분하니 비용·공간·열이 모두 줄어듭니다.</p>
+  </div>
+
+  <!-- 2 -->
+  <h1>2장. 왜 등장했나 — 54V의 한계와 ‘구리 과부하’</h1>
+  <p>AI 가속기(GPU)가 쓰는 전력이 폭발적으로 늘었어요. 과거 한 랙(서버 캐비닛)이 5~10kW였다면, 지금은 100~300kW, 차세대는 <strong>1MW(메가와트)</strong>까지 치솟습니다. 기존 54V(또는 48V) 배전으로 이 전력을 보내려면 전류가 어마어마하게 늘어나는데, 그 결과가 다음과 같아요.</p>
+  <ul>
+    <li><strong>구리 과부하:</strong> 54V로 1MW 랙을 감당하려면 구리 부스바가 최대 200kg. 1GW 데이터센터면 구리가 20만kg까지 필요 — 지속 불가능.</li>
+    <li><strong>공간 낭비:</strong> 전원공급장치(PSU)가 랙 공간을 64U까지 차지해, 정작 GPU 넣을 자리가 없어짐.</li>
+    <li><strong>변환 손실:</strong> 교류·직류를 여러 번 바꾸며 전체 손실률이 9~16%에 달함.</li>
+  </ul>
+  <figure>
+    <img class="refimg" src="https://developer-blogs.nvidia.com/wp-content/uploads/2025/05/800-V-Tech-blog-Fig-1.png" alt="기존 데이터센터 전력 구조(54V)" loading="lazy">
+    <figcaption>그림 2-1. 기존 전력 구조 — 전력실에서 415V AC로 변환 후, 랙의 PSU가 54/12V로 여러 번 변환. 출처: <a href="https://developer.nvidia.com/blog/nvidia-800-v-hvdc-architecture-will-power-the-next-generation-of-ai-factories/">NVIDIA Technical Blog</a></figcaption>
+  </figure>
+  <div class="callout">
+    <div class="ct">한 줄 정리: ‘구리·열·공간’의 벽</div>
+    <p>AI 랙이 MW급으로 커지자, 낮은 전압(54V)으로는 구리·열·공간을 감당할 수 없게 됐어요. 그래서 ‘전압을 800V로 올려 전류를 낮추는’ 근본 해법이 등장했습니다.</p>
+  </div>
+
+  <!-- 3 -->
+  <div class="pb"></div>
+  <h1>3장. 어떻게 바꾸나 — 전력 변환 사슬의 단축</h1>
+  <p>800 VDC의 또 다른 핵심은 <strong>‘변환 단계를 확 줄이는 것’</strong>이에요. 전통 방식은 전력망의 고압 교류를 받아 변압→정류→변환→강압을 3~4단계 거쳐야 했는데, 단계마다 전기가 열로 새어나갔습니다. 800 VDC는 <span class="em">전력망 교류(13.8kV)를 데이터센터 입구에서 한 번에 800V 직류로 변환</span>하고, 랙 안의 변환 장치는 별도 캐비닛(‘사이드카’)으로 빼서 효율을 극대화합니다.</p>
+  <figure>
+    <img class="refimg" src="https://developer-blogs.nvidia.com/wp-content/uploads/2025/05/800-V-tech-blog-fig-2.png" alt="800VDC 전력 구조" loading="lazy">
+    <figcaption>그림 3-1. 800 VDC 구조 — 전력실에서 800V 직류로 ‘한 번에’ 변환해 랙까지 직송, 변환 단계 최소화. 출처: <a href="https://developer.nvidia.com/blog/nvidia-800-v-hvdc-architecture-will-power-the-next-generation-of-ai-factories/">NVIDIA Technical Blog</a></figcaption>
+  </figure>
+  <p>800V 부스웨이(배전로)를 쓰면 같은 굵기의 도체로 <strong>85% 더 많은 전력</strong>을 보낼 수 있고, 구리는 <strong>약 45% 절감</strong>됩니다. 랙은 800V를 받아 내부에서 54/12V로 낮춰 GPU에 공급해요.</p>
+  <figure>
+    <svg viewBox="0 0 720 220" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="전력 변환 단계 비교">
+      <style>
+        .t{font-family:'Malgun Gothic',sans-serif;}
+        .hd{font-size:13px;font-weight:700;fill:#a8550c;}
+        .bx{font-size:11px;fill:#fff;font-weight:700;}
+        .cap{font-size:11px;fill:#595959;}
+      </style>
+      <text class="t hd" x="20" y="24">기존: 변환 3~4단계 (손실 9~16%)</text>
+      <rect x="20" y="36" width="92" height="34" rx="5" fill="#9e9e9e"/><text class="t bx" x="66" y="57" text-anchor="middle">전력망 AC</text>
+      <rect x="132" y="36" width="92" height="34" rx="5" fill="#b0772e"/><text class="t bx" x="178" y="57" text-anchor="middle">변압</text>
+      <rect x="244" y="36" width="92" height="34" rx="5" fill="#b0772e"/><text class="t bx" x="290" y="57" text-anchor="middle">정류</text>
+      <rect x="356" y="36" width="92" height="34" rx="5" fill="#b0772e"/><text class="t bx" x="402" y="57" text-anchor="middle">변환</text>
+      <rect x="468" y="36" width="92" height="34" rx="5" fill="#b0772e"/><text class="t bx" x="514" y="57" text-anchor="middle">강압</text>
+      <rect x="580" y="36" width="92" height="34" rx="5" fill="#e07b1a"/><text class="t bx" x="626" y="57" text-anchor="middle">GPU</text>
+      <text class="t hd" x="20" y="118">800 VDC: 중앙에서 한 번에 변환</text>
+      <rect x="20" y="130" width="120" height="40" rx="5" fill="#9e9e9e"/><text class="t bx" x="80" y="155" text-anchor="middle">전력망 AC</text>
+      <rect x="170" y="130" width="180" height="40" rx="5" fill="#a8550c"/><text class="t bx" x="260" y="148" text-anchor="middle">SST/정류기로</text><text class="t bx" x="260" y="163" text-anchor="middle">800V 직류 1단계 변환</text>
+      <rect x="380" y="130" width="150" height="40" rx="5" fill="#e07b1a"/><text class="t bx" x="455" y="155" text-anchor="middle">랙(800→54/12V)</text>
+      <rect x="560" y="130" width="112" height="40" rx="5" fill="#e07b1a"/><text class="t bx" x="616" y="155" text-anchor="middle">GPU</text>
+      <text class="t cap" x="360" y="200" text-anchor="middle">변환 단계가 줄면 손실·발열·부품 수가 함께 줄어든다</text>
+    </svg>
+    <figcaption>그림 3-2. 변환 사슬 비교(개념도) — 800 VDC는 중앙에서 한 번에 변환해 단계를 줄인다.</figcaption>
+  </figure>
+
+  <!-- 4 -->
+  <div class="pb"></div>
+  <h1>4장. 핵심 부품 — 반도체 변압기(SST)와 SiC</h1>
+  <p>800 VDC의 심장은 <span class="em">반도체 변압기(SST, Solid-State Transformer)</span>예요. 코일과 철심을 감은 전통 변압기와 달리, SST는 <strong>전력 반도체(SiC·GaN)를 이용해 교류·직류 변환과 전압 변압을 한 장치에서 동시에</strong> 합니다. 변환 단계가 줄어 효율이 높고, AI 특유의 급격한 전력 변동에도 빠르게 대응해요.</p>
+  <figure>
+    <img class="refimg" src="https://cdn.goodkyung.com/news/photo/202606/287671_258629_367.jpg" alt="효성중공업 22.9kV 반도체 변압기(SST)" loading="lazy">
+    <figcaption>그림 4-1. 효성중공업이 개발한 22.9kV 반도체 변압기(SST). 출처: <a href="https://www.goodkyung.com/news/articleView.html?idxno=287671">굿모닝경제 / 효성그룹</a></figcaption>
+  </figure>
+  <p>SST의 성능을 좌우하는 건 <strong>전력 반도체</strong>예요. 특히 <span class="em">SiC(탄화규소)</span>는 고전압·고온에 강해 800V 직류 변환의 핵심 소자입니다(1200V SiC MOSFET 등). 실리콘보다 변환 손실을 25~40% 줄여줘, ‘전기를 덜 버리는’ 데이터센터를 가능하게 합니다. <span class="em">GaN(질화갈륨)</span>도 고효율 변환에 함께 쓰여요.</p>
+  <div class="callout">
+    <div class="ct">한 줄 정리</div>
+    <p>800 VDC를 실제로 굴러가게 하는 부품은 <strong>SST(반도체 변압기) + SiC/GaN 전력 반도체</strong>입니다. 이 둘이 ‘전압을 높여 효율을 끌어올리는’ 실무를 담당해요.</p>
+  </div>
+
+  <!-- 5 -->
+  <h1>5장. 장점과 한계</h1>
+  <h2>장점</h2>
+  <ul>
+    <li><strong>효율:</strong> 종단 전력효율 최대 5%p 개선, 변환 손실 대폭 감소.</li>
+    <li><strong>비용·자원:</strong> 구리 약 45% 절감, 유지보수비 최대 70% 절감, 총소유비용(TCO) 최대 30% 절감.</li>
+    <li><strong>공간·확장성:</strong> 랙 안 변환 장치를 빼내 GPU 공간 확보. 100kW~1MW까지 같은 인프라로 확장.</li>
+    <li><strong>냉각:</strong> 랙 내부 발열원이 줄어 냉각 부담↓.</li>
+  </ul>
+  <h2>한계</h2>
+  <ul>
+    <li><strong>안전·표준:</strong> 800V 고전압 직류는 안전·규격·인력 교육 등 새 과제를 동반.</li>
+    <li><strong>전환 비용·시간:</strong> 전력 인프라를 통째로 바꾸는 일이라 초기 투자·시간이 큼.</li>
+    <li><strong>공존 단계:</strong> 모든 데이터센터가 한 번에 바뀌진 않음. 임대형은 하이브리드, 목적형 AI 팩토리는 전면 800VDC 등 공존 전망.</li>
+  </ul>
+
+  <!-- 6 -->
+  <div class="pb"></div>
+  <h1>6장. 누가 만드나 — 엔비디아 생태계와 로드맵</h1>
+  <p>800 VDC는 엔비디아가 ‘쏘아 올리고’, 전력 반도체·전력 시스템 기업들이 대거 합류한 <strong>생태계 게임</strong>이에요.</p>
+  <ul>
+    <li><strong>전력 반도체(실리콘 파트너):</strong> Analog Devices, Infineon, Innoscience, MPS, Navitas, OnSemi, Renesas, ROHM, STMicroelectronics, Texas Instruments 등.</li>
+    <li><strong>전력 시스템 부품:</strong> Delta, Flex Power, Lead Wealth, LiteOn, Megmeet.</li>
+    <li><strong>데이터센터 전력 시스템:</strong> Eaton, Schneider Electric, Vertiv (그 외 ABB, GE Vernova, Enphase 등).</li>
+    <li><strong>국내:</strong> 효성중공업이 22.9kV SST를 세계 최초 개발해 미국 데이터센터 시장 공략을 공식화. 현대일렉트릭·LS일렉트릭·두산 등도 거론.</li>
+  </ul>
+  <div class="callout">
+    <div class="ct">로드맵</div>
+    <p>엔비디아의 <strong>2027년 카이버/루빈 울트라</strong> 플랫폼이 800VDC를 전제로 설계됨. 본격 양산이 2027년에 맞춰지고, 버티브·엔페이즈·이튼 등은 2027~2028년 양산을 목표로 준비 중입니다.</p>
+  </div>
+
+  <!-- 7 -->
+  <h1>7장. 향후 전망</h1>
+  <ul>
+    <li><strong>‘전력이 곧 경쟁력’:</strong> AI 성능이 전력에 발목 잡히는 시대 — 800VDC는 전력을 푸는 핵심 인프라.</li>
+    <li><strong>전력 반도체 슈퍼사이클:</strong> SiC·GaN 수요가 데이터센터에서 새로 폭증. 전력 반도체가 ‘새로운 이익 풀’로.</li>
+    <li><strong>시스템 융합:</strong> 전력·냉각·IT를 하나로 묶는 ‘시스템 차원’ 경쟁으로 이동.</li>
+    <li><strong>공존 전환:</strong> 단번에 표준 통일이 아니라, 목적형 AI 팩토리부터 점진 확산.</li>
+  </ul>
+  <div class="callout">
+    <div class="ct">마무리 한마디</div>
+    <p>800 VDC는 ‘더 빠른 GPU’가 아니라 ‘GPU에 전기를 어떻게 댈 것인가’를 다시 설계하는 일이에요. 메모리(HBM·HBF)와 통신(CPO)이 데이터의 병목을 풀었다면, 800 VDC는 ‘전력의 병목’을 푸는 마지막 퍼즐입니다.</p>
+  </div>
+
+  <!-- 부록 -->
+  <div class="pb"></div>
+  <h1>부록. 미니 용어 사전 / 출처</h1>
+  <table>
+    <thead><tr><th>용어</th><th>쉬운 설명</th></tr></thead>
+    <tbody>
+      <tr><td>800 VDC</td><td style="text-align:left">800볼트 직류. AI 데이터센터의 차세대 고전압 직류 배전 방식.</td></tr>
+      <tr><td>P = V × I</td><td style="text-align:left">전력=전압×전류. 전압을 올리면 전류를 낮출 수 있다는 핵심 원리.</td></tr>
+      <tr><td>SST</td><td style="text-align:left">반도체 변압기. 전력 반도체로 변압·변환을 한 장치에서 수행.</td></tr>
+      <tr><td>SiC</td><td style="text-align:left">탄화규소. 고전압·고온에 강한 전력 반도체 소재. 800V 변환의 핵심.</td></tr>
+      <tr><td>GaN</td><td style="text-align:left">질화갈륨. 고효율·고속 스위칭 전력 반도체 소재.</td></tr>
+      <tr><td>사이드카</td><td style="text-align:left">랙 옆에 따로 둔 전력 변환 캐비닛. 랙 공간을 GPU에 양보.</td></tr>
+      <tr><td>부스바/부스웨이</td><td style="text-align:left">전기를 나르는 굵은 도체(전력 분배로). 800V는 이를 얇게 만듦.</td></tr>
+      <tr><td>TCO</td><td style="text-align:left">총소유비용. 800VDC는 이를 최대 30% 절감.</td></tr>
+    </tbody>
+  </table>
+
+  <h2>용어, 이렇게 생겼어요 (실제 사진)</h2>
+  <p>글자만으론 감이 안 오는 용어들의 ‘실제 모습’을 사진으로 모았어요. 각 사진의 저작권은 출처에 있습니다.</p>
+  <div class="photogrid">
+    <figure>
+      <img class="refimg" src="https://img.etnews.com/news/article/2024/01/11/news-p.v1.20240111.a79ccbd2b2d345a49f8bd7c9e3ccbb50_P1.jpg" alt="SK실트론 SiC 웨이퍼 실물" loading="lazy">
+      <figcaption><strong>SiC(탄화규소) 웨이퍼</strong> — 은빛 둥근 원판. 800V 변환의 핵심 소재. 출처: <a href="https://www.etnews.com/20240111000254">전자신문 / SK실트론</a></figcaption>
+    </figure>
+    <figure>
+      <img class="refimg" src="https://cdn.goodkyung.com/news/photo/202606/287671_258629_367.jpg" alt="효성중공업 22.9kV SST" loading="lazy">
+      <figcaption><strong>SST(반도체 변압기)</strong> — 효성중공업 22.9kV. 냉장고만 한 캐비닛. 출처: <a href="https://www.goodkyung.com/news/articleView.html?idxno=287671">굿모닝경제 / 효성그룹</a></figcaption>
+    </figure>
+    <figure>
+      <img class="refimg" src="https://nimage.newsway.co.kr/photo/2026/02/04/20260204000028_0700.jpg" alt="LS일렉트릭 데이터센터용 배전반 비욘드 X MDB" loading="lazy">
+      <figcaption><strong>데이터센터 배전반(MDB)</strong> — 전력을 나눠 보내는 대형 캐비닛(부스바·차단기 내장). LS일렉트릭 ‘비욘드 X MDB’. 출처: <a href="https://www.newsway.co.kr/news/view?ud=2026020418021674233">뉴스웨이(강민석 기자)</a></figcaption>
+    </figure>
+    <figure>
+      <img class="refimg" src="https://developer-blogs.nvidia.com/wp-content/uploads/2025/10/Kyber-rack-architecture-jpg.webp" alt="NVIDIA Kyber 800VDC 랙 전력 구조" loading="lazy">
+      <figcaption><strong>800VDC 랙·사이드카</strong> — 엔비디아 Kyber 랙 전력 구조(랙 옆 전력함 포함). 출처: <a href="https://developer.nvidia.com/blog/building-the-800-vdc-ecosystem-for-efficient-scalable-ai-factories/">NVIDIA Technical Blog</a></figcaption>
+    </figure>
+  </div>
+  <p class="muted">※ 위 사진들은 인터넷 연결 상태에서 원본 출처로부터 불러옵니다. GaN 전력소자는 손톱보다 작은 검은 칩 형태로, SiC와 함께 800V 변환에 쓰입니다.</p>
+
+  <details style="display:none">
+  <figure>
+    <svg viewBox="0 0 720 410" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="800VDC 핵심 용어 생김새 일러스트">
+      <defs>
+        <radialGradient id="wafer" cx="40%" cy="35%" r="75%">
+          <stop offset="0%" stop-color="#eef3f5"/>
+          <stop offset="55%" stop-color="#c2ccd2"/>
+          <stop offset="100%" stop-color="#8a979e"/>
+        </radialGradient>
+        <linearGradient id="cab" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stop-color="#b9c0c4"/>
+          <stop offset="50%" stop-color="#dfe4e6"/>
+          <stop offset="100%" stop-color="#a8b0b4"/>
+        </linearGradient>
+      </defs>
+      <style>
+        .t{font-family:'Malgun Gothic',sans-serif;}
+        .nm{font-size:14px;font-weight:700;fill:#a8550c;}
+        .ds{font-size:11px;fill:#595959;}
+        .cu{fill:#b87333;}
+      </style>
+
+      <!-- A: SiC 웨이퍼 -->
+      <circle cx="120" cy="100" r="52" fill="url(#wafer)" stroke="#7c878d" stroke-width="2"/>
+      <circle cx="120" cy="100" r="34" fill="none" stroke="#aeb8bd" stroke-width="1.5"/>
+      <circle cx="120" cy="100" r="18" fill="none" stroke="#aeb8bd" stroke-width="1.5"/>
+      <line x1="92" y1="142" x2="108" y2="128" stroke="#7c878d" stroke-width="3"/>
+      <text class="t nm" x="120" y="178" text-anchor="middle">SiC 웨이퍼</text>
+      <text class="t ds" x="120" y="196" text-anchor="middle">손바닥만 한 은빛 원판</text>
+
+      <!-- B: GaN 소자 -->
+      <rect x="332" y="74" width="56" height="48" rx="4" fill="#222"/>
+      <rect x="344" y="86" width="32" height="24" rx="2" fill="#3a3a3a"/>
+      <g fill="#d4a017">
+        <rect x="320" y="80" width="12" height="5"/><rect x="320" y="92" width="12" height="5"/><rect x="320" y="104" width="12" height="5"/>
+        <rect x="388" y="80" width="12" height="5"/><rect x="388" y="92" width="12" height="5"/><rect x="388" y="104" width="12" height="5"/>
+      </g>
+      <text class="t nm" x="360" y="178" text-anchor="middle">GaN 전력소자</text>
+      <text class="t ds" x="360" y="196" text-anchor="middle">손톱보다 작은 검은 칩</text>
+
+      <!-- C: SST 캐비닛 -->
+      <rect x="568" y="52" width="64" height="100" rx="5" fill="url(#cab)" stroke="#7c878d" stroke-width="2"/>
+      <line x1="568" y1="80" x2="632" y2="80" stroke="#9aa3a8" stroke-width="1.5"/>
+      <line x1="568" y1="108" x2="632" y2="108" stroke="#9aa3a8" stroke-width="1.5"/>
+      <rect x="600" y="120" width="22" height="24" rx="2" fill="#8c9498"/>
+      <circle cx="578" cy="64" r="3" fill="#e07b1a"/>
+      <text class="t nm" x="600" y="178" text-anchor="middle">SST(반도체 변압기)</text>
+      <text class="t ds" x="600" y="196" text-anchor="middle">냉장고만 한 캐비닛</text>
+
+      <!-- D: 부스바 -->
+      <g>
+        <rect x="180" y="270" width="120" height="14" rx="2" class="cu"/>
+        <rect x="180" y="292" width="120" height="14" rx="2" class="cu"/>
+        <rect x="180" y="314" width="120" height="14" rx="2" class="cu"/>
+        <rect x="180" y="270" width="120" height="5" rx="2" fill="#d39456"/>
+        <rect x="180" y="292" width="120" height="5" rx="2" fill="#d39456"/>
+        <rect x="180" y="314" width="120" height="5" rx="2" fill="#d39456"/>
+      </g>
+      <text class="t nm" x="240" y="358" text-anchor="middle">부스바 / 부스웨이</text>
+      <text class="t ds" x="240" y="376" text-anchor="middle">전기를 나르는 굵은 구리 막대</text>
+
+      <!-- E: 사이드카 -->
+      <!-- server rack -->
+      <rect x="430" y="262" width="50" height="100" rx="4" fill="#2e3a42" stroke="#1d2733" stroke-width="1.5"/>
+      <g fill="#5b6b75"><rect x="436" y="270" width="38" height="8"/><rect x="436" y="284" width="38" height="8"/><rect x="436" y="298" width="38" height="8"/><rect x="436" y="312" width="38" height="8"/><rect x="436" y="326" width="38" height="8"/><rect x="436" y="340" width="38" height="8"/></g>
+      <!-- power cabinet (sidecar) -->
+      <rect x="492" y="262" width="42" height="100" rx="4" fill="url(#cab)" stroke="#7c878d" stroke-width="1.5"/>
+      <line x1="492" y1="288" x2="534" y2="288" stroke="#9aa3a8" stroke-width="1.2"/>
+      <line x1="492" y1="314" x2="534" y2="314" stroke="#9aa3a8" stroke-width="1.2"/>
+      <line x1="492" y1="340" x2="534" y2="340" stroke="#9aa3a8" stroke-width="1.2"/>
+      <!-- connector -->
+      <line x1="480" y1="312" x2="492" y2="312" stroke="#e07b1a" stroke-width="4"/>
+      <text class="t ds" x="455" y="258" text-anchor="middle" font-size="9">GPU 랙</text>
+      <text class="t ds" x="513" y="258" text-anchor="middle" font-size="9">전력함</text>
+      <text class="t nm" x="482" y="358" text-anchor="middle">사이드카</text>
+      <text class="t ds" x="482" y="376" text-anchor="middle">랙 옆에 붙는 전력 캐비닛</text>
+    </svg>
+    <figcaption>그림 부록-1. 800VDC 핵심 용어의 생김새(개념 이해용 일러스트). 실제 제품은 제조사·모델에 따라 다릅니다.</figcaption>
+  </figure>
+  </details>
+
+  <h2>출처</h2>
+  <ol class="src">
+    <li>NVIDIA Technical Blog — 800 VDC Architecture Will Power the Next Generation of AI Factories — <a href="https://developer.nvidia.com/blog/nvidia-800-v-hvdc-architecture-will-power-the-next-generation-of-ai-factories/">link</a></li>
+    <li>NVIDIA — 800 VDC Architecture for AI Data Centers — <a href="https://www.nvidia.com/en-us/data-center/technologies/800-vdc-architecture/">link</a></li>
+    <li>굿모닝경제 — 구리 줄이고 효율 높인다…엔비디아가 쏘아 올린 ‘800VDC’ 생태계 — <a href="https://www.goodkyung.com/news/articleView.html?idxno=287671">link</a></li>
+    <li>Wolfspeed — Powering AI with SiC-based Solid-State Transformers — <a href="https://www.wolfspeed.com/knowledge-center/article/powering-ai-with-reliable-silicon-carbide-based-solid-state-transformers/">link</a></li>
+    <li>Power Electronics News — The Transition to 800 V (PCIM Panel) — <a href="https://www.powerelectronicsnews.com/the-evolution-in-data-center-power-distribution-pcim-panel-part-1-the-transition-to-800-v/">link</a></li>
+  </ol>
+  <p class="muted"><em>※ 본 문서는 공개된 보도·기업 자료를 교차 확인해 정리했습니다. 본문 이미지는 각 출처에서 불러오며 저작권은 출처에 있습니다. 일부 사양·일정은 변동될 수 있습니다.</em></p>
+
+</div>
+</body>
+</html>

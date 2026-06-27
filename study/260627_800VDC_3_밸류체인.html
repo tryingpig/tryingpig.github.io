@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>800 VDC 밸류체인 대해부 — 누가 무엇을 만드나</title>
+<style>
+  :root{
+    --accent:#e07b1a; --accent-dark:#a8550c; --light:#fdf0e2; --light2:#fdf7ef;
+    --gray:#595959; --line:#f3d3b0; --ink:#1d2733; --kr:#1e7a4d;
+  }
+  *{box-sizing:border-box;}
+  html{-webkit-print-color-adjust:exact; print-color-adjust:exact;}
+  body{font-family:"Malgun Gothic","맑은 고딕",-apple-system,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;
+    color:var(--ink); line-height:1.7; margin:0; background:#f5f6f8; font-size:16px;}
+  .page{max-width:820px; margin:24px auto; background:#fff; padding:56px 60px; box-shadow:0 1px 8px rgba(0,0,0,.08);}
+  h1{color:var(--accent-dark); font-size:1.5rem; border-bottom:3px solid var(--accent); padding-bottom:8px; margin:2.3em 0 .7em;}
+  h1:first-of-type{margin-top:.3em;}
+  h2{color:var(--accent); font-size:1.14rem; margin:1.5em 0 .4em;}
+  p{margin:.5em 0;} ul{margin:.4em 0 .9em; padding-left:1.3em;} li{margin:.3em 0;}
+  .em{color:var(--accent-dark); font-weight:700;}
+  .kr{color:var(--kr); font-weight:700;}
+  .muted{color:var(--gray); font-size:.9rem;}
+  .callout{background:var(--light); border:1px solid var(--accent); border-left:6px solid var(--accent); border-radius:4px; padding:14px 18px; margin:1.1em 0;}
+  .callout .ct{font-weight:700; color:var(--accent-dark); margin-bottom:6px;}
+  .callout p{margin:.35em 0; font-size:.96rem;}
+  table{border-collapse:collapse; width:100%; margin:1em 0; font-size:.84rem;}
+  th{background:var(--accent); color:#fff; font-weight:700; padding:9px 10px; text-align:center; border:1px solid var(--line);}
+  td{padding:8px 10px; border:1px solid var(--line); vertical-align:top; text-align:left;}
+  td:first-child{font-weight:700; background:#fdf7ef; text-align:center;}
+  tbody tr:nth-child(even) td{background:var(--light2);}
+  tbody tr:nth-child(even) td:first-child{background:#fdf0e2;}
+  .cover{text-align:center; padding:115px 0 85px;}
+  .cover .big{font-size:2.4rem; font-weight:800; color:var(--accent-dark); letter-spacing:-1px;}
+  .cover .sub{font-size:1.2rem; color:var(--accent); margin-top:12px;}
+  .cover .sub2{font-size:1rem; color:var(--gray); margin-top:24px;}
+  .cover .date{font-size:.88rem; color:var(--gray); margin-top:60px;}
+  .toc{background:var(--light2); border:1px solid var(--line); border-radius:6px; padding:18px 24px;}
+  .toc ol{margin:0; padding-left:1.4em;} .toc li{margin:.3em 0;}
+  a{color:var(--accent-dark); word-break:break-all;}
+  .src{font-size:.83rem;} .src li{margin:.4em 0;}
+  figure{margin:1.4em 0; text-align:center;}
+  figure svg{width:100%; max-width:740px; height:auto; display:block; margin:0 auto;}
+  .refimg{display:block; max-width:100%; height:auto; margin:0 auto; border:1px solid var(--line); border-radius:6px;}
+  figcaption{font-size:.85rem; color:var(--gray); margin-top:8px;}
+  @media print{
+    body{background:#fff; font-size:11pt;}
+    .page{box-shadow:none; margin:0; max-width:none; padding:0;}
+    .pb{page-break-before:always;}
+    h1,h2{page-break-after:avoid;} table,.callout,figure{page-break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="cover">
+    <div class="big">800 VDC 밸류체인 대해부</div>
+    <div class="sub">AI 데이터센터 전력 · 누가 무엇을 만드나</div>
+    <div class="sub2">전력망부터 GPU까지, 글로벌 + 국내 생태계 지도</div>
+    <div class="date">2026년 6월 · 최신 동향 반영</div>
+  </div>
+
+  <!-- TOC -->
+  <div class="pb"></div>
+  <h1>목차</h1>
+  <div class="toc">
+    <ol>
+      <li>들어가며 — 800VDC 밸류체인의 특징</li>
+      <li>전체 지도 (전력망→GPU, 8개 층위)</li>
+      <li>층위별 상세 — 역할 + 글로벌 + 국내</li>
+      <li>핵심 길목(초크포인트) — 어디가 병목인가</li>
+      <li>흥미로운 포인트 — ‘EV 충전 표준’이 데이터센터로</li>
+      <li>국내 기업 종합표</li>
+      <li>출처</li>
+    </ol>
+  </div>
+
+  <!-- 1 -->
+  <div class="pb"></div>
+  <h1>1. 들어가며 — 800VDC 밸류체인의 특징</h1>
+  <p>800VDC는 메모리·반도체가 아니라 <strong>‘전력 인프라’</strong> 밸류체인이에요. 그래서 등장 기업이 완전히 다릅니다 — 전력 반도체(SiC·GaN), 반도체 변압기(SST), 중전압 전력기기, 부스바·커넥터, 전원장치(PSU), 그리고 이를 통합하는 데이터센터 전력 시스템 업체까지. 핵심 특징은 <span class="em">‘전력망(고압 AC)에서 GPU까지 한 줄로 잇는 전력 사슬’</span>이라는 점입니다.</p>
+  <div class="callout">
+    <div class="ct">이 문서를 보는 법</div>
+    <p>전기가 흐르는 순서대로 <span class="em">전력망 → 변환(SST/정류기) → 배전(부스웨이) → 보호·커넥터 → 랙 전원 → DC/DC → GPU</span>를 따라가며, ‘역할 + 글로벌 + <span class="kr">국내</span>’를 정리합니다. (국내 기업은 <span class="kr">초록색</span>)</p>
+  </div>
+  <figure>
+    <img class="refimg" src="https://developer-blogs.nvidia.com/wp-content/uploads/2025/05/800-V-tech-blog-fig-2.png" alt="800VDC 데이터센터 전력 구조" loading="lazy">
+    <figcaption>800VDC 전력 구조 — 전력망 AC를 중앙에서 800V 직류로 변환해 랙까지 직송. 출처: <a href="https://developer.nvidia.com/blog/nvidia-800-v-hvdc-architecture-will-power-the-next-generation-of-ai-factories/">NVIDIA Technical Blog</a></figcaption>
+  </figure>
+
+  <!-- 2 지도 -->
+  <h1>2. 전체 지도 — 8개 층위 한눈에</h1>
+  <figure>
+    <svg viewBox="0 0 720 560" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="800VDC 밸류체인 8개 층위 지도">
+      <style>
+        .t{font-family:'Malgun Gothic',sans-serif;}
+        .ln{font-size:13px;font-weight:700;fill:#fff;}
+        .rl{font-size:11px;fill:#1d2733;}
+        .kr{font-size:11px;fill:#1e7a4d;font-weight:700;}
+        .hd{font-size:13px;font-weight:700;fill:#a8550c;}
+      </style>
+      <text class="t hd" x="120" y="22" text-anchor="middle">층위</text>
+      <text class="t hd" x="300" y="22" text-anchor="middle">글로벌 대표</text>
+      <text class="t hd" x="560" y="22" text-anchor="middle">국내 기업</text>
+
+      <!-- 1 전력반도체 -->
+      <rect x="14" y="34" width="212" height="44" rx="6" fill="#a8550c"/>
+      <text class="t ln" x="120" y="55" text-anchor="middle">① 전력 반도체</text>
+      <text class="t ln" x="120" y="70" text-anchor="middle" font-size="10">(SiC·GaN 소자)</text>
+      <rect x="234" y="34" width="220" height="44" rx="6" fill="#fdf0e2"/>
+      <text class="t rl" x="244" y="52">Infineon, OnSemi, STMicro,</text>
+      <text class="t rl" x="244" y="68">Navitas, ROHM, Innoscience</text>
+      <rect x="462" y="34" width="244" height="44" rx="6" fill="#fdf7ef"/>
+      <text class="t kr" x="472" y="52">SK실트론(SiC 웨이퍼),</text>
+      <text class="t kr" x="472" y="68">RFHIC·예스파워(소자, 소규모)</text>
+
+      <!-- 2 SST -->
+      <rect x="14" y="86" width="212" height="44" rx="6" fill="#b85f12"/>
+      <text class="t ln" x="120" y="103" text-anchor="middle">② 반도체 변압기(SST)</text>
+      <text class="t ln" x="120" y="118" text-anchor="middle" font-size="10">★국내 강점</text>
+      <rect x="234" y="86" width="220" height="44" rx="6" fill="#fdf0e2"/>
+      <text class="t rl" x="244" y="104">Enphase, Eaton,</text>
+      <text class="t rl" x="244" y="120">GE Vernova</text>
+      <rect x="462" y="86" width="244" height="44" rx="6" fill="#fdf7ef"/>
+      <text class="t kr" x="472" y="111">효성중공업(22.9kV SST 세계최초)</text>
+
+      <!-- 3 전력기기 -->
+      <rect x="14" y="138" width="212" height="44" rx="6" fill="#c2691a"/>
+      <text class="t ln" x="120" y="159" text-anchor="middle">③ 전력기기·배전</text>
+      <text class="t ln" x="120" y="174" text-anchor="middle" font-size="10">(변압기·스위치기어)</text>
+      <rect x="234" y="138" width="220" height="44" rx="6" fill="#fdf0e2"/>
+      <text class="t rl" x="244" y="156">ABB, Schneider, Eaton,</text>
+      <text class="t rl" x="244" y="172">Vertiv</text>
+      <rect x="462" y="138" width="244" height="44" rx="6" fill="#fdf7ef"/>
+      <text class="t kr" x="472" y="156">LS일렉트릭, 현대일렉트릭,</text>
+      <text class="t kr" x="472" y="172">두산에너빌리티</text>
+
+      <!-- 4 부스바 -->
+      <rect x="14" y="190" width="212" height="44" rx="6" fill="#d17320"/>
+      <text class="t ln" x="120" y="211" text-anchor="middle">④ 부스바·커넥터</text>
+      <text class="t ln" x="120" y="226" text-anchor="middle" font-size="10">·보호기기</text>
+      <rect x="234" y="190" width="220" height="44" rx="6" fill="#fdf0e2"/>
+      <text class="t rl" x="244" y="208">Delta, ABB, Legrand,</text>
+      <text class="t rl" x="244" y="224">EAE(부스웨이)</text>
+      <rect x="462" y="190" width="244" height="44" rx="6" fill="#fdf7ef"/>
+      <text class="t kr" x="472" y="216">부스바·커넥터 부품사(일부)</text>
+
+      <!-- 5 전원 PSU -->
+      <rect x="14" y="242" width="212" height="44" rx="6" fill="#e07b1a"/>
+      <text class="t ln" x="120" y="263" text-anchor="middle">⑤ 랙 전원·PSU</text>
+      <text class="t ln" x="120" y="278" text-anchor="middle" font-size="10">(사이드카·전원장치)</text>
+      <rect x="234" y="242" width="220" height="44" rx="6" fill="#fdf0e2"/>
+      <text class="t rl" x="244" y="260">Delta, LiteOn, Megmeet,</text>
+      <text class="t rl" x="244" y="276">Flex Power, Lead Wealth</text>
+      <rect x="462" y="242" width="244" height="44" rx="6" fill="#fdf7ef"/>
+      <text class="t kr" x="472" y="268">국내 전원·부품사(부분 공급)</text>
+
+      <!-- 6 DC/DC -->
+      <rect x="14" y="294" width="212" height="44" rx="6" fill="#e8954a"/>
+      <text class="t ln" x="120" y="315" text-anchor="middle">⑥ DC/DC·코어 전력</text>
+      <text class="t ln" x="120" y="330" text-anchor="middle" font-size="10">(랙 내부 강압)</text>
+      <rect x="234" y="294" width="220" height="44" rx="6" fill="#fdf0e2"/>
+      <text class="t rl" x="244" y="320">MPS, TI, Analog Devices, Renesas</text>
+      <rect x="462" y="294" width="244" height="44" rx="6" fill="#fdf7ef"/>
+      <text class="t kr" x="472" y="320">국내 비중 작음(설계 IP 일부)</text>
+
+      <!-- 7 시스템 -->
+      <rect x="14" y="346" width="212" height="44" rx="6" fill="#efaa5e"/>
+      <text class="t ln" x="120" y="367" text-anchor="middle" fill="#5a3408">⑦ 데이터센터 전력 시스템</text>
+      <text class="t ln" x="120" y="382" text-anchor="middle" font-size="10" fill="#5a3408">(통합)</text>
+      <rect x="234" y="346" width="472" height="44" rx="6" fill="#fdf0e2"/>
+      <text class="t rl" x="244" y="372">Vertiv·Schneider·Eaton·ABB·GE Vernova — 전력+냉각 통합 솔루션</text>
+
+      <!-- 8 수요 -->
+      <rect x="14" y="398" width="212" height="44" rx="6" fill="#f3bd86"/>
+      <text class="t ln" x="120" y="419" text-anchor="middle" fill="#5a3408">⑧ 수요(AI 데이터센터)</text>
+      <text class="t ln" x="120" y="434" text-anchor="middle" font-size="10" fill="#5a3408">+ GPU 설계</text>
+      <rect x="234" y="398" width="472" height="44" rx="6" fill="#fdf0e2"/>
+      <text class="t rl" x="244" y="424">NVIDIA(설계 주도) · Meta·MS·Google·xAI·OpenAI(운영)</text>
+
+      <text class="t" x="120" y="470" text-anchor="middle" font-size="22" fill="#e07b1a">▼</text>
+      <text class="t" x="360" y="468" text-anchor="middle" font-size="12" fill="#595959">전력망의 고압 AC가 한 줄로 변환·배전되어 GPU에 도달 — 엔비디아가 표준 설계</text>
+      <text class="t" x="360" y="500" text-anchor="middle" font-size="11" fill="#8a8f98">※ 국내는 ②SST·③전력기기에 강점, ①전력 반도체는 글로벌 강세</text>
+    </svg>
+    <figcaption>그림 1. 800VDC 밸류체인 8개 층위 지도 (글로벌 대표 + <span style="color:#1e7a4d;font-weight:700">국내 기업</span>).</figcaption>
+  </figure>
+
+  <!-- 3 층위별 -->
+  <div class="pb"></div>
+  <h1>3. 층위별 상세 — 역할 + 글로벌 + 국내</h1>
+
+  <h2>① 전력 반도체 — SiC·GaN 소자(부가가치 핵심)</h2>
+  <p>800V 변환의 ‘일꾼’. 1200V SiC MOSFET 등이 변환 손실을 25~40% 줄임. 글로벌은 <strong>Infineon·OnSemi·STMicro·Navitas·ROHM·Innoscience</strong>가 주도(유럽·미국·일본이 시장의 95%). 국내는 <span class="kr">SK실트론(SiC 웨이퍼 소재)</span>가 소재 측에서, <span class="kr">RFHIC·예스파워테크닉스</span>가 소자에서 거론되나 점유율은 작음.</p>
+
+  <h2>② 반도체 변압기(SST) — 국내 최대 강점</h2>
+  <p>전력 반도체로 변압·변환을 한 장치에서 수행하는 차세대 변압기. 글로벌은 Enphase·Eaton·GE Vernova가 로드맵 제시. 국내는 <span class="kr">효성중공업이 22.9kV SST를 세계 최초로 개발</span>해 미국 데이터센터 직류 인프라 공략을 공식화 — 800VDC 밸류체인에서 한국이 가장 앞선 지점.</p>
+
+  <h2>③ 전력기기·배전 — 변압기·스위치기어</h2>
+  <p>전력실에서 데이터홀까지 전기를 분배하는 중전압 기기. 글로벌은 <strong>ABB·Schneider·Eaton·Vertiv</strong>. 국내는 <span class="kr">LS일렉트릭·현대일렉트릭·두산에너빌리티</span>가 변압기·배전·인프라로 참여.</p>
+
+  <h2>④ 부스바·커넥터·보호기기</h2>
+  <p>800V를 실어 나르는 부스웨이(배전로)와 정밀 커넥터, 과전류 보호기기. 글로벌은 <strong>Delta·ABB·Legrand·EAE</strong>가 800V 부스웨이 프로그램 공개. 국내 부품사는 부분 공급으로 거론.</p>
+
+  <h2>⑤ 랙 전원·PSU(사이드카)</h2>
+  <p>랙 전력을 변환·공급하는 전원장치. 800VDC는 이를 랙 밖 ‘사이드카’로 분리. 글로벌은 <strong>Delta·LiteOn·Megmeet·Flex Power·Lead Wealth</strong>가 엔비디아 파트너로 합류.</p>
+
+  <h2>⑥ DC/DC·코어 전력</h2>
+  <p>랙 안에서 800V를 54/12V, 다시 GPU 코어 전압으로 낮추는 단계. 글로벌은 <strong>MPS·TI·Analog Devices·Renesas</strong>. 국내 비중은 작음.</p>
+
+  <h2>⑦ 데이터센터 전력 시스템 — 통합</h2>
+  <p>전력·냉각·IT를 하나로 묶는 시스템 통합. <strong>Vertiv·Schneider·Eaton·ABB·GE Vernova</strong>가 주도. 800VDC의 ‘완성’ 단계.</p>
+
+  <h2>⑧ 수요 — AI 데이터센터 + GPU 설계</h2>
+  <p>표준을 설계한 <strong>NVIDIA</strong>, 그리고 이를 채택할 <strong>Meta·Microsoft·Google·xAI·OpenAI</strong> 등 하이퍼스케일러가 최종 동력입니다.</p>
+
+  <!-- 4 초크포인트 -->
+  <div class="pb"></div>
+  <h1>4. 핵심 길목(초크포인트) — 어디가 병목인가</h1>
+  <ul>
+    <li><span class="em">전력 반도체(①):</span> 부가가치의 핵심이자 병목. SiC 소자·웨이퍼 공급 능력이 관건이고, 유럽·미국·일본이 95% 장악 — 한국의 약점.</li>
+    <li><span class="em">SST·전력기기(②③):</span> 중전압 변환·배전 역량. <span class="kr">효성중공업</span> 등 국내 중전기가 비집고 들어갈 수 있는 지점.</li>
+    <li><span class="em">시스템 통합(⑦):</span> 전력+냉각을 묶는 Vertiv·Schneider·Eaton 등 ‘턴키’ 업체가 최종 수익을 크게 가져감.</li>
+  </ul>
+  <div class="callout">
+    <div class="ct">한 줄 요약</div>
+    <p>800VDC의 부가가치는 ‘소자(SiC) → 변환(SST) → 통합(시스템)’ 세 곳에 몰립니다. 한국은 가운데(②SST·③전력기기)에 강점이 있고, 양 끝(소자·시스템)은 글로벌 강자가 쥡니다.</p>
+  </div>
+
+  <!-- 5 흥미 -->
+  <h1>5. 흥미로운 포인트 — ‘EV 충전 표준’이 데이터센터로</h1>
+  <p>흥미롭게도, 800VDC가 빠르게 현실화된 배경엔 <strong>전기차(EV) 충전 인프라</strong>가 있어요. 그동안 고전압 직류는 여러 번 시도됐지만 표준·부품이 부족해 확산이 더뎠는데, <strong>EV 급속충전(800V급)을 위해 키워온 산업 기반</strong>이 그대로 데이터센터로 넘어오며 ‘방정식이 바뀌었다’는 평가입니다. AI 데이터센터의 전력 밀도 급증과 맞물려, 묵혀뒀던 기술이 단번에 주류가 된 거죠.</p>
+  <p>또 하나, 800VDC는 ‘단일 표준 통일’이 아니라 <strong>공존</strong>으로 갑니다. 임대형 데이터센터(디지털리얼티·에퀴닉스 등)는 여러 세대 GPU를 수용하려 하이브리드를 선호하고, xAI·오픈AI 같은 목적형 AI 팩토리는 SST 중심의 전면 800VDC를 채택하는 식이에요.</p>
+
+  <!-- 6 국내 종합표 -->
+  <div class="pb"></div>
+  <h1>6. 국내 기업 종합표</h1>
+  <table>
+    <thead><tr><th>층위</th><th>국내 기업</th><th>역할</th></tr></thead>
+    <tbody>
+      <tr><td>① 전력 반도체</td><td>SK실트론 / RFHIC·예스파워</td><td>SiC 웨이퍼 / SiC 소자(소규모)</td></tr>
+      <tr><td>② SST</td><td>효성중공업</td><td>22.9kV 반도체 변압기 세계최초, 美 DC 인프라 공략</td></tr>
+      <tr><td>③ 전력기기</td><td>LS일렉트릭 · 현대일렉트릭 · 두산에너빌리티</td><td>변압기·배전·AI 팩토리 인프라</td></tr>
+      <tr><td>④ 부스바·커넥터</td><td>국내 부품사(일부)</td><td>부스바·커넥터 부분 공급</td></tr>
+      <tr><td>⑤ 전원/PSU</td><td>국내 전원·부품사</td><td>전원장치 부분 공급</td></tr>
+    </tbody>
+  </table>
+  <p class="muted">※ 본 표는 공개 보도 기반의 ‘밸류체인 위치’ 정리이며, 투자 권유나 실적 보장이 아닙니다. 수혜 관점 상세는 별도 문서 ‘800VDC 국내 수혜 안내서’ 참고.</p>
+
+  <!-- 출처 -->
+  <h1>출처</h1>
+  <ol class="src">
+    <li>NVIDIA Technical Blog — 800 VDC Architecture (파트너·구조도) — <a href="https://developer.nvidia.com/blog/nvidia-800-v-hvdc-architecture-will-power-the-next-generation-of-ai-factories/">link</a></li>
+    <li>굿모닝경제 — 엔비디아가 쏘아 올린 ‘800VDC’ 생태계 — <a href="https://www.goodkyung.com/news/articleView.html?idxno=287671">link</a></li>
+    <li>Power Electronics News — The Transition to 800 V (PCIM Panel) — <a href="https://www.powerelectronicsnews.com/the-evolution-in-data-center-power-distribution-pcim-panel-part-1-the-transition-to-800-v/">link</a></li>
+    <li>Wolfspeed — SiC-based Solid-State Transformers for AI — <a href="https://www.wolfspeed.com/knowledge-center/article/powering-ai-with-reliable-silicon-carbide-based-solid-state-transformers/">link</a></li>
+    <li>SemiAnalysis — Inside the 800VDC Revolution — <a href="https://newsletter.semianalysis.com/p/inside-the-800vdc-revolution-part">link</a></li>
+  </ol>
+  <p class="muted"><em>※ 본 문서는 공개된 보도·업계 분석을 교차 확인해 정리한 참고 자료입니다. 본문 이미지는 출처에서 불러오며 저작권은 출처에 있습니다. 밸류체인 위치·역할·일정은 변동될 수 있습니다.</em></p>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HBF 밸류체인 대해부 — 누가 무엇을 만드나</title>
+<style>
+  :root{
+    --accent:#1f6fb2; --accent-dark:#14517f; --light:#eaf2f8; --light2:#f4f9fc;
+    --gray:#595959; --line:#bfd7ea; --ink:#1d2733; --kr:#1e7a4d;
+  }
+  *{box-sizing:border-box;}
+  html{-webkit-print-color-adjust:exact; print-color-adjust:exact;}
+  body{font-family:"Malgun Gothic","맑은 고딕",-apple-system,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;
+    color:var(--ink); line-height:1.7; margin:0; background:#f5f6f8; font-size:16px;}
+  .page{max-width:820px; margin:24px auto; background:#fff; padding:56px 60px; box-shadow:0 1px 8px rgba(0,0,0,.08);}
+  h1{color:var(--accent-dark); font-size:1.5rem; border-bottom:3px solid var(--accent); padding-bottom:8px; margin:2.3em 0 .7em;}
+  h1:first-of-type{margin-top:.3em;}
+  h2{color:var(--accent); font-size:1.14rem; margin:1.5em 0 .4em;}
+  p{margin:.5em 0;} ul{margin:.4em 0 .9em; padding-left:1.3em;} li{margin:.3em 0;}
+  .em{color:var(--accent-dark); font-weight:700;}
+  .kr{color:var(--kr); font-weight:700;}
+  .muted{color:var(--gray); font-size:.9rem;}
+  .callout{background:var(--light); border:1px solid var(--accent); border-left:6px solid var(--accent); border-radius:4px; padding:14px 18px; margin:1.1em 0;}
+  .callout .ct{font-weight:700; color:var(--accent-dark); margin-bottom:6px;}
+  .callout p{margin:.35em 0; font-size:.96rem;}
+  table{border-collapse:collapse; width:100%; margin:1em 0; font-size:.84rem;}
+  th{background:var(--accent); color:#fff; font-weight:700; padding:9px 10px; text-align:center; border:1px solid var(--line);}
+  td{padding:8px 10px; border:1px solid var(--line); vertical-align:top; text-align:left;}
+  td:first-child{font-weight:700; background:#f4f9fc; text-align:center;}
+  tbody tr:nth-child(even) td{background:var(--light2);}
+  tbody tr:nth-child(even) td:first-child{background:#eaf2f8;}
+  .cover{text-align:center; padding:115px 0 85px;}
+  .cover .big{font-size:2.45rem; font-weight:800; color:var(--accent-dark); letter-spacing:-1px;}
+  .cover .sub{font-size:1.2rem; color:var(--accent); margin-top:12px;}
+  .cover .sub2{font-size:1rem; color:var(--gray); margin-top:24px;}
+  .cover .date{font-size:.88rem; color:var(--gray); margin-top:60px;}
+  .toc{background:var(--light2); border:1px solid var(--line); border-radius:6px; padding:18px 24px;}
+  .toc ol{margin:0; padding-left:1.4em;} .toc li{margin:.3em 0;}
+  a{color:var(--accent-dark); word-break:break-all;}
+  .src{font-size:.83rem;} .src li{margin:.4em 0;}
+  figure{margin:1.4em 0; text-align:center;}
+  figure svg{width:100%; max-width:740px; height:auto; display:block; margin:0 auto;}
+  .refimg{display:block; max-width:100%; height:auto; margin:0 auto; border:1px solid var(--line); border-radius:6px;}
+  figcaption{font-size:.85rem; color:var(--gray); margin-top:8px;}
+  @media print{
+    body{background:#fff; font-size:11pt;}
+    .page{box-shadow:none; margin:0; max-width:none; padding:0;}
+    .pb{page-break-before:always;}
+    h1,h2{page-break-after:avoid;} table,.callout,figure{page-break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="cover">
+    <div class="big">HBF 밸류체인 대해부</div>
+    <div class="sub">고대역폭 플래시 · 누가 무엇을 만드나</div>
+    <div class="sub2">소재부터 AI 데이터센터까지, 글로벌 + 국내 생태계 지도</div>
+    <div class="date">2026년 6월 · 최신 동향 반영</div>
+  </div>
+
+  <!-- TOC -->
+  <div class="pb"></div>
+  <h1>목차</h1>
+  <div class="toc">
+    <ol>
+      <li>들어가며 — HBF 밸류체인의 특징</li>
+      <li>전체 지도 (8개 층위 한눈에)</li>
+      <li>층위별 상세 — 역할 + 글로벌 + 국내</li>
+      <li>핵심 길목(초크포인트) — 어디가 병목인가</li>
+      <li>흥미로운 포인트 — ‘HBM 생태계의 재활용’</li>
+      <li>국내 기업 종합표</li>
+      <li>출처</li>
+    </ol>
+  </div>
+
+  <!-- 1 -->
+  <div class="pb"></div>
+  <h1>1. 들어가며 — HBF 밸류체인의 특징</h1>
+  <p>HBF(High Bandwidth Flash)는 낸드플래시를 HBM처럼 TSV로 수직 적층한 메모리예요. 그래서 밸류체인의 가장 큰 특징은 <span class="em">‘HBM 제조 생태계를 거의 그대로 재활용한다’</span>는 점입니다. 셀만 D램에서 낸드로 바뀌었을 뿐, 쌓고(적층)·뚫고(TSV)·붙이는(본딩) 공정과 그 장비·소재 생태계가 HBM과 겹칩니다.</p>
+  <div class="callout">
+    <div class="ct">이 문서를 보는 법</div>
+    <p>HBF를 만드는 흐름을 <span class="em">소재·약액 → 낸드 제조 → 핵심 아키텍처 → 적층·본딩 장비 → 인터포저·기판 → 테스트 → 시스템 → 수요</span>의 8개 층위로 나눠, ‘역할 + 글로벌 + <span class="kr">국내</span>’를 정리합니다. (국내 기업은 <span class="kr">초록색</span>)</p>
+  </div>
+
+  <!-- 2 지도 -->
+  <h1>2. 전체 지도 — 8개 층위 한눈에</h1>
+  <figure>
+    <svg viewBox="0 0 720 560" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="HBF 밸류체인 8개 층위 지도">
+      <style>
+        .t{font-family:'Malgun Gothic',sans-serif;}
+        .ln{font-size:13px;font-weight:700;fill:#fff;}
+        .rl{font-size:11px;fill:#1d2733;}
+        .kr{font-size:11px;fill:#1e7a4d;font-weight:700;}
+        .hd{font-size:13px;font-weight:700;fill:#14517f;}
+      </style>
+      <text class="t hd" x="120" y="22" text-anchor="middle">층위</text>
+      <text class="t hd" x="300" y="22" text-anchor="middle">글로벌 대표</text>
+      <text class="t hd" x="560" y="22" text-anchor="middle">국내 기업</text>
+
+      <!-- 1 소재 -->
+      <rect x="14" y="34" width="212" height="44" rx="6" fill="#14517f"/>
+      <text class="t ln" x="120" y="55" text-anchor="middle">① 소재·약액</text>
+      <text class="t ln" x="120" y="70" text-anchor="middle" font-size="10">(SiCN·EMC·세정)</text>
+      <rect x="234" y="34" width="220" height="44" rx="6" fill="#eaf2f8"/>
+      <text class="t rl" x="244" y="60">(글로벌 케미칼·EMC 업체)</text>
+      <rect x="462" y="34" width="244" height="44" rx="6" fill="#f4f9fc"/>
+      <text class="t kr" x="472" y="60">솔브레인, 한솔케미칼</text>
+
+      <!-- 2 낸드 -->
+      <rect x="14" y="86" width="212" height="44" rx="6" fill="#1f6fb2"/>
+      <text class="t ln" x="120" y="107" text-anchor="middle">② 낸드 제조</text>
+      <text class="t ln" x="120" y="122" text-anchor="middle" font-size="10">(메모리 셀)</text>
+      <rect x="234" y="86" width="220" height="44" rx="6" fill="#eaf2f8"/>
+      <text class="t rl" x="244" y="104">SanDisk, Kioxia, Micron,</text>
+      <text class="t rl" x="244" y="120">CXMT</text>
+      <rect x="462" y="86" width="244" height="44" rx="6" fill="#f4f9fc"/>
+      <text class="t kr" x="472" y="111">SK하이닉스, 삼성전자</text>
+
+      <!-- 3 아키텍처 -->
+      <rect x="14" y="138" width="212" height="44" rx="6" fill="#1f6fb2"/>
+      <text class="t ln" x="120" y="159" text-anchor="middle">③ 핵심 아키텍처</text>
+      <text class="t ln" x="120" y="174" text-anchor="middle" font-size="10">(CBA·BiCS·TSV)</text>
+      <rect x="234" y="138" width="220" height="44" rx="6" fill="#eaf2f8"/>
+      <text class="t rl" x="244" y="156">SanDisk(CBA·BiCS NAND)</text>
+      <rect x="462" y="138" width="244" height="44" rx="6" fill="#f4f9fc"/>
+      <text class="t kr" x="472" y="163">SK하이닉스(TSV 적층)</text>
+
+      <!-- 4 본딩 장비 -->
+      <rect x="14" y="190" width="212" height="44" rx="6" fill="#2a7ec0"/>
+      <text class="t ln" x="120" y="207" text-anchor="middle">④ 적층·본딩 장비</text>
+      <text class="t ln" x="120" y="222" text-anchor="middle" font-size="10">★최대 병목</text>
+      <rect x="234" y="190" width="220" height="44" rx="6" fill="#eaf2f8"/>
+      <text class="t rl" x="244" y="208">BESI, ASMPT, K&amp;S,</text>
+      <text class="t rl" x="244" y="224">Applied Materials</text>
+      <rect x="462" y="190" width="244" height="44" rx="6" fill="#f4f9fc"/>
+      <text class="t kr" x="472" y="208">한미반도체(TC본더),</text>
+      <text class="t kr" x="472" y="224">한화세미텍(하이브리드)</text>
+
+      <!-- 5 인터포저 -->
+      <rect x="14" y="242" width="212" height="44" rx="6" fill="#2a7ec0"/>
+      <text class="t ln" x="120" y="263" text-anchor="middle">⑤ 인터포저·기판</text>
+      <text class="t ln" x="120" y="278" text-anchor="middle" font-size="10">·SiC 부품</text>
+      <rect x="234" y="242" width="220" height="44" rx="6" fill="#eaf2f8"/>
+      <text class="t rl" x="244" y="268">TSMC(인터포저), 글로벌 기판</text>
+      <rect x="462" y="242" width="244" height="44" rx="6" fill="#f4f9fc"/>
+      <text class="t kr" x="472" y="268">티씨케이(SiC 부품)</text>
+
+      <!-- 6 테스트 -->
+      <rect x="14" y="294" width="212" height="44" rx="6" fill="#4a93cb"/>
+      <text class="t ln" x="120" y="315" text-anchor="middle">⑥ 테스트·검사</text>
+      <text class="t ln" x="120" y="330" text-anchor="middle" font-size="10">(소켓·번인)</text>
+      <rect x="234" y="294" width="220" height="44" rx="6" fill="#eaf2f8"/>
+      <text class="t rl" x="244" y="320">Teradyne, Advantest</text>
+      <rect x="462" y="294" width="244" height="44" rx="6" fill="#f4f9fc"/>
+      <text class="t kr" x="472" y="320">ISC, 티에스이, 피에스케이홀딩스</text>
+
+      <!-- 7 시스템 -->
+      <rect x="14" y="346" width="212" height="44" rx="6" fill="#6aa8d6"/>
+      <text class="t ln" x="120" y="367" text-anchor="middle" fill="#0e3a59">⑦ 시스템·AI 가속기</text>
+      <text class="t ln" x="120" y="382" text-anchor="middle" font-size="10" fill="#0e3a59">(HBM과 결합)</text>
+      <rect x="234" y="346" width="472" height="44" rx="6" fill="#eaf2f8"/>
+      <text class="t rl" x="244" y="372">NVIDIA·AMD 등 AI 가속기 — HBM(핫) + HBF(웜) 하이브리드 메모리 구성</text>
+
+      <!-- 8 수요 -->
+      <rect x="14" y="398" width="212" height="44" rx="6" fill="#8fc0e0"/>
+      <text class="t ln" x="120" y="419" text-anchor="middle" fill="#0e3a59">⑧ 수요(하이퍼스케일러)</text>
+      <text class="t ln" x="120" y="434" text-anchor="middle" font-size="10" fill="#0e3a59">AI 추론 데이터센터</text>
+      <rect x="234" y="398" width="472" height="44" rx="6" fill="#eaf2f8"/>
+      <text class="t rl" x="244" y="424">Meta·Microsoft·Google·OpenAI 등 — ‘대용량 모델을 싸게 추론’하려는 수요</text>
+
+      <text class="t" x="120" y="470" text-anchor="middle" font-size="22" fill="#1f6fb2">▼</text>
+      <text class="t" x="360" y="468" text-anchor="middle" font-size="12" fill="#595959">표준화는 OCP(Open Compute Project) 워크스트림에서 진행 — SanDisk·SK하이닉스 주도</text>
+      <text class="t" x="360" y="500" text-anchor="middle" font-size="11" fill="#8a8f98">※ 기업 배치는 보도·공개자료 기반 예시이며, HBF는 2026~2027 샘플·양산 단계</text>
+    </svg>
+    <figcaption>그림 1. HBF 밸류체인 8개 층위 지도 (글로벌 대표 + <span style="color:#1e7a4d;font-weight:700">국내 기업</span>).</figcaption>
+  </figure>
+
+  <!-- 3 층위별 -->
+  <div class="pb"></div>
+  <h1>3. 층위별 상세 — 역할 + 글로벌 + 국내</h1>
+
+  <h2>① 소재·약액</h2>
+  <p>TSV를 뚫고 적층하는 데 쓰이는 고순도 에칭·세정 약액, 하이브리드 본딩 절연막(SiCN), 봉지재(EMC) 등. HBF는 적층 수가 많고 TSV 밀도가 높아 약액 사용량이 HBM보다 더 늘어납니다. 국내는 <span class="kr">솔브레인(에칭·세정 약액, 이미 HBM에 공급)</span>, <span class="kr">한솔케미칼</span>.</p>
+
+  <h2>② 낸드 제조 — 메모리 셀</h2>
+  <p>HBF의 본체인 3D 낸드를 만드는 곳. 글로벌은 <strong>SanDisk·Kioxia</strong>(낸드 합작), <strong>Micron·CXMT</strong>. 국내는 <span class="kr">SK하이닉스·삼성전자</span>. 낸드 점유율이 높을수록 HBF에 유리합니다.</p>
+
+  <h2>③ 핵심 아키텍처 — CBA·BiCS·TSV</h2>
+  <p>느린 낸드에서 HBM급 대역폭을 끌어내는 비결. <strong>SanDisk의 CBA(CMOS Bonding Array)</strong>가 낸드를 수천 개 구역으로 쪼개 병렬 동작시키고, <strong>BiCS 낸드</strong>를 TSV로 적층. <span class="kr">SK하이닉스</span>는 HBM에서 쌓은 TSV·적층 노하우로 참여.</p>
+
+  <h2>④ 적층·본딩 장비 — 최대 병목</h2>
+  <p>칩을 열·압력으로 정밀하게 쌓아 붙이는 핵심 단계. 글로벌은 하이브리드 본딩의 <strong>BESI</strong>(Applied Materials와 Kinex 공동개발), <strong>ASMPT·Kulicke&amp;Soffa</strong>. 국내는 <span class="kr">한미반도체(HBM TC본더 사실상 독점, HBF 본더 2H26 납품 준비)</span>, <span class="kr">한화세미텍(하이브리드 본딩 진입)</span>. 낸드는 열·압력에 약해 ‘크랙 없이 붙이는’ 정밀 제어가 관건.</p>
+
+  <h2>⑤ 인터포저·기판·부품</h2>
+  <p>적층된 스택을 GPU 옆에 올리는 인터포저와 기판. HBM 인프라를 재활용. 국내는 <span class="kr">티씨케이(고온 TSV 공정용 SiC 부품)</span> 등 소모성 부품에서 거론.</p>
+
+  <h2>⑥ 테스트·검사</h2>
+  <p>적층 양품을 가려내는 검사·번인. 글로벌은 Teradyne·Advantest. 국내는 <span class="kr">ISC·티에스이(소켓), 피에스케이홀딩스(후공정 장비)</span>.</p>
+
+  <h2>⑦ 시스템·AI 가속기</h2>
+  <p>HBF는 단독이 아니라 <strong>HBM과 한 팀(하이브리드)</strong>으로 쓰입니다. HBM이 ‘핫 티어(빠른 처리)’, HBF가 ‘웜 티어(대용량 모델 저장)’. NVIDIA·AMD 등 AI 가속기 설계사가 이 조합을 채택.</p>
+
+  <h2>⑧ 수요 — 하이퍼스케일러</h2>
+  <p>최종 동력은 ‘점점 커지는 LLM을 더 싸게 추론하려는’ AI 데이터센터(Meta·Microsoft·Google·OpenAI 등)입니다.</p>
+
+  <!-- 4 초크포인트 -->
+  <div class="pb"></div>
+  <h1>4. 핵심 길목(초크포인트) — 어디가 병목인가</h1>
+  <ul>
+    <li><span class="em">적층·본딩 장비(④):</span> HBF의 진짜 승부처. TC본더(<span class="kr">한미반도체</span> 과점)와 하이브리드 본더(BESI·ASMPT)가 핵심. 본딩 장비 시장은 2025년 약 1.5억 달러→2030년 약 4억 달러로 고성장 전망(연 21%).</li>
+    <li><span class="em">낸드 캐파 & 핵심 아키텍처(②③):</span> SanDisk의 CBA·BiCS 같은 ‘낸드를 빠르게 만드는 설계’가 진입장벽. 낸드 점유율 높은 소수 업체의 게임.</li>
+    <li><span class="em">TSV 약액(①):</span> 적층·TSV가 늘수록 <span class="kr">솔브레인</span> 같은 약액 사용량이 비례 증가.</li>
+  </ul>
+  <div class="callout">
+    <div class="ct">한 줄 요약</div>
+    <p>HBF의 승부처는 셀(낸드)보다 <strong>‘쌓고 붙이는’ 후공정 장비·소재</strong>에 있습니다. 그래서 HBM 후공정 강자(특히 본딩 장비)가 그대로 HBF의 길목을 쥡니다.</p>
+  </div>
+
+  <!-- 5 흥미 -->
+  <h1>5. 흥미로운 포인트 — ‘HBM 생태계의 재활용’</h1>
+  <p>HBF의 가장 큰 특징은 <strong>“HBM 제조와 거의 다르지 않다”</strong>는 점이에요. 그래서 HBM에서 주도권을 쥔 삼성·SK하이닉스의 공정 생태계와 소부장(한미반도체·솔브레인 등)이 <strong>그대로 HBF로 옮겨갈 가능성이 높습니다.</strong> 새 시장이 열려도 ‘기존 강자가 그대로 이긴다’는 구조죠.</p>
+  <p>또 하나, SanDisk·SK하이닉스가 <strong>OCP(개방형 표준)</strong>로 규격을 함께 만든다는 점도 특징입니다. HBF는 인터페이스가 HBM과 달라, 표준이 있어야 생태계가 커지기 때문이에요. Kioxia·삼성·Micron·CXMT까지 가세하며 ‘낸드의 차세대 격전지’가 됐습니다.</p>
+
+  <!-- 6 국내 종합표 -->
+  <div class="pb"></div>
+  <h1>6. 국내 기업 종합표</h1>
+  <table>
+    <thead><tr><th>층위</th><th>국내 기업</th><th>역할</th></tr></thead>
+    <tbody>
+      <tr><td>① 소재</td><td>솔브레인 · 한솔케미칼</td><td>TSV 에칭·세정 약액 등 공정 케미칼</td></tr>
+      <tr><td>② 제조</td><td>SK하이닉스 · 삼성전자</td><td>3D 낸드 제조, HBF 개발·표준화</td></tr>
+      <tr><td>③ 아키텍처</td><td>SK하이닉스</td><td>HBM 기반 TSV 적층 노하우</td></tr>
+      <tr><td>④ 본딩 장비</td><td>한미반도체 · 한화세미텍</td><td>TC본더 / 하이브리드 본딩</td></tr>
+      <tr><td>⑤ 부품</td><td>티씨케이</td><td>고온 공정용 SiC 소모성 부품</td></tr>
+      <tr><td>⑥ 테스트</td><td>ISC · 티에스이 · 피에스케이홀딩스</td><td>검사 소켓 / 후공정 장비</td></tr>
+    </tbody>
+  </table>
+  <p class="muted">※ 본 표는 공개 보도 기반의 ‘밸류체인 위치’ 정리이며, 투자 권유나 실적 보장이 아닙니다. 수혜 관점 상세는 별도 문서 ‘HBF 국내 수혜 안내서’ 참고.</p>
+
+  <!-- 참고 이미지 -->
+  <h1>참고: 원본 보도 이미지</h1>
+  <p class="muted">원본 출처 사이트에서 직접 불러오는 이미지입니다(저작권은 각 출처에 있음). 인터넷 연결 시 표시됩니다.</p>
+  <figure>
+    <img class="refimg" src="https://img.etnews.com/news/article/2026/04/13/news-p.v1.20260413.09188386486b4228a1023cda31ca4e01_P1.png" alt="HBF 적층 구조(샌디스크)" loading="lazy">
+    <figcaption>참고 1. HBF 적층 구조 — 출처: <a href="https://www.etnews.com/20260413000040">전자신문 / 샌디스크</a></figcaption>
+  </figure>
+  <figure>
+    <img class="refimg" src="https://d36ae2cxtn9mcr.cloudfront.net/wp-content/uploads/2026/02/26015935/SK-hynix-and-Sandisk-Begin-Global-Standardization-of-Next-Generation-Memory-HBF-THM.jpg" alt="SK하이닉스·샌디스크 HBF 표준화" loading="lazy">
+    <figcaption>참고 2. SK하이닉스·샌디스크 HBF 표준화 — 출처: <a href="https://news.skhynix.com/sk-hynix-and-sandisk-begin-global-standardization-ofnext-generation-memory-hbf/">SK hynix Newsroom</a></figcaption>
+  </figure>
+
+  <!-- 출처 -->
+  <h1>출처</h1>
+  <ol class="src">
+    <li>TrendForce — HBM Hybrid Bonder Demand Rising; BESI & ASMPT Eye Growth — <a href="https://www.trendforce.com/news/2025/07/28/news-hbm-hybrid-bonder-demand-reportedly-rising-in-2h25-as-besi-and-asmpt-eye-growth/">link</a></li>
+    <li>TrendForce — HBF Spurs Equipment Race; Hanmi Eyes First TC Bonder Deliveries in 2H26 — <a href="https://www.trendforce.com/news/2026/06/05/news-hbf-opens-new-equipment-race-hanmi-semiconductor-reportedly-eyes-first-tc-bonder-deliveries-in-2h26/">link</a></li>
+    <li>EE Times — NAND Reimagined in High-Bandwidth Flash to Complement HBM — <a href="https://www.eetimes.com/nand-reimagined-in-high-bandwidth-flash-to-complement-hbm/">link</a></li>
+    <li>전자신문 — 쌓는 낸드 ‘HBF’ 공정 시장 열렸다 — <a href="https://www.etnews.com/20260413000040">link</a></li>
+    <li>SK hynix Newsroom — Global Standardization of HBF — <a href="https://news.skhynix.com/sk-hynix-and-sandisk-begin-global-standardization-ofnext-generation-memory-hbf/">link</a></li>
+  </ol>
+  <p class="muted"><em>※ 본 문서는 공개된 보도·업계 분석을 교차 확인해 정리한 참고 자료입니다. HBF는 2026~2027 샘플·양산 단계로, 사실관계·역할·일정은 변동될 수 있습니다.</em></p>
+
+</div>
+</body>
+</html>

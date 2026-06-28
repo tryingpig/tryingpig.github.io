@@ -1,0 +1,10 @@
+[
+  {
+    "emoji": "📊",
+    "name_en": "US Sector ETF Disparity Tracker",
+    "name_ko": "미국 섹터 ETF 이격도 트래커",
+    "desc": "11개 SPDR 섹터 ETF의 50일 이격도를 매일 자동 추적하는 대시보드",
+    "tag": "investing",
+    "url": "https://tryingpig.github.io/us-sector-disparity/"
+  }
+]

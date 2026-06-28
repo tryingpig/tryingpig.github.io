@@ -1,49 +1,317 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>노력하는뚱땡이의 학습공간</title>
+  <meta name="description" content="노력하는뚱땡이의 학습공간 — 투자·개발 학습 기록과 직접 만든 프로젝트 모음." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
   <style>
-    body { font-family: sans-serif; max-width: 700px; margin: 40px auto; padding: 0 16px; line-height: 1.6; }
-    h1 { border-bottom: 2px solid #333; padding-bottom: 8px; }
-    ul { list-style: none; padding: 0; }
-    li { padding: 12px 0; border-bottom: 1px solid #eee; }
-    .date { color: #888; font-size: 0.9em; margin-right: 8px; }
-    a { color: #0366d6; text-decoration: none; }
-    a:hover { text-decoration: underline; }
+    :root {
+      --bg: #f4f1ea;
+      --bg-2: #efebe1;
+      --card: #faf8f2;
+      --ink: #1c1a17;
+      --ink-soft: #5c574d;
+      --muted: #918b7d;
+      --line: #ddd6c6;
+      --line-soft: #e7e1d3;
+      --accent: #1c1a17;
+      --mono: "JetBrains Mono", "D2Coding", ui-monospace, SFMono-Regular, Menlo, monospace;
+      --sans: "Pretendard", -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", sans-serif;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0; background: var(--bg); color: var(--ink);
+      font-family: var(--sans); line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: inherit; text-decoration: none; }
+    .mono { font-family: var(--mono); }
+    .wrap { max-width: 920px; margin: 0 auto; padding: 0 22px; }
+
+    /* ── Nav ── */
+    header.nav {
+      position: sticky; top: 0; z-index: 50;
+      background: rgba(244,241,234,0.82); backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--line-soft);
+    }
+    .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 60px; }
+    .brand { font-family: var(--mono); font-weight: 700; font-size: 15px; letter-spacing: -0.3px; }
+    .nav-links { display: flex; align-items: center; gap: 22px; }
+    .nav-links a {
+      font-family: var(--mono); font-size: 11.5px; letter-spacing: 1.5px;
+      text-transform: uppercase; color: var(--ink-soft);
+    }
+    .nav-links a:hover { color: var(--ink); }
+    .pill {
+      font-family: var(--mono); font-size: 11.5px; letter-spacing: 1.2px; text-transform: uppercase;
+      background: var(--accent); color: var(--bg) !important; padding: 9px 16px; border-radius: 999px;
+      transition: transform .15s, opacity .15s;
+    }
+    .pill:hover { transform: translateY(-1px); opacity: .9; }
+    @media (max-width: 600px) { .nav-links .hide-sm { display: none; } }
+
+    /* ── Hero ── */
+    .hero { padding: 78px 0 52px; }
+    .eyebrow {
+      font-family: var(--mono); font-size: 12px; letter-spacing: 3px; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 20px;
+    }
+    .hero h1 {
+      font-family: var(--mono); font-weight: 700; line-height: 1.12;
+      font-size: clamp(34px, 7vw, 60px); letter-spacing: -1px; margin: 0 0 18px;
+    }
+    .hero h1 .accent { color: var(--muted); }
+    .hero p.lead { font-size: clamp(15px, 2.3vw, 18px); color: var(--ink-soft); max-width: 540px; margin: 0; }
+
+    /* ── Section heads ── */
+    .sec { padding: 40px 0; }
+    .sec-head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 24px; border-bottom: 1px solid var(--line); padding-bottom: 12px; }
+    .sec-head h2 { font-family: var(--mono); font-size: 13px; letter-spacing: 2.5px; text-transform: uppercase; margin: 0; font-weight: 700; }
+    .sec-head .count { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+
+    /* ── Project cards ── */
+    .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; }
+    .card {
+      background: var(--card); border: 1px solid var(--line); border-radius: 16px;
+      padding: 22px; display: flex; flex-direction: column; gap: 10px;
+      transition: transform .16s, box-shadow .16s, border-color .16s;
+    }
+    .card:hover { transform: translateY(-3px); box-shadow: 0 12px 30px rgba(28,26,23,0.08); border-color: var(--muted); }
+    .card .emoji { font-size: 26px; }
+    .card .c-en { font-family: var(--mono); font-size: 14px; font-weight: 700; letter-spacing: -0.2px; }
+    .card .c-ko { font-size: 13.5px; color: var(--ink-soft); }
+    .card .c-desc { font-size: 13px; color: var(--muted); line-height: 1.55; flex: 1; }
+    .card .c-foot { display: flex; align-items: center; justify-content: space-between; margin-top: 4px; }
+    .card .c-tag { font-family: var(--mono); font-size: 10.5px; letter-spacing: 1px; text-transform: uppercase; color: var(--muted); border: 1px solid var(--line); border-radius: 999px; padding: 3px 9px; }
+    .card .c-go { font-family: var(--mono); font-size: 16px; }
+    .empty { font-family: var(--mono); font-size: 13px; color: var(--muted); padding: 8px 0; }
+
+    /* ── Search ── */
+    .search-row { margin-bottom: 18px; }
+    .search-box {
+      display: flex; align-items: center; gap: 10px; background: var(--card);
+      border: 1px solid var(--line); border-radius: 12px; padding: 11px 15px;
+    }
+    .search-box svg { flex: none; opacity: .5; }
+    .search-box input {
+      border: none; background: transparent; outline: none; width: 100%;
+      font-family: var(--mono); font-size: 14px; color: var(--ink);
+    }
+    .search-box input::placeholder { color: var(--muted); }
+
+    /* ── Post list ── */
+    ul.posts { list-style: none; padding: 0; margin: 0; }
+    ul.posts li { border-bottom: 1px solid var(--line-soft); }
+    ul.posts li a {
+      display: flex; align-items: baseline; gap: 16px; padding: 15px 6px;
+      transition: background .12s, padding-left .12s;
+    }
+    ul.posts li a:hover { background: var(--bg-2); padding-left: 12px; }
+    ul.posts .p-date { font-family: var(--mono); font-size: 12px; color: var(--muted); flex: none; width: 116px; }
+    ul.posts .p-title { font-size: 15px; color: var(--ink); }
+    ul.posts li a:hover .p-title { text-decoration: underline; }
+    @media (max-width: 560px) {
+      ul.posts li a { flex-direction: column; gap: 3px; }
+      ul.posts .p-date { width: auto; }
+    }
+
+    /* ── Pagination ── */
+    .pager { display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 26px; }
+    .pager button {
+      font-family: var(--mono); font-size: 12px; background: var(--card);
+      border: 1px solid var(--line); border-radius: 8px; padding: 7px 12px; cursor: pointer; color: var(--ink);
+      transition: background .12s;
+    }
+    .pager button:hover:not(:disabled) { background: var(--bg-2); }
+    .pager button:disabled { opacity: .4; cursor: default; }
+    .pager button.active { background: var(--accent); color: var(--bg); border-color: var(--accent); }
+    .pager .pinfo { font-family: var(--mono); font-size: 12px; color: var(--muted); margin: 0 6px; }
+
+    /* ── Footer ── */
+    footer { border-top: 1px solid var(--line); margin-top: 30px; padding: 32px 0 56px; }
+    footer .f-inner { display: flex; flex-wrap: wrap; gap: 10px; justify-content: space-between; align-items: center; }
+    footer .f-brand { font-family: var(--mono); font-size: 13px; }
+    footer .f-meta { font-family: var(--mono); font-size: 11.5px; color: var(--muted); letter-spacing: 0.5px; }
+
+    /* ── Reveal animation ── */
+    .reveal { opacity: 0; transform: translateY(16px); transition: opacity .6s ease, transform .6s ease; }
+    .reveal.in { opacity: 1; transform: none; }
+    @media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; transition: none; } }
   </style>
 </head>
 <body>
-  <h1>노력하는뚱땡이의 학습공간</h1>
-  <ul id="post-list"></ul>
+  <header class="nav">
+    <div class="wrap nav-inner">
+      <a href="#top" class="brand">tryingpig<span style="color:var(--muted)">.log</span></a>
+      <nav class="nav-links">
+        <a href="#projects" class="hide-sm">Projects</a>
+        <a href="#study" class="hide-sm">Study</a>
+        <a href="https://github.com/tryingpig" target="_blank" rel="noopener" class="pill">GitHub</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero wrap reveal">
+      <div class="eyebrow">study log &amp; projects</div>
+      <h1>study,<br>build,<br><span class="accent">repeat.</span></h1>
+      <p class="lead">노력하는뚱땡이의 학습공간 — 투자·개발을 공부하며 남긴 기록과, 직접 만들어 운영 중인 프로젝트들을 모아둔 곳입니다.</p>
+    </section>
+
+    <section id="projects" class="sec wrap reveal">
+      <div class="sec-head">
+        <h2>Projects</h2>
+        <span class="count" id="proj-count"></span>
+      </div>
+      <div class="cards" id="cards"><div class="empty">불러오는 중…</div></div>
+    </section>
+
+    <section id="study" class="sec wrap reveal">
+      <div class="sec-head">
+        <h2>Study &amp; Writings</h2>
+        <span class="count" id="post-count"></span>
+      </div>
+      <div class="search-row">
+        <div class="search-box">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+          <input id="search" type="text" placeholder="search posts… (제목 검색)" autocomplete="off" />
+        </div>
+      </div>
+      <ul class="posts" id="posts"><li class="empty" style="border:none">불러오는 중…</li></ul>
+      <div class="pager" id="pager"></div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap f-inner">
+      <span class="f-brand">tryingpig.log</span>
+      <span class="f-meta">노력하는뚱땡이의 학습공간 · built on GitHub Pages</span>
+    </div>
+  </footer>
 
   <script>
-    fetch('posts.json')
-      .then(res => res.json())
-      .then(async posts => {
-        // 각 글 파일을 열어서 <title> 제목을 자동으로 읽어옴
-        for (const post of posts) {
+    const PER_PAGE = 20;
+
+    /* ── Projects ── */
+    (async function loadProjects() {
+      const el = document.getElementById('cards');
+      try {
+        const projects = await fetch('projects.json?t=' + Date.now()).then(r => {
+          if (!r.ok) throw new Error('no projects.json');
+          return r.json();
+        });
+        document.getElementById('proj-count').textContent =
+          String(projects.length).padStart(2, '0');
+        if (!projects.length) { el.innerHTML = '<div class="empty">아직 등록된 프로젝트가 없습니다.</div>'; return; }
+        el.innerHTML = projects.map(p => `
+          <a class="card" href="${p.url}" target="_blank" rel="noopener">
+            <div class="emoji">${p.emoji || '🔗'}</div>
+            <div class="c-en">${p.name_en || p.name_ko || ''}</div>
+            ${p.name_ko ? `<div class="c-ko">${p.name_ko}</div>` : ''}
+            <div class="c-desc">${p.desc || ''}</div>
+            <div class="c-foot">
+              <span class="c-tag">${p.tag || 'project'}</span>
+              <span class="c-go mono">↗</span>
+            </div>
+          </a>`).join('');
+      } catch (e) {
+        el.innerHTML = '<div class="empty">프로젝트 목록을 불러오지 못했습니다 (projects.json).</div>';
+        document.getElementById('proj-count').textContent = '00';
+      }
+    })();
+
+    /* ── Posts (search + pagination) ── */
+    let allPosts = [];
+    let filtered = [];
+    let page = 1;
+
+    function render() {
+      const listEl = document.getElementById('posts');
+      const pagerEl = document.getElementById('pager');
+      const total = filtered.length;
+      const pages = Math.max(1, Math.ceil(total / PER_PAGE));
+      if (page > pages) page = pages;
+      const start = (page - 1) * PER_PAGE;
+      const slice = filtered.slice(start, start + PER_PAGE);
+
+      if (!total) {
+        listEl.innerHTML = '<li class="empty" style="border:none">검색 결과가 없습니다.</li>';
+        pagerEl.innerHTML = '';
+        return;
+      }
+      listEl.innerHTML = slice.map(p => `
+        <li><a href="${p.file}">
+          <span class="p-date">${p.date}</span>
+          <span class="p-title">${p.title}</span>
+        </a></li>`).join('');
+
+      // 페이지가 1개뿐이면 페이저 숨김
+      if (pages <= 1) { pagerEl.innerHTML = ''; return; }
+      let btns = '';
+      btns += `<button ${page === 1 ? 'disabled' : ''} data-go="prev">← prev</button>`;
+      for (let i = 1; i <= pages; i++) {
+        btns += `<button class="${i === page ? 'active' : ''}" data-go="${i}">${i}</button>`;
+      }
+      btns += `<button ${page === pages ? 'disabled' : ''} data-go="next">next →</button>`;
+      pagerEl.innerHTML = btns;
+      pagerEl.querySelectorAll('button').forEach(b => {
+        b.onclick = () => {
+          const g = b.dataset.go;
+          if (g === 'prev') page--;
+          else if (g === 'next') page++;
+          else page = Number(g);
+          render();
+          document.getElementById('study').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        };
+      });
+    }
+
+    function applySearch(q) {
+      q = q.trim().toLowerCase();
+      filtered = q
+        ? allPosts.filter(p => (p.title + ' ' + p.file).toLowerCase().includes(q))
+        : allPosts.slice();
+      page = 1;
+      render();
+    }
+
+    (async function loadPosts() {
+      const listEl = document.getElementById('posts');
+      try {
+        const posts = await fetch('posts.json?t=' + Date.now()).then(r => r.json());
+        // 각 글의 <title>을 병렬로 읽어옴 (기존 동작 유지, 단 병렬화로 빠르게)
+        await Promise.all(posts.map(async (post) => {
           try {
             const html = await fetch(post.file).then(r => r.text());
-            const match = html.match(/<title>(.*?)<\/title>/i);
-            post.title = match ? match[1] : post.file;
-          } catch {
-            post.title = post.file;
-          }
-        }
+            const m = html.match(/<title>(.*?)<\/title>/i);
+            post.title = m ? m[1].trim() : post.file;
+          } catch { post.title = post.file; }
+        }));
         posts.sort((a, b) => b.date.localeCompare(a.date));
-        const list = document.getElementById('post-list');
-        posts.forEach(post => {
-          const li = document.createElement('li');
-          li.innerHTML = '<span class="date">' + post.date + '</span>' +
-                         '<a href="' + post.file + '">' + post.title + '</a>';
-          list.appendChild(li);
-        });
-      })
-      .catch(() => {
-        document.getElementById('post-list').innerHTML = '<li>아직 글이 없습니다.</li>';
-      });
+        allPosts = posts;
+        filtered = posts.slice();
+        document.getElementById('post-count').textContent =
+          String(posts.length).padStart(2, '0');
+        render();
+      } catch (e) {
+        listEl.innerHTML = '<li class="empty" style="border:none">아직 글이 없습니다.</li>';
+        document.getElementById('post-count').textContent = '00';
+      }
+    })();
+
+    document.getElementById('search').addEventListener('input', (e) => applySearch(e.target.value));
+
+    /* ── Scroll reveal ── */
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(en => { if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); } });
+    }, { threshold: 0.08 });
+    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
   </script>
 </body>
 </html>

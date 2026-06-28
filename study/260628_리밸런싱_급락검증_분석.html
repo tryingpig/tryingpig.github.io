@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>기관 리밸런싱 대해부 — 최근 국내증시 급락은 정말 '리밸런싱' 탓인가</title>
+<style>
+  :root{
+    --accent:#2f4b8c; --accent-dark:#1d3160; --light:#e9eef7; --light2:#f4f7fb;
+    --gray:#595959; --line:#c4d0e6; --ink:#1d2733;
+    --warn:#b5481f; --warnbg:#fdf1ec; --warnln:#e6b39e;
+    --good:#1e7a4d; --bad:#b5481f;
+  }
+  *{box-sizing:border-box;}
+  html{-webkit-print-color-adjust:exact; print-color-adjust:exact;}
+  body{font-family:"Malgun Gothic","맑은 고딕",-apple-system,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;
+    color:var(--ink); line-height:1.7; margin:0; background:#f5f6f8; font-size:16px;}
+  .page{max-width:820px; margin:24px auto; background:#fff; padding:56px 60px; box-shadow:0 1px 8px rgba(0,0,0,.08);}
+  h1{color:var(--accent-dark); font-size:1.48rem; border-bottom:3px solid var(--accent); padding-bottom:8px; margin:2.3em 0 .7em;}
+  h1:first-of-type{margin-top:.3em;}
+  h2{color:var(--accent); font-size:1.15rem; margin:1.5em 0 .45em;}
+  h3{color:var(--accent-dark); font-size:1.02rem; margin:1.1em 0 .3em;}
+  p{margin:.5em 0;} ul{margin:.4em 0 .9em; padding-left:1.3em;} li{margin:.3em 0;}
+  .em{color:var(--accent-dark); font-weight:700;}
+  .muted{color:var(--gray); font-size:.9rem;}
+  .callout{background:var(--light); border:1px solid var(--accent); border-left:6px solid var(--accent); border-radius:4px; padding:14px 18px; margin:1.1em 0;}
+  .callout .ct{font-weight:700; color:var(--accent-dark); margin-bottom:6px;}
+  .callout p{margin:.35em 0; font-size:.96rem;}
+  .warn{background:var(--warnbg); border:1px solid var(--warnln); border-left:6px solid var(--warn); border-radius:4px; padding:14px 18px; margin:1.1em 0;}
+  .warn .ct{font-weight:700; color:var(--warn); margin-bottom:6px;}
+  .warn p,.warn li{font-size:.94rem;}
+  .verdict{background:#eef6f1; border:1px solid #9eccb3; border-left:6px solid var(--good); border-radius:4px; padding:16px 20px; margin:1.2em 0;}
+  .verdict .ct{font-weight:800; color:var(--good); margin-bottom:6px; font-size:1.05rem;}
+  table{border-collapse:collapse; width:100%; margin:1em 0; font-size:.85rem;}
+  th{background:var(--accent); color:#fff; font-weight:700; padding:9px 10px; text-align:center; border:1px solid var(--line);}
+  td{padding:8px 10px; border:1px solid var(--line); vertical-align:top; text-align:center;}
+  td:first-child{text-align:left; font-weight:700; background:#f4f7fb;}
+  tbody tr:nth-child(even) td{background:var(--light2);}
+  tbody tr:nth-child(even) td:first-child{background:#e9eef7;}
+  .cover{text-align:center; padding:96px 0 70px;}
+  .cover .big{font-size:2.15rem; font-weight:800; color:var(--accent-dark); letter-spacing:-1px; line-height:1.3;}
+  .cover .sub{font-size:1.15rem; color:var(--accent); margin-top:14px;}
+  .cover .sub2{font-size:1rem; color:var(--gray); margin-top:22px;}
+  .cover .date{font-size:.88rem; color:var(--gray); margin-top:54px;}
+  .toc{background:var(--light2); border:1px solid var(--line); border-radius:6px; padding:18px 24px;}
+  .toc ol{margin:0; padding-left:1.4em;} .toc li{margin:.3em 0;}
+  a{color:var(--accent-dark); word-break:break-all;}
+  .src{font-size:.83rem;} .src li{margin:.4em 0;}
+  figure{margin:1.4em 0; text-align:center;}
+  figure svg{width:100%; max-width:720px; height:auto; display:block; margin:0 auto;}
+  .refimg{display:block; max-width:100%; height:auto; margin:0 auto; border:1px solid var(--line); border-radius:6px;}
+  figcaption{font-size:.85rem; color:var(--gray); margin-top:8px;}
+  @media print{
+    body{background:#fff; font-size:11pt;}
+    .page{box-shadow:none; margin:0; max-width:none; padding:0;}
+    .pb{page-break-before:always;}
+    h1,h2,h3{page-break-after:avoid;} table,.callout,.warn,.verdict,figure{page-break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="cover">
+    <div class="big">기관 리밸런싱 대해부<br>최근 국내증시 급락은 정말 ‘리밸런싱’ 탓인가</div>
+    <div class="sub">분기·반기·연 리밸런싱의 형태·방법·사이즈, 그리고 2026년 6월 급락 검증</div>
+    <div class="sub2">국민연금 · 연기금 · 글로벌 패시브 · 인덱스 정기변경</div>
+    <div class="date">2026년 6월 28일 작성 · 국내 시장 중심</div>
+  </div>
+
+  <!-- 면책 -->
+  <div class="pb"></div>
+  <div class="warn">
+    <div class="ct">먼저 읽어주세요</div>
+    <p>본 문서는 투자 자문이 아니라, 공개 자료(보도·기관 공시·증권사 코멘트)를 교차 확인해 ‘리밸런싱’ 현상을 정리·검증한 참고용 자료입니다. 일부 수치는 추정·비공개 항목을 포함하며 시점에 따라 달라질 수 있습니다. 투자 판단과 책임은 본인에게 있습니다.</p>
+  </div>
+
+  <!-- 결론 먼저 -->
+  <h1>한눈에 결론 (먼저 보는 평결)</h1>
+  <div class="verdict">
+    <div class="ct">평결: “부분적으로 진짜다.” — 단, ‘국민연금이 팔아서’는 과장.</div>
+    <p>2026년 6월 26일 코스피 −5.81% 급락(매도 사이드카+서킷브레이커)은 <strong>‘반기말(6월 말) 결제 기준 글로벌 투자자 리밸런싱’으로 상당 부분 설명</strong>됩니다(증권가 다수 견해). 장 시작 동시호가부터 나온 외국인 <strong>바스켓성 매도</strong>가 그 증거예요. 다만 이는 <strong>단일 원인이 아니라</strong> 매크로 트리거(애플發 메모리 수요 우려·미국 금리 급락·레버리지 ETF 파생)가 방아쇠를 당긴 ‘반기말 포지션 조정’에 가깝습니다.</p>
+    <p>반대로 흔히 도는 “<strong>국민연금이 팔아서 빠졌다</strong>”는 설명은 과장입니다. 국민연금은 오히려 5월에 국내주식 목표비중을 올리고 자동 리밸런싱을 완화해 ‘매도폭탄’을 <strong>피한</strong> 쪽이에요. (다만 비중 초과 오버행·7월 재개 우려는 잔존)</p>
+  </div>
+  <p class="muted">아래 1부에서 ‘누가·어떻게 리밸런싱하나’를 정리하고, 2부에서 이번 급락을 수급·시점 데이터로 검증합니다.</p>
+
+  <!-- 1부 -->
+  <h1>1부. 리밸런싱 일반론 — 누가·어떻게·얼마나</h1>
+  <p><span class="em">리밸런싱(rebalancing)</span>이란, 자산가격이 움직이면서 흐트러진 포트폴리오 비중을 ‘정해둔 목표비중’으로 되돌리는 행위예요. 오른 자산을 팔고 덜 오른 자산을 사는 식이라, 한쪽이 급등하면 그 자산에 ‘기계적 매도’가 나올 수 있습니다. 방식은 크게 셋입니다.</p>
+  <ul>
+    <li><strong>캘린더형(정기):</strong> 분기·반기·연 등 정해진 날짜에 맞춰 조정. 인덱스 정기변경, 반기말 포지션 조정이 여기 해당.</li>
+    <li><strong>밴드형(허용범위 이탈 시):</strong> 목표비중에서 ±x%p를 벗어나면 조정. 국민연금의 SAA 허용밴드가 대표적.</li>
+    <li><strong>현금흐름형:</strong> 신규 납입·인출 자금으로 비중을 자연스럽게 맞춤(매매 최소화).</li>
+  </ul>
+
+  <h2>① 국민연금(NPS) — 규모로 압도하는 ‘밴드형’</h2>
+  <p>약 1,000조 원대 기금의 국민연금은 <strong>전략적 자산배분(SAA)</strong>으로 자산군 목표비중을 정하고, 실제 비중이 허용밴드를 벗어나면 되돌립니다. 2026년 원래 목표비중은 아래와 같았어요.</p>
+  <table>
+    <thead><tr><th>자산군</th><th>2026 목표(기존)</th><th>2027 목표(중기안)</th></tr></thead>
+    <tbody>
+      <tr><td>국내주식</td><td>14.9%</td><td>20.8%</td></tr>
+      <tr><td>해외주식</td><td>37.2%</td><td>35.6%</td></tr>
+      <tr><td>국내채권</td><td>24.9%</td><td>21.8%</td></tr>
+      <tr><td>해외채권</td><td>8.0%</td><td>7.4%</td></tr>
+      <tr><td>대체투자</td><td>15.0%</td><td>14.3%</td></tr>
+    </tbody>
+  </table>
+  <p>핵심은 <span class="em">허용밴드</span>예요. 기존엔 SAA ±3%p(+ 전술적 배분 ±2%p)라, 국내주식은 이론상 <strong>약 19.9%</strong>를 넘으면 기계적 매도가 나올 수 있었습니다. 그런데 코스피 급등으로 <strong>국내주식 실제 비중이 27~28%까지 치솟아</strong> 천장을 크게 넘겼고, 이 때문에 “비중 되돌리려 수십조를 판다”는 공포가 커졌어요.</p>
+  <div class="callout">
+    <div class="ct">2026년 5월 28일, 규칙이 바뀐 게 결정적</div>
+    <p>국민연금 기금위는 ① 국내주식 목표비중을 <strong>14.9% → 20.8%</strong>로 상향, ② SAA 허용밴드를 <strong>±3%p → ±6%p</strong>로 한시 확대(구체수치 비공개), ③ <strong>자동 리밸런싱 완화·일일 최대 매매규모 축소</strong>를 결정했습니다. 목표를 올리고 밴드를 넓혀, ‘강제 매도폭탄(시장에선 약 170조~74조 매도 공포로 회자)’을 사실상 <strong>피한</strong> 거예요. 그래서 “국민연금이 팔아서 급락”은 사실과 거리가 있습니다. 다만 7월 리밸런싱 재개 가능성에 증권가가 긴장한 점은 남아 있습니다.</p>
+  </div>
+
+  <h2>② 인덱스 정기변경 — 날짜가 정해진 ‘캘린더형’</h2>
+  <p>패시브(인덱스) 자금은 지수 구성종목·비중이 바뀌는 ‘정기변경일’에 맞춰 일제히 사고팝니다. 날짜가 공개돼 있어 <strong>예측 가능한 수급 이벤트</strong>예요.</p>
+  <table>
+    <thead><tr><th>지수</th><th>주기</th><th>2026년 주요 시점</th></tr></thead>
+    <tbody>
+      <tr><td>코스피200·코스닥150</td><td>연 2회(6·12월)</td><td>6월 12일 반영 → 6월 15일 효력</td></tr>
+      <tr><td>MSCI</td><td>연 4회(2·5·8·11월)</td><td>5월 정기변경 추종자금 5월 29일</td></tr>
+      <tr><td>FTSE</td><td>분기(3·6·9·12월)</td><td>분기별 리뷰</td></tr>
+    </tbody>
+  </table>
+  <p class="muted">6월은 코스피200 정기변경(중순) + FTSE 분기 + 반기말 포지션 조정이 겹치는 ‘리밸런싱 밀집 구간’이라, 수급 변동성이 구조적으로 커지는 달이에요.</p>
+
+  <h2>③ 연기금·공제회 / ETF·TDF / 액티브</h2>
+  <ul>
+    <li><strong>연기금·공제회</strong>(사학·공무원연금, 군인/교직원/행정공제회 등): 국민연금과 유사한 목표비중·밴드 운용. 규모는 작지만 같은 방향으로 움직이면 영향.</li>
+    <li><strong>ETF·TDF·자산배분펀드</strong>: 정해진 규칙으로 정기 리밸런싱. 특히 <strong>레버리지/단일종목 ETF의 파생 포지션</strong>은 급변동 때 낙폭을 키우는 증폭 장치가 되기도 함.</li>
+    <li><strong>액티브 운용사</strong>: 분기말 ‘윈도드레싱’(평가용 포트폴리오 정리)으로 분기말 수급이 출렁일 수 있음.</li>
+  </ul>
+
+  <!-- 2부 -->
+  <div class="pb"></div>
+  <h1>2부. 검증 — 2026년 6월 급락은 리밸런싱이 맞나</h1>
+  <p>이번 급락이 ‘리밸런싱’이라는 주장을 ①시점 ②수급 주체 ③증권가 해석 ④대안 설명으로 따져봅니다.</p>
+
+  <figure>
+    <img class="refimg" src="https://thumb.mt.co.kr/cdn-cgi/image/f=avif/21/2026/06/2026062615174376931_1.jpg" alt="2026년 6월 26일 코스피 급락 딜링룸 전광판" loading="lazy">
+    <figcaption>2026년 6월 26일 코스피 급락 당일 딜링룸 전광판. 출처: <a href="https://www.mt.co.kr/stock/2026/06/26/2026062615174376931">머니투데이(사진=뉴시스)</a></figcaption>
+  </figure>
+
+  <h2>① 시점 — ‘반기말 결제’에 정확히 맞물렸다</h2>
+  <p>한국 주식은 <strong>T+2 결제</strong> 구조라, 6월 30일 결제 잔고에 매도를 반영하려면 <strong>6월 26일이 사실상 마지막 유효 매매일</strong>이었어요. 글로벌 투자자가 반기말 기준으로 국가·섹터·종목·현금·위험한도 비중을 맞춰야 한다면, 26일에 매도가 몰리는 게 ‘시간상’ 자연스럽습니다. 여기에 6월 중순 코스피200 정기변경까지 겹쳐 6월은 리밸런싱이 밀집된 달이었습니다.</p>
+
+  <h2>② 수급 주체 — ‘바스켓성’ 외국인 매도</h2>
+  <ul>
+    <li><strong>6월 26일:</strong> 외국인 약 <strong>4.5조 원 순매도</strong>, 코스피 −5.81%(8,411.21). <strong>장전 동시호가부터</strong> 외국인 매도가 강했는데, 이는 개별 악재 대응이 아니라 <strong>사전 설정된 바스켓(묶음) 주문</strong> 성격 — 전형적 리밸런싱 패턴.</li>
+    <li><strong>6월 8일(앞선 급락):</strong> 외국인 단독이 아니라 <strong>기관 1.72조·금융투자 1.44조</strong> 순매도가 주도. 기관·프로그램 매물 성격.</li>
+  </ul>
+  <p>“최근 급등으로 한국·반도체 비중이 크게 커진 계좌”를 중심으로 비중을 줄이는 매도라는 해석이에요. 즉 ‘한국이 싫어서’가 아니라 ‘너무 올라서 비중을 맞추는’ 매도에 가깝습니다.</p>
+
+  <h2>③ 증권가 해석 — “구조적 이탈 아닌 포지션 조정”</h2>
+  <div class="callout">
+    <div class="ct">메리츠증권 황수욱 연구원 (2026.6.26)</div>
+    <p>“오늘 급락 배경은 6월 말 결제 기준 포트폴리오 리밸런싱으로 생각된다. 한국 시장에 대한 <strong>구조적 이탈이라기보다 반기말 포지션 조정</strong>에 가깝다.” → 리밸런싱 조정이 맞다면 길어야 <strong>6월 30일이면 급락이 마무리</strong>될 것으로 전망. AI 수요 둔화·애플發 메모리 우려는 ‘부수적 설명변수’로 평가.</p>
+  </div>
+
+  <h2>④ 대안 설명 — 방아쇠는 매크로</h2>
+  <p>리밸런싱은 ‘왜 그날 그 규모로’를 설명하지만, ‘왜 하필 지금 매도 심리가 커졌나’의 방아쇠는 매크로였어요.</p>
+  <ul>
+    <li><strong>애플發 메모리 수요 둔화 우려</strong>(제품 가격 인상) — 반도체 비중 큰 코스피에 직접 타격.</li>
+    <li><strong>미국 금리 가파른 하락</strong> — 글로벌 자금의 위험·비중 재조정 자극.</li>
+    <li><strong>단일종목 레버리지 ETF 파생 포지션</strong> — 낙폭을 키운 증폭 장치.</li>
+  </ul>
+
+  <!-- 종합 평결 -->
+  <div class="pb"></div>
+  <h1>종합 평결 — 표로 정리</h1>
+  <table>
+    <thead><tr><th>주장</th><th>판정</th><th>근거</th></tr></thead>
+    <tbody>
+      <tr><td>“반기말 리밸런싱 때문이다”</td><td style="color:#1e7a4d;font-weight:700">대체로 사실</td><td>T+2 결제 시점 일치, 장전 동시호가 외국인 바스켓 매도, 증권가 다수 해석</td></tr>
+      <tr><td>“국민연금이 팔아서다”</td><td style="color:#b5481f;font-weight:700">과장</td><td>NPS는 5월에 목표↑·밴드↑·자동매도 완화로 ‘매도폭탄’ 회피. 다만 7월 재개 우려는 잔존</td></tr>
+      <tr><td>“펀더멘털(실적)이 깨졌다”</td><td style="color:#b5481f;font-weight:700">근거 약함</td><td>증권가는 ‘부수적 변수’로 평가, 추세 훼손 아닌 단기 조정으로 봄</td></tr>
+      <tr><td>“매크로가 방아쇠였다”</td><td style="color:#c08a1e;font-weight:700">부분 사실</td><td>애플發 메모리 우려·미국 금리·레버리지 ETF가 매도 심리 촉발·증폭</td></tr>
+    </tbody>
+  </table>
+  <div class="callout">
+    <div class="ct">정리</div>
+    <p>이번 급락은 <strong>‘매크로 방아쇠 + 반기말 리밸런싱(기계적 매도) + 레버리지 증폭’</strong>의 합작이에요. ‘리밸런싱’은 핑계가 아니라 실제 핵심 동인 중 하나가 맞지만, ‘국민연금 강제매도’ 프레임은 사실과 다릅니다. 증권가는 이를 ‘구조적 이탈’이 아닌 ‘반기말 포지션 조정’으로 보고 단기성에 무게를 둡니다.</p>
+  </div>
+
+  <!-- 시사점 -->
+  <h1>투자자 관점 체크포인트</h1>
+  <ul>
+    <li><strong>달력을 보라:</strong> 6·12월(코스피200 정기변경+반기말), 2·5·8·11월(MSCI), 분기말은 ‘기계적 수급’이 몰리는 구간. 급락·급등의 ‘성격’을 구분하는 단서.</li>
+    <li><strong>주체를 보라:</strong> KRX 투자자별 매매동향에서 ‘장 시작 동시호가 외국인 바스켓 매도’ 같은 패턴은 리밸런싱 신호. 개별 악재 매도와 구분.</li>
+    <li><strong>NPS 일정을 보라:</strong> 목표비중·밴드 변경, 리밸런싱 재개 시점은 국내 수급의 큰 변수. ‘공포 헤드라인’과 ‘실제 매도’를 분리해서 볼 것.</li>
+    <li><strong>리밸런싱發 급락의 특징:</strong> 펀더멘털 훼손이 아니면 보통 단기(반기말 통과 후 진정)에 그치는 경향. 단, 매크로 악재가 겹치면 그 부분은 별개로 지속될 수 있음.</li>
+  </ul>
+
+  <!-- 용어 -->
+  <h1>부록. 미니 용어 사전</h1>
+  <table>
+    <thead><tr><th>용어</th><th>쉬운 설명</th></tr></thead>
+    <tbody>
+      <tr><td>리밸런싱</td><td style="text-align:left">흐트러진 자산 비중을 목표비중으로 되돌리는 것. 오른 자산 매도 → 기계적 매물.</td></tr>
+      <tr><td>SAA(전략적 자산배분)</td><td style="text-align:left">장기 목표 비중 틀. 국민연금 운용의 기준.</td></tr>
+      <tr><td>허용밴드</td><td style="text-align:left">목표비중에서 벗어나도 되는 범위(±%p). 넘으면 되돌림(매매) 발생.</td></tr>
+      <tr><td>정기변경</td><td style="text-align:left">지수(코스피200·MSCI 등) 구성·비중을 주기적으로 바꾸는 것. 패시브 매매 집중.</td></tr>
+      <tr><td>T+2 결제</td><td style="text-align:left">매매 체결 2영업일 뒤 결제. 반기말 잔고 반영의 ‘마지막 매매일’을 정함.</td></tr>
+      <tr><td>바스켓 매도</td><td style="text-align:left">여러 종목을 묶어 한꺼번에 파는 주문. 리밸런싱의 전형적 형태.</td></tr>
+      <tr><td>윈도드레싱</td><td style="text-align:left">분기말 평가를 위해 포트폴리오를 정리하는 행위.</td></tr>
+      <tr><td>매도 사이드카/서킷브레이커</td><td style="text-align:left">급락 시 발동하는 시장 안정장치(프로그램 매도 일시정지/거래 중단).</td></tr>
+    </tbody>
+  </table>
+
+  <!-- 출처 -->
+  <h1>출처</h1>
+  <ol class="src">
+    <li>머니투데이 — 코스피 급락, 하루짜리 충격일까…증권가가 짚은 진짜 이유 (2026.6.26) — <a href="https://www.mt.co.kr/stock/2026/06/26/2026062615174376931">link</a></li>
+    <li>머니투데이 — 9000피 축포 터지면 74조원 매도 폭탄?…국민연금 ‘리밸런싱’ 공포 (2026.6.25) — <a href="https://www.mt.co.kr/stock/2026/06/25/2026062516340615919">link</a></li>
+    <li>대한민국 정책브리핑 — 국민연금, 올해 국내주식 목표비중 14.9%→20.8% 상향 — <a href="https://www.korea.kr/news/policyNewsView.do?newsId=148965365">link</a></li>
+    <li>인베스트조선 — 국민연금, 국내주식 목표비중 20.8%로 상향…‘강제 매도’ 부담 덜었다 — <a href="https://www.investchosun.com/site/data/html_dir/2026/05/28/2026052880186.html">link</a></li>
+    <li>The Public — 주식 비중 목표치 넘긴 국민연금…7월 리밸런싱 재개에 증권가 긴장 — <a href="https://www.thepublic.kr/news/articleView.html?idxno=309166">link</a></li>
+    <li>EBN — 코스피200·코스닥150 정기변경 확정…7000조 증시 패시브 리밸런싱 — <a href="https://www.ebn.co.kr/news/articleView.html?idxno=1709900">link</a></li>
+    <li>Seoul Economic Daily(EN) — NPS Raises Domestic Stock Allocation Cap by 5.9 Points — <a href="https://en.sedaily.com/finance/2026/05/28/national-pension-service-raises-domestic-stock-allocation">link</a></li>
+    <li>The Korea Herald — NPS equity holdings top 50% for first time — <a href="https://www.koreaherald.com/article/10607578">link</a></li>
+    <li>KRX Data Marketplace — 투자자별 매매동향(수급 데이터) — <a href="https://data.krx.co.kr/">link</a></li>
+  </ol>
+  <p class="muted"><em>※ 본 문서는 공개된 보도·기관 공시·증권사 코멘트를 교차 확인해 정리한 참고 자료입니다. 본문 이미지는 출처에서 불러오며 저작권은 출처에 있습니다. 일부 수치(국민연금 실제 비중·밴드 확대폭 등)는 추정·비공개를 포함합니다. 본 문서는 투자 권유가 아니며, 투자 결정과 결과의 책임은 전적으로 투자자 본인에게 있습니다.</em></p>
+
+</div>
+</body>
+</html>

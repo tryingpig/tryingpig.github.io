@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SKT 데이터센터(AIDC) 사업 완전 가이드</title>
+<style>
+  :root{
+    --accent:#e1142d; --accent-dark:#a50e21; --light:#fdeaed; --light2:#fef5f6;
+    --gray:#595959; --line:#f3c6cd; --ink:#1d2733;
+    --warn:#b5481f; --warnbg:#fdf1ec; --warnln:#e6b39e;
+  }
+  *{box-sizing:border-box;}
+  html{-webkit-print-color-adjust:exact; print-color-adjust:exact;}
+  body{font-family:"Malgun Gothic","맑은 고딕",-apple-system,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;
+    color:var(--ink); line-height:1.72; margin:0; background:#f5f6f8; font-size:16px;}
+  .page{max-width:840px; margin:24px auto; background:#fff; padding:56px 62px; box-shadow:0 1px 8px rgba(0,0,0,.08);}
+  h1{color:var(--accent-dark); font-size:1.46rem; border-bottom:3px solid var(--accent); padding-bottom:8px; margin:2.2em 0 .7em;}
+  h1:first-of-type{margin-top:.3em;}
+  .parttag{display:inline-block; font-size:.78rem; font-weight:700; color:#fff; background:var(--accent); padding:2px 12px; border-radius:10px; margin:1.6em 0 .2em;}
+  h2{color:var(--accent); font-size:1.16rem; margin:1.4em 0 .4em;}
+  h3{color:var(--accent-dark); font-size:1.02rem; margin:1.05em 0 .3em;}
+  p{margin:.5em 0;} ul{margin:.4em 0 .9em; padding-left:1.3em;} li{margin:.32em 0;}
+  .em{color:var(--accent-dark); font-weight:700;}
+  .muted{color:var(--gray); font-size:.9rem;}
+  .callout{background:var(--light); border:1px solid var(--accent); border-left:6px solid var(--accent); border-radius:4px; padding:14px 18px; margin:1.1em 0;}
+  .callout .ct{font-weight:700; color:var(--accent-dark); margin-bottom:6px;}
+  .callout p{margin:.35em 0; font-size:.96rem;}
+  .warn{background:var(--warnbg); border:1px solid var(--warnln); border-left:6px solid var(--warn); border-radius:4px; padding:14px 18px; margin:1.1em 0;}
+  .warn .ct{font-weight:700; color:var(--warn); margin-bottom:6px;}
+  .warn p,.warn li{font-size:.94rem;}
+  table{border-collapse:collapse; width:100%; margin:1em 0; font-size:.84rem;}
+  th{background:var(--accent); color:#fff; font-weight:700; padding:9px 10px; text-align:center; border:1px solid var(--line);}
+  td{padding:8px 10px; border:1px solid var(--line); vertical-align:top; text-align:left;}
+  td.c{text-align:center;}
+  td:first-child{font-weight:700; background:#fef5f6;}
+  tbody tr:nth-child(even) td{background:var(--light2);}
+  tbody tr:nth-child(even) td:first-child{background:#fdeaed;}
+  .cover{text-align:center; padding:96px 0 64px;}
+  .cover .big{font-size:2.15rem; font-weight:800; color:var(--accent-dark); letter-spacing:-1px; line-height:1.3;}
+  .cover .sub{font-size:1.12rem; color:var(--accent); margin-top:14px;}
+  .cover .sub2{font-size:1rem; color:var(--gray); margin-top:22px;}
+  .cover .date{font-size:.88rem; color:var(--gray); margin-top:50px;}
+  .toc{background:var(--light2); border:1px solid var(--line); border-radius:6px; padding:18px 26px;}
+  .toc ol{margin:0; padding-left:1.4em;} .toc li{margin:.28em 0;}
+  a{color:var(--accent-dark); word-break:break-all;}
+  .src{font-size:.83rem;} .src li{margin:.4em 0;}
+  figure{margin:1.4em 0; text-align:center;}
+  figure svg{width:100%; max-width:760px; height:auto; display:block; margin:0 auto;}
+  .refimg{display:block; max-width:100%; height:auto; margin:0 auto; border:1px solid var(--line); border-radius:6px;}
+  figcaption{font-size:.85rem; color:var(--gray); margin-top:8px;}
+  @media print{
+    body{background:#fff; font-size:11pt;}
+    .page{box-shadow:none; margin:0; max-width:none; padding:0;}
+    .pb{page-break-before:always;}
+    h1,h2,h3{page-break-after:avoid;} table,.callout,.warn,figure{page-break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="cover">
+    <div class="big">SKT 데이터센터(AIDC)<br>사업 완전 가이드</div>
+    <div class="sub">어떻게 진행되고, 어떻게 돈을 벌고, 어디서 투자가 오나</div>
+    <div class="sub2">사업모델 · 수익구조 · 자금조달 · 경쟁 · 투자 관점 · 기술까지 총정리</div>
+    <div class="date">2026년 6월 작성 · 국내 시장 중심</div>
+  </div>
+
+  <!-- 면책 -->
+  <div class="pb"></div>
+  <div class="warn">
+    <div class="ct">먼저 읽어주세요</div>
+    <p>본 문서는 투자 자문이 아니라, 공개 자료(기업 발표·언론·증권사 리포트)를 교차 확인해 ‘SKT의 데이터센터 사업’을 정리한 교육·참고용 자료입니다. 특정 종목의 매수·매도 권유가 아니며, 실적·목표주가·투자규모 수치는 발표·추정 기준이라 달라질 수 있습니다. 투자 판단·책임은 본인에게 있습니다.</p>
+  </div>
+
+  <!-- 목차 -->
+  <h1>목차</h1>
+  <div class="toc">
+    <ol>
+      <li>한눈에 보기 (핵심 요약)</li>
+      <li><strong>PART 1 입문</strong> — 통신사가 왜 데이터센터를? / AIDC란 / 비전 / 보유자산</li>
+      <li><strong>PART 2 사업모델</strong> — 4대 모델 / 2축 수익구조 / 돈의 흐름 / GPU 경제학</li>
+      <li><strong>PART 3 자금조달</strong> — 1000조 조달 구조 / 핵심 파트너 / 울산 케이스 / 메가프로젝트</li>
+      <li><strong>PART 4 시장·경쟁</strong> — 시장규모 / 통신3사·CSP 비교 / 차별점·약점</li>
+      <li><strong>PART 5 투자 관점</strong> — 실적·밸류에이션 / 촉매 / 리스크 / 시나리오 / KPI</li>
+      <li><strong>PART 6 딥(기술·운영)</strong> — 액침냉각 / 운영 두뇌 / 전력 확보</li>
+      <li>FAQ · 용어 사전 · 출처</li>
+    </ol>
+  </div>
+
+  <!-- 0. 한눈에 -->
+  <div class="pb"></div>
+  <h1>한눈에 보기 (핵심 요약)</h1>
+  <p>SKT(SK텔레콤)의 데이터센터 사업은 ‘통신사’를 <span class="em">‘AI 인프라 사업자’로 변신</span>시키는 핵심 신성장 엔진이에요. 단순히 서버를 빌려주는 게 아니라, <strong>GPU 임대부터 초대형 코로케이션까지</strong> 전 영역을 묶어 ‘AI 인프라 슈퍼 하이웨이’를 깔겠다는 구상입니다.</p>
+  <table>
+    <thead><tr><th>구분</th><th>핵심 내용</th></tr></thead>
+    <tbody>
+      <tr><td>비전</td><td>SK그룹 주축 총 <strong>15GW</strong> AIDC(2029년 5GW → 2035년 15GW), ‘AI 연산 수출국’·아시아 최대 허브</td></tr>
+      <tr><td>사업모델</td><td>4대 모델(GPUaaS·모듈러·Dedicated·Hyperscale) + 2축 수익(코로케이션 + AI 컴퓨팅 클라우드)</td></tr>
+      <tr><td>핵심 자산</td><td>가산 AIDC(랙당 44kW, B200 1000장+ ‘해인’), SK브로드밴드 6개 IDC(~98MW)</td></tr>
+      <tr><td>대표 프로젝트</td><td><strong>울산 AIDC</strong>(SK+AWS, 총 7조·GPU 6만장, 2027 가동→2029 103MW)</td></tr>
+      <tr><td>핵심 파트너</td><td>AWS(투자·고객), 엔비디아(AI팩토리), SK하이닉스(HBM), SK엔무브(냉각)</td></tr>
+      <tr><td>실적</td><td>AIDC 매출 2026 1Q <strong>1,314억(+89%)</strong>, 2030년 AIDC 연매출 1조 목표</td></tr>
+      <tr><td>자금</td><td>SK 자체 + 전략적 파트너 + 글로벌 고객 장기계약 + 프로젝트 파이낸싱 → 약 1,000조 조달</td></tr>
+    </tbody>
+  </table>
+  <div class="callout">
+    <div class="ct">3문장 요약</div>
+    <p>① <strong>어떻게 진행되나</strong> — 가산·울산을 시작으로 GW급 AIDC를 단계적으로 깔며, 2035년 15GW까지 확장.<br>② <strong>어떻게 돈을 버나</strong> — 빅테크에 공간·전력을 빌려주는 ‘코로케이션’ + GPU를 구독형으로 파는 ‘GPUaaS’, 여기에 운영 AI·솔루션 수출이 얹힘.<br>③ <strong>어디서 투자가 오나</strong> — SK 자체 자금 + AWS 같은 글로벌 파트너 투자 + 고객 장기계약 + 프로젝트 파이낸싱(외부 차입)으로 조달.</p>
+  </div>
+
+  <!-- PART 1 -->
+  <div class="pb"></div>
+  <span class="parttag">PART 1 · 입문</span>
+  <h1>1. 통신사가 왜 데이터센터를 하나</h1>
+  <p>통신 본업(휴대폰 가입자)은 성장이 멈췄어요. 가입자 유치 경쟁으로는 더 크기 어렵죠. 그래서 통신 3사 모두 <strong>‘AI 인프라’를 새 성장축</strong>으로 잡았습니다. 통신사는 이미 <strong>전국 통신망·부동산(국사)·전력·운영 노하우</strong>를 갖고 있어서, 데이터센터로 확장하기 유리해요. SKT는 그중에서도 ‘인프라를 직접 깐다’는 가장 공격적인 노선을 택했습니다.</p>
+  <div class="callout">
+    <div class="ct">통신 3사, 같은 ‘AI’ 다른 길</div>
+    <p><strong>SKT</strong> = “인프라를 깔겠다”(AIDC·GPU), <strong>KT</strong> = “업무를 바꾸겠다”(AI 에이전트·활용·MS 협력), <strong>LG U+</strong> = “고객이 체감하게”(고객경험·친환경). SKT가 ‘땅·전기·GPU’ 쪽에 가장 무겁게 베팅하고 있어요.</p>
+  </div>
+
+  <h1>2. AIDC는 일반 데이터센터와 뭐가 다른가</h1>
+  <p>‘AIDC(AI 데이터센터)’는 AI 연산(GPU)을 위한 고성능 데이터센터예요. 일반 IDC와 차원이 다릅니다.</p>
+  <ul>
+    <li><strong>전력 밀도:</strong> SKT 가산 AIDC는 랙(서버 선반) 하나가 <span class="em">44kW</span>를 먹어요. 국내 데이터센터 평균(4.8kW)의 <strong>약 9배</strong>. 그만큼 전기를 많이 쓰고 열도 엄청나게 납니다.</li>
+    <li><strong>핵심 부품:</strong> 일반 DC는 CPU·저장장치 중심, AIDC는 <strong>GPU(엔비디아 H100·B200 등) + HBM 메모리</strong>가 핵심.</li>
+    <li><strong>냉각:</strong> 공기냉각으로는 한계 → <strong>액체·액침냉각</strong>이 필수가 됨(뒤 PART 6).</li>
+    <li><strong>돈 단위:</strong> GPU가 비싸 투자도, 매출도 ‘조 단위’로 움직임.</li>
+  </ul>
+
+  <h1>3. SKT의 비전 — ‘AI 인프라 슈퍼 하이웨이’</h1>
+  <p>SKT는 ‘1GW 시대’를 외치며, SK그룹 차원에서 <span class="em">총 15GW 규모의 AIDC를 순차 구축</span>하겠다고 밝혔어요. 2029년 1단계 5GW를 열고, 2035년까지 15GW로 키워 <strong>한국을 ‘AI 연산 수출국’·아시아 최대 AI 허브</strong>로 만들겠다는 구상입니다(정부 3대 메가프로젝트의 AIDC 축과 연결).</p>
+  <figure>
+    <svg viewBox="0 0 720 170" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="SKT AIDC 15GW 로드맵">
+      <style>
+        .t{font-family:'Malgun Gothic',sans-serif;}
+        .yr{font-size:12px;font-weight:700;fill:#a50e21;}
+        .ev{font-size:10.5px;fill:#1d2733;}
+      </style>
+      <text class="t" x="360" y="22" text-anchor="middle" font-size="13" font-weight="700" fill="#a50e21">SKT(SK그룹) AIDC 용량 로드맵</text>
+      <line x1="55" y1="118" x2="670" y2="118" stroke="#f3c6cd" stroke-width="4"/>
+      <g>
+        <rect x="60" y="100" width="34" height="18" fill="#e1142d"/><text class="t yr" x="77" y="92" text-anchor="middle">2024</text><text class="t ev" x="77" y="140" text-anchor="middle">가산 개소</text>
+        <rect x="200" y="86" width="34" height="32" fill="#e1142d"/><text class="t yr" x="217" y="78" text-anchor="middle">2027</text><text class="t ev" x="217" y="140" text-anchor="middle">울산 41MW 가동</text>
+        <rect x="360" y="64" width="34" height="54" fill="#e1142d"/><text class="t yr" x="377" y="56" text-anchor="middle">2029</text><text class="t ev" x="377" y="140" text-anchor="middle">1단계 5GW · 울산 103MW</text>
+        <rect x="560" y="40" width="40" height="78" fill="#a50e21"/><text class="t yr" x="580" y="32" text-anchor="middle">2035</text><text class="t ev" x="580" y="140" text-anchor="middle">총 15GW 목표</text>
+      </g>
+      <text class="t ev" x="360" y="162" text-anchor="middle" font-style="italic" fill="#595959">‘가산(MW) → 울산(100MW) → 5GW → 15GW’로 1000배 스케일업</text>
+    </svg>
+    <figcaption>그림 1. SKT(SK그룹) AIDC 확장 로드맵(개념).</figcaption>
+  </figure>
+
+  <h1>4. SKT는 지금 무엇을 갖고 있나 (보유 자산)</h1>
+  <ul>
+    <li><strong>SK브로드밴드 IDC:</strong> 서초·일산(2)·분당(2)·가산 등 <strong>6개 IDC, IT용량 약 98MW</strong>. 20년 공들인 전통 코로케이션 사업(연매출 2,000억 눈앞).</li>
+    <li><strong>가산 AIDC:</strong> 2024년 12월 개소, 46MW급. 랙당 44kW의 고밀도. 초기 H100 → 이후 <strong>B200(블랙웰) 1,000장+ 단일 클러스터 ‘해인’</strong> 구축. GPUaaS의 본진.</li>
+    <li><strong>SK그룹 합산:</strong> 현재 운영 중인 8개 데이터센터 합쳐 약 137MW 수준 → 울산 한 곳(103MW)이 거의 그만큼을 추가.</li>
+  </ul>
+
+  <!-- PART 2 -->
+  <div class="pb"></div>
+  <span class="parttag">PART 2 · 사업모델 (어떻게 돈을 버나)</span>
+  <h1>5. 4대 사업모델 — ‘모든 수요를 잡는다’</h1>
+  <p>SKT는 AIDC 사업을 <strong>고객 규모·형태별로 4가지</strong>로 쪼갰어요. 작은 스타트업부터 글로벌 빅테크까지 모두 흡수하겠다는 전략입니다.</p>
+  <figure>
+    <img class="refimg" src="https://cdn.thelec.kr/news/photo/202503/33391_31417_2354.png" alt="SKT AIDC 4대 사업모델" loading="lazy">
+    <figcaption>SKT AIDC 4대 사업모델 개요. 출처: <a href="https://www.thelec.kr/news/articleView.html?idxno=33391">디일렉(THE ELEC)</a></figcaption>
+  </figure>
+  <table>
+    <thead><tr><th>모델</th><th>무엇인가</th><th>타깃 고객</th><th>특징</th></tr></thead>
+    <tbody>
+      <tr><td>① GPUaaS<br>(구독형 GPU 임대)</td><td>GPU를 클라우드로 빌려줌(H100 등)</td><td>AI 스타트업·개발자·기업</td><td>유연 구독, 학습~추론 단계별. 단, AWS 등과 경쟁·고객 묶기 약함</td></tr>
+      <tr><td>② 모듈러 AIDC</td><td>컨테이너 크기 ‘조립식’ AIDC</td><td>예산 적은 스타트업·연구기관</td><td><strong>3개월 만에 구축, 건설비 70%↓</strong> → 빠른 수익화. NPU(리벨리온) 협업</td></tr>
+      <tr><td>③ Dedicated<br>(단일고객용)</td><td>부지 없는 기업에 설계·건설·최적화 제공</td><td>보안 중시 공공기관·대기업</td><td>온프레미스(사내) 요구 대응, 맞춤형</td></tr>
+      <tr><td>④ Hyperscale</td><td>초대형 코로케이션(GW급)</td><td>글로벌 빅테크</td><td>대규모·장기계약, 비용경쟁력 핵심(울산 등)</td></tr>
+    </tbody>
+  </table>
+
+  <h1>6. 수익구조 2축 + 부가 수익</h1>
+  <p>위 4모델을 ‘돈 버는 방식’으로 다시 묶으면 <strong>두 개의 큰 축</strong>이에요.</p>
+  <ul>
+    <li><span class="em">① AI 특화 코로케이션</span> — 공간·전력·냉각을 ‘통째로’ 빌려주는 부동산형 사업. GW급 통합설계로 단가를 낮춰 글로벌 빅테크를 유치(임대료·전력 마진). 안정적·장기 계약이 강점.</li>
+    <li><span class="em">② AI 컴퓨팅 클라우드(GPUaaS)</span> — GPU 연산 자체를 구독으로 파는 사업. 단가가 높지만 글로벌 클라우드(AWS·MS)와 직접 경쟁, GPU 감가 부담.</li>
+  </ul>
+  <p>여기에 <strong>부가 수익</strong>이 얹혀요: 운영 효율을 높이는 ‘운영 AI’, 기업용 에이전트 ‘에이닷 비즈’, 가상화 솔루션 ‘페타서스(Petasus)’의 해외 수출 등. 즉 ‘건물(코로케이션) + 컴퓨팅(GPUaaS) + 소프트웨어(운영·솔루션)’의 3중 수익이 목표입니다.</p>
+
+  <h1>7. 돈의 흐름 — 한 장으로</h1>
+  <figure>
+    <svg viewBox="0 0 720 290" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="SKT AIDC 돈의 흐름">
+      <style>
+        .t{font-family:'Malgun Gothic',sans-serif;}
+        .lb{font-size:12px;font-weight:700;fill:#fff;}
+        .sb{font-size:10px;fill:#fff;}
+        .cap{font-size:11px;fill:#1d2733;}
+        .hd{font-size:12px;font-weight:700;fill:#a50e21;}
+      </style>
+      <text class="t hd" x="120" y="20" text-anchor="middle">① 투자(돈이 들어옴)</text>
+      <rect x="20" y="32" width="200" height="118" rx="8" fill="#fef5f6" stroke="#e1142d"/>
+      <text class="t cap" x="120" y="56" text-anchor="middle">SK 자체 자금(현금 7조+)</text>
+      <text class="t cap" x="120" y="76" text-anchor="middle">전략적 파트너(AWS 등)</text>
+      <text class="t cap" x="120" y="96" text-anchor="middle">글로벌 고객 장기계약</text>
+      <text class="t cap" x="120" y="116" text-anchor="middle">프로젝트 파이낸싱(차입)</text>
+      <text class="t cap" x="120" y="138" text-anchor="middle" font-weight="700">→ 약 1,000조 조달</text>
+
+      <text class="t hd" x="360" y="20" text-anchor="middle">② 인프라(돈을 씀)</text>
+      <rect x="260" y="32" width="200" height="118" rx="8" fill="#e1142d"/>
+      <text class="t sb" x="360" y="58" text-anchor="middle">부지·건물·전력·냉각</text>
+      <text class="t sb" x="360" y="80" text-anchor="middle">GPU(H100·B200)·HBM</text>
+      <text class="t sb" x="360" y="102" text-anchor="middle">네트워크·운영</text>
+      <text class="t sb" x="360" y="128" text-anchor="middle" font-weight="700">AIDC(가산·울산·…)</text>
+
+      <text class="t hd" x="600" y="20" text-anchor="middle">③ 매출(돈을 범)</text>
+      <rect x="500" y="32" width="200" height="118" rx="8" fill="#fef5f6" stroke="#e1142d"/>
+      <text class="t cap" x="600" y="56" text-anchor="middle">코로케이션(임대·전력)</text>
+      <text class="t cap" x="600" y="76" text-anchor="middle">GPUaaS(구독)</text>
+      <text class="t cap" x="600" y="96" text-anchor="middle">운영AI·에이닷비즈</text>
+      <text class="t cap" x="600" y="116" text-anchor="middle">솔루션 수출(페타서스)</text>
+      <text class="t cap" x="600" y="138" text-anchor="middle" font-weight="700">→ 2030 연 1조 목표</text>
+
+      <!-- arrows -->
+      <g stroke="#a50e21" stroke-width="3" fill="#a50e21">
+        <line x1="220" y1="91" x2="258" y2="91"/><polygon points="258,86 268,91 258,96"/>
+        <line x1="460" y1="91" x2="498" y2="91"/><polygon points="498,86 508,91 498,96"/>
+      </g>
+      <text class="t cap" x="360" y="190" text-anchor="middle">핵심 질문: ②에 쓴 거대한 투자를 ③의 매출이 ‘GPU 수명(약 3년)’ 안에 회수할 수 있는가?</text>
+      <text class="t cap" x="360" y="216" text-anchor="middle" font-style="italic" fill="#595959">→ 그래서 ‘가동률’과 ‘장기 고객 계약’이 사업의 성패를 가른다(아래 8번)</text>
+    </svg>
+    <figcaption>그림 2. SKT AIDC의 돈의 흐름 — 투자 유입 → 인프라 구축 → 3중 매출.</figcaption>
+  </figure>
+
+  <h1>8. GPU 경제학 — 왜 ‘3년’이 중요한가 (딥)</h1>
+  <p>AIDC 사업의 핵심 리스크이자 묘미는 <strong>GPU의 경제성</strong>이에요. SKT가 6만 장 GPU를 깐다고 하면 투자액이 <span class="em">2조 원 이상</span>으로 추정됩니다(H200 약 25만$/8장 세트, H100 약 20만$). SKT는 분기말 기준 현금 약 7.5조를 보유해 ‘실탄’은 충분해요.</p>
+  <div class="callout">
+    <div class="ct">‘3년 안에 벌어야 한다’</div>
+    <p>고성능 GPU는 가동률(70%)이 높아 <strong>수명이 약 3년</strong>으로 짧아요. 즉 SKT는 이 투자를 3년 안에 회수해야 합니다. 한 분석은 감가상각을 빼더라도 <strong>매년 약 9,100억 원 이상의 수익</strong>을 내야 최소 ROI를 충족한다고 봤어요. 그런데 AIDC 연매출(2024)은 약 3,974억. 그래서 ‘가동률을 빨리 채우는 것’과 ‘장기 고객을 묶는 것’이 사활적입니다.</p>
+  </div>
+  <p>그래서 SKT가 <strong>모듈러 AIDC(빠른 구축·저비용)</strong>로 단기 수익화를 노리고, 동시에 <strong>울산 같은 하이퍼스케일에 AWS(글로벌 고객)를 끼워</strong> 장기 수요를 확보하는 거예요. GPUaaS만으로는 AWS와 가격 경쟁이 버겁기 때문입니다.</p>
+
+  <!-- PART 3 -->
+  <div class="pb"></div>
+  <span class="parttag">PART 3 · 자금조달 (어디서 투자가 오나)</span>
+  <h1>9. ‘1,000조’는 어떻게 마련하나 — 조달 구조</h1>
+  <p>15GW를 짓는 데 드는 천문학적 자금을 SKT 혼자 대는 게 아니에요. <strong>네 갈래</strong>로 조달합니다.</p>
+  <table>
+    <thead><tr><th>조달원</th><th>내용</th><th>의미</th></tr></thead>
+    <tbody>
+      <tr><td>① SK 자체 투자</td><td>SKT·SK그룹 자기자본·현금(7조+)</td><td>주도권 확보, 그러나 한계 존재</td></tr>
+      <tr><td>② 전략적 파트너</td><td>AWS·엔비디아 등 글로벌 빅테크의 직접 투자</td><td><strong>리스크 분담 + 고객 동시 확보</strong></td></tr>
+      <tr><td>③ 글로벌 고객 장기계약</td><td>빅테크가 ‘선(先)임대 계약’으로 수요 보증</td><td>가동률 보장 → PF 조달 가능케 함</td></tr>
+      <tr><td>④ 프로젝트 파이낸싱(PF)</td><td>인프라 자체를 담보로 한 외부 차입·펀딩</td><td>자기자본 부담 줄이고 대형화</td></tr>
+    </tbody>
+  </table>
+  <p class="muted">※ 핵심은 ②·③이에요. ‘AWS가 돈도 대고 손님도 된다’는 구조가 SKT가 대형 AIDC를 빠르게 짓는 비결입니다. 고객이 미리 계약하면(③) 그걸 근거로 외부 자금(④)을 끌어오기 쉬워져요.</p>
+
+  <h1>10. 핵심 파트너십 — ‘SK 동맹 + 글로벌 동맹’</h1>
+  <h3>글로벌 동맹</h3>
+  <ul>
+    <li><strong>AWS(아마존):</strong> 울산 AIDC에 <span class="em">40억$(약 5.5조) 투자</span> 참여(총 7조). 돈도 대고, 자사 클라우드 수요로 ‘앵커 고객’도 됨.</li>
+    <li><strong>엔비디아:</strong> GW급 <strong>‘AI팩토리’</strong> 공동 구축(2027 한국 첫 가동), 운영 AI·피지컬AI까지 협력. GPU 공급의 핵심 연결고리.</li>
+  </ul>
+  <h3>SK 그룹 내 동맹 (수직계열화)</h3>
+  <ul>
+    <li><strong>SK하이닉스:</strong> HBM·메모리 — AIDC의 핵심 부품을 그룹 내에서 조달(메모리~인프라 수직통합).</li>
+    <li><strong>SK엔무브:</strong> 액침냉각용 특수냉각유·열관리(전력 37% 절감).</li>
+    <li><strong>SK에코플랜트:</strong> 데이터센터 시공(건설).</li>
+    <li><strong>SK브로드밴드:</strong> 통신망·IDC 운영.</li>
+    <li><strong>리벨리온(舊 사피온+리벨리온):</strong> 국산 NPU 공급(모듈러 AIDC 등).</li>
+  </ul>
+  <div class="callout">
+    <div class="ct">SK의 무기 — ‘메모리부터 전기까지 한 그룹’</div>
+    <p>SK는 <strong>HBM(하이닉스) → 냉각(엔무브) → 시공(에코플랜트) → 망(브로드밴드) → NPU(리벨리온) → 서비스(SKT)</strong>까지 한 그룹 안에서 묶을 수 있어요. ‘AI 데이터센터를 통째로 만드는 수직계열화’가 경쟁사 대비 핵심 차별점입니다.</p>
+  </div>
+
+  <h1>11. 케이스 스터디 — 울산 AIDC</h1>
+  <p>SKT 데이터센터 사업의 ‘대표작’이에요. 구조를 뜯어보면 사업 방식이 한눈에 보입니다.</p>
+  <table>
+    <thead><tr><th>항목</th><th>내용</th></tr></thead>
+    <tbody>
+      <tr><td>위치</td><td>울산 미포 국가산업단지(동남권)</td></tr>
+      <tr><td>총 투자</td><td>약 7조 원(AWS 40억$ ≈ 5.5조 포함)</td></tr>
+      <tr><td>규모</td><td>약 100MW(최종 103MW) · GPU 약 6만 장</td></tr>
+      <tr><td>일정</td><td>2027년 41MW 우선 가동 → 2029년 103MW 전체 가동</td></tr>
+      <tr><td>역할 분담</td><td>SK(주도·부지·운영) + AWS(투자·고객) + SK계열(시공·냉각·망·메모리)</td></tr>
+    </tbody>
+  </table>
+  <p>SKT는 2030년까지 300MW 이상을 확보해 <strong>AIDC에서 연매출 1조 원</strong>을 달성하는 게 목표예요. 울산이 그 절반 이상을 책임지는 셈입니다.</p>
+
+  <h1>12. 정부 ‘3대 메가프로젝트’와의 연결</h1>
+  <p>SKT의 15GW는 정부의 <strong>‘3대 메가프로젝트(AI 데이터센터)’</strong>와 맞물려 있어요. 1단계 8.4GW 중 <span class="em">SK가 5GW</span>를 맡고(GS 2.4GW·네이버 1GW), 2단계로 SK가 15GW까지 확장합니다. 정부는 전력·용수·부지·인허가·전용 전기요금제로 지원해요. 즉 ‘민간(SK) 투자 + 정부 인프라 지원’의 합작 구조입니다.</p>
+
+  <!-- PART 4 -->
+  <div class="pb"></div>
+  <span class="parttag">PART 4 · 시장·경쟁</span>
+  <h1>13. 시장 규모 — 얼마나 큰 판인가</h1>
+  <ul>
+    <li><strong>국내:</strong> 정부 3대 메가프로젝트로 2029년까지 8.4GW, 이후 18.4GW 목표 → 2030년 아·태 최대 AI 인프라 허브.</li>
+    <li><strong>글로벌:</strong> 2030년까지 AIDC 투자가 수조 달러(보도에 따라 5.5조$ 거론) 규모로 거론될 만큼 폭증.</li>
+    <li><strong>구조적 동력:</strong> 생성형 AI·추론 수요 폭증 → GPU·전력·공간 부족 → ‘짓기만 하면 수요가 있다’는 공급 부족 국면.</li>
+  </ul>
+
+  <h1>14. 경쟁 구도 — 통신3사 + CSP</h1>
+  <table>
+    <thead><tr><th>사업자</th><th>전략·강점</th><th>규모·현황</th></tr></thead>
+    <tbody>
+      <tr><td>SKT</td><td>인프라 직접 구축, SK 수직계열화, 글로벌 파트너(AWS·엔비디아)</td><td>15GW 비전, 울산 100MW, 가산 GPUaaS</td></tr>
+      <tr><td>KT클라우드</td><td>‘활용·플랫폼’ 무게, MS 협력, 액체냉각</td><td>매출 9,975억(+27%), <strong>16개 DC(국내 CSP 최대 물리인프라)</strong>, H100 1만장</td></tr>
+      <tr><td>네이버클라우드</td><td>자체 데이터센터·소버린AI(리벨리온)</td><td>각 춘천·세종, 2030년 320MW 목표</td></tr>
+      <tr><td>LG U+</td><td>친환경·고객경험, 엔비디아 협력</td><td>AIDC 신설 추진</td></tr>
+      <tr><td>글로벌 CSP<br>(AWS·MS·구글)</td><td>GPUaaS·클라우드 본진, 압도적 규모</td><td>SKT의 GPUaaS와 직접 경쟁(동시에 코로케이션 고객)</td></tr>
+    </tbody>
+  </table>
+  <div class="callout">
+    <div class="ct">SKT의 차별점 vs 약점</div>
+    <p><strong>차별점:</strong> SK 그룹 수직계열화(HBM~냉각~시공), 글로벌 파트너(AWS·엔비디아) 동시 확보, 공격적 GW 스케일.<br><strong>약점·과제:</strong> GPUaaS는 글로벌 CSP와 가격경쟁이 버겁고, 거대 capex 회수 불확실, 전력 확보 경쟁, 통신 본업 정체·과거 사이버 침해(유심) 후유증.</p>
+  </div>
+
+  <!-- PART 5 -->
+  <div class="pb"></div>
+  <span class="parttag">PART 5 · 투자 관점</span>
+  <h1>15. 실적·밸류에이션 — ‘통신주 → AI 인프라주’ 리레이팅</h1>
+  <p>투자 관점의 핵심 스토리는 <span class="em">‘SKT를 통신주가 아니라 AI 인프라 사업자로 다시 보자(re-rating)’</span>예요.</p>
+  <figure>
+    <svg viewBox="0 0 720 210" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="AIDC 매출 성장">
+      <style>
+        .t{font-family:'Malgun Gothic',sans-serif;}
+        .ax{font-size:11px;fill:#595959;}
+        .vl{font-size:12px;font-weight:700;fill:#a50e21;}
+        .hd{font-size:12px;font-weight:700;fill:#a50e21;}
+      </style>
+      <text class="t hd" x="360" y="20" text-anchor="middle">AI 인프라/AIDC 매출 — 빠른 성장</text>
+      <line x1="90" y1="165" x2="640" y2="165" stroke="#f3c6cd" stroke-width="2"/>
+      <rect x="130" y="120" width="70" height="45" fill="#f1a7b1"/><text class="t vl" x="165" y="113" text-anchor="middle">3,974억</text><text class="t ax" x="165" y="182" text-anchor="middle">AI인프라 ’24(연)</text>
+      <rect x="320" y="132" width="70" height="33" fill="#e1142d"/><text class="t vl" x="355" y="125" text-anchor="middle">1,314억</text><text class="t ax" x="355" y="182" text-anchor="middle">AIDC ’26 1Q(분기,+89%)</text>
+      <rect x="520" y="55" width="70" height="110" fill="#a50e21"/><text class="t vl" x="555" y="48" text-anchor="middle">1조</text><text class="t ax" x="555" y="182" text-anchor="middle">AIDC ’30 목표(연)</text>
+      <text class="t ax" x="360" y="205" text-anchor="middle" font-style="italic">분기 1,000억+ 사업으로 자리매김 → 2030년 연 1조 목표</text>
+    </svg>
+    <figcaption>그림 3. AI 인프라/AIDC 매출 추이·목표(연·분기 혼합 표기 주의).</figcaption>
+  </figure>
+  <ul>
+    <li><strong>전사 실적(전망):</strong> 2026년 매출 약 17.7조·영업익 약 1.9조. 사이버 침해(유심) 일회성 비용은 대부분 작년 반영 → 2026년 기저효과·정상화.</li>
+    <li><strong>목표주가(참고):</strong> 삼성증권 87,000 → 115,000원 상향(Anthropic 등 투자지분 가치 반영), IBK 90,000원. <span class="muted">(자문 아닌 참고지표)</span></li>
+    <li><strong>리레이팅 논리:</strong> AIDC·투자지분(앤트로픽 등)이 ‘통신 멀티플’을 넘는 가치를 부여받을 수 있다는 기대 + 배당 회복.</li>
+  </ul>
+
+  <h1>16. 촉매(카탈리스트) 캘린더</h1>
+  <table>
+    <thead><tr><th>시기</th><th>이벤트</th><th>왜 중요</th></tr></thead>
+    <tbody>
+      <tr><td>분기 실적</td><td>AIDC 매출 성장률·가동률</td><td>‘성장 스토리’ 입증</td></tr>
+      <tr><td>2027</td><td>울산 AIDC 41MW 가동 / 엔비디아 AI팩토리 첫 가동</td><td>대형 매출 본격화 분기점</td></tr>
+      <tr><td>수시</td><td>글로벌 빅테크 코로케이션·장기계약 수주</td><td>capex 회수 가시성·PF 조달</td></tr>
+      <tr><td>수시</td><td>GPUaaS 글로벌 진출(페타서스)·신규 고객</td><td>클라우드 매출 확장</td></tr>
+      <tr><td>연중</td><td>배당 재개·투자지분(앤트로픽 등) 가치</td><td>밸류에이션 리레이팅</td></tr>
+    </tbody>
+  </table>
+
+  <h1>17. 리스크 매트릭스 (발생가능성 × 영향)</h1>
+  <figure>
+    <svg viewBox="0 0 720 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="리스크 매트릭스">
+      <style>
+        .t{font-family:'Malgun Gothic',sans-serif;}
+        .ax{font-size:11px;font-weight:700;fill:#a50e21;}
+        .rk{font-size:10.5px;fill:#1d2733;}
+        .q{font-size:10px;fill:#8a8f98;}
+      </style>
+      <rect x="90" y="30" width="560" height="240" fill="#fef5f6" stroke="#f3c6cd"/>
+      <line x1="370" y1="30" x2="370" y2="270" stroke="#f3c6cd" stroke-width="1.5"/>
+      <line x1="90" y1="150" x2="650" y2="150" stroke="#f3c6cd" stroke-width="1.5"/>
+      <text class="t ax" x="370" y="295" text-anchor="middle">발생 가능성 →</text>
+      <text class="t ax" x="58" y="150" text-anchor="middle" transform="rotate(-90 58 150)">영향 →</text>
+      <text class="t q" x="230" y="48" text-anchor="middle">영향 높음·확률 낮음</text>
+      <text class="t q" x="510" y="48" text-anchor="middle">영향 높음·확률 높음 (주시)</text>
+      <text class="t q" x="230" y="262" text-anchor="middle">영향 낮음·확률 낮음</text>
+      <text class="t q" x="510" y="262" text-anchor="middle">영향 낮음·확률 높음</text>
+      <circle cx="510" cy="85" r="6" fill="#b5481f"/><text class="t rk" x="522" y="82">capex 회수 지연(가동률 미달)</text>
+      <circle cx="560" cy="115" r="6" fill="#b5481f"/><text class="t rk" x="500" y="132">GPUaaS 글로벌 경쟁</text>
+      <circle cx="470" cy="130" r="6" fill="#b5481f"/><text class="t rk" x="360" y="128">전력 확보 난항</text>
+      <circle cx="250" cy="90" r="6" fill="#c08a1e"/><text class="t rk" x="262" y="87">GPU 급격한 진부화</text>
+      <circle cx="300" cy="120" r="6" fill="#c08a1e"/><text class="t rk" x="200" y="135">재차 보안사고</text>
+      <circle cx="540" cy="200" r="6" fill="#1e7a4d"/><text class="t rk" x="430" y="203">기대 선반영(밸류 부담)</text>
+      <circle cx="270" cy="210" r="6" fill="#8a8f98"/><text class="t rk" x="282" y="213">단기 환율·금리</text>
+    </svg>
+    <figcaption>그림 4. 리스크 매트릭스 — ‘capex 회수 지연·GPUaaS 경쟁·전력 확보’가 핵심 감시 대상.</figcaption>
+  </figure>
+
+  <h1>18. 시나리오 (낙관·중립·비관)</h1>
+  <table>
+    <thead><tr><th>시나리오</th><th>전제</th><th>그림</th></tr></thead>
+    <tbody>
+      <tr><td>낙관</td><td>울산·글로벌 코로케이션 가동률 빠르게 충족 + 장기계약 누적</td><td>AIDC 연 1조 조기 달성, ‘AI 인프라주’ 리레이팅 본격화</td></tr>
+      <tr><td>중립(기본)</td><td>가산·울산 단계적 가동, GPUaaS는 점진적</td><td>AIDC가 분기 1,000억+ 성장축으로 자리, 통신+AI 안정 성장</td></tr>
+      <tr><td>비관</td><td>AI capex 둔화·가동률 미달·전력 차질·경쟁 심화</td><td>거대 투자 회수 지연, 선반영 밸류 부담 노출</td></tr>
+    </tbody>
+  </table>
+
+  <h1>19. 모니터링 KPI 체크리스트</h1>
+  <ul>
+    <li><strong>AIDC 분기 매출·성장률</strong> (분기 1,000억+ 유지·가속 여부)</li>
+    <li><strong>가동률(Utilization)</strong> — GPU·랙이 실제로 채워지나(수익화 핵심)</li>
+    <li><strong>대형 코로케이션 수주·장기계약</strong> 공시 (capex 회수 가시성)</li>
+    <li><strong>울산 일정</strong> (2027 41MW → 2029 103MW 진척)</li>
+    <li><strong>전력 확보</strong> (전용 요금제·전력망·자가발전)</li>
+    <li><strong>배당 재개·투자지분 가치</strong> (밸류에이션 트리거)</li>
+  </ul>
+
+  <!-- PART 6 -->
+  <div class="pb"></div>
+  <span class="parttag">PART 6 · 딥 (기술·운영)</span>
+  <h1>20. 냉각 — ‘열과의 전쟁’과 액침냉각</h1>
+  <p>랙당 44kW의 AIDC는 ‘난로 수백 개’를 한 방에 켜둔 셈이라, 냉각이 곧 비용·생존이에요. SKT는 <span class="em">SK엔무브</span>와 함께 <strong>액침냉각(서버를 특수 액체에 담가 식힘)</strong>을 밀고 있어요.</p>
+  <ul>
+    <li><strong>검증 결과:</strong> 인천사옥 테스트에서 공기냉각 대비 <span class="em">총 전력 37% 절감</span>(냉방전력 93%↓, 서버전력 10%↓).</li>
+    <li><strong>SK엔무브:</strong> 특수냉각유 ZIC-GC2, 미국 GRC에 2,500만$ 투자, Dell·영국 아이소톱과 협력, 수조형→정밀액체냉각으로 확장.</li>
+    <li><strong>의미:</strong> 냉각이 ‘비용 절감’이자 ‘넷제로(탄소중립)’ 수단 → 코로케이션 단가·ESG 경쟁력으로 직결.</li>
+  </ul>
+
+  <h1>21. 운영 두뇌 — 엔비디아와 만드는 ‘AI팩토리 운영 AI’</h1>
+  <p>SKT는 데이터센터를 ‘사람이 지키는’ 게 아니라 ‘AI가 운영’하게 만들려 해요. 엔비디아와 함께 <strong>전력·냉각·장애 징후를 실시간 예측·관리하는 전용 AI 에이전트·파운데이션 모델</strong>을 개발 중입니다. 가산에서 검증한 가상화 솔루션 ‘페타서스(Petasus)’를 GPUaaS에 적용했고, 이를 <strong>해외로 수출</strong>하는 것도 노립니다. ‘인프라(하드웨어) + 운영지능(소프트웨어)’를 함께 파는 그림이에요.</p>
+
+  <h1>22. 전력 확보 — 진짜 병목</h1>
+  <p>AIDC의 최대 제약은 GPU가 아니라 <strong>전기</strong>예요. 한전 전력망만으로는 GW급 수요를 감당하기 어려워, 사업자마다 다른 해법을 찾습니다(네이버는 발전소 지분 투자, 카카오는 직접 PPA, KT는 16개 거점 분산). SKT·SK는 <strong>울산 등 권역 + 정부의 전용 전기요금제·전력망 지원 + SK 그룹의 에너지 역량</strong>으로 풀어가는 구조예요. ‘전력을 누가 더 싸고 안정적으로 확보하느냐’가 코로케이션 단가 경쟁력의 핵심입니다.</p>
+
+  <!-- FAQ -->
+  <div class="pb"></div>
+  <h1>자주 묻는 질문 (FAQ) · 흔한 오해</h1>
+  <h3>Q1. SKT 데이터센터 사업은 결국 ‘부동산 임대’인가요?</h3>
+  <p>절반은 맞아요(코로케이션=공간·전력 임대). 하지만 GPUaaS(컴퓨팅 구독)와 운영 AI·솔루션이 더해져, ‘부동산 + 클라우드 + 소프트웨어’의 복합 사업입니다.</p>
+  <h3>Q2. AWS가 경쟁자 아닌가요? 왜 같이 하나요?</h3>
+  <p>AWS는 <strong>경쟁자이자 고객·투자자</strong>예요. GPUaaS에선 경쟁하지만, 울산처럼 ‘AWS가 돈 대고 입주(앵커 고객)’하는 코로케이션에선 파트너입니다. AIDC는 적과 동지가 겹치는 시장이에요.</p>
+  <h3>Q3. SKT가 통신사인데 AI에서 이길 수 있나요?</h3>
+  <p>SKT의 무기는 ‘기술’보다 <strong>SK 그룹 수직계열화(HBM~냉각~시공~망) + 부지·전력·운영 + 글로벌 파트너</strong>예요. AI 모델 자체보다 ‘인프라를 싸게·빨리·크게 까는 능력’으로 승부합니다.</p>
+  <h3>Q4. 왜 이렇게 큰돈(1,000조)을 SKT가 감당하나요?</h3>
+  <p>혼자 안 합니다. SK 자체 + 글로벌 파트너 투자 + 고객 장기계약 + 프로젝트 파이낸싱으로 ‘나눠’ 조달해요. 고객이 먼저 계약하면 외부 자금을 끌어오기 쉬워지는 구조입니다.</p>
+  <h3>Q5. 가장 큰 리스크는?</h3>
+  <p><strong>‘짓긴 지었는데 안 채워지는 것’</strong>(가동률 미달)이에요. GPU 수명이 3년이라 회수가 늦으면 손실로 직결됩니다. 그래서 장기 고객 계약과 가동률이 KPI의 1순위예요.</p>
+
+  <!-- 용어 -->
+  <h1>부록. 미니 용어 사전</h1>
+  <table>
+    <thead><tr><th>용어</th><th>쉬운 설명</th></tr></thead>
+    <tbody>
+      <tr><td>AIDC</td><td style="text-align:left">AI 데이터센터. GPU 연산에 특화된 고밀도·고전력 데이터센터.</td></tr>
+      <tr><td>코로케이션</td><td style="text-align:left">고객 서버를 위한 공간·전력·냉각을 빌려주는 사업(부동산형).</td></tr>
+      <tr><td>GPUaaS</td><td style="text-align:left">GPU를 클라우드로 구독·임대하는 서비스(컴퓨팅 판매).</td></tr>
+      <tr><td>하이퍼스케일</td><td style="text-align:left">초대형 데이터센터(글로벌 빅테크급 규모).</td></tr>
+      <tr><td>모듈러 AIDC</td><td style="text-align:left">컨테이너 조립식으로 빨리·싸게 짓는 소형 AIDC.</td></tr>
+      <tr><td>PF(프로젝트 파이낸싱)</td><td style="text-align:left">사업(인프라) 자체를 담보로 외부 자금을 조달하는 방식.</td></tr>
+      <tr><td>액침냉각</td><td style="text-align:left">서버를 특수 액체에 담가 식히는 고효율 냉각(전력 37%↓).</td></tr>
+      <tr><td>가동률(Utilization)</td><td style="text-align:left">깔아둔 GPU·랙이 실제로 얼마나 쓰이나. 수익화의 핵심.</td></tr>
+      <tr><td>리레이팅</td><td style="text-align:left">시장이 기업을 다시 평가해 밸류에이션(멀티플)을 올리는 것.</td></tr>
+      <tr><td>NPU</td><td style="text-align:left">AI 연산 전용 가속기(리벨리온 등). GPU 대비 특정 연산에 효율적.</td></tr>
+    </tbody>
+  </table>
+
+  <!-- 출처 -->
+  <h1>출처</h1>
+  <ol class="src">
+    <li>SK텔레콤 뉴스룸 — AI 데이터센터 구축 계획 / AI 인프라 시장 공략 — <a href="https://news.sktelecom.com/227156">link</a> · <a href="https://news.sktelecom.com/209322">link</a></li>
+    <li>전자신문 — SKT “15GW 규모 AIDC…AI 연산 수출국 도약” — <a href="https://www.etnews.com/20260629000423">link</a></li>
+    <li>디일렉 — SKT, 6만대 GPU 투자…‘소형 데이터센터’로 돈 번다?(4대 모델·GPU 경제학) — <a href="https://www.thelec.kr/news/articleView.html?idxno=33391">link</a></li>
+    <li>머니투데이 — ‘亞 최대 허브’ 꿈꾸는 SKT, AIDC 매출 89% 증가 — <a href="https://www.mt.co.kr/tech/2026/05/14/2026051316353465953">link</a></li>
+    <li>비즈워치/딜사이트 — SK-AWS 울산 데이터센터(7조·100MW) / SKB IDC 현황 — <a href="https://www.bloter.net/news/articleView.html?idxno=642957">link</a> · <a href="https://dealsite.co.kr/articles/109010">link</a></li>
+    <li>파이낸셜뉴스 — SKT-엔비디아, GW급 AI팩토리 — <a href="https://www.fnnews.com/news/202606080835426323">link</a></li>
+    <li>SK이노베이션 뉴스룸 — SK엔무브 액침냉각(전력 37% 절감) — <a href="https://news.sktelecom.com/199628">link</a></li>
+    <li>전자신문 — 정부 3대 메가프로젝트 AI 데이터센터(SK 5GW) — <a href="https://www.etnews.com/20260629000384">link</a></li>
+    <li>이투데이/삼성증권·IBK — SKT 목표주가·실적 전망(리레이팅·배당) — <a href="https://www.etoday.co.kr/news/view/2562446">link</a></li>
+    <li>데이터경제신문 — 데이터센터 3사 생존 전략 비교(KT클라우드·네이버클라우드) — <a href="https://www.dataeconomy.co.kr/news/articleView.html?idxno=40068">link</a></li>
+  </ol>
+  <p class="muted"><em>※ 본 문서는 공개된 기업 발표·언론·증권사 자료를 교차 확인해 정리한 참고 자료입니다. 본문 이미지는 출처에서 불러오며 저작권은 출처에 있습니다. 실적·매출·목표주가·투자규모는 발표·추정 기준(연/분기·연결/별도 혼재 가능)이며, 본 문서는 투자 권유가 아닙니다. 투자 결정과 결과의 책임은 전적으로 투자자 본인에게 있습니다.</em></p>
+
+</div>
+</body>
+</html>

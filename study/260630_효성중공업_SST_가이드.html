@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>효성중공업 SST 완전 가이드 — 입문부터 투자·기술까지</title>
+<style>
+  :root{
+    --accent:#1c4e80; --accent-dark:#143a60; --light:#e7eef6; --light2:#f2f6fb;
+    --gray:#595959; --line:#bcd0e6; --ink:#1d2733;
+    --warn:#b5481f; --warnbg:#fdf1ec; --warnln:#e6b39e;
+    --p1:#1c4e80; --p2:#1e7a4d; --p3:#7a3da8;
+  }
+  *{box-sizing:border-box;}
+  html{-webkit-print-color-adjust:exact; print-color-adjust:exact;}
+  body{font-family:"Malgun Gothic","맑은 고딕",-apple-system,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;
+    color:var(--ink); line-height:1.7; margin:0; background:#f5f6f8; font-size:16px;}
+  .page{max-width:820px; margin:24px auto; background:#fff; padding:56px 60px; box-shadow:0 1px 8px rgba(0,0,0,.08);}
+  h1{color:var(--accent-dark); font-size:1.48rem; border-bottom:3px solid var(--accent); padding-bottom:8px; margin:2.2em 0 .7em;}
+  h1:first-of-type{margin-top:.3em;}
+  .parttag{display:inline-block; font-size:.78rem; font-weight:700; color:#fff; padding:2px 10px; border-radius:10px; margin-bottom:6px;}
+  .pt1{background:var(--p1);} .pt2{background:var(--p2);} .pt3{background:var(--p3);}
+  h2{color:var(--accent); font-size:1.16rem; margin:1.5em 0 .45em;}
+  h3{color:var(--accent-dark); font-size:1.04rem; margin:1.1em 0 .3em;}
+  p{margin:.5em 0;} ul{margin:.4em 0 .9em; padding-left:1.3em;} li{margin:.3em 0;}
+  .em{color:var(--accent-dark); font-weight:700;}
+  .muted{color:var(--gray); font-size:.9rem;}
+  .callout{background:var(--light); border:1px solid var(--accent); border-left:6px solid var(--accent); border-radius:4px; padding:14px 18px; margin:1.1em 0;}
+  .callout .ct{font-weight:700; color:var(--accent-dark); margin-bottom:6px;}
+  .callout p{margin:.35em 0; font-size:.96rem;}
+  .warn{background:var(--warnbg); border:1px solid var(--warnln); border-left:6px solid var(--warn); border-radius:4px; padding:14px 18px; margin:1.1em 0;}
+  .warn .ct{font-weight:700; color:var(--warn); margin-bottom:6px;}
+  .warn p,.warn li{font-size:.94rem;}
+  table{border-collapse:collapse; width:100%; margin:1em 0; font-size:.85rem;}
+  th{background:var(--accent); color:#fff; font-weight:700; padding:9px 10px; text-align:center; border:1px solid var(--line);}
+  td{padding:8px 10px; border:1px solid var(--line); vertical-align:top; text-align:left;}
+  td.c{text-align:center;}
+  td:first-child{font-weight:700; background:#f2f6fb;}
+  tbody tr:nth-child(even) td{background:var(--light2);}
+  tbody tr:nth-child(even) td:first-child{background:#e7eef6;}
+  .cover{text-align:center; padding:100px 0 72px;}
+  .cover .big{font-size:2.2rem; font-weight:800; color:var(--accent-dark); letter-spacing:-1px; line-height:1.3;}
+  .cover .sub{font-size:1.15rem; color:var(--accent); margin-top:14px;}
+  .cover .sub2{font-size:1rem; color:var(--gray); margin-top:22px;}
+  .cover .date{font-size:.88rem; color:var(--gray); margin-top:54px;}
+  .toc{background:var(--light2); border:1px solid var(--line); border-radius:6px; padding:18px 24px;}
+  .toc ol{margin:0; padding-left:1.4em;} .toc li{margin:.3em 0;}
+  a{color:var(--accent-dark); word-break:break-all;}
+  .src{font-size:.83rem;} .src li{margin:.4em 0;}
+  figure{margin:1.4em 0; text-align:center;}
+  figure svg{width:100%; max-width:740px; height:auto; display:block; margin:0 auto;}
+  .refimg{display:block; max-width:100%; height:auto; margin:0 auto; border:1px solid var(--line); border-radius:6px;}
+  figcaption{font-size:.85rem; color:var(--gray); margin-top:8px;}
+  @media print{
+    body{background:#fff; font-size:11pt;}
+    .page{box-shadow:none; margin:0; max-width:none; padding:0;}
+    .pb{page-break-before:always;}
+    h1,h2,h3{page-break-after:avoid;} table,.callout,.warn,figure{page-break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="cover">
+    <div class="big">효성중공업 SST 완전 가이드</div>
+    <div class="sub">반도체 변압기(SST) · 입문부터 투자·기술까지</div>
+    <div class="sub2">비전공자도 이해하는 쉬운 설명 + 투자 핵심 + 딥한 기술</div>
+    <div class="date">2026년 6월 작성 · AI 데이터센터 전력의 게임체인저</div>
+  </div>
+
+  <!-- 면책 -->
+  <div class="pb"></div>
+  <div class="warn">
+    <div class="ct">먼저 읽어주세요</div>
+    <p>본 문서는 투자 자문이 아니라, 공개 자료·보도를 정리한 교육·참고용 자료입니다. 특정 종목(효성중공업)의 매수·매도 권유가 아니며, 실적·수주·시장 전망 수치는 발표·추정 기준이라 달라질 수 있습니다. 투자 판단·책임은 본인에게 있습니다.</p>
+  </div>
+
+  <!-- 한눈에 -->
+  <h1>한눈에 보기 (3분 요약)</h1>
+  <p><span class="em">SST(Solid-State Transformer, 반도체 변압기)</span>는 무겁고 큰 ‘철심+구리코일’ 변압기를 <strong>전력 반도체(SiC)</strong>로 대체해, 전압 변환은 물론 전력 흐름·품질까지 실시간 제어하는 차세대 변압기예요. AI 데이터센터가 ‘고전압 직류(800VDC)’로 가면서, SST가 그 입구를 책임지는 핵심 장비로 떠올랐습니다.</p>
+  <div class="callout">
+    <div class="ct">효성중공업이 주인공인 이유 (한 문장)</div>
+    <p>효성중공업은 <span class="em">2022년 세계 최초로 도심 배전망에 바로 연결되는 22.9kV급 SST 개발에 성공</span>했고, 초고압 변압기·차단기(전통 강자) + STATCOM·HVDC·ESS(전력반도체 경험)를 묶어 ‘데이터센터 토털 전력 솔루션’으로 미국 시장을 노립니다.</p>
+  </div>
+  <table>
+    <thead><tr><th>구분</th><th>핵심 포인트</th></tr></thead>
+    <tbody>
+      <tr><td>기술</td><td>세계 최초 22.9kV 1.05MVA SST(2022). 다단계 변환을 ‘장비 하나’로 대체</td></tr>
+      <tr><td>시장</td><td>글로벌 데이터센터 전력 시장 2026 275억$ → 2031 385억$(약 53조). SST 시장 연 40%+ 성장 전망</td></tr>
+      <tr><td>실적(2026 1Q)</td><td>신규수주 4.17조(분기 신기록)·매출 1.36조(+26%)·영업익 1523억(+49%)·수주잔액 15.1조</td></tr>
+      <tr><td>전략</td><td>미국 멤피스 공장(변압기+차단기 동시생산, 국내 유일). 북미 매출 22%(2024)→50%(2029) 목표</td></tr>
+    </tbody>
+  </table>
+
+  <!-- PART 1 -->
+  <div class="pb"></div>
+  <span class="parttag pt1">PART 1 · 입문</span>
+  <h1>1부. 비전공자도 이해하는 SST</h1>
+
+  <h2>1. 그래서 ‘변압기’가 뭔데?</h2>
+  <p>발전소에서 만든 전기는 멀리 보내려고 <strong>아주 높은 전압</strong>으로 흐릅니다. 그런데 집·공장·데이터센터에서 쓰려면 <strong>낮은 전압</strong>으로 바꿔야 해요. 이 ‘전압을 바꿔주는 장치’가 변압기예요. 기존 변압기는 <strong>철심에 구리선을 칭칭 감은</strong> 방식이라 무겁고 크고, 전압만 바꿀 뿐 흐름을 똑똑하게 제어하진 못합니다.</p>
+
+  <h2>2. SST(반도체 변압기) — 철심 대신 ‘반도체’로</h2>
+  <p>SST는 그 무거운 철심·코일 대신 <span class="em">전력 반도체(SiC) 스위치</span>를 써서 전압을 바꿉니다. 단순히 전압만 바꾸는 게 아니라, <strong>전기의 방향·양·품질을 실시간으로 조절</strong>하고, 요즘 데이터센터가 원하는 <strong>직류(DC)</strong>도 곧바로 뽑아낼 수 있어요. 한마디로 ‘생각하는 변압기’입니다.</p>
+  <div class="callout">
+    <div class="ct">비유: 수도꼭지 vs 스마트 정수기</div>
+    <p>기존 변압기가 ‘물을 그냥 흘려보내는 수도꼭지’라면, SST는 ‘수질·수량·방향까지 조절하는 스마트 정수기’예요. 게다가 부피는 훨씬 작습니다(반도체가 빠르게 스위칭하면 내부 변압기를 70~90%까지 줄일 수 있어요).</p>
+  </div>
+
+  <h2>3. 왜 하필 지금 SST가 뜨나 — AI 데이터센터</h2>
+  <p>AI 데이터센터는 전기를 어마어마하게 먹고, 효율을 위해 <strong>800VDC(고전압 직류)</strong> 방식으로 바뀌고 있어요(앞서 만든 ‘800VDC’ 문서 참고). 이때 전력망의 고압 교류(AC)를 데이터센터용 직류(DC)로 <strong>손실 없이, 한 번에</strong> 바꿔주는 장비가 필요한데, 그 역할에 딱 맞는 게 SST입니다. 변환 단계를 줄여 전기를 덜 버리고, 공간도 아끼죠.</p>
+
+  <h2>4. 효성중공업이 왜 주인공인가</h2>
+  <ul>
+    <li><strong>세계 최초 타이틀:</strong> 2018년 국책과제로 시작해 <span class="em">2022년 22.9kV급 SST를 세계 최초로 개발</span>. 도심 배전망에 바로 연결 가능한 수준.</li>
+    <li><strong>‘전통 + 첨단’ 융합:</strong> 초고압 변압기·차단기(세계 최고 수준)에 STATCOM·HVDC·ESS(전력반도체 기반) 경험을 더해 SST에 응용.</li>
+    <li><strong>토털 솔루션 지향:</strong> 장비 하나만 파는 게 아니라 ‘데이터센터 전력망의 처음부터 끝까지’를 묶어 공급하는 전략.</li>
+  </ul>
+
+  <h2>SST, 이렇게 생겼어요 (실제 사진)</h2>
+  <figure>
+    <img class="refimg" src="https://cdn.goodkyung.com/news/photo/202606/287671_258629_367.jpg" alt="효성중공업 22.9kV 반도체 변압기(SST)" loading="lazy">
+    <figcaption>효성중공업이 세계 최초 개발한 22.9kV 반도체 변압기(SST). 출처: <a href="https://www.goodkyung.com/news/articleView.html?idxno=287671">굿모닝경제 / 효성그룹</a></figcaption>
+  </figure>
+
+  <h2>5. 기술·사업 발전 타임라인</h2>
+  <figure>
+    <svg viewBox="0 0 720 180" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="효성중공업 SST 타임라인">
+      <style>
+        .t{font-family:'Malgun Gothic',sans-serif;}
+        .yr{font-size:13px;font-weight:700;fill:#143a60;}
+        .ev{font-size:10.5px;fill:#1d2733;}
+        .mut{font-size:10px;fill:#595959;}
+      </style>
+      <line x1="50" y1="92" x2="675" y2="92" stroke="#bcd0e6" stroke-width="4"/>
+      <!-- nodes -->
+      <g>
+        <circle cx="60" cy="92" r="7" fill="#1c4e80"/>
+        <text class="t yr" x="60" y="64" text-anchor="middle">2018</text>
+        <text class="t ev" x="60" y="120" text-anchor="middle">국책과제</text>
+        <text class="t ev" x="60" y="134" text-anchor="middle">연구 시작</text>
+        <circle cx="185" cy="92" r="7" fill="#1c4e80"/>
+        <text class="t yr" x="185" y="64" text-anchor="middle">2022</text>
+        <text class="t ev" x="185" y="120" text-anchor="middle">세계 최초</text>
+        <text class="t ev" x="185" y="134" text-anchor="middle">22.9kV SST</text>
+        <circle cx="310" cy="92" r="7" fill="#1c4e80"/>
+        <text class="t yr" x="310" y="64" text-anchor="middle">2024</text>
+        <text class="t ev" x="310" y="120" text-anchor="middle">북미 매출</text>
+        <text class="t ev" x="310" y="134" text-anchor="middle">비중 22%</text>
+        <circle cx="435" cy="92" r="8" fill="#1e7a4d"/>
+        <text class="t yr" x="435" y="64" text-anchor="middle">2026</text>
+        <text class="t ev" x="435" y="120" text-anchor="middle">美 전시·사업화</text>
+        <text class="t ev" x="435" y="134" text-anchor="middle">1Q 수주 신기록</text>
+        <circle cx="560" cy="92" r="7" fill="#8a8f98"/>
+        <text class="t yr" x="560" y="64" text-anchor="middle">2029</text>
+        <text class="t mut" x="560" y="120" text-anchor="middle">목표: 북미</text>
+        <text class="t mut" x="560" y="134" text-anchor="middle">매출 50%</text>
+        <circle cx="665" cy="92" r="7" fill="#8a8f98"/>
+        <text class="t yr" x="665" y="64" text-anchor="middle">2030s</text>
+        <text class="t mut" x="665" y="120" text-anchor="middle">SST 시장</text>
+        <text class="t mut" x="665" y="134" text-anchor="middle">본격 확대</text>
+      </g>
+      <text class="t mut" x="360" y="168" text-anchor="middle" font-style="italic">‘연구(2018) → 세계최초(2022) → 미국 사업화(2026) → 북미 50%(2029)’의 단계적 확장</text>
+    </svg>
+    <figcaption>그림 2. 효성중공업 SST 발전 타임라인(파랑=달성, 회색=목표).</figcaption>
+  </figure>
+
+  <h2>6. 실제 적용 사례 (레퍼런스)</h2>
+  <p>SST는 아직 ‘초기 상용화’ 단계라 대형 레퍼런스가 쌓이는 중이에요. 현재 거론되는 적용 영역은:</p>
+  <ul>
+    <li><strong>AI 데이터센터:</strong> 중압 AC를 800VDC로 한 번에 — 효성이 정조준하는 핵심 시장.</li>
+    <li><strong>EV 급속충전:</strong> 고전압 직류를 효율적으로 — 고전압 직류·SST의 ‘원조 수요처’.</li>
+    <li><strong>MVDC 마이크로그리드·신재생 연계:</strong> 양방향 제어로 태양광·ESS를 묶음.</li>
+    <li><strong>철도·산업용 전력:</strong> 무겁고 큰 변압기를 줄여야 하는 곳.</li>
+  </ul>
+  <div class="callout">
+    <div class="ct">대안 접근과 비교 — ‘SST vs (변압기+정류기)’</div>
+    <p>같은 ‘AC→800VDC’를 만드는 방법은 둘이에요. ① <strong>전통 변압기 + 별도 정류기</strong>를 여러 단으로 잇는 방식, ② <strong>SST 하나</strong>로 통합하는 방식. ①은 검증됐지만 크고 단계가 많고, ②(SST)는 작고 효율적·능동제어가 되지만 비싸고 신기술이에요. 당장은 ①이 주류, 고밀도·고효율이 중요한 곳부터 ②가 침투하는 ‘공존’ 구도입니다.</p>
+  </div>
+
+  <!-- PART 2 -->
+  <div class="pb"></div>
+  <span class="parttag pt2">PART 2 · 투자</span>
+  <h1>2부. 투자 영역에서 꼭 알아야 할 것</h1>
+
+  <h2>1. ‘효성중공업’은 어떤 회사인가 (사업 구조)</h2>
+  <p>효성중공업은 크게 <strong>중공업(전력기기) + 건설</strong> 두 축이에요. 투자 관점에서 핵심은 <strong>중공업(변압기·차단기·STATCOM·HVDC·SST)</strong> 부문이고, SST는 그중에서도 ‘미래 성장 옵션’에 해당합니다. 즉 <span class="em">지금 실적을 떠받치는 건 초고압 변압기 같은 ‘본업’이고, SST는 그 위에 얹히는 차세대 모멘텀</span>이라는 점을 구분해야 해요.</p>
+
+  <h2>2. 실적·수주 — 본업이 먼저 탄탄하다</h2>
+  <table>
+    <thead><tr><th>항목(2026년 1분기)</th><th>수치</th><th>비고</th></tr></thead>
+    <tbody>
+      <tr><td>신규 수주</td><td class="c">4조 1,745억 원</td><td>분기 기준 신기록, 컨센서스 상회</td></tr>
+      <tr><td>매출</td><td class="c">1조 3,582억 원</td><td>전년동기 +26.2%</td></tr>
+      <tr><td>영업이익</td><td class="c">1,523억 원</td><td>전년동기 +48.8%</td></tr>
+      <tr><td>수주잔액</td><td class="c">15조 1,000억 원</td><td>2월 765kV 초고압 변압기 7,870억(업계 사상 최대)</td></tr>
+    </tbody>
+  </table>
+  <p class="muted">→ ‘AI·전력망 슈퍼사이클’의 수혜가 SST 이전에 <strong>초고압 변압기 본업</strong>에서 먼저 나오고 있다는 의미예요. SST는 여기에 더해지는 ‘추가 성장축’.</p>
+
+  <h2>3. 미국 전략 — SST의 진짜 무대</h2>
+  <ul>
+    <li><strong>현지 생산:</strong> 미국 테네시 멤피스에 초고압 변압기 공장 가동. <span class="em">국내 업체 중 유일하게 미국 내에서 변압기+차단기 동시 생산</span> 체제 → 관세·납기 강점.</li>
+    <li><strong>매출 목표:</strong> 북미 매출 비중 <span class="em">2024년 22% → 2029년 50%</span>.</li>
+    <li><strong>전시·마케팅:</strong> 북미 최대 송배전 전시회(IEEE PES T&D, 시카고)에서 SST 서브모듈, 800kV 7000A 차단기, 전압형 HVDC, STATCOM 등 공개.</li>
+  </ul>
+
+  <h2>4. 시장 규모와 성장성</h2>
+  <ul>
+    <li>글로벌 데이터센터 전력 시장: <span class="em">2026년 275억$ → 2031년 385억$(약 53조 원)</span>.</li>
+    <li>SST 시장 자체는 전력 인프라 고도화로 <span class="em">연평균 40%+ 성장</span> 전망.</li>
+    <li>구조적 배경: AI 데이터센터 전력 폭증 + 800VDC 전환 + 노후 전력망 교체.</li>
+  </ul>
+
+  <h2>5. 경쟁 구도 & 리스크</h2>
+  <p>경쟁자: <strong>HD현대일렉트릭·LS일렉트릭</strong>(국내), ABB·지멘스·이튼 등(글로벌)이 미국 전력망 시장에서 차세대 기술로 경쟁 중이에요. 효성의 차별점은 ‘SST 세계 최초 + 미국 현지 생산’이지만, 다음 리스크를 함께 봐야 합니다.</p>
+  <div class="warn">
+    <div class="ct">투자자가 점검할 리스크</div>
+    <ul>
+      <li><strong>SST는 아직 ‘초기 상용화’:</strong> 매출 기여는 본업 대비 작고, 본격 양산·대형 수주는 앞으로의 일. ‘기대’와 ‘실제 매출’을 구분.</li>
+      <li><strong>기대 선반영:</strong> AI·전력 테마로 주가가 먼저 오른 구간일 수 있음 → 밸류에이션 부담 점검.</li>
+      <li><strong>SiC 수급·원가:</strong> 핵심 부품인 SiC 전력반도체 공급·가격이 변수.</li>
+      <li><strong>경쟁·정책:</strong> 글로벌 전력기기 강자들과 경쟁, 미국 통상·관세·전력정책 변화.</li>
+      <li><strong>실행 리스크:</strong> 신기술 신뢰성·인증·대형 프로젝트 납기.</li>
+    </ul>
+  </div>
+  <div class="callout">
+    <div class="ct">투자 관점 한 줄</div>
+    <p>효성중공업은 <strong>‘초고압 변압기 본업(현재 실적) + SST(미래 옵션)’</strong>의 조합이에요. SST 한 가지만 보고 접근하기보다, 본업 수주·미국 매출 비중·SST 실제 수주 진척을 함께 추적하는 게 핵심입니다.</p>
+  </div>
+
+  <h2>6. 시장 규모와 성장성</h2>
+  <p>SST의 무대는 결국 ‘데이터센터 전력 + 노후 전력망 교체’예요. 두 시장 모두 구조적으로 커집니다.</p>
+  <figure>
+    <svg viewBox="0 0 720 240" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="데이터센터 전력 시장 규모">
+      <style>
+        .t{font-family:'Malgun Gothic',sans-serif;}
+        .ax{font-size:11px;fill:#595959;}
+        .vl{font-size:12px;font-weight:700;fill:#143a60;}
+        .lb{font-size:12px;font-weight:700;fill:#1d2733;}
+        .hd{font-size:12px;font-weight:700;fill:#143a60;}
+      </style>
+      <text class="t hd" x="180" y="22" text-anchor="middle">글로벌 데이터센터 전력 시장</text>
+      <!-- axis -->
+      <line x1="80" y1="190" x2="330" y2="190" stroke="#bcd0e6" stroke-width="2"/>
+      <!-- bar 2026: 275 -->
+      <rect x="120" y="110" width="60" height="80" fill="#1c4e80"/>
+      <text class="t vl" x="150" y="103" text-anchor="middle">275억$</text>
+      <text class="t ax" x="150" y="206" text-anchor="middle">2026</text>
+      <!-- bar 2031: 385 -->
+      <rect x="240" y="78" width="60" height="112" fill="#1e7a4d"/>
+      <text class="t vl" x="270" y="71" text-anchor="middle">385억$</text>
+      <text class="t ax" x="270" y="206" text-anchor="middle">2031</text>
+      <text class="t ax" x="205" y="226" text-anchor="middle">≈ 53조 원 규모로 확대</text>
+      <!-- right: SST CAGR -->
+      <text class="t hd" x="540" y="22" text-anchor="middle">SST 시장 성장률(연 CAGR)</text>
+      <rect x="400" y="60" width="280" height="150" rx="8" fill="#f2f6fb" stroke="#bcd0e6"/>
+      <text class="t lb" x="540" y="92" text-anchor="middle">기관별 추정 편차 큼</text>
+      <text class="t vl" x="540" y="122" text-anchor="middle" font-size="20" fill="#1e7a4d">+15% ~ +40%</text>
+      <text class="t ax" x="540" y="150" text-anchor="middle">예: 1.7억$(’24) → 9.4억$(’30)</text>
+      <text class="t ax" x="540" y="168" text-anchor="middle">또는 2.8억$(’30) → 15.2억$(’35)</text>
+      <text class="t ax" x="540" y="194" text-anchor="middle">보수적 추정은 연 14~15%</text>
+    </svg>
+    <figcaption>그림 3. 데이터센터 전력 시장(좌)과 SST 시장 성장률(우). SST는 ‘작지만 빠르게 크는’ 신시장.</figcaption>
+  </figure>
+  <p class="muted">※ 절대 규모보다 ‘성장률·채택 속도’가 관전 포인트. 데이터센터 전력 시장이 SST의 1차 침투처입니다.</p>
+
+  <h2>7. 경쟁사 비교 — ‘K-전력 빅3’</h2>
+  <p>효성·HD현대일렉트릭·LS일렉트릭은 미국 전력망 교체 사이클의 ‘공동 수혜’예요. 3사 합산 수주잔액이 약 32조에 달합니다. SST는 그 위에서 효성의 차별화 카드입니다.</p>
+  <table>
+    <thead><tr><th>구분</th><th>효성중공업</th><th>HD현대일렉트릭</th><th>LS일렉트릭</th></tr></thead>
+    <tbody>
+      <tr><td>수주잔액(’26 1Q)</td><td class="c">약 15.1조</td><td class="c">약 11.6조<br>($78.9억)</td><td class="c">약 5.64조</td></tr>
+      <tr><td>북미</td><td>수주잔액의 50%+</td><td>북미 초고압 변압기 직접 수혜</td><td>1Q 북미매출 +80%(~3,000억)</td></tr>
+      <tr><td>차별점</td><td>SST 세계최초 + 美 현지생산(변압기+차단기)</td><td>북미 변압기 강자·대규모 캐파</td><td>배전·자동화·북미 고성장</td></tr>
+    </tbody>
+  </table>
+  <p class="muted">※ 유안타증권은 전력기기 최선호주로 LS일렉트릭·효성중공업을 제시한 바 있습니다(‘조정은 기회’).</p>
+
+  <h2>8. 실적·수주 추이 & 컨센서스</h2>
+  <figure>
+    <svg viewBox="0 0 720 220" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="효성중공업 영업이익 추이">
+      <style>
+        .t{font-family:'Malgun Gothic',sans-serif;}
+        .ax{font-size:11px;fill:#595959;}
+        .vl{font-size:12px;font-weight:700;fill:#143a60;}
+        .hd{font-size:12px;font-weight:700;fill:#143a60;}
+      </style>
+      <text class="t hd" x="360" y="22" text-anchor="middle">연결 영업이익: 2026년 1Q → 2Q(전망, IBK)</text>
+      <line x1="120" y1="175" x2="600" y2="175" stroke="#bcd0e6" stroke-width="2"/>
+      <rect x="200" y="120" width="90" height="55" fill="#1c4e80"/>
+      <text class="t vl" x="245" y="113" text-anchor="middle">1,523억</text>
+      <text class="t ax" x="245" y="192" text-anchor="middle">2026 1Q (실적)</text>
+      <rect x="420" y="58" width="90" height="117" fill="#1e7a4d"/>
+      <text class="t vl" x="465" y="51" text-anchor="middle">3,245억</text>
+      <text class="t ax" x="465" y="192" text-anchor="middle">2026 2Q (전망)</text>
+      <text class="t ax" x="360" y="214" text-anchor="middle">전년동기 대비 +97.6% 전망 · 컨센(2,876억) 상회</text>
+    </svg>
+    <figcaption>그림 4. 효성중공업 영업이익 1Q 실적 → 2Q 전망(IBK투자증권). 본업 모멘텀이 강하다.</figcaption>
+  </figure>
+  <ul>
+    <li><strong>2026 1Q(연결):</strong> 매출 1.36조·영업익 1,523억, 신규수주 4.17조(분기 신기록), 수주잔액 15.1조.</li>
+    <li><strong>2026 2Q 전망(IBK):</strong> 매출 1.91조·영업익 3,245억(+97.6%) — 컨센(매출 1.82조·영업익 2,876억) 상회.</li>
+    <li><strong>목표주가:</strong> 유안타 500만 · IBK 490만 · 삼성 430만 원(참고지표, 자문 아님).</li>
+    <li><strong>가이던스:</strong> 중공업·건설 매출 +15%, 중공업 신규수주 +10%↑.</li>
+  </ul>
+  <p class="muted">※ 별도(중공업 부문) 기준 1Q 매출 8,807억·영업익 1,177억(영업이익률 13.4%) — 보도별 집계 기준(연결/별도) 차이 유의.</p>
+
+  <h2>9. 촉매(카탈리스트) 캘린더 — 무엇을 언제 볼까</h2>
+  <table>
+    <thead><tr><th>시기</th><th>이벤트</th><th>왜 중요한가</th></tr></thead>
+    <tbody>
+      <tr><td>분기 실적(7월 말 등)</td><td>2Q 호실적 전망</td><td>본업(초고압 변압기) 모멘텀·수주 확인</td></tr>
+      <tr><td>전시회(IEEE PES T&D, 시카고)</td><td>SST 서브모듈·800kV 차단기·HVDC 공개</td><td>미국 수주 파이프라인·기술 검증</td></tr>
+      <tr><td>국내외 정책</td><td>3대 메가프로젝트·美 전력망 교체</td><td>전력 인프라 발주 환경</td></tr>
+      <tr><td>SST 수주·납품 공시</td><td>실제 상용화 진척</td><td>‘SST 모멘텀’의 현실화 신호</td></tr>
+      <tr><td>멤피스 공장</td><td>가동·증설 동향</td><td>북미 현지 생산능력·50% 목표 진척</td></tr>
+    </tbody>
+  </table>
+
+  <h2>10. 리스크 매트릭스 (발생가능성 × 영향)</h2>
+  <figure>
+    <svg viewBox="0 0 720 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="리스크 매트릭스">
+      <style>
+        .t{font-family:'Malgun Gothic',sans-serif;}
+        .ax{font-size:11px;font-weight:700;fill:#143a60;}
+        .rk{font-size:10.5px;fill:#1d2733;}
+        .q{font-size:10px;fill:#8a8f98;}
+      </style>
+      <!-- quadrant background -->
+      <rect x="90" y="30" width="560" height="240" fill="#f2f6fb" stroke="#bcd0e6"/>
+      <line x1="370" y1="30" x2="370" y2="270" stroke="#bcd0e6" stroke-width="1.5"/>
+      <line x1="90" y1="150" x2="650" y2="150" stroke="#bcd0e6" stroke-width="1.5"/>
+      <!-- axis labels -->
+      <text class="t ax" x="370" y="295" text-anchor="middle">발생 가능성 →</text>
+      <text class="t ax" x="60" y="150" text-anchor="middle" transform="rotate(-90 60 150)">영향 →</text>
+      <text class="t q" x="230" y="48" text-anchor="middle">영향 높음 · 확률 낮음</text>
+      <text class="t q" x="510" y="48" text-anchor="middle">영향 높음 · 확률 높음 (주시)</text>
+      <text class="t q" x="230" y="262" text-anchor="middle">영향 낮음 · 확률 낮음</text>
+      <text class="t q" x="510" y="262" text-anchor="middle">영향 낮음 · 확률 높음</text>
+      <!-- items -->
+      <circle cx="500" cy="95" r="6" fill="#b5481f"/><text class="t rk" x="512" y="92">SST 양산·상용화 지연</text>
+      <circle cx="560" cy="120" r="6" fill="#b5481f"/><text class="t rk" x="512" y="135">경쟁 심화</text>
+      <circle cx="240" cy="95" r="6" fill="#c08a1e"/><text class="t rk" x="252" y="92">미국 통상·관세 급변</text>
+      <circle cx="300" cy="120" r="6" fill="#c08a1e"/><text class="t rk" x="200" y="135">대형 프로젝트 납기</text>
+      <circle cx="520" cy="195" r="6" fill="#1e7a4d"/><text class="t rk" x="430" y="198">기대 선반영(밸류 부담)</text>
+      <circle cx="560" cy="220" r="6" fill="#1e7a4d"/><text class="t rk" x="455" y="235">SiC 수급·원가</text>
+      <circle cx="250" cy="210" r="6" fill="#8a8f98"/><text class="t rk" x="262" y="213">단기 환율</text>
+    </svg>
+    <figcaption>그림 5. 리스크 매트릭스 — 오른쪽 위(고영향·고확률)일수록 우선 주시. ‘SST 상용화 지연·경쟁심화’가 핵심 감시 대상.</figcaption>
+  </figure>
+
+  <h2>11. 시나리오 (낙관 · 중립 · 비관)</h2>
+  <table>
+    <thead><tr><th>시나리오</th><th>전제</th><th>그림</th></tr></thead>
+    <tbody>
+      <tr><td>낙관</td><td>데이터센터 SST 본격 채택 + 미국 수주 확대</td><td>본업(변압기) + SST 동반 성장, 북미 50% 조기 달성</td></tr>
+      <tr><td>중립(기본)</td><td>초고압 변압기 본업 호조 지속, SST는 점진적</td><td>안정 성장 — 실적은 본업이 견인, SST는 ‘옵션 가치’</td></tr>
+      <tr><td>비관</td><td>AI 투자 둔화·SST 상용화 지연·경쟁 심화</td><td>모멘텀 약화, 선반영된 밸류 부담 노출</td></tr>
+    </tbody>
+  </table>
+
+  <h2>12. 모니터링 KPI 체크리스트</h2>
+  <ul>
+    <li>분기 <strong>신규수주·수주잔액</strong> 추이 (성장 지속 여부)</li>
+    <li><strong>북미 매출 비중</strong> (2024 22% → 2029 50% 경로상에 있나)</li>
+    <li><strong>SST 실제 수주·납품 공시</strong> (‘기대’가 ‘매출’로 바뀌는 신호)</li>
+    <li><strong>영업이익률</strong> (미국·고부가 비중 확대 효과)</li>
+    <li><strong>SiC 공급·전시회·정책 이벤트</strong> (촉매 캘린더와 연동)</li>
+  </ul>
+
+  <!-- PART 3 -->
+  <div class="pb"></div>
+  <span class="parttag pt3">PART 3 · 딥(기술)</span>
+  <h1>3부. 조금 더 딥하게 — SST는 어떻게 작동하나</h1>
+  <p>SST가 ‘반도체로 전압을 바꾼다’는 건 알았으니, 이제 내부를 한 겹 더 들어가 볼게요. SST는 보통 <strong>3단(stage) 구조</strong>로 되어 있습니다.</p>
+
+  <figure>
+    <svg viewBox="0 0 720 250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="SST 3단 구조">
+      <style>
+        .t{font-family:'Malgun Gothic',sans-serif;}
+        .bx{font-size:12px;font-weight:700;fill:#fff;}
+        .sm{font-size:10px;fill:#fff;}
+        .cap{font-size:11px;fill:#595959;}
+        .hd{font-size:13px;font-weight:700;fill:#143a60;}
+      </style>
+      <text class="t hd" x="360" y="24" text-anchor="middle">SST 내부 3단 구조</text>
+      <!-- input -->
+      <rect x="20" y="60" width="110" height="70" rx="6" fill="#8a8f98"/>
+      <text class="t bx" x="75" y="90" text-anchor="middle">전력망</text>
+      <text class="t sm" x="75" y="108" text-anchor="middle">중압 AC 13.8~22.9kV</text>
+      <!-- stage1 -->
+      <rect x="150" y="60" width="130" height="70" rx="6" fill="#1c4e80"/>
+      <text class="t bx" x="215" y="86" text-anchor="middle">① AC/DC</text>
+      <text class="t sm" x="215" y="103" text-anchor="middle">정류 + 역률보정</text>
+      <text class="t sm" x="215" y="118" text-anchor="middle">SiC MOSFET</text>
+      <!-- stage2 -->
+      <rect x="300" y="60" width="130" height="70" rx="6" fill="#2a6aa8"/>
+      <text class="t bx" x="365" y="84" text-anchor="middle">② DC/DC 절연</text>
+      <text class="t sm" x="365" y="101" text-anchor="middle">DAB + 중주파 변압기</text>
+      <text class="t sm" x="365" y="116" text-anchor="middle">수~수십 kHz</text>
+      <!-- stage3 -->
+      <rect x="450" y="60" width="130" height="70" rx="6" fill="#1e7a4d"/>
+      <text class="t bx" x="515" y="86" text-anchor="middle">③ 출력단</text>
+      <text class="t sm" x="515" y="103" text-anchor="middle">DC 또는 AC</text>
+      <text class="t sm" x="515" y="118" text-anchor="middle">800VDC / 480VAC</text>
+      <!-- load -->
+      <rect x="600" y="60" width="100" height="70" rx="6" fill="#8a8f98"/>
+      <text class="t bx" x="650" y="90" text-anchor="middle">데이터센터</text>
+      <text class="t sm" x="650" y="108" text-anchor="middle">800VDC 랙</text>
+      <!-- arrows -->
+      <g stroke="#143a60" stroke-width="3" fill="none">
+        <line x1="130" y1="95" x2="150" y2="95"/>
+        <line x1="280" y1="95" x2="300" y2="95"/>
+        <line x1="430" y1="95" x2="450" y2="95"/>
+        <line x1="580" y1="95" x2="600" y2="95"/>
+      </g>
+      <text class="t cap" x="360" y="168" text-anchor="middle">②단의 ‘중주파 변압기’가 절연 + 전압변환을 담당 — 고주파라 부피가 작다</text>
+      <text class="t cap" x="360" y="190" text-anchor="middle">전 과정이 양방향(↔) — 전력을 되돌려보낼 수도 있음(ESS·신재생 연계)</text>
+      <text class="t cap" x="360" y="220" text-anchor="middle" font-style="italic">기존 변압기: 50/60Hz 철심 1단 / SST: 반도체로 3단을 ‘똑똑하게’ 처리</text>
+    </svg>
+    <figcaption>그림 1. SST 3단 구조 — ①정류(AC→DC) ②절연 DC/DC(DAB+중주파 변압기) ③출력(800VDC 등).</figcaption>
+  </figure>
+
+  <h2>① AC/DC 입력단 — ‘깨끗하게 받아들이기’</h2>
+  <p>전력망의 중압 교류(13.8~22.9kV)를 직류로 바꿉니다. 이때 <strong>SiC MOSFET</strong>(6.5kV·10kV급 등)으로 <strong>역률보정(PF≈1)</strong>과 고조파 저감(THD&lt;5%)을 함께 해요. 전기를 ‘깨끗하게’ 받아들이는 단계예요.</p>
+
+  <h2>② DC/DC 절연단 — SST의 심장 ‘DAB’</h2>
+  <p>핵심은 <span class="em">DAB(Dual Active Bridge, 이중 능동 브리지)</span>예요. <strong>두 개의 H브리지 + 그 사이의 고주파(중주파) 변압기</strong>로 구성됩니다. 한쪽 브리지가 직류를 고주파 교류로 바꿔 변압기로 보내면, 반대쪽 브리지가 다시 직류로 되돌려요. <strong>두 브리지의 위상차(phase-shift)를 조절해 전력량과 방향을 제어</strong>합니다(양방향 가능).</p>
+  <div class="callout">
+    <div class="ct">왜 ‘고주파’가 핵심인가</div>
+    <p>변압기 크기는 주파수에 반비례해요. 기존 변압기는 50/60Hz라 철심이 크고 무겁지만, SST는 SiC가 <strong>수~수십 kHz로 빠르게 스위칭</strong>해서 같은 일을 하는 변압기를 <strong>70~90% 작게</strong> 만들 수 있어요. ‘작고 가벼운 변압기’의 비밀이 바로 이 고주파 동작입니다.</p>
+  </div>
+
+  <h2>③ 출력단 — 데이터센터가 원하는 형태로</h2>
+  <p>마지막으로 용도에 맞춰 <strong>800VDC(AI 데이터센터 랙용)</strong> 또는 480VAC(기존 부하용)로 내보냅니다. 변환 단계를 SST 하나로 압축해, 기존의 ‘변압→정류→변환→강압’ 다단계를 대체하는 게 핵심 가치예요.</p>
+
+  <h2>기존 변압기 vs SST — 무엇이 다른가</h2>
+  <table>
+    <thead><tr><th>항목</th><th>기존 변압기</th><th>SST(반도체 변압기)</th></tr></thead>
+    <tbody>
+      <tr><td>핵심 부품</td><td>철심 + 구리코일</td><td>SiC 전력반도체 + 중주파 변압기</td></tr>
+      <tr><td>동작 주파수</td><td>50/60 Hz</td><td>수~수십 kHz</td></tr>
+      <tr><td>크기·무게</td><td>크고 무거움</td><td>70~90% 작음</td></tr>
+      <tr><td>제어</td><td>전압 변환만(수동)</td><td>전압+전력흐름+품질 실시간 제어(능동)</td></tr>
+      <tr><td>DC 지원</td><td>없음(별도 변환 필요)</td><td>내장(800VDC 직접 출력)</td></tr>
+      <tr><td>전력 방향</td><td>단방향 중심</td><td>양방향(ESS·신재생 연계)</td></tr>
+      <tr><td>약점</td><td>크고 비효율, 제어 불가</td><td>비싸고, 열·신뢰성·SiC 수급 과제</td></tr>
+    </tbody>
+  </table>
+
+  <h2>아직 남은 기술 과제 (딥)</h2>
+  <ul>
+    <li><strong>열 관리:</strong> 고전력·고주파 동작으로 발열이 커, 정밀 냉각(수랭 등)이 필요.</li>
+    <li><strong>SiC 신뢰성·수급:</strong> 고전압 SiC 소자의 장기 신뢰성·가격·공급망이 상용화 속도를 좌우.</li>
+    <li><strong>비용:</strong> 아직 기존 변압기 대비 비쌈 → 데이터센터처럼 ‘효율·공간이 돈’인 곳부터 침투.</li>
+    <li><strong>표준·인증:</strong> 전력망 직결 장비라 안전·규격·계통 인증 통과가 관건.</li>
+  </ul>
+
+  <!-- FAQ -->
+  <div class="pb"></div>
+  <h1>자주 묻는 질문 (FAQ) · 흔한 오해</h1>
+  <h3>Q1. SST가 기존 변압기를 완전히 대체하나요?</h3>
+  <p>아니요. 당분간은 <strong>공존</strong>입니다. 비싸지만 작고 똑똑한 SST는 ‘효율·공간이 곧 돈’인 AI 데이터센터·고밀도 구간부터 침투하고, 일반 전력망의 대다수는 기존 변압기가 한동안 유지돼요.</p>
+  <h3>Q2. 효성중공업은 지금 SST로 돈을 많이 버나요?</h3>
+  <p>아직 아니에요. 현재 실적을 견인하는 건 <strong>초고압 변압기 등 본업</strong>이고, SST는 ‘미래 옵션’ 단계입니다. ‘SST 기대’와 ‘실제 SST 매출’을 분리해서 봐야 해요.</p>
+  <h3>Q3. SiC가 없으면 SST를 못 만드나요?</h3>
+  <p>사실상 그렇습니다. 고전압·고속 스위칭이 가능한 <strong>SiC 전력반도체</strong>가 SST의 핵심 enabler예요. 그래서 SiC 공급·가격이 상용화 속도의 변수입니다.</p>
+  <h3>Q4. 800VDC와 SST는 무슨 관계인가요?</h3>
+  <p>800VDC가 ‘데이터센터 안의 새 전기 표준’이라면, SST는 그 <strong>입구에서 전력망 AC를 800VDC로 바꿔주는 장비</strong>예요. 800VDC 확산이 곧 SST 수요로 이어집니다.</p>
+  <h3>Q5. 경쟁사 대비 효성의 강점은?</h3>
+  <p><strong>SST 세계 최초 개발 + 미국 현지 생산(변압기·차단기 동시)</strong>이 차별점이에요. 다만 HD현대일렉트릭·LS일렉트릭도 미국 전력망에서 강해, ‘본업 경쟁 + SST 차별화’를 함께 봐야 합니다.</p>
+
+  <!-- 용어 -->
+  <div class="pb"></div>
+  <h1>부록. 미니 용어 사전</h1>
+  <table>
+    <thead><tr><th>용어</th><th>쉬운 설명</th></tr></thead>
+    <tbody>
+      <tr><td>SST</td><td style="text-align:left">반도체 변압기. 철심·코일 대신 전력반도체로 전압변환+제어를 하는 차세대 변압기.</td></tr>
+      <tr><td>SiC</td><td style="text-align:left">탄화규소. 고전압·고온·고속에 강한 전력반도체 소재. SST의 핵심 부품.</td></tr>
+      <tr><td>DAB</td><td style="text-align:left">이중 능동 브리지. SST 내부에서 절연·전압변환·양방향 제어를 맡는 회로.</td></tr>
+      <tr><td>중주파 변압기</td><td style="text-align:left">kHz대에서 동작하는 작은 변압기. 고주파라 부피를 크게 줄임.</td></tr>
+      <tr><td>역률보정(PFC)</td><td style="text-align:left">전기를 효율적으로 받아들이도록 파형을 다듬는 것.</td></tr>
+      <tr><td>STATCOM</td><td style="text-align:left">전압을 안정시키는 무효전력 보상장치. 효성의 강점 분야.</td></tr>
+      <tr><td>HVDC</td><td style="text-align:left">초고압 직류송전. 전력을 직류로 멀리 보내는 기술.</td></tr>
+      <tr><td>800VDC</td><td style="text-align:left">AI 데이터센터의 고전압 직류 배전. SST가 그 입구를 담당.</td></tr>
+    </tbody>
+  </table>
+
+  <!-- 출처 -->
+  <h1>출처</h1>
+  <ol class="src">
+    <li>굿모닝경제 — 엔비디아가 쏘아 올린 ‘800VDC’ 생태계(효성 SST) — <a href="https://www.goodkyung.com/news/articleView.html?idxno=287671">link</a></li>
+    <li>뉴데일리 — 반도체 변압기가 뭐길래…효성중공업, 전력시장 판 바꾼다 — <a href="https://biz.newdaily.co.kr/site/data/html/2026/04/24/2026042400063.html">link</a></li>
+    <li>전기신문 — SST로 바뀌는 데이터센터 전력 지형, 효성중공업 해법 — <a href="https://www.electimes.com/news/articleView.html?idxno=367347">link</a></li>
+    <li>리포테라 — 효성중공업 SST, 53조 데이터센터 시장 공략 — <a href="https://www.reportera.co.kr/economy/hyosung-heavy-industries-sst-ai-datacenter-power-market/">link</a></li>
+    <li>파이낸셜뉴스 — 효성중공업, 美 초고압 전력망 공략 강화 — <a href="https://www.fnnews.com/news/202606150530175185">link</a></li>
+    <li>HIITIO — What Is a Solid-State Transformer? (구조·원리) — <a href="https://www.hiitio.com/what-is-a-solid-state-transformer-core-differences-vs-conventional-transformers/">link</a></li>
+    <li>plutochip — Solid-State Transformers: 6.5kV & 11kV SiC MOSFETs — <a href="https://plutochip.com/blogs/plutochip-technical-blog/solid-state-transformers-why-6-5kv-and-11kv-sic-mosfets-are-enabling-the-next-grid-revolution">link</a></li>
+    <li>인베스트조선 — “없어서 못 판다”…효성·LS·HD현대 K전력 ‘빅3’ 1분기 최대실적 — <a href="https://www.investchosun.com/site/data/html_dir/2026/04/27/2026042780117.html">link</a></li>
+    <li>비즈워치 — 전력기기 3사, 5년치 일감…수주 35조 돌파 — <a href="https://news.bizwatch.co.kr/article/industry/2026/05/19/0022">link</a></li>
+    <li>아주경제 — IBK證 “효성중공업, 2분기 호실적…목표가 490만원” — <a href="https://www.ajunews.com/view/20260611080538665">link</a></li>
+    <li>이투데이 — 유안타 “전력기기 조정은 기회…LS·효성 최선호주” — <a href="https://www.etoday.co.kr/news/view/2592463">link</a></li>
+    <li>MarketsandMarkets — Solid-state Transformer Market(시장규모·CAGR) — <a href="https://www.marketsandmarkets.com/Market-Reports/solid-state-transformer-market-774.html">link</a></li>
+  </ol>
+  <p class="muted"><em>※ 본 문서는 공개된 보도·기술 자료를 교차 확인해 정리한 참고 자료입니다. 본문 이미지는 출처에서 불러오며 저작권은 출처에 있습니다. 실적·전망 수치는 발표·추정 기준이며, 본 문서는 투자 권유가 아닙니다. 투자 결정과 결과의 책임은 전적으로 투자자 본인에게 있습니다.</em></p>
+
+</div>
+</body>
+</html>

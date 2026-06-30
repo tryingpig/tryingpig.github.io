@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>삼성전기 투자 안내서 — 실적·밸류·촉매·리스크</title>
+<style>
+  :root{
+    --accent:#1428a0; --accent-dark:#0d1c70; --light:#e8ebf7; --light2:#f3f5fb;
+    --gray:#595959; --line:#c2cae8; --ink:#1d2733;
+    --warn:#b5481f; --warnbg:#fdf1ec; --warnln:#e6b39e;
+  }
+  *{box-sizing:border-box;}
+  html{-webkit-print-color-adjust:exact; print-color-adjust:exact;}
+  body{font-family:"Malgun Gothic","맑은 고딕",-apple-system,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;
+    color:var(--ink); line-height:1.72; margin:0; background:#f5f6f8; font-size:16px;}
+  .page{max-width:840px; margin:24px auto; background:#fff; padding:56px 62px; box-shadow:0 1px 8px rgba(0,0,0,.08);}
+  h1{color:var(--accent-dark); font-size:1.46rem; border-bottom:3px solid var(--accent); padding-bottom:8px; margin:2.2em 0 .7em;}
+  h1:first-of-type{margin-top:.3em;}
+  h2{color:var(--accent); font-size:1.16rem; margin:1.4em 0 .4em;}
+  h3{color:var(--accent-dark); font-size:1.02rem; margin:1.05em 0 .3em;}
+  p{margin:.5em 0;} ul{margin:.4em 0 .9em; padding-left:1.3em;} li{margin:.32em 0;}
+  .em{color:var(--accent-dark); font-weight:700;}
+  .muted{color:var(--gray); font-size:.9rem;}
+  .callout{background:var(--light); border:1px solid var(--accent); border-left:6px solid var(--accent); border-radius:4px; padding:14px 18px; margin:1.1em 0;}
+  .callout .ct{font-weight:700; color:var(--accent-dark); margin-bottom:6px;}
+  .callout p{margin:.35em 0; font-size:.96rem;}
+  .warn{background:var(--warnbg); border:1px solid var(--warnln); border-left:6px solid var(--warn); border-radius:4px; padding:14px 18px; margin:1.1em 0;}
+  .warn .ct{font-weight:700; color:var(--warn); margin-bottom:6px;}
+  .warn p,.warn li{font-size:.94rem;}
+  table{border-collapse:collapse; width:100%; margin:1em 0; font-size:.84rem;}
+  th{background:var(--accent); color:#fff; font-weight:700; padding:9px 10px; text-align:center; border:1px solid var(--line);}
+  td{padding:8px 10px; border:1px solid var(--line); vertical-align:top; text-align:left;}
+  td.c{text-align:center;}
+  td:first-child{font-weight:700; background:#f3f5fb;}
+  tbody tr:nth-child(even) td{background:var(--light2);}
+  tbody tr:nth-child(even) td:first-child{background:#e8ebf7;}
+  .cover{text-align:center; padding:100px 0 70px;}
+  .cover .big{font-size:2.15rem; font-weight:800; color:var(--accent-dark); letter-spacing:-1px; line-height:1.3;}
+  .cover .sub{font-size:1.12rem; color:var(--accent); margin-top:14px;}
+  .cover .sub2{font-size:1rem; color:var(--gray); margin-top:22px;}
+  .cover .date{font-size:.88rem; color:var(--gray); margin-top:50px;}
+  a{color:var(--accent-dark); word-break:break-all;}
+  .src{font-size:.83rem;} .src li{margin:.4em 0;}
+  figure{margin:1.4em 0; text-align:center;}
+  figure svg{width:100%; max-width:740px; height:auto; display:block; margin:0 auto;}
+  figcaption{font-size:.85rem; color:var(--gray); margin-top:8px;}
+  @media print{
+    body{background:#fff; font-size:11pt;}
+    .page{box-shadow:none; margin:0; max-width:none; padding:0;}
+    .pb{page-break-before:always;}
+    h1,h2,h3{page-break-after:avoid;} table,.callout,.warn,figure{page-break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="cover">
+    <div class="big">삼성전기 투자 안내서</div>
+    <div class="sub">실적 · 밸류에이션 · 촉매 · 리스크 · 시나리오</div>
+    <div class="sub2">‘AI 부품주’ 재평가 스토리를 투자 관점으로</div>
+    <div class="date">2026년 6월 작성 · 종합 세트 ①-2(투자)</div>
+  </div>
+
+  <!-- 면책 -->
+  <div class="pb"></div>
+  <div class="warn">
+    <div class="ct">먼저 읽어주세요</div>
+    <p>본 문서는 투자 자문이 아니라, 공개 자료(기업 발표·언론·증권사 리포트)를 정리한 참고용 자료입니다. 특정 종목의 매수·매도 권유가 아니며, 실적·목표주가·점유율은 발표·추정 기준이라 달라질 수 있습니다. 투자 판단·책임은 본인에게 있습니다.</p>
+  </div>
+
+  <!-- 한눈에 -->
+  <h1>한눈에 보기 — 투자 스토리</h1>
+  <p>핵심은 <span class="em">‘단순 부품주 → AI·전장 핵심부품주로의 재평가(re-rating)’</span>예요. AI 서버·전기차가 늘수록 삼성전기의 두 축(MLCC·FC-BGA)이 ‘없어서 못 파는’ 국면에 들어갑니다.</p>
+  <table>
+    <thead><tr><th>구분</th><th>내용</th></tr></thead>
+    <tbody>
+      <tr><td>2026 1Q 실적</td><td>매출 3조 2,091억(+17.2%)·영업익 2,806억(+39.9%). 주가 100만원 첫 돌파</td></tr>
+      <tr><td>성장 동력</td><td>AI 서버용 MLCC(점유율 40%)·고부가 FC-BGA(수요>생산능력)</td></tr>
+      <tr><td>차별점</td><td>MLCC+기판 동시 보유 → MLCC 기판 내장(Embed) 융합 시너지</td></tr>
+      <tr><td>신사업</td><td>유리기판(스미토모화학 합작)·로봇 부품·실리콘 캐패시터</td></tr>
+      <tr><td>밸류에이션</td><td>목표주가 줄상향(DB 300만·KB 220만·신한 200만), ‘황제주’ 논의</td></tr>
+    </tbody>
+  </table>
+
+  <!-- 1 사업부 비중·실적 -->
+  <h1>1. 사업부별 비중·실적</h1>
+  <figure>
+    <svg viewBox="0 0 720 220" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="사업부 매출 비중">
+      <style>.t{font-family:'Malgun Gothic',sans-serif;}.lb{font-size:12px;font-weight:700;}.cap{font-size:11px;fill:#595959;}.hd{font-size:12px;font-weight:700;fill:#0d1c70;}</style>
+      <text class="t hd" x="170" y="22" text-anchor="middle">2026 1Q 사업부 매출 비중</text>
+      <!-- pie approx: 컴포넌트 33, 패키지 23, 광학 34, 기타 10 -->
+      <circle cx="170" cy="120" r="72" fill="#c2cae8"/>
+      <path d="M170 120 L170 48 A72 72 0 0 1 240 138 Z" fill="#1428a0"/>
+      <path d="M170 120 L240 138 A72 72 0 0 1 150 190 Z" fill="#3a6ea5"/>
+      <path d="M170 120 L150 190 A72 72 0 0 1 104 78 Z" fill="#7d97cf"/>
+      <text class="t cap" x="300" y="80">■ 컴포넌트(MLCC) 약 33%</text>
+      <text class="t cap" x="300" y="104">■ 광학(카메라) 약 34%</text>
+      <text class="t cap" x="300" y="128">■ 패키지(FC-BGA) 약 23%</text>
+      <text class="t cap" x="300" y="152">■ 기타 약 10%</text>
+      <text class="t cap" x="300" y="186" font-style="italic">매출은 3분할에 가깝지만, ‘이익·성장’은 MLCC·FC-BGA가 주도</text>
+    </svg>
+    <figcaption>그림 1. 사업부 매출 비중(2026 1Q, 근사치).</figcaption>
+  </figure>
+  <table>
+    <thead><tr><th>사업부</th><th>2026 1Q 매출</th><th>성장·코멘트</th></tr></thead>
+    <tbody>
+      <tr><td>컴포넌트(MLCC)</td><td class="c">약 1조 486억</td><td>+16% YoY. 서버·전장용 고성장, 수급 긴장(BB율 개선)</td></tr>
+      <tr><td>패키지솔루션(FC-BGA)</td><td class="c">약 7,250억</td><td>+45% YoY. AI 가속기·서버·전장 기판, 수요>생산능력</td></tr>
+      <tr><td>광학솔루션(카메라)</td><td class="c">약 1조 756억</td><td>+5% YoY. 상대적 성숙, 전장·휴머노이드 새 기회</td></tr>
+    </tbody>
+  </table>
+
+  <!-- 2 시장규모 -->
+  <h1>2. 시장 규모와 성장성</h1>
+  <ul>
+    <li><strong>반도체 기판(패키지) 시장:</strong> 2024년 4.8조 → 2028년 8조(연 약 14% 성장, Prismark). 서버·전장·네트워크가 견인.</li>
+    <li><strong>AI 서버용 MLCC:</strong> AI 서버 1대당 MLCC 탑재량·단가 동시 상승 → 고부가 시장 고성장. 수주출하비율(BB) 1 이상 유지.</li>
+    <li><strong>유리기판:</strong> 차세대 패키징의 핵심 후보로, 2027년 이후 상용화·성장 기대(앞선 CPO·HBM 패키징과 연결).</li>
+  </ul>
+
+  <!-- 3 경쟁사 비교 -->
+  <h1>3. 경쟁사 비교 (점유율)</h1>
+  <table>
+    <thead><tr><th>시장</th><th>1위</th><th>삼성전기</th><th>비고</th></tr></thead>
+    <tbody>
+      <tr><td>MLCC 전체</td><td>무라타 34%</td><td><strong>약 23%(2위)</strong></td><td>일본 강세, 삼성전기 추격</td></tr>
+      <tr><td>AI 서버용 MLCC</td><td>무라타 45%</td><td><strong>40%(양강)</strong></td><td>고부가 시장에서 입지 더 큼</td></tr>
+      <tr><td>FC-BGA</td><td>유니마이크론 22%</td><td>약 10%</td><td>이비덴 18%·토판 12%와 경쟁</td></tr>
+      <tr><td>모바일 AP 기판</td><td colspan="2" style="text-align:center"><strong>삼성전기 1위</strong></td><td>점유율·기술 독보적</td></tr>
+    </tbody>
+  </table>
+  <div class="callout">
+    <div class="ct">투자 논리의 핵심</div>
+    <p>삼성전기는 ‘만년 2위(MLCC)·후발(FC-BGA)’이지만, <span class="em">고부가 AI 시장에서는 격차가 좁고(서버 MLCC 40%)</span>, <strong>MLCC+기판 동시 보유라는 구조적 차별점</strong>이 있어요. ‘점유율’보다 ‘고부가 믹스 개선’이 이익을 끌어올리는 스토리입니다.</p>
+  </div>
+
+  <!-- 4 실적추이/밸류 -->
+  <h1>4. 실적 추이 & 밸류에이션</h1>
+  <figure>
+    <svg viewBox="0 0 720 210" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="연매출 추이">
+      <style>.t{font-family:'Malgun Gothic',sans-serif;}.ax{font-size:11px;fill:#595959;}.vl{font-size:12px;font-weight:700;fill:#0d1c70;}.hd{font-size:12px;font-weight:700;fill:#0d1c70;}</style>
+      <text class="t hd" x="360" y="20" text-anchor="middle">연간 매출 추이 (사상 최대 경신)</text>
+      <line x1="100" y1="165" x2="620" y2="165" stroke="#c2cae8" stroke-width="2"/>
+      <rect x="170" y="95" width="80" height="70" fill="#7d97cf"/><text class="t vl" x="210" y="88" text-anchor="middle">11.3조</text><text class="t ax" x="210" y="182" text-anchor="middle">2025(실적)</text>
+      <rect x="420" y="70" width="80" height="95" fill="#1428a0"/><text class="t vl" x="460" y="63" text-anchor="middle">~12.8조</text><text class="t ax" x="460" y="182" text-anchor="middle">2026(전망)</text>
+      <text class="t ax" x="360" y="202" text-anchor="middle" font-style="italic">2026 영업익 컨센 ~1.48조 · KB “향후 5년 영업익 CAGR +68%” 추정</text>
+    </svg>
+    <figcaption>그림 2. 연매출 추이·전망(컨센서스 기준).</figcaption>
+  </figure>
+  <ul>
+    <li><strong>목표주가(참고):</strong> DB 300만(160만→상향)·KB 220만·신한 200만·미래에셋 130만 원. ‘황제주(100만원+)’ 진입.</li>
+    <li><strong>리레이팅 논리:</strong> AI·전장 고부가 믹스 → 이익률↑, FC-BGA ‘2028년 이후 5년 물량 바인딩’ 증설 논의 → 장기 가시성↑.</li>
+    <li><span class="muted">※ 목표주가는 자문 아닌 참고지표. 단기 급등 시 밸류 부담 점검 필요.</span></li>
+  </ul>
+
+  <!-- 5 촉매 -->
+  <h1>5. 촉매(카탈리스트) 캘린더</h1>
+  <table>
+    <thead><tr><th>시기</th><th>이벤트</th><th>왜 중요</th></tr></thead>
+    <tbody>
+      <tr><td>분기 실적</td><td>MLCC·FC-BGA 매출·가동률·믹스</td><td>‘AI 수혜’ 입증</td></tr>
+      <tr><td>수시</td><td>빅테크 MLCC 장기공급계약, FC-BGA 신규 고객</td><td>수요 가시성·증설 근거</td></tr>
+      <tr><td>2026~</td><td>유리기판 합작법인 양산 진척</td><td>차세대 모멘텀</td></tr>
+      <tr><td>수시</td><td>MLCC BB율·가격 동향(트렌드포스)</td><td>업황 선행지표</td></tr>
+      <tr><td>2028~</td><td>FC-BGA 5년 물량 바인딩·증설</td><td>장기 실적 가시성</td></tr>
+    </tbody>
+  </table>
+
+  <!-- 6 리스크 매트릭스 -->
+  <h1>6. 리스크 매트릭스 (발생가능성 × 영향)</h1>
+  <figure>
+    <svg viewBox="0 0 720 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="리스크 매트릭스">
+      <style>.t{font-family:'Malgun Gothic',sans-serif;}.ax{font-size:11px;font-weight:700;fill:#0d1c70;}.rk{font-size:10.5px;fill:#1d2733;}.q{font-size:10px;fill:#8a8f98;}</style>
+      <rect x="90" y="28" width="560" height="230" fill="#f3f5fb" stroke="#c2cae8"/>
+      <line x1="370" y1="28" x2="370" y2="258" stroke="#c2cae8" stroke-width="1.5"/>
+      <line x1="90" y1="143" x2="650" y2="143" stroke="#c2cae8" stroke-width="1.5"/>
+      <text class="t ax" x="370" y="282" text-anchor="middle">발생 가능성 →</text>
+      <text class="t ax" x="58" y="143" text-anchor="middle" transform="rotate(-90 58 143)">영향 →</text>
+      <text class="t q" x="230" y="46" text-anchor="middle">영향 높음·확률 낮음</text>
+      <text class="t q" x="510" y="46" text-anchor="middle">영향 높음·확률 높음 (주시)</text>
+      <circle cx="520" cy="80" r="6" fill="#b5481f"/><text class="t rk" x="430" y="77">전방(스마트폰·PC) 둔화</text>
+      <circle cx="560" cy="110" r="6" fill="#b5481f"/><text class="t rk" x="470" y="126">무라타·일본과 경쟁</text>
+      <circle cx="250" cy="80" r="6" fill="#c08a1e"/><text class="t rk" x="160" y="77">유리기판 상용화 지연</text>
+      <circle cx="300" cy="115" r="6" fill="#c08a1e"/><text class="t rk" x="200" y="131">ABF 등 소재 공급</text>
+      <circle cx="540" cy="195" r="6" fill="#1e7a4d"/><text class="t rk" x="440" y="198">기대 선반영(밸류 부담)</text>
+      <circle cx="270" cy="205" r="6" fill="#8a8f98"/><text class="t rk" x="282" y="208">단기 환율</text>
+    </svg>
+    <figcaption>그림 3. 리스크 매트릭스 — ‘전방수요 둔화·경쟁’이 핵심, ‘밸류 부담’은 확률 높지만 영향 중간.</figcaption>
+  </figure>
+
+  <!-- 7 시나리오 -->
+  <h1>7. 시나리오 (낙관·중립·비관)</h1>
+  <table>
+    <thead><tr><th>시나리오</th><th>전제</th><th>그림</th></tr></thead>
+    <tbody>
+      <tr><td>낙관</td><td>AI 서버·전장 수요 지속 + 유리기판 조기 안착</td><td>고부가 믹스로 이익률↑, 멀티플 리레이팅 본격화</td></tr>
+      <tr><td>중립(기본)</td><td>MLCC·FC-BGA 견조, 카메라는 보합</td><td>사상 최대 실적 경신, 안정 성장</td></tr>
+      <tr><td>비관</td><td>스마트폰·PC 둔화 + AI capex 조정 + 경쟁 심화</td><td>고부가 성장 둔화, 선반영 밸류 부담 노출</td></tr>
+    </tbody>
+  </table>
+
+  <!-- 8 KPI -->
+  <h1>8. 모니터링 KPI 체크리스트</h1>
+  <ul>
+    <li><strong>고부가 비중</strong> — AI·서버·전장용 MLCC·FC-BGA가 전체에서 차지하는 비중 (50%+ 목표 경로)</li>
+    <li><strong>FC-BGA 가동률·증설</strong> — 수요>생산능력 해소 위한 증설 진척</li>
+    <li><strong>MLCC BB율·가격</strong> — 업황 선행지표(1 이상 유지 여부)</li>
+    <li><strong>유리기판 양산 일정</strong> — 합작법인 진척·고객 확보</li>
+    <li><strong>전방 수요</strong> — 스마트폰·PC·전기차 출하(부품 수요의 토대)</li>
+  </ul>
+
+  <!-- 출처 -->
+  <h1>출처</h1>
+  <ol class="src">
+    <li>데이터뉴스 — 삼성전기 AI·전장 최대 매출(사업부·점유율·BB율) — <a href="https://www.datanews.co.kr/news/article.html?no=144759">link</a></li>
+    <li>인포스탁데일리 — 삼성전기 ‘황제주’?…목표가 줄상향 — <a href="https://www.infostockdaily.co.kr/news/articleView.html?idxno=215692">link</a></li>
+    <li>머니투데이 — DB “전례없는 호황”…목표가 160만→300만 — <a href="https://www.mt.co.kr/stock/2026/06/01/2026060108364929403">link</a></li>
+    <li>네이트/KB — 목표가 140만/220만(MLCC·기판) — <a href="https://news.nate.com/view/20260514n05460">link</a></li>
+    <li>삼성전기 뉴스룸 — FCBGA 시장(2028년 8조)·기술 — <a href="https://m.samsungsem.com/kr/newsroom/news/view.do?id=8381">link</a></li>
+    <li>파이낸셜뉴스 — 마이크론 깜짝실적에 삼성전기·LG이노텍 수혜 — <a href="https://www.fnnews.com/news/202606260601313190">link</a></li>
+  </ol>
+  <p class="muted"><em>※ 본 문서는 공개된 보도·증권사 자료를 교차 확인해 정리한 참고 자료입니다. 목표주가·점유율·실적은 발표·추정 기준이며, 본 문서는 투자 권유가 아닙니다. 투자 결정과 결과의 책임은 전적으로 투자자 본인에게 있습니다.</em></p>
+
+</div>
+</body>
+</html>

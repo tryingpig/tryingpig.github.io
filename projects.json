@@ -6,5 +6,13 @@
     "desc": "11개 SPDR 섹터 ETF의 50일 이격도를 매일 자동 추적하는 대시보드",
     "tag": "investing",
     "url": "https://tryingpig.github.io/us-sector-disparity/"
+  },
+  {
+    "emoji": "🇰🇷",
+    "name_en": "Korea Sector ETF Disparity Tracker",
+    "name_ko": "한국 섹터 ETF 이격도 트래커",
+    "desc": "코스피·코스닥 + 한국 섹터 ETF(AI반도체 소부장)의 50일 이격도·상승장 판단 대시보드",
+    "tag": "investing",
+    "url": "https://tryingpig.github.io/ko-disparity/"
   }
 ]

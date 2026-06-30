@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MLCC 투자 안내서 — ‘다음 HBM?’ 수요·경쟁·수혜</title>
+<style>
+  :root{
+    --accent:#0f7b6c; --accent-dark:#0a5249; --light:#e3f3f0; --light2:#f1f9f7;
+    --gray:#595959; --line:#bfe2db; --ink:#1d2733;
+    --warn:#b5481f; --warnbg:#fdf1ec; --warnln:#e6b39e; --kr:#1e7a4d;
+  }
+  *{box-sizing:border-box;}
+  html{-webkit-print-color-adjust:exact; print-color-adjust:exact;}
+  body{font-family:"Malgun Gothic","맑은 고딕",-apple-system,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;
+    color:var(--ink); line-height:1.72; margin:0; background:#f5f6f8; font-size:16px;}
+  .page{max-width:840px; margin:24px auto; background:#fff; padding:56px 62px; box-shadow:0 1px 8px rgba(0,0,0,.08);}
+  h1{color:var(--accent-dark); font-size:1.46rem; border-bottom:3px solid var(--accent); padding-bottom:8px; margin:2.2em 0 .7em;}
+  h1:first-of-type{margin-top:.3em;}
+  h2{color:var(--accent); font-size:1.16rem; margin:1.4em 0 .4em;}
+  p{margin:.5em 0;} ul{margin:.4em 0 .9em; padding-left:1.3em;} li{margin:.32em 0;}
+  .em{color:var(--accent-dark); font-weight:700;} .kr{color:var(--kr); font-weight:700;}
+  .muted{color:var(--gray); font-size:.9rem;}
+  .callout{background:var(--light); border:1px solid var(--accent); border-left:6px solid var(--accent); border-radius:4px; padding:14px 18px; margin:1.1em 0;}
+  .callout .ct{font-weight:700; color:var(--accent-dark); margin-bottom:6px;}
+  .callout p{margin:.35em 0; font-size:.96rem;}
+  .warn{background:var(--warnbg); border:1px solid var(--warnln); border-left:6px solid var(--warn); border-radius:4px; padding:14px 18px; margin:1.1em 0;}
+  .warn .ct{font-weight:700; color:var(--warn); margin-bottom:6px;}
+  .warn p,.warn li{font-size:.94rem;}
+  table{border-collapse:collapse; width:100%; margin:1em 0; font-size:.84rem;}
+  th{background:var(--accent); color:#fff; font-weight:700; padding:9px 10px; text-align:center; border:1px solid var(--line);}
+  td{padding:8px 10px; border:1px solid var(--line); vertical-align:top; text-align:left;}
+  td.c{text-align:center;}
+  td:first-child{font-weight:700; background:#f1f9f7;}
+  tbody tr:nth-child(even) td{background:var(--light2);}
+  tbody tr:nth-child(even) td:first-child{background:#e3f3f0;}
+  .cover{text-align:center; padding:100px 0 70px;}
+  .cover .big{font-size:2.15rem; font-weight:800; color:var(--accent-dark); letter-spacing:-1px; line-height:1.3;}
+  .cover .sub{font-size:1.12rem; color:var(--accent); margin-top:14px;}
+  .cover .sub2{font-size:1rem; color:var(--gray); margin-top:22px;}
+  .cover .date{font-size:.88rem; color:var(--gray); margin-top:50px;}
+  a{color:var(--accent-dark); word-break:break-all;}
+  .src{font-size:.83rem;} .src li{margin:.4em 0;}
+  figure{margin:1.4em 0; text-align:center;}
+  figure svg{width:100%; max-width:740px; height:auto; display:block; margin:0 auto;}
+  figcaption{font-size:.85rem; color:var(--gray); margin-top:8px;}
+  @media print{
+    body{background:#fff; font-size:11pt;}
+    .page{box-shadow:none; margin:0; max-width:none; padding:0;}
+    .pb{page-break-before:always;}
+    h1,h2{page-break-after:avoid;} table,.callout,.warn,figure{page-break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="cover">
+    <div class="big">MLCC 투자 안내서</div>
+    <div class="sub">‘다음 HBM?’ — 수요·경쟁·수혜 총정리</div>
+    <div class="sub2">AI 서버·전장이 만드는 MLCC 슈퍼사이클</div>
+    <div class="date">2026년 6월 작성 · 삼성전기 세트 ②-2(투자)</div>
+  </div>
+
+  <div class="pb"></div>
+  <div class="warn">
+    <div class="ct">먼저 읽어주세요</div>
+    <p>본 문서는 투자 자문이 아니라, 공개 자료·보도를 정리한 참고용 자료입니다. 특정 종목의 매수·매도 권유가 아니며, 수요·점유율·실적 수치는 추정·발표 기준이라 달라질 수 있습니다. 투자 판단·책임은 본인에게 있습니다.</p>
+  </div>
+
+  <h1>한눈에 보기 — 투자 스토리</h1>
+  <p>MLCC 투자 스토리의 한 줄은 <span class="em">‘AI·전장이 만드는 MLCC 슈퍼사이클 + 공급 부족’</span>이에요. AI 서버용 고용량 MLCC 수요가 메모리(HBM)처럼 폭증하는데, 공급(생산능력)이 못 따라가 가격·가동률이 오르는 국면입니다.</p>
+  <table>
+    <thead><tr><th>구분</th><th>내용</th></tr></thead>
+    <tbody>
+      <tr><td>수요(골드만)</td><td>AI서버 MLCC 2026 726억개(+87%) → 2027 1,367억개(+88%)</td></tr>
+      <tr><td>공급</td><td>무라타 AI MLCC 주문이 캐파의 2배, 가동률 90~95%</td></tr>
+      <tr><td>가격</td><td>무라타 콘덴서 ASP 2026 +5~10%, 서버 매출 +85~90% 전망</td></tr>
+      <tr><td>핵심 수혜</td><td>무라타·삼성전기(고급 양분) + 국내 소재·장비(대주전자재료·원준 등)</td></tr>
+    </tbody>
+  </table>
+
+  <h1>1. 시장 규모·성장성 — ‘다음 HBM’ 논거</h1>
+  <figure>
+    <svg viewBox="0 0 720 220" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="AI 서버 MLCC 수요">
+      <style>.t{font-family:'Malgun Gothic',sans-serif;}.ax{font-size:11px;fill:#595959;}.vl{font-size:12px;font-weight:700;fill:#0a5249;}.hd{font-size:12px;font-weight:700;fill:#0a5249;}</style>
+      <text class="t hd" x="360" y="20" text-anchor="middle">AI 서버용 MLCC 수요(억 개) — 골드만삭스</text>
+      <line x1="110" y1="170" x2="620" y2="170" stroke="#bfe2db" stroke-width="2"/>
+      <rect x="160" y="120" width="80" height="50" fill="#7fcabf"/><text class="t vl" x="200" y="113" text-anchor="middle">~388</text><text class="t ax" x="200" y="186" text-anchor="middle">2025</text>
+      <rect x="320" y="86" width="80" height="84" fill="#1ba395"/><text class="t vl" x="360" y="79" text-anchor="middle">726 (+87%)</text><text class="t ax" x="360" y="186" text-anchor="middle">2026</text>
+      <rect x="480" y="50" width="80" height="120" fill="#0a5249"/><text class="t vl" x="520" y="43" text-anchor="middle">1,367 (+88%)</text><text class="t ax" x="520" y="186" text-anchor="middle">2027</text>
+      <text class="t ax" x="360" y="208" text-anchor="middle" font-style="italic">AI 서버 1대당 1만 개+ → 메모리(HBM)에 이은 ‘AI 부품 수혜’ 거론</text>
+    </svg>
+    <figcaption>그림 1. AI 서버용 MLCC 수요 전망(골드만삭스, 근사치).</figcaption>
+  </figure>
+  <ul>
+    <li><strong>구조적 수요:</strong> AI 서버(전력·전원 안정) + 전기차(내연차의 3배) + 휴머노이드·로봇 → 고용량 MLCC가 ‘많이·비싸게’ 팔림.</li>
+    <li><strong>공급 부족:</strong> 캐파 초과 주문 → 가격 인상·장기계약. ‘메모리식 공급자 우위’ 국면 진입 가능성.</li>
+  </ul>
+
+  <h1>2. 경쟁 구도 & 삼성전기 포지션</h1>
+  <table>
+    <thead><tr><th>업체</th><th>강점</th><th>위치</th></tr></thead>
+    <tbody>
+      <tr><td>무라타(일본)</td><td>소재~완성 수직계열화, 1위</td><td>전체 ~32%·AI서버 45%</td></tr>
+      <tr><td><span class="kr">삼성전기</span></td><td>파우더 내재화 + 기판 융합</td><td>전체 ~23%·<strong>AI서버 40%</strong></td></tr>
+      <tr><td>타이요유덴·TDK·교세라</td><td>전장(AEC-Q200) 강세</td><td>전장 중심</td></tr>
+      <tr><td>야교·후스전자(중국)</td><td>범용·가격</td><td>점유 ~10% 추격</td></tr>
+    </tbody>
+  </table>
+  <div class="callout">
+    <div class="ct">투자 포인트</div>
+    <p>삼성전기는 ‘전체 2위’지만 <span class="em">AI 서버 고급 시장 40%로 무라타와 양강</span>이에요. 핵심은 ‘점유율’보다 <strong>고부가 믹스 개선 → 이익률 상승</strong>. 게다가 <strong>기판(FC-BGA)도 보유</strong>해 ‘MLCC 기판 내장’ 융합으로 차별화합니다.</p>
+  </div>
+
+  <h1>3. 촉매(카탈리스트) 캘린더</h1>
+  <table>
+    <thead><tr><th>시기</th><th>이벤트</th><th>왜 중요</th></tr></thead>
+    <tbody>
+      <tr><td>월간</td><td>MLCC 수주출하비율(BB)·가격(트렌드포스)</td><td>업황 선행지표(1 이상=공급부족)</td></tr>
+      <tr><td>분기</td><td>무라타·삼성전기 가동률·ASP·서버 매출</td><td>슈퍼사이클 확인</td></tr>
+      <tr><td>수시</td><td>빅테크 장기공급계약·캐파 증설</td><td>수요 가시성</td></tr>
+      <tr><td>수시</td><td>니켈·팔라듐·BaTiO₃ 가격</td><td>원가·마진 변수</td></tr>
+    </tbody>
+  </table>
+
+  <h1>4. 리스크 매트릭스 (발생가능성 × 영향)</h1>
+  <figure>
+    <svg viewBox="0 0 720 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="리스크 매트릭스">
+      <style>.t{font-family:'Malgun Gothic',sans-serif;}.ax{font-size:11px;font-weight:700;fill:#0a5249;}.rk{font-size:10.5px;fill:#1d2733;}.q{font-size:10px;fill:#8a8f98;}</style>
+      <rect x="90" y="28" width="560" height="230" fill="#f1f9f7" stroke="#bfe2db"/>
+      <line x1="370" y1="28" x2="370" y2="258" stroke="#bfe2db" stroke-width="1.5"/>
+      <line x1="90" y1="143" x2="650" y2="143" stroke="#bfe2db" stroke-width="1.5"/>
+      <text class="t ax" x="370" y="282" text-anchor="middle">발생 가능성 →</text>
+      <text class="t ax" x="58" y="143" text-anchor="middle" transform="rotate(-90 58 143)">영향 →</text>
+      <text class="t q" x="510" y="46" text-anchor="middle">영향 높음·확률 높음 (주시)</text>
+      <circle cx="520" cy="80" r="6" fill="#b5481f"/><text class="t rk" x="430" y="77">전방수요(스마트폰·PC) 둔화</text>
+      <circle cx="560" cy="112" r="6" fill="#b5481f"/><text class="t rk" x="470" y="128">원자재(니켈) 급등</text>
+      <circle cx="250" cy="82" r="6" fill="#c08a1e"/><text class="t rk" x="160" y="79">AI capex 조정</text>
+      <circle cx="300" cy="116" r="6" fill="#c08a1e"/><text class="t rk" x="210" y="132">중국 추격(범용)</text>
+      <circle cx="540" cy="196" r="6" fill="#1e7a4d"/><text class="t rk" x="440" y="199">기대 선반영(밸류 부담)</text>
+      <circle cx="270" cy="206" r="6" fill="#8a8f98"/><text class="t rk" x="282" y="209">단기 환율</text>
+    </svg>
+    <figcaption>그림 2. 리스크 매트릭스 — ‘전방수요 둔화·원자재’가 핵심.</figcaption>
+  </figure>
+
+  <h1>5. 시나리오 (낙관·중립·비관)</h1>
+  <table>
+    <thead><tr><th>시나리오</th><th>전제</th><th>그림</th></tr></thead>
+    <tbody>
+      <tr><td>낙관</td><td>AI·전장 수요 지속 + 공급부족 장기화</td><td>가격·가동률↑, MLCC ‘제2 HBM’ 리레이팅</td></tr>
+      <tr><td>중립(기본)</td><td>고부가 견조, 범용은 보합</td><td>믹스 개선으로 이익률 상승</td></tr>
+      <tr><td>비관</td><td>전방수요 둔화 + 중국 추격 + 원자재 급등</td><td>가격 하락·마진 압박, 선반영 부담 노출</td></tr>
+    </tbody>
+  </table>
+
+  <h1>6. 모니터링 KPI 체크리스트</h1>
+  <ul>
+    <li><strong>BB율·MLCC 가격</strong> (공급부족 지속 여부)</li>
+    <li><strong>고부가(AI·전장) 비중·믹스</strong> (이익률의 핵심)</li>
+    <li><strong>가동률·증설</strong> (캐파 확대 진척)</li>
+    <li><strong>원자재(니켈·팔라듐·BaTiO₃) 가격</strong> (원가 변수)</li>
+    <li><strong>전방 출하</strong> (스마트폰·PC·전기차)</li>
+  </ul>
+
+  <h1>7. 국내 수혜 범위 (요약)</h1>
+  <p>MLCC 슈퍼사이클은 완성품(삼성전기)뿐 아니라 <strong>소재·장비</strong>로 내려옵니다(상세는 ②-3 밸류체인 문서).</p>
+  <ul>
+    <li><span class="kr">삼성전기</span> — 완성 MLCC(고부가) + 파우더 내재화</li>
+    <li><span class="kr">대주전자재료</span> — MLCC용 전극 페이스트(삼성전기 공급)</li>
+    <li><span class="kr">원준</span> — MLCC 소성 장비(RHK) 국산화, 삼성전기 협력사</li>
+    <li><span class="kr">삼화콘덴서</span> — 국내 MLCC(범용·전장)</li>
+    <li><span class="kr">코스모신소재</span> — MLCC용 이형필름 등 소재</li>
+  </ul>
+
+  <h1>출처</h1>
+  <ol class="src">
+    <li>Futunn — AI Sparks Surge in MLCC Demand(무라타·삼성전기·캐파) — <a href="https://news.futunn.com/en/post/74590019/ai-sparks-surge-in-mlcc-demand-murata-aggressively-expands-production">link</a></li>
+    <li>TradingKey — AI Servers Create New MLCC Trend: Next HBM? — <a href="https://www.tradingkey.com/analysis/stocks/us-stocks/261849833-mlcc-hbm-ai-vsh-tradingkey">link</a></li>
+    <li>더밸류뉴스 — 삼성전기 MLCC 파우더 내재화 — <a href="https://www.thevaluenews.co.kr/news/183245">link</a></li>
+    <li>주식스토커 — MLCC 관련주(국내 소재·장비) — <a href="https://stockstalker.co.kr/mlcc/">link</a></li>
+    <li>데이터뉴스 — 삼성전기 AI서버 MLCC 40%·BB율 — <a href="https://www.datanews.co.kr/news/article.html?no=144759">link</a></li>
+  </ol>
+  <p class="muted"><em>※ 본 문서는 공개된 보도·리서치를 교차 확인해 정리한 참고 자료입니다. 거론 기업은 밸류체인 위치 예시이며, 수요·점유율·실적은 추정·발표 기준입니다. 본 문서는 투자 권유가 아니며, 투자 결정과 결과의 책임은 전적으로 투자자 본인에게 있습니다.</em></p>
+
+</div>
+</body>
+</html>

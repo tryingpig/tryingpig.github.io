@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MLCC 입문 가이드 — ‘산업의 쌀’ 완전 이해</title>
+<style>
+  :root{
+    --accent:#0f7b6c; --accent-dark:#0a5249; --light:#e3f3f0; --light2:#f1f9f7;
+    --gray:#595959; --line:#bfe2db; --ink:#1d2733;
+    --warn:#b5481f; --warnbg:#fdf1ec; --warnln:#e6b39e;
+  }
+  *{box-sizing:border-box;}
+  html{-webkit-print-color-adjust:exact; print-color-adjust:exact;}
+  body{font-family:"Malgun Gothic","맑은 고딕",-apple-system,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;
+    color:var(--ink); line-height:1.72; margin:0; background:#f5f6f8; font-size:16px;}
+  .page{max-width:840px; margin:24px auto; background:#fff; padding:56px 62px; box-shadow:0 1px 8px rgba(0,0,0,.08);}
+  h1{color:var(--accent-dark); font-size:1.46rem; border-bottom:3px solid var(--accent); padding-bottom:8px; margin:2.2em 0 .7em;}
+  h1:first-of-type{margin-top:.3em;}
+  h2{color:var(--accent); font-size:1.16rem; margin:1.4em 0 .4em;}
+  h3{color:var(--accent-dark); font-size:1.02rem; margin:1.05em 0 .3em;}
+  p{margin:.5em 0;} ul{margin:.4em 0 .9em; padding-left:1.3em;} li{margin:.32em 0;}
+  .em{color:var(--accent-dark); font-weight:700;}
+  .muted{color:var(--gray); font-size:.9rem;}
+  .callout{background:var(--light); border:1px solid var(--accent); border-left:6px solid var(--accent); border-radius:4px; padding:14px 18px; margin:1.1em 0;}
+  .callout .ct{font-weight:700; color:var(--accent-dark); margin-bottom:6px;}
+  .callout p{margin:.35em 0; font-size:.96rem;}
+  table{border-collapse:collapse; width:100%; margin:1em 0; font-size:.85rem;}
+  th{background:var(--accent); color:#fff; font-weight:700; padding:9px 10px; text-align:center; border:1px solid var(--line);}
+  td{padding:8px 10px; border:1px solid var(--line); text-align:left; vertical-align:top;}
+  td.c{text-align:center;}
+  td:first-child{font-weight:700; background:#f1f9f7;}
+  tbody tr:nth-child(even) td{background:var(--light2);}
+  tbody tr:nth-child(even) td:first-child{background:#e3f3f0;}
+  .cover{text-align:center; padding:100px 0 70px;}
+  .cover .big{font-size:2.2rem; font-weight:800; color:var(--accent-dark); letter-spacing:-1px; line-height:1.3;}
+  .cover .sub{font-size:1.12rem; color:var(--accent); margin-top:14px;}
+  .cover .sub2{font-size:1rem; color:var(--gray); margin-top:22px;}
+  .cover .date{font-size:.88rem; color:var(--gray); margin-top:52px;}
+  .toc{background:var(--light2); border:1px solid var(--line); border-radius:6px; padding:18px 26px;}
+  .toc ol{margin:0; padding-left:1.4em;} .toc li{margin:.28em 0;}
+  a{color:var(--accent-dark); word-break:break-all;}
+  .src{font-size:.83rem;} .src li{margin:.4em 0;}
+  figure{margin:1.4em 0; text-align:center;}
+  figure svg{width:100%; max-width:720px; height:auto; display:block; margin:0 auto;}
+  figcaption{font-size:.85rem; color:var(--gray); margin-top:8px;}
+  @media print{
+    body{background:#fff; font-size:11pt;}
+    .page{box-shadow:none; margin:0; max-width:none; padding:0;}
+    .pb{page-break-before:always;}
+    h1,h2,h3{page-break-after:avoid;} table,.callout,figure{page-break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="cover">
+    <div class="big">MLCC 입문 가이드</div>
+    <div class="sub">적층세라믹콘덴서 · ‘산업의 쌀’ 완전 이해</div>
+    <div class="sub2">구조·원리·제조공정부터 AI·전장 수요까지</div>
+    <div class="date">2026년 6월 작성 · 삼성전기 세트 ②-1(입문)</div>
+  </div>
+
+  <!-- 목차 -->
+  <div class="pb"></div>
+  <h1>목차</h1>
+  <div class="toc">
+    <ol>
+      <li>한눈에 보기 (3분 요약)</li>
+      <li>MLCC란 무엇인가 — ‘전기의 댐’</li>
+      <li>구조 — 왜 ‘적층’인가</li>
+      <li>핵심 소재 — 티탄산바륨(BaTiO₃)</li>
+      <li>어떻게 만드나 — 제조 8단계</li>
+      <li>왜 지금 뜨나 — AI 서버·전장</li>
+      <li>타임라인 / 경쟁(무라타) / FAQ / 용어 / 출처</li>
+    </ol>
+  </div>
+
+  <!-- 0 -->
+  <div class="pb"></div>
+  <h1>한눈에 보기 (3분 요약)</h1>
+  <p><span class="em">MLCC(Multi-Layer Ceramic Capacitor, 적층세라믹콘덴서)</span>는 ‘전기를 잠깐 저장했다가 일정하게 흘려보내는’ 초소형 부품이에요. 전자제품 회로 곳곳에서 전류를 매끄럽게 만들어줘, 없으면 칩이 오작동합니다. 그래서 ‘산업의 쌀’이라 불려요.</p>
+  <div class="callout">
+    <div class="ct">핵심 3가지</div>
+    <p>① <strong>역할</strong> = 전기의 ‘댐’(저장+안정화). ② <strong>구조</strong> = 세라믹과 금속전극을 수백 층 ‘적층’. ③ <strong>지금 뜨는 이유</strong> = AI 서버 1대에 MLCC 1만 개 이상, 전기차는 내연차의 3배 → 고용량 MLCC 수요 폭증.</p>
+  </div>
+  <table>
+    <thead><tr><th>구분</th><th>내용</th></tr></thead>
+    <tbody>
+      <tr><td>크기</td><td>가장 작은 건 0.2mm급(쌀알·머리카락보다 작음)</td></tr>
+      <tr><td>탑재량</td><td>스마트폰 1대 ~1,000개 · 전기차 1대 1만 개+ · AI 서버 1대 1만 개+</td></tr>
+      <tr><td>핵심 소재</td><td>티탄산바륨(BaTiO₃) 세라믹 파우더 + 니켈 내부전극</td></tr>
+      <tr><td>1위/2위</td><td>무라타(일본, 약 32%) · 삼성전기(약 23%). AI서버용은 무라타 45%·삼성전기 40%</td></tr>
+    </tbody>
+  </table>
+
+  <!-- 1 -->
+  <div class="pb"></div>
+  <h1>1. MLCC란 무엇인가 — ‘전기의 댐’</h1>
+  <p>콘덴서(커패시터)는 ‘전기를 잠깐 담아두는 작은 그릇’이에요. 반도체 같은 능동부품이 일할 때 전류가 출렁이는데, MLCC가 옆에서 <strong>전기를 모았다가 부족할 때 내주며 전류를 일정하게</strong> 유지합니다. 댐이 물을 가뒀다가 일정하게 흘려보내는 것과 똑같아요.</p>
+  <ul>
+    <li><strong>왜 ‘세라믹’?</strong> 전기를 담는 ‘유전체’로 세라믹(도자기 재료)을 써서 작고 안정적이에요.</li>
+    <li><strong>왜 ‘적층’?</strong> 더 많은 전기를 담으려고 세라믹·전극을 수백 층 쌓았기 때문(아래 2번).</li>
+  </ul>
+
+  <!-- 2 구조 -->
+  <h1>2. 구조 — 왜 ‘적층’인가</h1>
+  <p>콘덴서가 담는 전기 양(용량)은 ‘전극 면적’에 비례해요. 작은 칩에서 면적을 늘리는 비결이 <span class="em">‘세라믹과 금속전극을 번갈아 수백~수천 층 쌓는 것(적층)’</span>입니다. 얇은 콘덴서 수백 개를 병렬로 포갠 셈이라, 작아도 용량이 큽니다.</p>
+  <figure>
+    <svg viewBox="0 0 720 240" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="MLCC 적층 구조">
+      <style>.t{font-family:'Malgun Gothic',sans-serif;}.lab{font-size:11px;fill:#1d2733;}.hd{font-size:13px;font-weight:700;fill:#0a5249;}</style>
+      <text class="t hd" x="360" y="24" text-anchor="middle">MLCC 내부 — 세라믹+전극의 적층</text>
+      <!-- body -->
+      <rect x="220" y="50" width="280" height="140" rx="6" fill="#efe7d8" stroke="#8a6d3b"/>
+      <!-- electrodes interleaved -->
+      <g fill="#7a7f86">
+        <rect x="220" y="64" width="210" height="8"/><rect x="290" y="86" width="210" height="8"/>
+        <rect x="220" y="108" width="210" height="8"/><rect x="290" y="130" width="210" height="8"/>
+        <rect x="220" y="152" width="210" height="8"/>
+      </g>
+      <!-- end terminations -->
+      <rect x="206" y="50" width="20" height="140" rx="3" fill="#c9a14a"/>
+      <rect x="494" y="50" width="20" height="140" rx="3" fill="#c9a14a"/>
+      <text class="t lab" x="150" y="124" text-anchor="middle">외부전극</text>
+      <line x1="180" y1="120" x2="210" y2="120" stroke="#8a8f98"/>
+      <text class="t lab" x="600" y="80" text-anchor="middle">세라믹(유전체)</text>
+      <text class="t lab" x="600" y="150" text-anchor="middle">내부전극(니켈)</text>
+      <text class="t lab" x="360" y="216" text-anchor="middle">세라믹·전극을 수백~수천 층 번갈아 쌓아 ‘작지만 큰 용량’ 구현</text>
+    </svg>
+    <figcaption>그림 1. MLCC 적층 구조(개념). 세라믹과 니켈 전극이 빗살처럼 교차 적층된다.</figcaption>
+  </figure>
+
+  <!-- 3 소재 -->
+  <h1>3. 핵심 소재 — 티탄산바륨(BaTiO₃)</h1>
+  <p>MLCC 성능의 80%는 <span class="em">세라믹 파우더(티탄산바륨, BaTiO₃)</span>에서 결정돼요. 이 분말을 얼마나 <strong>작고 균일하게(나노미터급)</strong> 만들고, 어떤 첨가제를 어떤 비율로 섞느냐(‘레시피’)가 회사의 핵심 노하우입니다.</p>
+  <ul>
+    <li>분말 입자가 작을수록 더 얇게·많이 쌓을 수 있어 <strong>고용량·소형화</strong>가 가능. 삼성전기는 200nm BaTiO₃로 1.9μm 초박막 시트를 구현했어요.</li>
+    <li>내부전극은 <strong>니켈(Ni)</strong>(고급은 일부 Pd/Ag), 그래서 니켈·팔라듐 가격이 원가에 직결.</li>
+  </ul>
+  <div class="callout">
+    <div class="ct">왜 ‘파우더’가 진짜 진입장벽인가</div>
+    <p>좋은 MLCC는 결국 ‘좋은 분말 + 좋은 레시피’예요. 그래서 삼성전기는 부산 공장에서 <strong>세라믹 파우더·메탈 파우더를 자체 개발·생산(내재화)</strong>합니다. 이 소재 경쟁력이 무라타를 따라잡는 열쇠예요.</p>
+  </div>
+
+  <!-- 4 제조 -->
+  <h1>4. 어떻게 만드나 — 제조 8단계</h1>
+  <figure>
+    <svg viewBox="0 0 720 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="MLCC 제조 공정">
+      <style>.t{font-family:'Malgun Gothic',sans-serif;}.s{font-size:10.5px;fill:#fff;font-weight:700;}.n{font-size:9px;fill:#fff;}</style>
+      <g>
+        <rect x="12" y="40" width="80" height="46" rx="5" fill="#0f7b6c"/><text class="t s" x="52" y="60" text-anchor="middle">①배합</text><text class="t n" x="52" y="76" text-anchor="middle">파우더+첨가제</text>
+        <rect x="100" y="40" width="80" height="46" rx="5" fill="#13897a"/><text class="t s" x="140" y="60" text-anchor="middle">②하소</text><text class="t n" x="140" y="76" text-anchor="middle">calcination</text>
+        <rect x="188" y="40" width="80" height="46" rx="5" fill="#179688"/><text class="t s" x="228" y="60" text-anchor="middle">③슬러리</text><text class="t n" x="228" y="76" text-anchor="middle">바인더 첨가</text>
+        <rect x="276" y="40" width="80" height="46" rx="5" fill="#1ba395"/><text class="t s" x="316" y="56" text-anchor="middle">④그린시트</text><text class="t n" x="316" y="72" text-anchor="middle">얇게 캐스팅</text>
+        <rect x="364" y="40" width="80" height="46" rx="5" fill="#1fb0a2"/><text class="t s" x="404" y="56" text-anchor="middle">⑤전극인쇄</text><text class="t n" x="404" y="72" text-anchor="middle">니켈 프린팅</text>
+        <rect x="452" y="40" width="80" height="46" rx="5" fill="#37bdb0"/><text class="t s" x="492" y="56" text-anchor="middle">⑥적층·압착</text><text class="t n" x="492" y="72" text-anchor="middle">수백층</text>
+        <rect x="540" y="40" width="80" height="46" rx="5" fill="#52c9bd"/><text class="t s" x="580" y="56" text-anchor="middle">⑦절단·소결</text><text class="t n" x="580" y="72" text-anchor="middle">고온 구이</text>
+        <rect x="628" y="40" width="80" height="46" rx="5" fill="#6fd4ca"/><text class="t s" x="668" y="56" text-anchor="middle" fill="#0a5249">⑧외부전극</text><text class="t n" x="668" y="72" text-anchor="middle" fill="#0a5249">완성</text>
+      </g>
+      <text class="t" x="360" y="120" text-anchor="middle" font-size="11" fill="#595959">핵심 난이도: ④얇게(1.9μm) 만들기 · ⑥수백층 정확히 쌓기 · ⑦갈라짐 없이 소결</text>
+      <text class="t" x="360" y="148" text-anchor="middle" font-size="11" fill="#595959">→ ‘세라믹을 종이처럼 얇게 만들어 김처럼 쌓는’ 초정밀 공정</text>
+    </svg>
+    <figcaption>그림 2. MLCC 제조 8단계(개념).</figcaption>
+  </figure>
+  <p>쉽게 말하면 <strong>‘세라믹 반죽을 종이처럼 얇게 펴서(그린시트), 그 위에 니켈로 전극을 인쇄하고, 수백 장 포개 눌러, 잘라서 고온에 구운 뒤, 양끝에 단자를 붙이는’</strong> 과정이에요. 얇게·많이·갈라짐 없이 만드는 게 기술의 전부입니다.</p>
+
+  <!-- 5 왜 지금 -->
+  <div class="pb"></div>
+  <h1>5. 왜 지금 뜨나 — AI 서버·전장</h1>
+  <p>MLCC는 ‘많이·비싸게’ 팔수록 돈이 되는데, 두 시장이 동시에 그걸 키우고 있어요.</p>
+  <ul>
+    <li><strong>AI 서버:</strong> 전력을 많이 쓰고 전원이 출렁여서 고용량 MLCC가 대량 필요. AI 서버 1대에 <strong>1만 개+</strong>. 골드만삭스는 AI 서버용 MLCC 수요가 2026년 726억 개(+87%), 2027년 1,367억 개(+88%)로 폭증한다고 봤어요.</li>
+    <li><strong>전장(자동차):</strong> 전기차는 내연차의 <strong>약 3배</strong> 콘덴서가 들어가요. 게다가 고온·고신뢰성이 필요해 단가가 비쌉니다(AEC-Q200 인증).</li>
+  </ul>
+  <div class="callout">
+    <div class="ct">‘AI MLCC가 다음 HBM?’</div>
+    <p>골드만삭스 등은 AI 서버용 MLCC를 ‘메모리(HBM) 다음의 AI 수혜’로 거론해요. 실제로 무라타는 AI MLCC 주문이 생산능력의 2배에 달하고 가동률이 90~95%까지 올랐습니다. ‘공급이 수요를 못 따라가는’ 국면이에요.</p>
+  </div>
+
+  <!-- 6 타임라인/경쟁 -->
+  <h1>6. 경쟁 구도</h1>
+  <table>
+    <thead><tr><th>시장</th><th>주요 업체</th><th>비고</th></tr></thead>
+    <tbody>
+      <tr><td>MLCC 전체</td><td>무라타(약 32%)·삼성전기(약 23%)·타이요유덴·TDK</td><td>일본 강세</td></tr>
+      <tr><td>AI 서버용(고급)</td><td>무라타 45% · <strong>삼성전기 40%</strong></td><td>둘이 80%+ 양분</td></tr>
+      <tr><td>전장용</td><td>타이요유덴·TDK·교세라(AVX) 강세</td><td>삼성전기 확대 중</td></tr>
+      <tr><td>중국</td><td>야교·후스전자 등(점유 ~10%)</td><td>범용 중심 추격</td></tr>
+    </tbody>
+  </table>
+
+  <h1>FAQ · 흔한 오해</h1>
+  <h3>Q1. MLCC가 그렇게 작은데 왜 중요한가요?</h3>
+  <p>작지만 한 기기에 수백~수만 개가 들어가, 하나라도 부실하면 오작동해요. ‘양’과 ‘신뢰성’이 핵심이라 산업의 쌀이라 불립니다.</p>
+  <h3>Q2. MLCC도 메모리처럼 ‘사이클’이 있나요?</h3>
+  <p>네. 전방수요(스마트폰·PC·차)에 따라 호황·불황이 있어요. 지금은 AI·전장이 새 수요를 만들며 호황 국면입니다.</p>
+  <h3>Q3. 삼성전기가 무라타를 이길 수 있나요?</h3>
+  <p>전체로는 2위지만, <strong>AI 서버용 고급 시장에선 40%로 격차가 작아요</strong>. 소재(파우더) 내재화·기판 융합이 추격 무기입니다.</p>
+
+  <h1>부록. 미니 용어 사전</h1>
+  <table>
+    <thead><tr><th>용어</th><th>쉬운 설명</th></tr></thead>
+    <tbody>
+      <tr><td>MLCC</td><td>적층세라믹콘덴서. 전기를 저장·안정시키는 초소형 부품.</td></tr>
+      <tr><td>콘덴서(커패시터)</td><td>전기를 잠깐 담아두는 부품. MLCC는 그 일종.</td></tr>
+      <tr><td>유전체</td><td>전기를 담는 절연 재료. MLCC는 세라믹을 씀.</td></tr>
+      <tr><td>BaTiO₃</td><td>티탄산바륨. MLCC 세라믹의 핵심 파우더.</td></tr>
+      <tr><td>그린시트</td><td>세라믹 반죽을 종이처럼 얇게 편 것(적층 전 단계).</td></tr>
+      <tr><td>소결</td><td>고온에 구워 단단하게 만드는 공정.</td></tr>
+      <tr><td>AEC-Q200</td><td>전장(자동차)용 부품 신뢰성 인증.</td></tr>
+      <tr><td>고용량 MLCC</td><td>AI 서버·전장용 고부가 제품(비쌈).</td></tr>
+    </tbody>
+  </table>
+
+  <h1>출처</h1>
+  <ol class="src">
+    <li>삼성전기 제품/공정 — MLCC 구조·제조 — <a href="https://m.samsungsem.com/kr/product/passive-component/mlcc.do">link</a></li>
+    <li>위키백과 — MLCC(세라믹 축전기) 구조·소재 — <a href="https://ko.wikipedia.org/wiki/MLCC">link</a></li>
+    <li>더밸류뉴스 — 삼성전기 실적 반등 주역 MLCC(파우더 내재화) — <a href="https://www.thevaluenews.co.kr/news/183245">link</a></li>
+    <li>Futunn — AI Sparks Surge in MLCC Demand(무라타·삼성전기) — <a href="https://news.futunn.com/en/post/74590019/ai-sparks-surge-in-mlcc-demand-murata-aggressively-expands-production">link</a></li>
+    <li>TradingKey — AI Servers Create New MLCC Trend: Next HBM? — <a href="https://www.tradingkey.com/analysis/stocks/us-stocks/261849833-mlcc-hbm-ai-vsh-tradingkey">link</a></li>
+  </ol>
+  <p class="muted"><em>※ 본 문서는 공개된 기업·언론·기술 자료를 교차 확인해 정리한 참고 자료입니다. 일부 도식은 개념 이해용입니다.</em></p>
+
+</div>
+</body>
+</html>

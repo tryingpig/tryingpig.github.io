@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>유리기판 입문 가이드 — 반도체 패키징 게임체인저</title>
+<style>
+  :root{--accent:#0e7490;--accent-dark:#0c5e74;--light:#e0f2f7;--light2:#f0f9fc;--gray:#595959;--line:#bcdfe9;--ink:#1d2733;}
+  *{box-sizing:border-box;}html{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  body{font-family:"Malgun Gothic","맑은 고딕",-apple-system,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;color:var(--ink);line-height:1.72;margin:0;background:#f5f6f8;font-size:16px;}
+  .page{max-width:840px;margin:24px auto;background:#fff;padding:56px 62px;box-shadow:0 1px 8px rgba(0,0,0,.08);}
+  h1{color:var(--accent-dark);font-size:1.46rem;border-bottom:3px solid var(--accent);padding-bottom:8px;margin:2.2em 0 .7em;}h1:first-of-type{margin-top:.3em;}
+  h2{color:var(--accent);font-size:1.16rem;margin:1.4em 0 .4em;}h3{color:var(--accent-dark);font-size:1.02rem;margin:1.05em 0 .3em;}
+  p{margin:.5em 0;}ul{margin:.4em 0 .9em;padding-left:1.3em;}li{margin:.32em 0;}
+  .em{color:var(--accent-dark);font-weight:700;}.muted{color:var(--gray);font-size:.9rem;}
+  .callout{background:var(--light);border:1px solid var(--accent);border-left:6px solid var(--accent);border-radius:4px;padding:14px 18px;margin:1.1em 0;}
+  .callout .ct{font-weight:700;color:var(--accent-dark);margin-bottom:6px;}.callout p{margin:.35em 0;font-size:.96rem;}
+  table{border-collapse:collapse;width:100%;margin:1em 0;font-size:.85rem;}
+  th{background:var(--accent);color:#fff;font-weight:700;padding:9px 10px;text-align:center;border:1px solid var(--line);}
+  td{padding:8px 10px;border:1px solid var(--line);text-align:left;vertical-align:top;}td:first-child{font-weight:700;background:#f0f9fc;}
+  tbody tr:nth-child(even) td{background:var(--light2);}tbody tr:nth-child(even) td:first-child{background:#e0f2f7;}
+  .cover{text-align:center;padding:100px 0 70px;}.cover .big{font-size:2.2rem;font-weight:800;color:var(--accent-dark);letter-spacing:-1px;line-height:1.3;}
+  .cover .sub{font-size:1.12rem;color:var(--accent);margin-top:14px;}.cover .sub2{font-size:1rem;color:var(--gray);margin-top:22px;}.cover .date{font-size:.88rem;color:var(--gray);margin-top:52px;}
+  a{color:var(--accent-dark);word-break:break-all;}.src{font-size:.83rem;}.src li{margin:.4em 0;}
+  figure{margin:1.4em 0;text-align:center;}figure svg{width:100%;max-width:720px;height:auto;display:block;margin:0 auto;}figcaption{font-size:.85rem;color:var(--gray);margin-top:8px;}
+  @media print{body{background:#fff;font-size:11pt;}.page{box-shadow:none;margin:0;max-width:none;padding:0;}.pb{page-break-before:always;}h1,h2,h3{page-break-after:avoid;}table,.callout,figure{page-break-inside:avoid;}}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="cover">
+    <div class="big">유리기판 입문 가이드</div>
+    <div class="sub">반도체 패키징의 ‘게임체인저’</div>
+    <div class="sub2">왜 유리인가 · FC-BGA와 무엇이 다른가</div>
+    <div class="date">2026년 6월 작성 · 삼성전기 세트 ④-1(입문)</div>
+  </div>
+
+  <div class="pb"></div>
+  <h1>한눈에 보기 (3분 요약)</h1>
+  <p><span class="em">유리기판(Glass Substrate)</span>은 기존 기판(FC-BGA)의 ‘플라스틱(유기)·ABF 코어’를 <strong>유리</strong>로 바꾼 차세대 반도체 패키지 기판이에요. 더 평평하고 단단해 휘지 않고, 더 크고 미세하게 만들 수 있어 <strong>AI 대형 칩(칩렛)·HBM</strong>에 유리합니다.</p>
+  <div class="callout">
+    <div class="ct">핵심 한 줄</div>
+    <p>FC-BGA가 커질수록 <strong>휘어짐(warpage)</strong>과 미세화 한계에 부딪히는데, 유리기판이 이를 넘는 ‘판 바꾸기’ 카드예요. 그래서 ‘반도체 패키징 게임체인저’로 불립니다.</p>
+  </div>
+  <table>
+    <thead><tr><th>구분</th><th>내용</th></tr></thead>
+    <tbody>
+      <tr><td>정의</td><td>코어를 유리로 만든 차세대 패키지 기판</td></tr>
+      <tr><td>강점</td><td>휨↓·평탄·대면적·미세화·열/전기 특성 우수</td></tr>
+      <tr><td>핵심기술</td><td>TGV(유리 관통 전극, Through Glass Via)</td></tr>
+      <tr><td>주도 기업</td><td>SKC 자회사 앱솔릭스(美 조지아 세계 첫 공장)·삼성전기·인텔(철수→외부조달)</td></tr>
+      <tr><td>상용화</td><td>앱솔릭스 2026 양산 준비, 삼성전기 2026 하반기~2027, 시장 2027~28 본격</td></tr>
+    </tbody>
+  </table>
+
+  <div class="pb"></div>
+  <h1>1. 유리기판이란 — ‘코어를 유리로’</h1>
+  <p>기판의 ‘심(코어)’을 무엇으로 만드느냐가 핵심이에요. 기존 FC-BGA는 플라스틱(유기) 코어 + ABF 절연막을 쓰는데, 유리기판은 그 코어를 <strong>유리</strong>로 바꿉니다. 유리는 평평하고 단단해서, 큰 기판을 만들어도 덜 휘어요.</p>
+
+  <h1>2. 왜 유리인가 — 4가지 강점</h1>
+  <ul>
+    <li><strong>휨↓(평탄도):</strong> 유리는 단단해 대면적에서도 덜 휘어 → 큰 AI 칩에 유리.</li>
+    <li><strong>미세화:</strong> 표면이 매끈해 더 미세한 회로·관통전극(TGV)을 구현.</li>
+    <li><strong>대면적·고집적:</strong> 여러 칩(칩렛)·HBM을 더 많이 올릴 수 있음.</li>
+    <li><strong>열·전기 특성:</strong> 고주파·고속 신호에 유리, 열 안정성↑.</li>
+  </ul>
+  <div class="callout">
+    <div class="ct">TGV가 뭐예요?</div>
+    <p><strong>TGV(Through Glass Via)는 유리를 관통해 위아래를 잇는 미세 전극</strong>이에요(메모리의 TSV와 비슷한 개념). 유리에 정확히 구멍을 뚫고 금속을 채우는 게 핵심 난제이자 기술 차별점입니다.</p>
+  </div>
+
+  <h1>3. FC-BGA(유기) vs 유리기판</h1>
+  <table>
+    <thead><tr><th>항목</th><th>FC-BGA(유기·ABF)</th><th>유리기판</th></tr></thead>
+    <tbody>
+      <tr><td>코어</td><td>플라스틱(유기)+ABF</td><td>유리</td></tr>
+      <tr><td>휨(대면적)</td><td>큼(한계)</td><td>작음(강점)</td></tr>
+      <tr><td>미세화</td><td>제한</td><td>유리(TGV)</td></tr>
+      <tr><td>성숙도</td><td>양산 주류</td><td>상용화 직전(2026~28)</td></tr>
+      <tr><td>핵심소재</td><td>ABF(일본 독점)</td><td>유리 원판(코닝·쇼트 등)</td></tr>
+    </tbody>
+  </table>
+  <figure><svg viewBox="0 0 720 180" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="유기 vs 유리기판">
+    <style>.t{font-family:'Malgun Gothic',sans-serif;}.lb{font-size:11px;fill:#1d2733;}.hd{font-size:12px;font-weight:700;fill:#0c5e74;}</style>
+    <text class="t hd" x="180" y="22" text-anchor="middle">유기 기판(FC-BGA) — 잘 휨</text>
+    <path d="M50 90 Q180 60 310 90" stroke="#b08968" stroke-width="14" fill="none"/>
+    <text class="t lb" x="180" y="130" text-anchor="middle">대면적일수록 휘어짐(warpage)↑</text>
+    <text class="t hd" x="540" y="22" text-anchor="middle">유리기판 — 평탄·단단</text>
+    <rect x="410" y="80" width="260" height="14" fill="#7fd4e8" stroke="#0e7490"/>
+    <line x1="450" y1="80" x2="450" y2="94" stroke="#0c5e74"/><line x1="510" y1="80" x2="510" y2="94" stroke="#0c5e74"/><line x1="570" y1="80" x2="570" y2="94" stroke="#0c5e74"/><line x1="630" y1="80" x2="630" y2="94" stroke="#0c5e74"/>
+    <text class="t lb" x="540" y="130" text-anchor="middle">평탄 + TGV(유리 관통 전극)</text>
+  </svg><figcaption>그림 1. 유기 기판은 대면적에서 휘고, 유리기판은 평탄해 큰 AI 칩에 유리.</figcaption></figure>
+
+  <div class="pb"></div>
+  <h1>4. 어디에 쓰나 — AI 칩렛·HBM·CPO</h1>
+  <p>유리기판은 ‘여러 칩을 한 패키지에 크게 묶는’ AI 시대 패키징에 딱이에요. <strong>GPU+HBM, 칩렛, 그리고 앞서 본 CPO(광패키징)</strong>까지 — 큰 면적·정밀 연결이 필요한 곳에서 진가를 발휘합니다. 그래서 ‘HBM·CPO·메가프로젝트 패키징’ 흐름과 직접 연결돼요.</p>
+
+  <h1>5. 어디까지 왔나 (상용화 현황)</h1>
+  <ul>
+    <li><strong>앱솔릭스(SKC 자회사):</strong> 美 조지아에 <strong>세계 첫 유리기판 공장</strong>, 2026 양산 준비, 고객사 인증 최종 단계.</li>
+    <li><strong>삼성전기:</strong> 2026 하반기~2027 대량 양산 목표. CEO “2027~28년 시장 본격화”. 일본 스미토모화학과 합작.</li>
+    <li><strong>인텔:</strong> 내부 개발 중단 → <strong>외부 전문업체에서 조달 검토</strong> → 한국 기업에 기회.</li>
+  </ul>
+  <div class="callout">
+    <div class="ct">한국에 유리한 판</div>
+    <p>유리기판은 ‘아직 승자가 없는’ 신시장이에요. 인텔이 자체 개발을 접으면서, <strong>앱솔릭스(SKC)·삼성전기</strong> 같은 한국 기업이 ‘세계 첫 양산’ 자리를 노리는 보기 드문 기회입니다.</p>
+  </div>
+
+  <h1>FAQ</h1>
+  <h3>Q1. 유리기판이 FC-BGA를 완전히 대체하나요?</h3>
+  <p>당장은 아니에요. 고성능 AI 칩부터 먼저 적용되고, 한동안 FC-BGA와 ‘공존’합니다.</p>
+  <h3>Q2. 유리는 깨지기 쉬운데 괜찮나요?</h3>
+  <p>‘깨짐(취성)’이 핵심 난제예요. 그래서 가공·핸들링 수율 확보가 상용화 관건입니다.</p>
+  <h3>Q3. 메모리의 TSV와 TGV는 같나요?</h3>
+  <p>개념은 비슷(관통 전극)하지만, TSV는 실리콘, TGV는 ‘유리’를 뚫는다는 차이가 있어요.</p>
+
+  <h1>부록. 미니 용어 사전</h1>
+  <table>
+    <thead><tr><th>용어</th><th>쉬운 설명</th></tr></thead>
+    <tbody>
+      <tr><td>유리기판</td><td>코어를 유리로 만든 차세대 패키지 기판.</td></tr>
+      <tr><td>TGV</td><td>유리를 관통하는 미세 전극(Through Glass Via).</td></tr>
+      <tr><td>warpage</td><td>기판 휘어짐. 대면적일수록 문제 → 유리가 해결.</td></tr>
+      <tr><td>칩렛</td><td>여러 작은 칩을 한 패키지에 묶는 방식.</td></tr>
+      <tr><td>앱솔릭스</td><td>SKC 자회사. 美 조지아 세계 첫 유리기판 공장.</td></tr>
+      <tr><td>취성</td><td>유리가 깨지기 쉬운 성질. 상용화 난제.</td></tr>
+    </tbody>
+  </table>
+
+  <h1>출처</h1>
+  <ol class="src">
+    <li>테크월드 — SK·삼성전기, 유리기판 AI 패키징 주도권 — <a href="https://www.epnc.co.kr/news/articleView.html?idxno=330542">link</a></li>
+    <li>CNews — 삼성전기 “유리기판 상용화 2027~28년” — <a href="https://www.thecommoditiesnews.com/news/articleView.html?idxno=9460">link</a></li>
+    <li>초이스스탁 — 인텔 유리기판 철수…국내 기업 기회 — <a href="https://www.choicestock.co.kr/stock/news_view/54964?bu=">link</a></li>
+    <li>구구 — 반도체 유리기판 기술 개요(TGV) — <a href="https://guguuu.com/entry/87-semiconductor-glass-substrate-technology">link</a></li>
+  </ol>
+  <p class="muted"><em>※ 본 문서는 공개된 기업·언론 자료를 교차 확인해 정리한 참고 자료입니다. 일부 도식은 개념 이해용입니다.</em></p>
+</div>
+</body>
+</html>

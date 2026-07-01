@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI 데이터센터 전력·공조·냉각 심층 수혜 리포트</title>
+<style>
+  :root{--accent:#0284c7;--accent-dark:#075985;--light:#e2f2fb;--light2:#f0f8fd;--gray:#595959;--line:#bcdcee;--ink:#1d2733;--warn:#b5481f;--warnbg:#fdf1ec;--warnln:#e6b39e;--kr:#1e7a4d;}
+  *{box-sizing:border-box;}html{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  body{font-family:"Malgun Gothic","맑은 고딕",-apple-system,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;color:var(--ink);line-height:1.72;margin:0;background:#f5f6f8;font-size:16px;}
+  .page{max-width:860px;margin:24px auto;background:#fff;padding:56px 62px;box-shadow:0 1px 8px rgba(0,0,0,.08);}
+  h1{color:var(--accent-dark);font-size:1.46rem;border-bottom:3px solid var(--accent);padding-bottom:8px;margin:2.2em 0 .7em;}h1:first-of-type{margin-top:.3em;}
+  h2{color:var(--accent);font-size:1.17rem;margin:1.5em 0 .4em;}h3{color:var(--accent-dark);font-size:1.03rem;margin:1.1em 0 .3em;}
+  p{margin:.55em 0;}ul{margin:.4em 0 .9em;padding-left:1.3em;}li{margin:.34em 0;}ol{padding-left:1.3em;}
+  .em{color:var(--accent-dark);font-weight:700;}.muted{color:var(--gray);font-size:.9rem;}.lead{font-size:1.02rem;}
+  .callout{background:var(--light);border:1px solid var(--accent);border-left:6px solid var(--accent);border-radius:4px;padding:14px 18px;margin:1.1em 0;}
+  .callout .ct{font-weight:700;color:var(--accent-dark);margin-bottom:6px;}.callout p{margin:.35em 0;font-size:.96rem;}
+  .warn{background:var(--warnbg);border:1px solid var(--warnln);border-left:6px solid var(--warn);border-radius:4px;padding:14px 18px;margin:1.1em 0;}
+  .warn .ct{font-weight:700;color:var(--warn);margin-bottom:6px;}.warn p,.warn li{font-size:.94rem;}
+  .card{border:1px solid var(--line);border-radius:8px;padding:14px 18px;margin:1em 0;background:#fcfeff;}.card h3{margin-top:.2em;}
+  table{border-collapse:collapse;width:100%;margin:1em 0;font-size:.84rem;}
+  th{background:var(--accent);color:#fff;font-weight:700;padding:9px 10px;text-align:center;border:1px solid var(--line);}
+  td{padding:8px 10px;border:1px solid var(--line);vertical-align:top;text-align:left;}
+  td:first-child{font-weight:700;background:#f0f8fd;}tbody tr:nth-child(even) td{background:var(--light2);}tbody tr:nth-child(even) td:first-child{background:#e2f2fb;}
+  .tag{display:inline-block;font-size:.72rem;font-weight:700;padding:1px 8px;border-radius:10px;color:#fff;}.t-hi{background:#1e7a4d;}.t-mid{background:#c08a1e;}.t-low{background:#8a8f98;}
+  .cover{text-align:center;padding:92px 0 60px;}.cover .big{font-size:2.05rem;font-weight:800;color:var(--accent-dark);letter-spacing:-1px;line-height:1.32;}
+  .cover .sub{font-size:1.08rem;color:var(--accent);margin-top:14px;}.cover .sub2{font-size:.98rem;color:var(--gray);margin-top:20px;}.cover .date{font-size:.86rem;color:var(--gray);margin-top:46px;}
+  a{color:var(--accent-dark);word-break:break-all;}.src{font-size:.83rem;}.src li{margin:.4em 0;}
+  .toc{background:var(--light2);border:1px solid var(--line);border-radius:6px;padding:16px 24px;}.toc ol{margin:0;padding-left:1.4em;}.toc li{margin:.24em 0;}
+  figure{margin:1.4em 0;text-align:center;}figure svg{width:100%;max-width:780px;height:auto;display:block;margin:0 auto;}figcaption{font-size:.85rem;color:var(--gray);margin-top:8px;}
+  @media print{body{background:#fff;font-size:11pt;}.page{box-shadow:none;margin:0;max-width:none;padding:0;}.pb{page-break-before:always;}h1,h2,h3{page-break-after:avoid;}table,.callout,.warn,.card,figure{page-break-inside:avoid;}}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="cover">
+    <div class="big">AI 데이터센터의 ‘숨은 병목’<br>전력·공조·냉각 심층 수혜 리포트</div>
+    <div class="sub">GPU가 아니라, GPU를 ‘돌리고 식히는’ 인프라에 투자한다</div>
+    <div class="sub2">전력(800VDC·SST) · 냉각(액침·수랭) · 에어컨(칠러) 3대 병목 완전 해부</div>
+    <div class="date">2026년 6월 작성 · 영상 주제 기반 심층 재구성 · 국내 시장 중심</div>
+  </div>
+
+  <div class="pb"></div>
+  <div class="callout"><div class="ct">▶ 원본 영상</div>
+    <p>이 리포트는 아래 영상을 근간으로 작성했습니다: <a href="https://www.youtube.com/watch?si=xzkphTD5gnqhn064&v=8tUfR9WZtmA&feature=youtu.be">https://www.youtube.com/watch?v=8tUfR9WZtmA</a></p></div>
+  <div class="warn"><div class="ct">먼저 읽어주세요 (중요)</div>
+    <p>본 리포트는 요청하신 유튜브 영상의 <strong>주제(‘AI 데이터센터의 전력·공조·에어컨 문제’)를 근간</strong>으로, 제가 공개 자료(언론·기업 발표·정부 정책·증권가 코멘트)를 조사해 재구성한 <strong>교육·참고용</strong> 자료입니다. 영상의 음성·자막은 직접 추출하지 못했으므로 특정 발언의 인용이 아니라 ‘주제 기반 심층 분석’임을 밝힙니다. 특정 종목의 매수·매도 권유가 아니며, 실적·수주·시장 수치는 발표·추정 기준으로 달라질 수 있습니다. 냉각·칠러 종목 상당수는 ‘테마 거론’ 성격이 있어 ‘실제 수주·매출’과 구분해야 합니다. 투자 판단·책임은 본인에게 있습니다.</p></div>
+
+  <h1>목차</h1>
+  <div class="toc"><ol>
+    <li>핵심 결론 (3분 요약)</li>
+    <li>PART 1. 왜 지금 ‘전력·냉각’인가 — 거시 배경</li>
+    <li>PART 2. 병목 ① 전력(Power) 심층</li>
+    <li>PART 3. 병목 ② 냉각·공조(액침·수랭) 심층</li>
+    <li>PART 4. 병목 ③ 에어컨(칠러·항온항습) 심층</li>
+    <li>PART 5. 종합 수혜 지도 & 밸류체인</li>
+    <li>PART 6. 시장 규모 · PART 7. 글로벌 경쟁</li>
+    <li>PART 8. 투자 프레임워크 · PART 9. 촉매</li>
+    <li>PART 10. 리스크 · PART 11. 시나리오 · PART 12. KPI</li>
+    <li>PART 13. 기업 카드 · FAQ · 용어 · 출처</li>
+  </ol></div>
+
+  <div class="pb"></div>
+  <h1>핵심 결론 (3분 요약)</h1>
+  <p class="lead"><span class="em">“AI 붐의 진짜 병목은 GPU가 아니라, GPU를 ‘돌릴 전기(전력)’와 ‘식힐 냉방(공조·에어컨)’이다.”</span> 이 한 문장이 리포트 전체를 관통합니다. 시장은 엔비디아·HBM·메모리에 열광하지만, 그 칩을 실제로 가동하려면 <strong>거대한 전력</strong>과 <strong>그 전력이 만드는 열을 식힐 냉각</strong>이 있어야 합니다. 그런데 이 ‘전력·냉각 인프라’가 지금 세계적으로 부족해요. 수요는 폭발하는데 공급이 못 따라가는 병목이 GPU가 아니라 인프라 쪽에서 벌어지고 있습니다.</p>
+  <div class="callout"><div class="ct">3대 병목 = 3갈래 투자 아이디어</div>
+    <p>① <strong>전력</strong> — 랙당 전력이 5~10kW에서 44kW, 나아가 1MW로 치솟음 → 800VDC·반도체 변압기(SST)로 판이 바뀜.<br>② <strong>냉각</strong> — 전력을 많이 쓰면 그만큼 열이 남. 공랭(PUE 1.5) 한계 → 수랭(D2C)·액침냉각(PUE 1.1)으로 전환(랙당 50kW가 분기점).<br>③ <strong>에어컨(칠러)</strong> — 데이터센터는 ‘거대한 에어컨(칠러)’이 24시간 필요. AI 특수로 수요 폭증, 정부가 ‘차세대 수출품’으로 육성.</p></div>
+  <table><thead><tr><th>병목</th><th>문제의 본질</th><th>기술 전환</th><th>대표 국내 수혜(예시)</th></tr></thead><tbody>
+    <tr><td>① 전력</td><td>랙당 전력 폭증, 전력망 한계</td><td>AC→800VDC, 변압기→SST</td><td>효성중공업·LS일렉트릭·HD현대일렉트릭·두산에너빌리티</td></tr>
+    <tr><td>② 냉각</td><td>고밀도 발열, 공랭 한계</td><td>공랭→수랭(D2C)→액침</td><td>GST·케이엔솔·신성이엔지·인성정보·SK엔무브</td></tr>
+    <tr><td>③ 에어컨</td><td>24시간 대규모 냉방</td><td>범용 칠러→AI DC 특화</td><td>LG전자·오텍캐리어·센추리·삼화에이스</td></tr>
+  </tbody></table>
+
+  <div class="pb"></div>
+  <h1>PART 1. 왜 지금 ‘전력·냉각’인가 — 거시 배경</h1>
+  <h2>1-1. AI 데이터센터의 폭발적 성장</h2>
+  <p>2023년 이후 생성형 AI가 확산되며 전 세계가 ‘AI 팩토리’라 불리는 초대형 데이터센터를 앞다퉈 짓고 있습니다. 한국은 정부 ‘3대 메가프로젝트’에서 AI 데이터센터를 1단계 8.4GW, 최종 18.4GW로 확대(SK·GS·네이버 약 550조)하고, SKT는 SK그룹 차원 총 15GW를 선언했어요. 핵심은 단위가 ‘MW’에서 ‘GW’로 바뀐 것. 1GW는 원전 약 한 기 출력에 맞먹습니다. 데이터센터 한 단지가 발전소 여러 기 분량의 전기를 먹고, 그 전기는 대부분 열이 되므로 전력과 냉각은 동전의 양면입니다.</p>
+  <h2>1-2. 전력 밀도의 급등 — 5kW에서 1MW로</h2>
+  <ul>
+    <li>일반 IT 랙: <strong>약 4.8kW</strong>(국내 평균)</li>
+    <li>SKT 가산 AIDC의 AI 랙: <strong>약 44kW</strong>(평균의 약 9배)</li>
+    <li>엔비디아 최신 랙(GB200/GB300 NVL72): <strong>약 120~140kW</strong></li>
+    <li>차세대 목표: <strong>랙당 1MW</strong>(엔비디아 800VDC 로드맵의 전제)</li>
+  </ul>
+  <p>4.8kW→1MW면 200배가 넘습니다. 좁은 공간에 전력이 집중되면 열도 200배가 돼요. ‘난로 수백 개를 옷장에 몰아넣은’ 상황이라 공기냉각으로는 감당이 안 되는 지점입니다.</p>
+  <h2>1-3. 열역학 — ‘전기는 곧 열’</h2>
+  <p>컴퓨터가 소비한 전력은 <strong>거의 100%가 열로 바뀝니다.</strong> 100kW를 쓰는 AI 랙은 ‘100kW짜리 히터’와 같아요. 그 열을 못 빼면 성능이 떨어지고(스로틀링) 고장·화재로 이어집니다. 그래서 ‘전력을 넣는 문제’와 ‘열을 빼는 문제’는 한 쌍입니다.</p>
+  <h2>1-4. PUE 완전 이해</h2>
+  <p><span class="em">PUE = 데이터센터 전체 전력 ÷ IT(서버) 전력.</span> 1.0이면 100% 서버에만, 1.5(공랭)면 전체의 약 33%를 냉각 등에 낭비, 1.1(액침 목표)면 낭비 10%. PUE를 1.5→1.1로 낮추면 같은 전기로 훨씬 더 많은 서버를 돌립니다. 전력이 비싸고 부족한 AI 환경에선 <strong>PUE 0.1을 낮추는 게 곧 돈이고 경쟁력</strong> — 냉각이 ‘부대설비’에서 ‘핵심 기술’로 격상된 이유예요.</p>
+  <figure><svg viewBox="0 0 720 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="사슬">
+    <style>.t{font-family:'Malgun Gothic',sans-serif;}.bx{font-size:12px;font-weight:700;fill:#fff;}.sm{font-size:10px;fill:#1d2733;}.hd{font-size:12px;font-weight:700;fill:#075985;}</style>
+    <text class="t hd" x="360" y="18" text-anchor="middle">전기가 열이 되고, 그 열을 식히는 사슬 — 각 마디가 곧 수혜</text>
+    <rect x="20" y="40" width="150" height="58" rx="8" fill="#e11d48"/><text class="t bx" x="95" y="65" text-anchor="middle">① 전력 투입</text><text class="t bx" x="95" y="83" text-anchor="middle" font-size="10">랙당 최대 1MW</text>
+    <rect x="200" y="40" width="150" height="58" rx="8" fill="#f97316"/><text class="t bx" x="275" y="65" text-anchor="middle">GPU 발열</text><text class="t bx" x="275" y="83" text-anchor="middle" font-size="10">전력≈열</text>
+    <rect x="380" y="40" width="150" height="58" rx="8" fill="#0284c7"/><text class="t bx" x="455" y="65" text-anchor="middle">② 냉각(공조)</text><text class="t bx" x="455" y="83" text-anchor="middle" font-size="10">수랭·액침</text>
+    <rect x="560" y="40" width="150" height="58" rx="8" fill="#0e7490"/><text class="t bx" x="635" y="65" text-anchor="middle">③ 칠러</text><text class="t bx" x="635" y="83" text-anchor="middle" font-size="10">냉수 순환·배출</text>
+    <g stroke="#075985" stroke-width="3" fill="#075985"><line x1="170" y1="69" x2="198" y2="69"/><polygon points="198,64 208,69 198,74"/><line x1="350" y1="69" x2="378" y2="69"/><polygon points="378,64 388,69 378,74"/><line x1="530" y1="69" x2="558" y2="69"/><polygon points="558,64 568,69 558,74"/></g>
+    <text class="t sm" x="360" y="135" text-anchor="middle">전력이 부족하면 GPU를 못 돌리고, 냉각이 부족하면 GPU가 타버린다</text>
+    <text class="t sm" x="360" y="162" text-anchor="middle" font-style="italic" fill="#8a8f98">공랭 PUE 1.5 → 액침 PUE 1.1, 전력 30~40% 절감</text>
+  </svg><figcaption>그림 1. 전력→발열→냉각→칠러 사슬.</figcaption></figure>
+
+  <div class="pb"></div>
+  <h1>PART 2. 병목 ① 전력(Power) 심층</h1>
+  <h2>2-1. 전력망의 한계 — “전기·물 없으면 데이터센터도 없다”</h2>
+  <p>첫 병목은 ‘전기를 어디서 얼마나 끌어오나’입니다. GW급 데이터센터가 발전소 여러 기 분량을 먹어, 기존 전력망으로는 벅차요. 미국에선 전력 확보가 입지 최우선 조건이 됐고, 한국 정부도 3대 메가프로젝트에서 전력·용수·부지를 국가가 총력 지원합니다. 전력은 (1)발전·송전(외부)과 (2)배전·변환(내부) 두 층위로 나뉩니다.</p>
+  <h2>2-2. 800VDC·SST — 배전의 근본 전환</h2>
+  <p>내부 배전의 혁명이 <span class="em">800VDC</span> 전환이에요. 랙 전력이 1MW로 커지면 54V로는 전류가 폭증해 구리 부스바가 랙당 200kg까지 필요합니다. 그래서 전압을 800V로 올려 전류를 낮춰요(P=V×I). 800VDC는 구리 약 45%↓, 효율 5%p↑, 유지보수비 70%↓. 이 전환의 입구 장비가 <span class="em">SST(반도체 변압기)</span> — SiC 전력반도체로 고압 교류를 800V 직류로 한 번에 바꿉니다.</p>
+  <div class="callout"><div class="ct">연결</div><p>전력 병목 상세는 앞서 만든 ‘800 VDC 3종 세트’·‘효성중공업 SST 가이드’에서 깊이 다뤘어요.</p></div>
+  <h2>2-3. 발전·저장 — SMR·신재생·ESS·UPS</h2>
+  <p>재생에너지만으로 24시간 안정 전력이 어려워 <strong>원전·SMR·ESS</strong>가 함께 거론됩니다. 정부는 2030년까지 재생 100GW+원전·SMR·ESS를 밝혔어요. 순간 전력 변동·정전 대비 <strong>UPS·배터리</strong>도 필수입니다.</p>
+  <h2>2-4. 국내 전력 수혜 기업 프로필</h2>
+  <div class="card"><h3>효성중공업 <span class="tag t-hi">직접·높음</span></h3><p>세계 최초 22.9kV SST 개발, 미국 데이터센터 직류 인프라 공략. ‘본업(변압기)+SST(옵션)’ 조합. 2026 1분기 신규수주 4.17조(신기록)·수주잔액 15.1조. 미국 멤피스 현지생산. <em>체크: SST 실제 수주+본업 수주잔액 병행 추적.</em></p></div>
+  <div class="card"><h3>LS일렉트릭 <span class="tag t-mid">연관·중간</span></h3><p>배전·HVDC·AI DC용 모듈배전반. 글로벌 데이터센터 연 1조+ 수주(북미 8천억+).</p></div>
+  <div class="card"><h3>HD현대일렉트릭 <span class="tag t-mid">연관·중간</span></h3><p>변압기. 북미 초고압 변압기 성장 직접 수혜. 미국 전력망 교체+DC 수요로 초호황.</p></div>
+  <div class="card"><h3>두산에너빌리티 <span class="tag t-mid">연관·중간</span></h3><p>원전·SMR·발전. 엔비디아 AI 팩토리 협력 거론. DC 전력 수요→발전(SMR) 수요, ‘가장 앞단’.</p></div>
+
+  <div class="pb"></div>
+  <h1>PART 3. 병목 ② 냉각·공조 심층</h1>
+  <h2>3-1. 냉각의 4단계 사다리</h2>
+  <figure><svg viewBox="0 0 720 230" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="냉각 사다리">
+    <style>.t{font-family:'Malgun Gothic',sans-serif;}.s{font-size:11.5px;font-weight:700;fill:#fff;}.sm{font-size:10px;fill:#1d2733;}</style>
+    <rect x="30" y="165" width="150" height="42" rx="6" fill="#94d3f0"/><text class="t s" x="105" y="184" text-anchor="middle" fill="#075985">① 공랭</text><text class="t sm" x="105" y="200" text-anchor="middle">~15kW·PUE1.5</text>
+    <rect x="200" y="128" width="150" height="42" rx="6" fill="#4db3e0"/><text class="t s" x="275" y="147" text-anchor="middle">② 후면도어</text><text class="t sm" x="275" y="163" text-anchor="middle">~40kW</text>
+    <rect x="370" y="91" width="150" height="42" rx="6" fill="#1a91c9"/><text class="t s" x="445" y="110" text-anchor="middle">③ 수랭 D2C</text><text class="t sm" x="445" y="126" text-anchor="middle">~130kW</text>
+    <rect x="540" y="54" width="160" height="42" rx="6" fill="#075985"/><text class="t s" x="620" y="73" text-anchor="middle">④ 액침냉각</text><text class="t sm" x="620" y="89" text-anchor="middle" fill="#e2f2fb">최고밀도·PUE1.1</text>
+    <text class="t sm" x="360" y="222" text-anchor="middle" font-style="italic">발열↑ → 위로. 랙당 50kW가 ‘액체냉각 필수’ 분기점</text>
+  </svg><figcaption>그림 2. 냉각 방식의 사다리.</figcaption></figure>
+  <h2>3-2. ① 공랭 — 전통의 한계</h2>
+  <p>차가운 공기로 식히는 방식. 싸고 쉽지만 공기는 열전달이 약해 고밀도에 한계(PUE~1.5, 전력 1/3 낭비). 랙당 15kW를 넘으면 벅찹니다.</p>
+  <h2>3-3. ② 후면도어 열교환기(RDHx)</h2>
+  <p>랙 뒷문에 열교환기를 달아 더운 공기를 냉수로 식히는 ‘반수랭’. 랙당 40kW까지 대응하는 과도기 기술.</p>
+  <h2>3-4. ③ 수랭 D2C(Direct-to-Chip)</h2>
+  <p><strong>콜드플레이트</strong>를 칩 위에 직접 붙여 냉각수를 흘립니다. 엔비디아 GB200/GB300(120~140kW)이 표준 채택, 신규 수냉 용량의 대부분이 단상 D2C. 핵심 부품은 <span class="em">CDU(냉각수 분배장치)</span> — 냉각수의 온도·유량·압력을 조절하는 ‘심장’이자 최고부가 부품.</p>
+  <h2>3-5. ④ 액침냉각</h2>
+  <p>서버를 <strong>비전도성 냉각유에 통째로 담가</strong> 식힘. 집적도가 높고 PUE 1.1까지(전력 30~40%↓). <strong>단상</strong>(액체 유지, 안정·상용화 빠름)/<strong>이상</strong>(끓었다 응축, 효율↑·관리 까다로움).</p>
+  <div class="callout"><div class="ct">‘50kW 룰’</div><p>랙당 50kW를 넘으면 액체냉각이 사실상 필수. AI 랙이 이미 120kW를 넘어 전환은 시간문제지만, 당분간 공랭+D2C+액침 하이브리드로 가며 액체 비중이 커집니다.</p></div>
+  <h2>3-6. 부가 요소 — 냉각유·CDU·소재</h2>
+  <p>액침이 커지면 <strong>특수 냉각유(플루이드)</strong> 수요도 증가. 절연성·열전달이 중요한 고부가 소재로 SK엔무브 등 정유·화학사가 진출. CDU·열교환기·매니폴드·누액센서·탱크가 밸류체인을 구성.</p>
+  <h2>3-7. 국내 냉각 수혜 기업 프로필</h2>
+  <div class="card"><h3>GST <span class="tag t-hi">직접·높음</span></h3><p>반도체용 스크러버·칠러 회사가 3년 전부터 액침을 개발해 <strong>단상·이상 모두 완성</strong>, 2025.5 LG유플러스에 <strong>국내 첫 상용 납품</strong>. 국내 ‘기술 리더’. “내년 칠러 매출 2배+, 액침으로 최대 실적 도전” → 칠러+액침 동시 노출.</p></div>
+  <div class="card"><h3>케이엔솔 <span class="tag t-hi">직접·높음</span></h3><p>클린룸·드라이룸·공조 전문. <strong>글로벌 액침 1위 서브머(스페인)와 협력</strong>. 공조·클린룸 본업이 DC 인프라와 직결. K반도체 클린룸 수주 이력.</p></div>
+  <div class="card"><h3>신성이엔지 <span class="tag t-hi">직접·높음</span></h3><p>클린룸·공조. 데이터빈과 액침 ‘SmartBox’(PUE 1.1, 냉각에너지 50%+↓) 개발, 냉각+서버 수직통합 모듈형 DC ‘AIO’ 수주. 삼성 클린룸 이력+모듈형 AIDC.</p></div>
+  <div class="card"><h3>SK엔무브 <span class="tag t-hi">직접·높음</span></h3><p>윤활유 기업. 액침 <strong>특수 냉각유</strong> 공급, 인천사옥서 총 전력 37%↓. 미 GRC 투자·Dell 협력. 액침 확대 시 냉각유 비례 증가 ‘소재형 수혜’.</p></div>
+  <div class="card"><h3>인성정보 <span class="tag t-mid">연관·중간</span></h3><p>IT 인프라+냉각 솔루션으로 GST·케이엔솔과 ‘삼각축’ 거론.</p></div>
+
+  <div class="pb"></div>
+  <h1>PART 4. 병목 ③ 에어컨(칠러·항온항습) 심층</h1>
+  <h2>4-1. 칠러란 — ‘초대형 에어컨’</h2>
+  <p>‘에어컨 부족’의 정체가 <span class="em">칠러</span>예요. 24시간 장비 과열을 막는 초대형 냉방기로, 열교환기로 <strong>냉수를 순환시켜</strong> 서버실을 식힙니다. D2C·액침도 결국 데워진 물을 다시 식혀야 하는데 그 최종 냉각을 칠러가 담당해요. 즉 <strong>액체냉각이 늘수록 칠러 수요도 늘어납니다.</strong> 칠러는 ‘냉각 사슬의 마지막 마디’이자 ‘열을 건물 밖으로 버리는 관문’.</p>
+  <h2>4-2. 항온항습기·냉각탑·프리쿨링</h2>
+  <ul><li><strong>항온항습기(CRAC/CRAH):</strong> 서버실 온·습도 유지.</li><li><strong>냉각탑:</strong> 칠러 열을 물 증발로 대기에 배출.</li><li><strong>프리쿨링:</strong> 찬 외기로 냉방 전기를 아낌(PUE 개선).</li></ul>
+  <h2>4-3. 정부가 밀어주는 ‘차세대 수출품’</h2>
+  <p>산업통상부는 칠러·항온항습기 등 냉각시스템을 차세대 수출 주역으로 육성하겠다며 <strong>수출보험 3,500억, 핵심기술 1,300억, 액침 실증 180억 원</strong>을 지원한다고 밝혔어요. 정책 모멘텀이 붙은 대표적 ‘AI 인프라 수혜’ 영역입니다.</p>
+  <h2>4-4. 국내 칠러·공조 수혜 기업 프로필</h2>
+  <div class="card"><h3>LG전자 <span class="tag t-hi">직접·높음</span></h3><p>2011년 LS엠트론 공조사업부 인수로 칠러 진출, 평택서 DC·발전소용 칠러 생산. 미국서 AI DC용 <strong>액체냉각 솔루션</strong> 공개, 공항·AI DC 수주 확대. 10년+ 칠러 기술이 AI DC라는 새 시장 만나 ‘예상치 못한 호재’. 칠러+액체냉각 동시 보유. <em>체크: 전사 실적 내 냉각 비중은 아직 작음.</em></p></div>
+  <div class="card"><h3>오텍(오텍캐리어) <span class="tag t-mid">연관·중간</span></h3><p>캐리어 에어컨·빌딩공조·항온항습. DC 냉각 솔루션 맞춤 대응. 에어컨 본업이 DC 냉방과 직결.</p></div>
+  <div class="card"><h3>센추리 / 삼화에이스 <span class="tag t-low">테마·거론</span></h3><p>센추리(칠러)·삼화에이스(항온항습)로 DC 냉각 테마 거론. DC향 구체 수주는 확인 필요.</p></div>
+
+  <div class="pb"></div>
+  <h1>PART 5. 종합 수혜 지도 & 밸류체인</h1>
+  <figure><svg viewBox="0 0 720 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="수혜 지도">
+    <style>.t{font-family:'Malgun Gothic',sans-serif;}.hd{font-size:13px;font-weight:700;fill:#fff;}.rl{font-size:10.5px;fill:#fff;}</style>
+    <rect x="20" y="20" width="216" height="160" rx="8" fill="#e11d48"/><text class="t hd" x="128" y="46" text-anchor="middle">① 전력</text><text class="t rl" x="128" y="74" text-anchor="middle">효성중공업(SST)</text><text class="t rl" x="128" y="96" text-anchor="middle">LS일렉트릭</text><text class="t rl" x="128" y="118" text-anchor="middle">HD현대일렉트릭</text><text class="t rl" x="128" y="140" text-anchor="middle">두산에너빌리티</text><text class="t rl" x="128" y="164" text-anchor="middle" font-size="9.5">800VDC·변압·발전</text>
+    <rect x="252" y="20" width="216" height="160" rx="8" fill="#0284c7"/><text class="t hd" x="360" y="46" text-anchor="middle">② 냉각</text><text class="t rl" x="360" y="74" text-anchor="middle">GST</text><text class="t rl" x="360" y="96" text-anchor="middle">케이엔솔</text><text class="t rl" x="360" y="118" text-anchor="middle">신성이엔지</text><text class="t rl" x="360" y="140" text-anchor="middle">SK엔무브·인성정보</text><text class="t rl" x="360" y="164" text-anchor="middle" font-size="9.5">액침·D2C·냉각유</text>
+    <rect x="484" y="20" width="216" height="160" rx="8" fill="#0e7490"/><text class="t hd" x="592" y="46" text-anchor="middle">③ 에어컨(칠러)</text><text class="t rl" x="592" y="74" text-anchor="middle">LG전자(칠러)</text><text class="t rl" x="592" y="96" text-anchor="middle">오텍캐리어</text><text class="t rl" x="592" y="118" text-anchor="middle">센추리·삼화에이스</text><text class="t rl" x="592" y="142" text-anchor="middle">GST(CO2 칠러)</text><text class="t rl" x="592" y="166" text-anchor="middle" font-size="9.5">정부 수출 육성</text>
+  </svg><figcaption>그림 3. 3대 병목별 국내 수혜 지도.</figcaption></figure>
+
+  <div class="pb"></div>
+  <h1>PART 6. 시장 규모 · PART 7. 글로벌 경쟁</h1>
+  <h2>6. 시장 규모</h2>
+  <ul>
+    <li><strong>DC 전력 시장:</strong> 2026 약 275억$ → 2031 약 385억$(약 53조). SST 시장 연 15~40% 고성장.</li>
+    <li><strong>DC 액체냉각:</strong> 2026~2027부터 매출 급증 전망. 공랭→액체 전환은 ‘구조적·불가역적’.</li>
+    <li><strong>칠러·냉각시스템:</strong> 정부 수출 육성(3,500억)으로 성장, ‘차세대 수출품’.</li>
+  </ul>
+  <p class="muted">세 시장의 공통 선행지표 = <strong>AIDC 착공·가동 일정(2027~)</strong>.</p>
+  <h2>7. 글로벌 경쟁 지형</h2>
+  <table><thead><tr><th>병목</th><th>글로벌 강자</th><th>국내 위치</th></tr></thead><tbody>
+    <tr><td>전력시스템</td><td>슈나이더·이튼·ABB·버티브·GE Vernova</td><td>효성·LS·HD현대 경쟁</td></tr>
+    <tr><td>전력반도체(SiC)</td><td>인피니언·온세미·STMicro(95%)</td><td>국내 비중 작음(약점)</td></tr>
+    <tr><td>DC 냉각</td><td>버티브·슈나이더·트레인</td><td>GST·케이엔솔·신성이엔지</td></tr>
+    <tr><td>액침냉각</td><td>서브머·GRC·LiquidStack</td><td>케이엔솔=서브머, GST=독자</td></tr>
+    <tr><td>칠러·공조</td><td>트레인·캐리어·다이킨</td><td>LG전자·오텍 진입</td></tr>
+  </tbody></table>
+  <p>전력시스템·냉각·칠러는 국내가 글로벌과 겨루지만, SiC 소자는 해외 장악(약점). 국내 투자 관점에선 ‘전력기기·냉각·칠러’가 더 직접적 수혜.</p>
+
+  <div class="pb"></div>
+  <h1>PART 8. 투자 프레임워크 · PART 9. 촉매</h1>
+  <h2>8. ‘테마 vs 실적’ 구분법</h2>
+  <ol>
+    <li><strong>실제 납품·수주가 있는가?</strong>(예: GST의 LG U+ 납품, LS 북미 수주) vs ‘개발·협력 발표’만.</li>
+    <li><strong>본업이 튼튼한가?</strong>(효성·LG전자) — AI가 ‘추가 성장’인가 ‘전부’인가.</li>
+    <li><strong>매출 비중·시점은?</strong> 대부분 2027~ 반영, 기대 선반영 주의.</li>
+    <li><strong>구조적 수요인가?</strong> 액침·800VDC는 불가역, 특정 수주는 일회성일 수 있음.</li>
+  </ol>
+  <div class="callout"><div class="ct">한 줄 프레임</div><p><span class="em">‘구조적 수요 × 실제 수주 × 튼튼한 본업’</span> 셋을 모두 만족할수록 ‘테마→실적주’ 확률↑. 본 리포트 ‘직접·높음’ 태그가 대체로 여기 해당.</p></div>
+  <h2>9. 촉매 캘린더</h2>
+  <table><thead><tr><th>시기</th><th>이벤트</th><th>왜 중요</th></tr></thead><tbody>
+    <tr><td>분기</td><td>액침 상용 납품·수주(GST·케이엔솔·신성이엔지)</td><td>테마→실적 전환</td></tr>
+    <tr><td>분기</td><td>LG전자·오텍 칠러 DC 수주</td><td>냉방 수요 현실화</td></tr>
+    <tr><td>분기</td><td>효성·LS·HD현대 수주잔액·북미매출</td><td>전력 인프라 확대</td></tr>
+    <tr><td>연중</td><td>정부 냉각시스템 수출 육성(3,500억)</td><td>정책 모멘텀</td></tr>
+    <tr><td>2027~</td><td>울산 AIDC·메가프로젝트 착공·가동</td><td>대규모 발주</td></tr>
+  </tbody></table>
+
+  <div class="pb"></div>
+  <h1>PART 10. 리스크 · PART 11. 시나리오 · PART 12. KPI</h1>
+  <h2>10. 리스크 심층 & 매트릭스</h2>
+  <div class="warn"><div class="ct">주요 리스크</div><ul>
+    <li><strong>AI capex 조정</strong> — DC 착공 지연 시 전력·냉각·칠러 발주 이연(최상위 리스크).</li>
+    <li><strong>테마 변동성</strong> — 냉각·칠러 종목 급등락, 실제 수주와 주가 괴리.</li>
+    <li><strong>기술 채택 지연</strong> — 공랭·D2C 유지로 완전 전환 지연(하이브리드 장기화).</li>
+    <li><strong>실적 시차</strong> — 실질 매출 2027~, 선반영 시 ‘뉴스에 팔자’.</li>
+    <li><strong>경쟁·마진</strong> — 글로벌 강자, 국내 저가 수주 출혈.</li>
+    <li><strong>전력반도체 열위</strong> — SiC 부가가치를 해외가 가져감.</li>
+  </ul></div>
+  <figure><svg viewBox="0 0 720 270" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="리스크 매트릭스">
+    <style>.t{font-family:'Malgun Gothic',sans-serif;}.ax{font-size:11px;font-weight:700;fill:#075985;}.rk{font-size:10.5px;fill:#1d2733;}.q{font-size:10px;fill:#8a8f98;}</style>
+    <rect x="90" y="24" width="560" height="200" fill="#f0f8fd" stroke="#bcdcee"/>
+    <line x1="370" y1="24" x2="370" y2="224" stroke="#bcdcee" stroke-width="1.5"/><line x1="90" y1="124" x2="650" y2="124" stroke="#bcdcee" stroke-width="1.5"/>
+    <text class="t ax" x="370" y="248" text-anchor="middle">발생 가능성 →</text><text class="t ax" x="58" y="124" text-anchor="middle" transform="rotate(-90 58 124)">영향 →</text>
+    <text class="t q" x="510" y="42" text-anchor="middle">영향 높음·확률 높음(주시)</text>
+    <circle cx="500" cy="68" r="6" fill="#b5481f"/><text class="t rk" x="410" y="65">AI capex 조정</text>
+    <circle cx="545" cy="98" r="6" fill="#b5481f"/><text class="t rk" x="450" y="114">테마 변동성</text>
+    <circle cx="255" cy="70" r="6" fill="#c08a1e"/><text class="t rk" x="165" y="67">경쟁·저가수주</text>
+    <circle cx="300" cy="104" r="6" fill="#c08a1e"/><text class="t rk" x="210" y="120">액침 채택 지연</text>
+    <circle cx="545" cy="180" r="6" fill="#1e7a4d"/><text class="t rk" x="440" y="183">기대 선반영(밸류)</text>
+  </svg><figcaption>그림 4. 리스크 매트릭스.</figcaption></figure>
+  <h2>11. 시나리오</h2>
+  <table><thead><tr><th>시나리오</th><th>전제</th><th>결과</th></tr></thead><tbody>
+    <tr><td>낙관</td><td>AIDC 대량 착공+액침 표준화+정책 가속</td><td>전력·냉각·칠러 동반 수혜, 테마→실적</td></tr>
+    <tr><td>중립(기본)</td><td>단계적 전환·하이브리드</td><td>본업 견조, 선별 기업 수주 가시화</td></tr>
+    <tr><td>비관</td><td>AI capex 둔화+공랭 지속+경쟁</td><td>테마 급랭, 선반영 부담 노출</td></tr>
+  </tbody></table>
+  <p>세 시나리오를 관통하는 핵심은 ‘속도’. AIDC가 얼마나 빨리 착공·가동되느냐가 수혜 크기·시점을 좌우합니다.</p>
+  <h2>12. 모니터링 KPI</h2>
+  <ul>
+    <li>액침 실제 수주·납품 건수(GST·케이엔솔·신성이엔지)</li>
+    <li>칠러 DC 수주(LG전자·오텍)</li>
+    <li>전력기기 수주잔액·북미매출(효성·LS·HD현대)</li>
+    <li>AIDC 착공·가동 일정(울산 2027·메가프로젝트)</li>
+    <li>PUE·전력효율 실증 / 정부 정책 집행 / ‘거론 vs 실제 매출’ 구분</li>
+  </ul>
+
+  <div class="pb"></div>
+  <h1>PART 13. 기업 카드 · FAQ · 용어 · 출처</h1>
+  <h2>13. 기업별 요약 카드</h2>
+  <table><thead><tr><th>기업</th><th>병목</th><th>한 줄 요약</th><th>확신도</th></tr></thead><tbody>
+    <tr><td>효성중공업</td><td>전력</td><td>SST 세계최초, 미국 DC, 본업 초호황</td><td><span class="tag t-hi">직접·높음</span></td></tr>
+    <tr><td>LS일렉트릭</td><td>전력</td><td>배전·HVDC, 북미 DC 수주</td><td><span class="tag t-mid">연관·중간</span></td></tr>
+    <tr><td>HD현대일렉트릭</td><td>전력</td><td>북미 초고압 변압기</td><td><span class="tag t-mid">연관·중간</span></td></tr>
+    <tr><td>두산에너빌리티</td><td>전력</td><td>원전·SMR 발전(앞단)</td><td><span class="tag t-mid">연관·중간</span></td></tr>
+    <tr><td>GST</td><td>냉각·칠러</td><td>액침 완성, LG U+ 첫 납품, 칠러 확대</td><td><span class="tag t-hi">직접·높음</span></td></tr>
+    <tr><td>케이엔솔</td><td>냉각</td><td>서브머 협력, 공조 본업</td><td><span class="tag t-hi">직접·높음</span></td></tr>
+    <tr><td>신성이엔지</td><td>냉각</td><td>SmartBox·모듈형 AIDC</td><td><span class="tag t-hi">직접·높음</span></td></tr>
+    <tr><td>SK엔무브</td><td>냉각</td><td>액침 냉각유(소재)</td><td><span class="tag t-hi">직접·높음</span></td></tr>
+    <tr><td>인성정보</td><td>냉각</td><td>IT인프라+냉각</td><td><span class="tag t-mid">연관·중간</span></td></tr>
+    <tr><td>LG전자</td><td>칠러</td><td>칠러·액체냉각, AI DC 수주</td><td><span class="tag t-hi">직접·높음</span></td></tr>
+    <tr><td>오텍(오텍캐리어)</td><td>칠러</td><td>에어컨·공조·DC 냉각</td><td><span class="tag t-mid">연관·중간</span></td></tr>
+    <tr><td>센추리·삼화에이스</td><td>칠러</td><td>칠러·항온항습(테마)</td><td><span class="tag t-low">테마·거론</span></td></tr>
+  </tbody></table>
+  <h2>FAQ</h2>
+  <h3>Q1. AI면 엔비디아·메모리를 보면 되지, 왜 전력·냉각?</h3><p>GPU·메모리는 기대가 많이 반영됐어요. 그 칩을 ‘실제 돌리는 인프라(전력·냉각)’가 정작 공급 부족 병목입니다. ‘삽·곡괭이’ 관점.</p>
+  <h3>Q2. 액침이 좋으면 왜 다 안 쓰나요?</h3><p>초기투자·유지보수·표준화, 기존 공랭 전환의 어려움 때문. 하이브리드로 가며 액체 비중이 늘어납니다.</p>
+  <h3>Q3. 칠러와 액침은 경쟁?</h3><p>아니요, 보완. 액침·D2C가 뽑은 열도 결국 버려야 하고 그 최종 배출을 칠러가 담당. 액체냉각↑ → 칠러 수요↑.</p>
+  <h3>Q4. 국내 냉각 종목은 왜 ‘테마’?</h3><p>발표는 많지만 대규모 매출은 2026~2027부터라서. ‘실제 수주 공시’ 확인이 중요.</p>
+  <h3>Q5. 뭐가 제일 확실?</h3><p>‘본업+실제 수주’로는 전력(효성·LS·HD현대)·칠러(LG전자)가 탄탄, 액침(GST·케이엔솔·신성이엔지)은 성장성↑·변동성↑.</p>
+  <h3>Q6. 가장 큰 리스크?</h3><p>‘AI capex 둔화’. DC 착공이 늦어지면 세 병목 수혜가 모두 이연됩니다.</p>
+  <h2>부록. 미니 용어 사전</h2>
+  <table><thead><tr><th>용어</th><th>설명</th></tr></thead><tbody>
+    <tr><td>PUE</td><td>전력사용효율(전체÷IT). 1에 가까울수록 냉각 낭비↓.</td></tr>
+    <tr><td>공랭/D2C/액침</td><td>공기/콜드플레이트 수랭/냉각유 침지 방식.</td></tr>
+    <tr><td>단상·이상 액침</td><td>액체 유지(단상) vs 끓었다 응축(이상).</td></tr>
+    <tr><td>CDU</td><td>냉각수 분배장치(액체냉각의 심장).</td></tr>
+    <tr><td>칠러/항온항습기</td><td>초대형 냉방기 / 서버실 온·습도 유지기.</td></tr>
+    <tr><td>프리쿨링</td><td>찬 외기로 냉방 전기 절감.</td></tr>
+    <tr><td>800VDC/SST</td><td>고전압 직류 배전 / 그 입구 반도체 변압기.</td></tr>
+    <tr><td>SMR</td><td>소형모듈원자로(DC 전력원 거론).</td></tr>
+  </tbody></table>
+  <h2>출처</h2>
+  <ol class="src">
+    <li>한양경제 — AI 데이터센터 ‘액침냉각’ 수혜(GST·케이엔솔·인성정보) — <a href="https://www.hanyangeconomy.com/article/view/hye202511120013">link</a></li>
+    <li>더벨 — 케이엔솔, 서브머 협력 액침냉각 — <a href="https://m.thebell.co.kr/m/newsview.asp?svccode=04&newskey=202509251747366960104418">link</a></li>
+    <li>시사저널e — 데이터센터 ‘액침냉각’ 상용화 초읽기(신성이엔지) — <a href="https://www.sisajournal-e.com/news/articleView.html?idxno=418318">link</a></li>
+    <li>기계설비신문 — 데이터센터 냉각설비의 진화(공랭·D2C·액침·PUE) — <a href="https://www.kmecnews.co.kr/news/articleView.html?idxno=41510">link</a></li>
+    <li>인공지능신문 — 산업부, 칠러 냉각시스템 수출 육성(3,500억) — <a href="https://www.aitimes.kr/news/articleView.html?idxno=33052">link</a></li>
+    <li>이코노미스트 — ‘칠러’ 韓 차세대 수출품 — <a href="https://economist.co.kr/article/view/ecn202412050051">link</a></li>
+    <li>LG전자 뉴스룸 — 칠러 AI 데이터센터 수주 확대 — <a href="https://live.lge.co.kr/2509-lg-chiller/">link</a></li>
+    <li>NVIDIA — 800 VDC Architecture(전력 병목 수치) — <a href="https://developer.nvidia.com/blog/nvidia-800-v-hvdc-architecture-will-power-the-next-generation-of-ai-factories/">link</a></li>
+  </ol>
+  <p class="muted"><em>※ 본 리포트는 요청하신 영상의 주제를 근간으로 공개 자료를 교차 확인해 재구성한 참고 자료입니다(영상 발언 인용 아님). 수치·수주는 발표·추정 기준이며, 냉각·칠러 종목 상당수는 ‘테마 거론’ 성격이 있어 실제 수주·매출과 구분이 필요합니다. 투자 권유가 아니며, 투자 결정·결과의 책임은 투자자 본인에게 있습니다.</em></p>
+</div>
+</body>
+</html>

@@ -14,5 +14,13 @@
     "desc": "코스피·코스닥 + 한국 섹터 ETF(AI반도체 소부장)의 50일 이격도·상승장 판단 대시보드",
     "tag": "investing",
     "url": "https://tryingpig.github.io/ko-disparity/"
+  },
+  {
+    "emoji": "📈",
+    "name_en": "RS Tracker (KOSPI200 / KOSDAQ150)",
+    "name_ko": "RS 트래커 — 시장 이기는 종목",
+    "desc": "코스피200·코스닥150 구성종목 중 시장을 이기는 종목을 상대강도(RS)로 매 거래일 산출하는 대시보드",
+    "tag": "investing",
+    "url": "https://tryingpig.github.io/rs-tracker/"
   }
 ]

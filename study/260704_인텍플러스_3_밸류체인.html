@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>인텍플러스 밸류체인 — 검사의 위치</title>
+<style>
+  :root{--accent:#16a34a;--accent-dark:#15803d;--light:#e6f6ec;--light2:#f2fbf5;--gray:#595959;--line:#c3e6d0;--ink:#1d2733;--kr:#1e7a4d;}
+  *{box-sizing:border-box;}
+  body{font-family:"Malgun Gothic","맑은 고딕",-apple-system,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;color:var(--ink);line-height:1.72;margin:0;background:#f5f6f8;font-size:16px;}
+  .page{max-width:840px;margin:24px auto;background:#fff;padding:56px 62px;box-shadow:0 1px 8px rgba(0,0,0,.08);}
+  h1{color:var(--accent-dark);font-size:1.46rem;border-bottom:3px solid var(--accent);padding-bottom:8px;margin:2.2em 0 .7em;}h1:first-of-type{margin-top:.3em;}
+  h2{color:var(--accent);font-size:1.16rem;margin:1.4em 0 .4em;}
+  p{margin:.55em 0;}ul{margin:.4em 0 .9em;padding-left:1.3em;}li{margin:.34em 0;}
+  .em{color:var(--accent-dark);font-weight:700;}.kr{color:var(--kr);font-weight:700;}.muted{color:var(--gray);font-size:.9rem;}
+  .callout{background:var(--light);border:1px solid var(--accent);border-left:6px solid var(--accent);border-radius:4px;padding:14px 18px;margin:1.1em 0;}
+  .callout .ct{font-weight:700;color:var(--accent-dark);margin-bottom:6px;}.callout p{margin:.35em 0;font-size:.96rem;}
+  table{border-collapse:collapse;width:100%;margin:1em 0;font-size:.84rem;}
+  th{background:var(--accent);color:#fff;font-weight:700;padding:9px 10px;text-align:center;border:1px solid var(--line);}
+  td{padding:8px 10px;border:1px solid var(--line);vertical-align:top;text-align:left;}td:first-child{font-weight:700;background:#f2fbf5;text-align:center;}
+  tbody tr:nth-child(even) td{background:var(--light2);}
+  .cover{text-align:center;padding:100px 0 70px;}.cover .big{font-size:2.15rem;font-weight:800;color:var(--accent-dark);line-height:1.3;}
+  .cover .sub{font-size:1.12rem;color:var(--accent);margin-top:14px;}.cover .sub2{font-size:1rem;color:var(--gray);margin-top:22px;}.cover .date{font-size:.88rem;color:var(--gray);margin-top:50px;}
+  a{color:var(--accent-dark);word-break:break-all;}.src{font-size:.83rem;}
+  figure{margin:1.4em 0;text-align:center;}figure svg{width:100%;max-width:760px;height:auto;display:block;margin:0 auto;}figcaption{font-size:.85rem;color:var(--gray);margin-top:8px;}
+  @media print{body{background:#fff;font-size:11pt;}.page{box-shadow:none;margin:0;max-width:none;padding:0;}.pb{page-break-before:always;}}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="cover">
+    <div class="big">인텍플러스 밸류체인</div>
+    <div class="sub">FC-BGA 밸류체인에서 ‘검사’는 어디에 있나</div>
+    <div class="sub2">소재→기판제조→[검사]→고객, 그리고 인텍플러스의 자리</div>
+    <div class="date">2026년 7월 4일 작성 · 인텍플러스 세트 ①-3(밸류체인)</div>
+  </div>
+
+  <div class="pb"></div>
+  <h1>1. 들어가며 — ‘검사’는 밸류체인의 관문</h1>
+  <p>FC-BGA는 소재(ABF)→기판 제조(삼성전기 등)→<strong>검사</strong>→고객(반도체사)으로 흐릅니다. 인텍플러스는 이 중 <span class="em">‘검사’ 단계</span>에 있어요. 검사는 각 공정 사이사이에 들어가 불량을 걸러내는 ‘관문’이라, 기판 라인이 늘면 검사장비도 반드시 함께 늘어납니다. 이 문서는 FC-BGA 밸류체인에서 검사의 위치와 인텍플러스의 경쟁 지형을 정리해요.</p>
+
+  <h1>2. 전체 지도</h1>
+  <figure><svg viewBox="0 0 720 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="밸류체인">
+    <style>.t{font-family:'Malgun Gothic',sans-serif;}.ln{font-size:12.5px;font-weight:700;fill:#fff;}.rl{font-size:10.5px;fill:#1d2733;}.kr{font-size:10.5px;fill:#1e7a4d;font-weight:700;}.hd{font-size:12px;font-weight:700;fill:#15803d;}</style>
+    <text class="t hd" x="120" y="20" text-anchor="middle">단계</text><text class="t hd" x="330" y="20" text-anchor="middle">플레이어</text><text class="t hd" x="565" y="20" text-anchor="middle">비고</text>
+    <rect x="14" y="32" width="200" height="46" rx="6" fill="#15803d"/><text class="t ln" x="114" y="60" text-anchor="middle">① 소재(ABF)</text>
+    <rect x="222" y="32" width="210" height="46" rx="6" fill="#e6f6ec"/><text class="t rl" x="232" y="60">아지노모토(일본 독점)</text>
+    <rect x="440" y="32" width="266" height="46" rx="6" fill="#f2fbf5"/><text class="t rl" x="450" y="60">기판 소재 병목</text>
+    <rect x="14" y="88" width="200" height="46" rx="6" fill="#16a34a"/><text class="t ln" x="114" y="116" text-anchor="middle">② 기판 제조</text>
+    <rect x="222" y="88" width="210" height="46" rx="6" fill="#e6f6ec"/><text class="t rl" x="232" y="110">삼성전기·유니마이크론</text><text class="t rl" x="232" y="126">이비덴·대덕(증설 中)</text>
+    <rect x="440" y="88" width="266" height="46" rx="6" fill="#f2fbf5"/><text class="t rl" x="450" y="116">FC-BGA 쇼티지 → 증설</text>
+    <rect x="14" y="144" width="200" height="56" rx="6" fill="#22b360"/><text class="t ln" x="114" y="168" text-anchor="middle">③ 검사(AOI)</text><text class="t ln" x="114" y="186" text-anchor="middle" font-size="10">★인텍플러스 자리</text>
+    <rect x="222" y="144" width="210" height="56" rx="6" fill="#e6f6ec"/><text class="t rl" x="232" y="166">KLA(패키지)·다카오카(기판)</text><text class="t rl" x="232" y="186">기가비스·고영(국내)</text>
+    <rect x="440" y="144" width="266" height="56" rx="6" fill="#f2fbf5"/><text class="t kr" x="450" y="168">인텍플러스=세컨드 벤더 침투</text><text class="t kr" x="450" y="188">(삼성전기·유니마이크론 확보)</text>
+    <rect x="14" y="210" width="200" height="46" rx="6" fill="#4ade80"/><text class="t ln" x="114" y="238" text-anchor="middle" fill="#0f5132">④ 고객(반도체)</text>
+    <rect x="222" y="210" width="484" height="46" rx="6" fill="#e6f6ec"/><text class="t rl" x="240" y="238" text-anchor="middle">AMD·엔비디아·인텔 등 — AI 가속기 수요가 전체 사슬을 끌어올림</text>
+    <text class="t" x="360" y="286" text-anchor="middle" font-size="11" fill="#595959">②기판 증설이 ③검사장비 발주로 직결 → 인텍플러스 수혜의 뿌리</text>
+    <text class="t" x="360" y="308" text-anchor="middle" font-size="10.5" fill="#8a8f98">※ 기업 배치는 보도 기반 예시</text>
+  </svg><figcaption>그림 1. FC-BGA 밸류체인 속 ‘검사’의 위치.</figcaption></figure>
+
+  <h1>3. 검사 단계 상세 — 무엇을 검사하나</h1>
+  <p>FC-BGA는 <strong>미세회로(5μm)·범프·비아·표면</strong>에 결함이 없어야 해요. 인텍플러스의 3D AOI 장비는 이 미세 구조를 입체로 촬영해 스크래치·이물·패턴 불량·치수 오차를 자동으로 잡아냅니다. 기판이 <strong>대형화·고다층화·미세화</strong>될수록 검사 지점이 폭증하고 난도가 올라가, 검사장비의 단가와 대수가 함께 늘어요.</p>
+
+  <h1>4. 경쟁 지형 — ‘독점을 깨는 세컨드 벤더’</h1>
+  <table>
+    <thead><tr><th>세부 시장</th><th>기존 강자</th><th>인텍플러스 / 국내</th></tr></thead>
+    <tbody>
+      <tr><td>반도체 패키지 검사</td><td>KLA(미국) 독점</td><td>인텍플러스: 북미·중화권 OSAT로 침투</td></tr>
+      <tr><td>기판(Substrate) 검사</td><td>다카오카(일본) 독점</td><td>인텍플러스: 2026 일본 첫 진출, 삼성전기·유니마이크론</td></tr>
+      <tr><td>FC-BGA AOI(국내)</td><td>—</td><td>기가비스(특화)·고영(3D)·인텍플러스</td></tr>
+    </tbody>
+  </table>
+
+  <h1>5. 핵심 길목(초크포인트)</h1>
+  <ul>
+    <li><span class="em">증설 연동성:</span> 기판사 capex(②)가 검사장비 수주(③)를 결정 → 고객사 증설 계획이 선행 지표.</li>
+    <li><span class="em">세컨드 벤더 지위:</span> KLA·다카오카 독점을 깨는 침투가 성장의 열쇠. 고객사의 ‘공급 다변화’ 니즈가 우호적.</li>
+    <li><span class="em">고마진 믹스:</span> 반도체·기판 검사가 2차전지보다 ASP·마진↑ → 믹스 개선이 실적의 질을 높임.</li>
+    <li><span class="em">기술 난도:</span> 미세화·고다층화가 검사 난도를 높여 진입장벽으로 작용(양날의 검).</li>
+  </ul>
+  <div class="callout"><div class="ct">한 줄 요약</div><p>인텍플러스는 FC-BGA 밸류체인의 ‘검사 관문’에 서서, <strong>기판 증설 붐의 낙수를 받는 세컨드 벤더</strong>예요. 성패는 ‘고객사 증설 속도 × 독점 침투 성공 × 반도체 믹스 확대’에 달려 있습니다.</p></div>
+
+  <h1>6. 국내 관련 기업</h1>
+  <table><thead><tr><th>단계</th><th>기업</th><th>역할</th></tr></thead><tbody>
+    <tr><td>기판 제조</td><td>삼성전기·대덕전자·코리아써키트</td><td>FC-BGA(검사장비 고객)</td></tr>
+    <tr><td>검사(AOI)</td><td>인텍플러스·기가비스·고영테크놀러지</td><td>FC-BGA·패키지 검사</td></tr>
+  </tbody></table>
+  <p class="muted">※ FC-BGA 기판·소재의 상세는 앞서 만든 ‘FC-BGA 세트’를 함께 보세요.</p>
+
+  <h1>출처</h1>
+  <ol class="src">
+    <li>SK증권 — 인텍플러스 FCBGA 증설 수혜 — <a href="https://www.sks.co.kr/data1/research/qna_file/20260426160421719_0_ko.pdf">link</a></li>
+    <li>데일리인베스트 — 인텍플러스 반도체 외관검사(경쟁·고객) — <a href="http://www.dailyinvest.kr/news/articleView.html?idxno=70526">link</a></li>
+    <li>iM증권 — 체질개선·사업부 매출 — <a href="https://file.alphasquare.co.kr/media/pdfs/market-report/">link</a></li>
+  </ol>
+  <p class="muted"><em>※ 거론 기업은 밸류체인 위치 예시이며 수혜·실적을 보장하지 않습니다. 투자 권유가 아닙니다.</em></p>
+</div>
+</body>
+</html>

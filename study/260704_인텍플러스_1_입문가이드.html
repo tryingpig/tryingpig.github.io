@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>인텍플러스 입문 가이드 — FC-BGA 검사장비 수혜주</title>
+<style>
+  :root{--accent:#16a34a;--accent-dark:#15803d;--light:#e6f6ec;--light2:#f2fbf5;--gray:#595959;--line:#c3e6d0;--ink:#1d2733;}
+  *{box-sizing:border-box;}html{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  body{font-family:"Malgun Gothic","맑은 고딕",-apple-system,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;color:var(--ink);line-height:1.72;margin:0;background:#f5f6f8;font-size:16px;}
+  .page{max-width:840px;margin:24px auto;background:#fff;padding:56px 62px;box-shadow:0 1px 8px rgba(0,0,0,.08);}
+  h1{color:var(--accent-dark);font-size:1.46rem;border-bottom:3px solid var(--accent);padding-bottom:8px;margin:2.2em 0 .7em;}h1:first-of-type{margin-top:.3em;}
+  h2{color:var(--accent);font-size:1.16rem;margin:1.4em 0 .4em;}h3{color:var(--accent-dark);font-size:1.02rem;margin:1.05em 0 .3em;}
+  p{margin:.55em 0;}ul{margin:.4em 0 .9em;padding-left:1.3em;}li{margin:.34em 0;}
+  .em{color:var(--accent-dark);font-weight:700;}.muted{color:var(--gray);font-size:.9rem;}
+  .callout{background:var(--light);border:1px solid var(--accent);border-left:6px solid var(--accent);border-radius:4px;padding:14px 18px;margin:1.1em 0;}
+  .callout .ct{font-weight:700;color:var(--accent-dark);margin-bottom:6px;}.callout p{margin:.35em 0;font-size:.96rem;}
+  table{border-collapse:collapse;width:100%;margin:1em 0;font-size:.85rem;}
+  th{background:var(--accent);color:#fff;font-weight:700;padding:9px 10px;text-align:center;border:1px solid var(--line);}
+  td{padding:8px 10px;border:1px solid var(--line);text-align:left;vertical-align:top;}td:first-child{font-weight:700;background:#f2fbf5;}
+  tbody tr:nth-child(even) td{background:var(--light2);}tbody tr:nth-child(even) td:first-child{background:#e6f6ec;}
+  .cover{text-align:center;padding:100px 0 70px;}.cover .big{font-size:2.2rem;font-weight:800;color:var(--accent-dark);letter-spacing:-1px;line-height:1.3;}
+  .cover .sub{font-size:1.12rem;color:var(--accent);margin-top:14px;}.cover .sub2{font-size:1rem;color:var(--gray);margin-top:22px;}.cover .date{font-size:.88rem;color:var(--gray);margin-top:52px;}
+  a{color:var(--accent-dark);word-break:break-all;}.src{font-size:.83rem;}.src li{margin:.4em 0;}
+  figure{margin:1.4em 0;text-align:center;}figure svg{width:100%;max-width:740px;height:auto;display:block;margin:0 auto;}figcaption{font-size:.85rem;color:var(--gray);margin-top:8px;}
+  @media print{body{background:#fff;font-size:11pt;}.page{box-shadow:none;margin:0;max-width:none;padding:0;}.pb{page-break-before:always;}h1,h2,h3{page-break-after:avoid;}table,.callout,figure{page-break-inside:avoid;}}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="cover">
+    <div class="big">인텍플러스 입문 가이드</div>
+    <div class="sub">‘반도체 기판을 검사하는’ 3D 외관검사 장비 회사</div>
+    <div class="sub2">FC-BGA 쇼티지 → 검사장비 수주 → 실적 턴어라운드</div>
+    <div class="date">2026년 7월 4일 작성 · 인텍플러스 세트 ①-1(입문)</div>
+  </div>
+
+  <div class="pb"></div>
+  <h1>한눈에 보기 (3분 요약)</h1>
+  <p><span class="em">인텍플러스(064290)</span>는 반도체·기판·2차전지의 겉모습을 카메라로 정밀하게 들여다보고 불량을 찾아내는 <span class="em">‘3D 외관검사(AOI) 장비’</span>를 만드는 회사예요. 요즘 AI 때문에 FC-BGA(고부가 반도체 기판)가 부족해지자, 기판 회사들이 공장을 늘리는데 — <strong>공장을 늘리면 그만큼 ‘검사장비’도 새로 사야 하거든요.</strong> 그래서 인텍플러스가 수혜를 봅니다.</p>
+  <div class="callout">
+    <div class="ct">핵심 공식 (이 세트의 주제)</div>
+    <p><span class="em">AI 붐 → FC-BGA 수요 &gt; 공급 → 기판사(삼성전기·이비덴 등) 증설 → 증설엔 검사장비가 따라붙음 → 인텍플러스 수주 폭증 → 적자에서 흑자로(턴어라운드).</span></p>
+  </div>
+  <table>
+    <thead><tr><th>구분</th><th>내용</th></tr></thead>
+    <tbody>
+      <tr><td>업종</td><td>3D 외관검사(AOI) 장비 — 반도체 패키지·기판·2차전지·디스플레이</td></tr>
+      <tr><td>주력 전환</td><td>2차전지 검사 → <strong>고마진 반도체·기판 검사</strong> 중심으로 체질개선</td></tr>
+      <tr><td>수혜 포인트</td><td>FC-BGA 증설 사이클 → 검사장비 발주 증가</td></tr>
+      <tr><td>실적(전망)</td><td>2026 매출 1,141억(+27%)·영업익 38억 <strong>흑자전환</strong></td></tr>
+      <tr><td>고객</td><td>삼성전기·유니마이크론 등 글로벌 톱티어 기판사, 북미·중화권 OSAT</td></tr>
+    </tbody>
+  </table>
+
+  <div class="pb"></div>
+  <h1>1. 인텍플러스는 어떤 회사인가</h1>
+  <p>인텍플러스는 1995년 설립된 <strong>외관검사 장비 전문기업</strong>이에요. ‘외관검사’란 제품 표면을 카메라·광학·3D 기술로 촬영해, 사람 눈으로는 못 잡는 미세한 스크래치·이물·패턴 불량을 자동으로 찾아내는 것(AOI, Automated Optical Inspection)입니다. 반도체·기판·2차전지·디스플레이 등 ‘겉모습이 곧 품질’인 제품이 대상이에요.</p>
+
+  <h1>2. ‘검사장비’가 왜 그렇게 중요한가 — 수율</h1>
+  <p>반도체·기판은 하나라도 불량이 섞이면 완제품 전체가 고장 나요. 그래서 만드는 각 단계마다 ‘불량을 걸러내는 검사’가 필수입니다. 특히 <strong>수율(양품 비율)이 곧 돈</strong>인 산업이라, 검사장비는 ‘비용’이 아니라 ‘수익을 지키는 필수 설비’예요.</p>
+  <div class="callout">
+    <div class="ct">핵심</div>
+    <p><strong>새 공장(라인)을 하나 지으면, 그 라인마다 검사장비가 반드시 따라 들어갑니다.</strong> 그래서 기판 증설 붐 = 검사장비 발주 붐이에요. 이것이 인텍플러스 수혜의 뿌리입니다.</p>
+  </div>
+
+  <h1>3. FC-BGA 검사가 왜 어렵고, 왜 뜨나</h1>
+  <p><span class="em">FC-BGA</span>는 CPU·GPU·AI 가속기에 쓰는 고부가 반도체 기판이에요(앞서 만든 ‘FC-BGA 세트’ 참고). AI 칩이 커지면서 기판도 <strong>대형화(110mm)·고다층화(26층+)·미세화(5μm)</strong>되는데, 그럴수록 검사할 지점(미세회로·범프·비아)이 폭증하고 검사 난도도 올라가요. ‘더 크고 복잡한 기판일수록 더 정밀한 검사장비가 필요’ → 검사장비의 단가(ASP)와 수요가 함께 오릅니다.</p>
+
+  <h1>4. 왜 지금 인텍플러스가 뜨나 — 3단계 공식</h1>
+  <figure><svg viewBox="0 0 720 150" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="수혜 공식">
+    <style>.t{font-family:'Malgun Gothic',sans-serif;}.s{font-size:11.5px;font-weight:700;fill:#fff;}.n{font-size:9.5px;fill:#fff;}</style>
+    <rect x="12" y="45" width="150" height="56" rx="7" fill="#15803d"/><text class="t s" x="87" y="68" text-anchor="middle">① AI FC-BGA</text><text class="t n" x="87" y="85" text-anchor="middle">수요&gt;공급(쇼티지)</text>
+    <rect x="196" y="45" width="150" height="56" rx="7" fill="#16a34a"/><text class="t s" x="271" y="68" text-anchor="middle">② 기판사 증설</text><text class="t n" x="271" y="85" text-anchor="middle">삼성전기·이비덴…</text>
+    <rect x="380" y="45" width="150" height="56" rx="7" fill="#22b360"/><text class="t s" x="455" y="68" text-anchor="middle">③ 검사장비 발주</text><text class="t n" x="455" y="85" text-anchor="middle">라인마다 필수</text>
+    <rect x="564" y="45" width="150" height="56" rx="7" fill="#15803d"/><text class="t s" x="639" y="68" text-anchor="middle">인텍플러스</text><text class="t n" x="639" y="85" text-anchor="middle">수주↑ → 흑자전환</text>
+    <g stroke="#15803d" stroke-width="3" fill="#15803d"><line x1="162" y1="73" x2="194" y2="73"/><polygon points="194,68 204,73 194,78"/><line x1="346" y1="73" x2="378" y2="73"/><polygon points="378,68 388,73 378,78"/><line x1="530" y1="73" x2="562" y2="73"/><polygon points="562,68 572,73 562,78"/></g>
+    <text class="t" x="360" y="128" text-anchor="middle" font-size="10.5" fill="#595959">‘기판이 부족 → 공장 증설 → 검사장비 발주’라는 물리적 사슬이 실적으로 연결</text>
+  </svg><figcaption>그림 1. 인텍플러스 수혜 공식.</figcaption></figure>
+
+  <h1>5. 사업부 — ‘2차전지에서 반도체로’ 체질개선</h1>
+  <p>인텍플러스는 최근 몇 년간 사업 구조를 바꿔왔어요. 한때 매출의 절반 이상이 2차전지(배터리) 검사였는데, <strong>단가·수익성이 더 높은 반도체·기판 검사로 무게중심을 옮기는 중</strong>입니다.</p>
+  <table>
+    <thead><tr><th>사업부</th><th>2025 3Q 누적</th><th>비고</th></tr></thead>
+    <tbody>
+      <tr><td>반도체 후공정·기판 검사</td><td>약 275억 (55%)</td><td>고마진, FC-BGA 증설 수혜</td></tr>
+      <tr><td>2차전지·디스플레이 검사</td><td>약 220억 (45%)</td><td>비중 축소 중</td></tr>
+    </tbody>
+  </table>
+  <p class="muted">→ ‘반도체 비중↑ = 마진·수주 질 개선’이 실적 턴어라운드의 핵심 배경이에요.</p>
+
+  <h1>6. 경쟁 구도</h1>
+  <table>
+    <thead><tr><th>영역</th><th>강자</th><th>인텍플러스 위치</th></tr></thead>
+    <tbody>
+      <tr><td>반도체 패키지 검사</td><td>KLA(미국) 독점</td><td>북미 고객·중화권 OSAT로 침투</td></tr>
+      <tr><td>기판(Substrate) 검사</td><td>다카오카(일본) 독점</td><td>2026 일본 첫 진출, 삼성전기·유니마이크론 확보</td></tr>
+      <tr><td>국내 검사장비</td><td>기가비스(FC-BGA AOI)·고영테크놀러지(3D SPI)</td><td>FC-BGA 검사에서 경쟁·병행</td></tr>
+    </tbody>
+  </table>
+
+  <h1>FAQ</h1>
+  <h3>Q1. 인텍플러스는 기판을 만드나요?</h3>
+  <p>아니요. 기판을 ‘만드는’ 게 아니라, 만들어진 기판을 ‘검사하는 장비’를 팔아요. 삼성전기 같은 기판사가 고객입니다.</p>
+  <h3>Q2. 기가비스와 뭐가 다른가요?</h3>
+  <p>둘 다 FC-BGA 검사장비를 하지만, 기가비스는 FC-BGA AOI에 특화된 강자이고, 인텍플러스는 반도체 패키지·기판·2차전지 등 검사 포트폴리오가 넓고 최근 반도체로 무게를 옮기는 중이에요.</p>
+  <h3>Q3. ‘턴어라운드’가 무슨 뜻인가요?</h3>
+  <p>적자에서 흑자로 돌아서는 것. 2차전지 부진으로 실적이 나빴다가, 반도체·기판 수주가 늘며 2026년 흑자전환이 전망됩니다.</p>
+
+  <h1>부록. 미니 용어 사전</h1>
+  <table>
+    <thead><tr><th>용어</th><th>쉬운 설명</th></tr></thead>
+    <tbody>
+      <tr><td>AOI</td><td>자동 광학 검사. 카메라·광학으로 불량을 자동으로 찾는 것.</td></tr>
+      <tr><td>3D 외관검사</td><td>표면을 입체로 촬영해 미세 결함을 잡는 검사.</td></tr>
+      <tr><td>FC-BGA</td><td>CPU·GPU·AI 가속기용 고부가 반도체 기판.</td></tr>
+      <tr><td>수율</td><td>양품 비율. 검사장비가 지키는 핵심 지표.</td></tr>
+      <tr><td>ASP</td><td>평균판매단가. 반도체 검사가 2차전지보다 높음.</td></tr>
+      <tr><td>OSAT</td><td>반도체 후공정(패키징·테스트) 외주 기업.</td></tr>
+      <tr><td>턴어라운드</td><td>실적이 적자→흑자로 돌아서는 것.</td></tr>
+    </tbody>
+  </table>
+
+  <h1>출처</h1>
+  <ol class="src">
+    <li>iM증권 — 인텍플러스: 반도체 패키징 검사 중심 체질개선(2026.1) — <a href="https://file.alphasquare.co.kr/media/pdfs/market-report/">link</a></li>
+    <li>SK증권 — 인텍플러스: ‘어드밴스드패키지’ 전환 & FCBGA 증설 수혜 — <a href="https://www.sks.co.kr/data1/research/qna_file/20260426160421719_0_ko.pdf">link</a></li>
+    <li>데일리인베스트 — 인텍플러스, 고마진 반도체 외관검사 장비 — <a href="http://www.dailyinvest.kr/news/articleView.html?idxno=70526">link</a></li>
+    <li>버핏리포트/NH — 인텍플러스 기업가치 재평가 — <a href="https://buffettlab.co.kr/news/view.php?idx=54610">link</a></li>
+  </ol>
+  <p class="muted"><em>※ 본 문서는 공개된 기업·증권사 자료를 교차 확인해 정리한 참고 자료입니다. 실적·수주는 발표·추정 기준입니다. 투자 권유가 아닙니다.</em></p>
+</div>
+</body>
+</html>

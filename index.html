@@ -97,7 +97,8 @@
     @media (max-width: 600px) { .nav-links .hide-sm { display: none; } }
 
     /* ── Hero ── */
-    .hero { padding: 78px 0 52px; }
+    /* 세로 패딩만 지정 (좌우 패딩은 .wrap의 22px 유지 — 단축 padding은 좌우를 0으로 덮어써 모바일에서 본문이 화면 끝에 붙는 버그) */
+    .hero { padding-top: 78px; padding-bottom: 52px; }
     .eyebrow {
       font-family: var(--mono); font-size: 12px; letter-spacing: 3px; text-transform: uppercase;
       color: var(--muted); margin-bottom: 20px;
@@ -111,7 +112,7 @@
     @media (max-width: 940px) { .hero p.lead { white-space: normal; font-size: 15px; max-width: 540px; } }
 
     /* ── Section heads ── */
-    .sec { padding: 40px 0; }
+    .sec { padding-top: 40px; padding-bottom: 40px; }  /* 좌우는 .wrap 22px 유지 */
     .sec-head { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 24px; border-bottom: 1px solid var(--line); padding-bottom: 12px; }
     .sec-head h2 { font-family: var(--mono); font-size: 13px; letter-spacing: 2.5px; text-transform: uppercase; margin: 0; font-weight: 700; }
     .sec-head .count { font-family: var(--mono); font-size: 12px; color: var(--muted); }

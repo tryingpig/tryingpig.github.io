@@ -22,5 +22,13 @@
     "desc": "코스피200·코스닥150 구성종목 중 시장을 이기는 종목을 상대강도(RS)로 매 거래일 산출하는 대시보드",
     "tag": "investing",
     "url": "https://tryingpig.github.io/rs-tracker/"
+  },
+  {
+    "emoji": "📈",
+    "name_en": "Smart Consensus",
+    "name_ko": "증권사 목표주가 컨센서스 추적",
+    "desc": "증권사별 목표주가 변경 이력과 주가 반응을 추적하고, 반응성·선행성으로 리딩 증권사를 분석하는 대시보드",
+    "tag": "investing",
+    "url": "https://tryingpig.github.io/smart-consensus/"
   }
 ]

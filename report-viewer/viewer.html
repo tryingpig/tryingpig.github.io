@@ -181,7 +181,7 @@
           div.dataset.hid = hl.hid;
           div.addEventListener("click", (e) => {
             e.stopPropagation();
-            showDeletePopup(hl, e.pageX, e.pageY);
+            showDeletePopup(hl, e.clientX, e.clientY);
           });
           hlLayer.appendChild(div);
         }
@@ -201,7 +201,7 @@
 
     function onSelectionEnd() {
       const sel = window.getSelection();
-      if (!sel || sel.isCollapsed || !sel.toString().trim()) { return; }
+      if (!sel || sel.rangeCount === 0 || sel.isCollapsed || !sel.toString().trim()) { removePopup(); return; }
       const range = sel.getRangeAt(0);
       // 선택이 어느 페이지에 속하는지
       let node = range.startContainer;
@@ -224,9 +224,9 @@
       norm = mergeLineRects(norm);
       const text = sel.toString().trim();
 
-      // 팝업 표시 (선택 아래쪽 — iOS 콜아웃 회피)
+      // 팝업 표시 (선택 아래쪽 — iOS 콜아웃 회피). fixed 좌표라 스크롤 오프셋 불필요
       const last = clientRects[clientRects.length - 1];
-      showColorPopup(last.left + window.scrollX, last.bottom + window.scrollY + 6, (color) => {
+      showColorPopup(last.left, last.bottom, (color) => {
         const hl = {
           hid: "h_" + Date.now(),
           page: pageNo,
@@ -258,44 +258,56 @@
       return out;
     }
 
-    function showColorPopup(x, y, onPick) {
+    function showColorPopup(cx, cy, onPick) {
       removePopup();
       const p = document.createElement("div");
       p.className = "hl-popup";
-      p.style.left = Math.max(8, Math.min(x, window.scrollX + window.innerWidth - 140)) + "px";
-      p.style.top = y + "px";
+      const W = 172, H = 42;
+      const left = Math.max(8, Math.min(cx, window.innerWidth - W - 8));
+      let top = cy + 10;
+      if (top + H > window.innerHeight - 8) top = Math.max(8, cy - H - 14);
+      p.style.left = left + "px";
+      p.style.top = top + "px";
       p.innerHTML = COLORS.map((c) => `<div class="swatch ${c}" data-c="${c}"></div>`).join("") +
         `<div class="swatch del" data-c="cancel">✕</div>`;
       document.body.appendChild(p);
       popupEl = p;
+      let done = false;
       p.querySelectorAll(".swatch").forEach((s) => {
-        s.addEventListener("mousedown", (e) => e.preventDefault());
-        s.onclick = () => {
+        const pick = (e) => {
+          if (done) return; done = true;
+          e.preventDefault(); e.stopPropagation();
           const c = s.dataset.c;
           removePopup();
           if (c !== "cancel") onPick(c);
         };
+        s.addEventListener("touchend", pick, { passive: false });
+        s.addEventListener("click", pick);
       });
     }
 
-    function showDeletePopup(hl, px, py) {
+    function showDeletePopup(hl, cx, cy) {
       removePopup();
       const p = document.createElement("div");
       p.className = "hl-popup";
-      p.style.left = Math.max(8, px - 20) + "px";
-      p.style.top = py + 8 + "px";
-      p.innerHTML = `<div class="swatch del" data-a="del">🗑 삭제</div>`;
-      p.querySelector(".del").style.width = "auto";
-      p.querySelector(".del").style.padding = "0 10px";
+      p.style.left = Math.max(8, Math.min(cx - 20, window.innerWidth - 96)) + "px";
+      p.style.top = Math.min(cy + 8, window.innerHeight - 50) + "px";
+      p.innerHTML = `<div class="swatch del" data-a="del" style="width:auto;padding:0 12px">🗑 삭제</div>`;
       document.body.appendChild(p);
       popupEl = p;
-      p.querySelector("[data-a='del']").onclick = () => {
+      let done = false;
+      const del = (e) => {
+        if (done) return; done = true;
+        e.preventDefault(); e.stopPropagation();
         removePopup();
         highlights = highlights.filter((h) => h.hid !== hl.hid);
         deletedHids.add(hl.hid);
         rerenderAllHighlights();
         persist();
       };
+      const b = p.querySelector("[data-a='del']");
+      b.addEventListener("touchend", del, { passive: false });
+      b.addEventListener("click", del);
     }
 
     /* ── 저장 (낙관적 UI) ── */
@@ -456,10 +468,13 @@
 
     document.getElementById("modeBtn").onclick = () => setMode(mode === "pdf" ? "reading" : "pdf");
 
-    /* 이벤트 */
+    /* 이벤트 — selectionchange 디바운스로 모바일 길게눌러 선택에 대응 */
+    let selTimer = null;
+    function scheduleSel() { clearTimeout(selTimer); selTimer = setTimeout(onSelectionEnd, 280); }
+    document.addEventListener("selectionchange", scheduleSel);
     document.addEventListener("mouseup", () => setTimeout(onSelectionEnd, 10));
     document.addEventListener("touchend", () => setTimeout(onSelectionEnd, 10));
-    document.addEventListener("mousedown", (e) => {
+    document.addEventListener("pointerdown", (e) => {
       if (popupEl && !e.target.closest(".hl-popup") && !e.target.closest(".hl-rect")) removePopup();
     });
 

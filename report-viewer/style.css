@@ -95,6 +95,7 @@ a { color: inherit; text-decoration: none; }
 .page-wrap {
   position: relative; margin: 0 auto 12px; background: #fff;
   box-shadow: 0 1px 6px rgba(0,0,0,.12); width: fit-content;
+  isolation: isolate; /* mix-blend-mode 블렌드 범위 고정 */
 }
 .page-wrap canvas { display: block; }
 /* 투명 텍스트 레이어 (선택용) */
@@ -112,13 +113,14 @@ a { color: inherit; text-decoration: none; }
 .hl-rect {
   position: absolute; mix-blend-mode: multiply; border-radius: 2px; pointer-events: auto; cursor: pointer;
 }
-.hl-rect.yellow { background: var(--yellow); }
-.hl-rect.green  { background: var(--green); }
-.hl-rect.pink   { background: var(--pink); }
+/* 반투명 색상: mix-blend가 안 먹는 환경에서도 글자가 비쳐 보이도록 */
+.hl-rect.yellow { background: rgba(255, 214, 0, .42); }
+.hl-rect.green  { background: rgba(52, 199, 89, .38); }
+.hl-rect.pink   { background: rgba(255, 45, 120, .30); }
 
 /* 플로팅 색상 버튼 */
 .hl-popup {
-  position: absolute; z-index: 30; display: flex; gap: 6px;
+  position: fixed; z-index: 30; display: flex; gap: 6px;
   background: var(--card); border: 1px solid var(--line); border-radius: 10px;
   padding: 6px; box-shadow: 0 3px 12px rgba(0,0,0,.18);
 }

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#ffffff">
+  <link rel="manifest" href="manifest.json">
+  <title>리포트 마커</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="topbar">
+    <h1>📑 리포트 마커</h1>
+    <div class="spacer"></div>
+    <button id="refreshBtn">새로고침</button>
+    <button id="logoutBtn" title="토큰 삭제">⎋</button>
+  </div>
+
+  <div class="wrap">
+    <div class="filters" id="filters"></div>
+    <div id="list"><div class="loading">불러오는 중…</div></div>
+  </div>
+
+  <script src="app.js"></script>
+  <script>
+    let ALL = [];
+    let brokerFilter = null;
+    let onlyHl = false;
+
+    function esc(s) {
+      return (s == null ? "" : String(s)).replace(/[&<>"]/g, (c) =>
+        ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+    }
+
+    function renderFilters() {
+      const brokers = [...new Set(ALL.map((r) => r.broker).filter(Boolean))];
+      const box = document.getElementById("filters");
+      const chips = [];
+      chips.push(`<div class="chip ${onlyHl ? "active" : ""}" data-hl="1">✏️ 하이라이트 있음</div>`);
+      for (const b of brokers) {
+        chips.push(`<div class="chip ${brokerFilter === b ? "active" : ""}" data-broker="${esc(b)}">${esc(b)}</div>`);
+      }
+      box.innerHTML = chips.join("");
+      box.querySelectorAll(".chip").forEach((c) => {
+        c.onclick = () => {
+          if (c.dataset.hl) onlyHl = !onlyHl;
+          else brokerFilter = brokerFilter === c.dataset.broker ? null : c.dataset.broker;
+          renderFilters();
+          renderList();
+        };
+      });
+    }
+
+    function renderList() {
+      let rows = ALL.slice();
+      if (brokerFilter) rows = rows.filter((r) => r.broker === brokerFilter);
+      if (onlyHl) rows = rows.filter((r) => (r.highlight_count || 0) > 0);
+
+      const list = document.getElementById("list");
+      if (!rows.length) {
+        list.innerHTML = `<div class="empty">표시할 리포트가 없습니다.</div>`;
+        return;
+      }
+      list.innerHTML = rows.map((r) => {
+        const sector = r.sector ? `<span class="badge sector">${esc(r.sector)}</span>` : "";
+        const scan = r.has_text_layer === false ? `<span class="badge scan">스캔본</span>` : "";
+        const hl = (r.highlight_count || 0) > 0 ? `<span class="hl">✏️ ${r.highlight_count}</span>` : "";
+        const dateStr = r.publish_date || (r.uploaded_at || "").slice(0, 10);
+        return `
+          <div class="card" data-id="${esc(r.id)}">
+            <div class="title">${esc(r.title)}</div>
+            <div class="meta">
+              <span class="badge">${esc(r.broker || "미분류")}</span>
+              ${sector}${scan}
+              <span>${esc(dateStr)}</span>
+              <span>· ${r.size_mb ?? "?"}MB</span>
+            </div>
+            <div class="row2">
+              ${hl}<div class="spacer"></div>
+              <a class="mini" href="highlights.html?id=${encodeURIComponent(r.id)}">모아보기</a>
+            </div>
+          </div>`;
+      }).join("");
+
+      list.querySelectorAll(".card").forEach((card) => {
+        card.addEventListener("click", (e) => {
+          if (e.target.closest("a")) return; // 모아보기 링크는 예외
+          location.href = "viewer.html?id=" + encodeURIComponent(card.dataset.id);
+        });
+      });
+    }
+
+    async function load() {
+      document.getElementById("list").innerHTML = `<div class="loading">불러오는 중…</div>`;
+      try {
+        const doc = await loadReports();
+        ALL = doc.reports || [];
+        renderFilters();
+        renderList();
+      } catch (err) {
+        handleError(err, load);
+      }
+    }
+
+    document.getElementById("refreshBtn").onclick = load;
+    document.getElementById("logoutBtn").onclick = () => {
+      if (confirm("이 기기에서 토큰을 삭제할까요?")) { clearPat(); location.reload(); }
+    };
+
+    requirePat(load);
+  </script>
+</body>
+</html>

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>하이라이트 모아보기</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="topbar">
+    <a class="back" href="index.html">‹</a>
+    <h1 id="title">모아보기</h1>
+    <div class="spacer"></div>
+    <button id="copyBtn">전체 복사</button>
+  </div>
+  <div class="wrap">
+    <div id="list"><div class="loading">불러오는 중…</div></div>
+  </div>
+  <div class="toast" id="toast"></div>
+
+  <script src="app.js"></script>
+  <script>
+    const params = new URLSearchParams(location.search);
+    const REPORT_ID = params.get("id");
+    let HLS = [], TITLE = REPORT_ID;
+
+    function esc(s) {
+      return (s == null ? "" : String(s)).replace(/[&<>"]/g, (c) =>
+        ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+    }
+    function toast(m) {
+      const t = document.getElementById("toast");
+      t.textContent = m; t.classList.add("show");
+      setTimeout(() => t.classList.remove("show"), 1600);
+    }
+
+    function render() {
+      const list = document.getElementById("list");
+      if (!HLS.length) {
+        list.innerHTML = `<div class="empty">아직 하이라이트가 없습니다.<br>뷰어에서 문장을 선택해 줄을 쳐보세요.</div>`;
+        return;
+      }
+      const sorted = HLS.slice().sort((a, b) => a.page - b.page);
+      list.innerHTML = sorted.map((h) => `
+        <div class="hl-item ${esc(h.color || "yellow")}" data-page="${h.page}">
+          <div class="pg">p.${h.page}</div>
+          <div>${esc(h.text)}</div>
+        </div>`).join("");
+      list.querySelectorAll(".hl-item").forEach((it) => {
+        it.onclick = () => {
+          location.href = `viewer.html?id=${encodeURIComponent(REPORT_ID)}&page=${it.dataset.page}`;
+        };
+      });
+    }
+
+    async function load() {
+      try {
+        const [reportsDoc, anno] = await Promise.all([
+          loadReports(), loadAnnotations(REPORT_ID),
+        ]);
+        const r = (reportsDoc.reports || []).find((x) => x.id === REPORT_ID);
+        TITLE = r ? r.title : REPORT_ID;
+        document.getElementById("title").textContent = TITLE;
+        HLS = anno.data.highlights || [];
+        render();
+      } catch (err) {
+        handleError(err, load);
+      }
+    }
+
+    document.getElementById("copyBtn").onclick = async () => {
+      if (!HLS.length) return;
+      const sorted = HLS.slice().sort((a, b) => a.page - b.page);
+      const md = `# ${TITLE}\n\n` + sorted.map((h) => `> (p.${h.page}) ${h.text}`).join("\n\n");
+      try { await navigator.clipboard.writeText(md); toast("복사됨"); }
+      catch { toast("복사 실패"); }
+    };
+
+    requirePat(load);
+  </script>
+</body>
+</html>

@@ -1,0 +1,9 @@
+{
+  "name": "리포트 마커",
+  "short_name": "리포트마커",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#f5f6f8",
+  "theme_color": "#ffffff",
+  "icons": []
+}

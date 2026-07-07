@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#ffffff">
+  <title>리포트 뷰어</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="topbar viewer-topbar" id="topbar">
+    <a class="back" href="index.html">‹</a>
+    <h1 id="docTitle">불러오는 중…</h1>
+    <div class="spacer"></div>
+    <a class="btn" id="hlLink">모아보기</a>
+  </div>
+  <div id="banner"></div>
+  <div id="pdfContainer"><div class="loading">PDF 여는 중…</div></div>
+  <div class="toast" id="toast"></div>
+
+  <script src="app.js"></script>
+  <script type="module">
+    import * as pdfjsLib from "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.6.82/pdf.min.mjs";
+    pdfjsLib.GlobalWorkerOptions.workerSrc =
+      "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.6.82/pdf.worker.min.mjs";
+
+    const params = new URLSearchParams(location.search);
+    const REPORT_ID = params.get("id");
+    const GOTO_PAGE = parseInt(params.get("page") || "0", 10);
+
+    document.getElementById("hlLink").href = "highlights.html?id=" + encodeURIComponent(REPORT_ID);
+
+    // 상태
+    let highlights = [];     // 전체 하이라이트
+    let annoSha = null;
+    const deletedHids = new Set();
+    let totalTextLen = 0;
+
+    const COLORS = ["yellow", "green", "pink"];
+
+    function toast(msg) {
+      const t = document.getElementById("toast");
+      t.textContent = msg; t.classList.add("show");
+      setTimeout(() => t.classList.remove("show"), 1800);
+    }
+
+    /* ── 초기 로드 ── */
+    async function start() {
+      try {
+        const [reportsDoc, anno] = await Promise.all([
+          loadReports(),
+          loadAnnotations(REPORT_ID),
+        ]);
+        const report = (reportsDoc.reports || []).find((r) => r.id === REPORT_ID);
+        if (!report) throw new Error("리포트를 찾을 수 없습니다: " + REPORT_ID);
+        document.getElementById("docTitle").textContent = report.title || REPORT_ID;
+        document.title = report.title || "리포트 뷰어";
+
+        highlights = anno.data.highlights || [];
+        annoSha = anno.sha;
+
+        const buf = await loadPdf(report.pdf_path);
+        await renderPdf(buf);
+
+        // 텍스트 레이어가 비었으면 스캔본 배너
+        if (totalTextLen < 5) {
+          document.getElementById("banner").innerHTML =
+            `<div class="banner">텍스트 레이어 없음 — 하이라이트 불가 (스캔본)</div>`;
+        }
+        if (GOTO_PAGE > 0) {
+          const el = document.querySelector(`.page-wrap[data-page="${GOTO_PAGE}"]`);
+          if (el) el.scrollIntoView();
+        }
+      } catch (err) {
+        handleError(err, start);
+      }
+    }
+
+    /* ── PDF 렌더 ── */
+    async function renderPdf(buf) {
+      const container = document.getElementById("pdfContainer");
+      container.innerHTML = "";
+      const pdf = await pdfjsLib.getDocument({ data: buf }).promise;
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const cssWidth = Math.min(window.innerWidth - 16, 900);
+
+      for (let n = 1; n <= pdf.numPages; n++) {
+        const page = await pdf.getPage(n);
+        const base = page.getViewport({ scale: 1 });
+        const scale = cssWidth / base.width;
+        const viewport = page.getViewport({ scale });
+
+        const wrap = document.createElement("div");
+        wrap.className = "page-wrap";
+        wrap.dataset.page = n;
+        wrap.style.width = viewport.width + "px";
+        wrap.style.height = viewport.height + "px";
+
+        // 캔버스 (본문)
+        const canvas = document.createElement("canvas");
+        canvas.width = Math.floor(viewport.width * dpr);
+        canvas.height = Math.floor(viewport.height * dpr);
+        canvas.style.width = viewport.width + "px";
+        canvas.style.height = viewport.height + "px";
+        const ctx = canvas.getContext("2d");
+        ctx.scale(dpr, dpr);
+        wrap.appendChild(canvas);
+
+        // 하이라이트 레이어
+        const hlLayer = document.createElement("div");
+        hlLayer.className = "hlLayer";
+        wrap.appendChild(hlLayer);
+
+        // 텍스트 레이어
+        const textLayer = document.createElement("div");
+        textLayer.className = "textLayer";
+        wrap.appendChild(textLayer);
+
+        container.appendChild(wrap);
+
+        await page.render({ canvasContext: ctx, viewport }).promise;
+        await buildTextLayer(page, viewport, textLayer);
+        renderHighlightsForPage(n, hlLayer, wrap);
+      }
+    }
+
+    /* getTextContent로 투명 텍스트 레이어 직접 구성 (버전 안정) */
+    async function buildTextLayer(page, viewport, layer) {
+      const tc = await page.getTextContent();
+      const frag = document.createDocumentFragment();
+      const spans = [];
+      for (const item of tc.items) {
+        if (!item.str) continue;
+        totalTextLen += item.str.length;
+        const tx = pdfjsLib.Util.transform(viewport.transform, item.transform);
+        const fontH = Math.hypot(tx[2], tx[3]);
+        if (fontH === 0) continue;
+        const span = document.createElement("span");
+        span.textContent = item.str;
+        span.style.left = tx[4] + "px";
+        span.style.top = tx[5] - fontH + "px";
+        span.style.fontSize = fontH + "px";
+        span.style.fontFamily = item.fontName || "sans-serif";
+        frag.appendChild(span);
+        spans.push({ span, wantW: item.width * viewport.scale });
+      }
+      layer.appendChild(frag);
+      // 글자 폭을 원본에 맞춰 가로 스케일 보정 (선택 영역 정확도)
+      for (const s of spans) {
+        const w = s.span.offsetWidth;
+        if (w > 0 && s.wantW > 0) {
+          s.span.style.transform = `scaleX(${s.wantW / w})`;
+        }
+      }
+    }
+
+    /* ── 하이라이트 렌더 ── */
+    function renderHighlightsForPage(pageNo, hlLayer, wrap) {
+      hlLayer.innerHTML = "";
+      const w = wrap.offsetWidth, h = wrap.offsetHeight;
+      for (const hl of highlights) {
+        if (hl.page !== pageNo) continue;
+        for (const r of hl.rects) {
+          const div = document.createElement("div");
+          div.className = "hl-rect " + (hl.color || "yellow");
+          div.style.left = r.x * w + "px";
+          div.style.top = r.y * h + "px";
+          div.style.width = r.w * w + "px";
+          div.style.height = r.h * h + "px";
+          div.dataset.hid = hl.hid;
+          div.addEventListener("click", (e) => {
+            e.stopPropagation();
+            showDeletePopup(hl, e.pageX, e.pageY);
+          });
+          hlLayer.appendChild(div);
+        }
+      }
+    }
+
+    function rerenderAllHighlights() {
+      document.querySelectorAll(".page-wrap").forEach((wrap) => {
+        const pageNo = parseInt(wrap.dataset.page, 10);
+        renderHighlightsForPage(pageNo, wrap.querySelector(".hlLayer"), wrap);
+      });
+    }
+
+    /* ── 선택 → 하이라이트 생성 ── */
+    let popupEl = null;
+    function removePopup() { if (popupEl) { popupEl.remove(); popupEl = null; } }
+
+    function onSelectionEnd() {
+      const sel = window.getSelection();
+      if (!sel || sel.isCollapsed || !sel.toString().trim()) { return; }
+      const range = sel.getRangeAt(0);
+      // 선택이 어느 페이지에 속하는지
+      let node = range.startContainer;
+      if (node.nodeType === 3) node = node.parentElement;
+      const wrap = node.closest(".page-wrap");
+      if (!wrap) return;
+      const pageNo = parseInt(wrap.dataset.page, 10);
+
+      const wrapRect = wrap.getBoundingClientRect();
+      const clientRects = Array.from(range.getClientRects()).filter((r) => r.width > 1 && r.height > 1);
+      if (!clientRects.length) return;
+
+      // 페이지 상대 정규화 + 같은 줄 병합
+      let norm = clientRects.map((r) => ({
+        x: (r.left - wrapRect.left) / wrapRect.width,
+        y: (r.top - wrapRect.top) / wrapRect.height,
+        w: r.width / wrapRect.width,
+        h: r.height / wrapRect.height,
+      }));
+      norm = mergeLineRects(norm);
+      const text = sel.toString().trim();
+
+      // 팝업 표시 (선택 아래쪽 — iOS 콜아웃 회피)
+      const last = clientRects[clientRects.length - 1];
+      showColorPopup(last.left + window.scrollX, last.bottom + window.scrollY + 6, (color) => {
+        const hl = {
+          hid: "h_" + Date.now(),
+          page: pageNo,
+          text,
+          rects: norm,
+          color,
+          created_at: nowKst(),
+        };
+        highlights.push(hl);
+        rerenderAllHighlights();
+        sel.removeAllRanges();
+        persist();
+      });
+    }
+
+    function mergeLineRects(rects) {
+      rects.sort((a, b) => a.y - b.y || a.x - b.x);
+      const out = [];
+      for (const r of rects) {
+        const prev = out[out.length - 1];
+        if (prev && Math.abs(prev.y - r.y) < 0.008 && Math.abs(prev.h - r.h) < 0.01) {
+          const right = Math.max(prev.x + prev.w, r.x + r.w);
+          prev.x = Math.min(prev.x, r.x);
+          prev.w = right - prev.x;
+        } else {
+          out.push({ ...r });
+        }
+      }
+      return out;
+    }
+
+    function showColorPopup(x, y, onPick) {
+      removePopup();
+      const p = document.createElement("div");
+      p.className = "hl-popup";
+      p.style.left = Math.max(8, Math.min(x, window.scrollX + window.innerWidth - 140)) + "px";
+      p.style.top = y + "px";
+      p.innerHTML = COLORS.map((c) => `<div class="swatch ${c}" data-c="${c}"></div>`).join("") +
+        `<div class="swatch del" data-c="cancel">✕</div>`;
+      document.body.appendChild(p);
+      popupEl = p;
+      p.querySelectorAll(".swatch").forEach((s) => {
+        s.addEventListener("mousedown", (e) => e.preventDefault());
+        s.onclick = () => {
+          const c = s.dataset.c;
+          removePopup();
+          if (c !== "cancel") onPick(c);
+        };
+      });
+    }
+
+    function showDeletePopup(hl, px, py) {
+      removePopup();
+      const p = document.createElement("div");
+      p.className = "hl-popup";
+      p.style.left = Math.max(8, px - 20) + "px";
+      p.style.top = py + 8 + "px";
+      p.innerHTML = `<div class="swatch del" data-a="del">🗑 삭제</div>`;
+      p.querySelector(".del").style.width = "auto";
+      p.querySelector(".del").style.padding = "0 10px";
+      document.body.appendChild(p);
+      popupEl = p;
+      p.querySelector("[data-a='del']").onclick = () => {
+        removePopup();
+        highlights = highlights.filter((h) => h.hid !== hl.hid);
+        deletedHids.add(hl.hid);
+        rerenderAllHighlights();
+        persist();
+      };
+    }
+
+    /* ── 저장 (낙관적 UI) ── */
+    let saving = false, dirty = false;
+    async function persist() {
+      dirty = true;
+      if (saving) return;
+      saving = true;
+      while (dirty) {
+        dirty = false;
+        try {
+          const res = await saveAnnotations(REPORT_ID, highlights, deletedHids, annoSha);
+          annoSha = res.sha;
+          bumpCount(REPORT_ID, highlights.length);
+        } catch (err) {
+          if (err instanceof AuthError) { saving = false; handleError(err, () => {}); return; }
+          toast("저장 실패 — 다시 시도합니다");
+          dirty = true;
+          await new Promise((r) => setTimeout(r, 1500));
+        }
+      }
+      saving = false;
+      toast("저장됨");
+    }
+
+    /* reports.json의 highlight_count 갱신 (비필수, 실패 무시) */
+    async function bumpCount(reportId, count) {
+      try {
+        const res = await ghFetch("contents/index/reports.json");
+        if (!res.ok) return;
+        const obj = await res.json();
+        const doc = JSON.parse(decodeB64Utf8(obj.content));
+        const r = (doc.reports || []).find((x) => x.id === reportId);
+        if (!r || r.highlight_count === count) return;
+        r.highlight_count = count;
+        await ghFetch("contents/index/reports.json", {
+          method: "PUT",
+          body: {
+            message: `count: ${reportId} ${count}`,
+            content: encodeUtf8B64(JSON.stringify(doc, null, 2)),
+            sha: obj.sha,
+          },
+        });
+      } catch (e) { console.warn("count 갱신 생략", e); }
+    }
+
+    /* 이벤트 */
+    document.addEventListener("mouseup", () => setTimeout(onSelectionEnd, 10));
+    document.addEventListener("touchend", () => setTimeout(onSelectionEnd, 10));
+    document.addEventListener("mousedown", (e) => {
+      if (popupEl && !e.target.closest(".hl-popup") && !e.target.closest(".hl-rect")) removePopup();
+    });
+
+    // 스크롤 시 상단바 숨김
+    let lastY = 0;
+    window.addEventListener("scroll", () => {
+      const y = window.scrollY;
+      const bar = document.getElementById("topbar");
+      if (y > lastY && y > 80) bar.classList.add("hidden");
+      else bar.classList.remove("hidden");
+      lastY = y;
+    });
+
+    requirePat(start);
+  </script>
+</body>
+</html>

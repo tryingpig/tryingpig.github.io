@@ -40,6 +40,7 @@
     let pdfDoc = null;        // 읽기 모드 재사용
     let readingBuilt = false;
     let mode = "pdf";         // "pdf" | "reading"
+    const pageItems = {};     // pageNo -> [{str,x,y,w,h}] 정규화 좌표 (텍스트↔좌표 역산용)
 
     function esc(s) {
       return (s == null ? "" : String(s)).replace(/[&<>"]/g, (c) =>
@@ -203,43 +204,44 @@
       const sel = window.getSelection();
       if (!sel || sel.rangeCount === 0 || sel.isCollapsed || !sel.toString().trim()) { removePopup(); return; }
       const range = sel.getRangeAt(0);
-      // 선택이 어느 페이지에 속하는지
       let node = range.startContainer;
       if (node.nodeType === 3) node = node.parentElement;
-      const wrap = node.closest(".page-wrap");
-      if (!wrap) return;
-      const pageNo = parseInt(wrap.dataset.page, 10);
-
-      const wrapRect = wrap.getBoundingClientRect();
+      const text = sel.toString().trim();
       const clientRects = Array.from(range.getClientRects()).filter((r) => r.width > 1 && r.height > 1);
       if (!clientRects.length) return;
-
-      // 페이지 상대 정규화 + 같은 줄 병합
-      let norm = clientRects.map((r) => ({
-        x: (r.left - wrapRect.left) / wrapRect.width,
-        y: (r.top - wrapRect.top) / wrapRect.height,
-        w: r.width / wrapRect.width,
-        h: r.height / wrapRect.height,
-      }));
-      norm = mergeLineRects(norm);
-      const text = sel.toString().trim();
-
-      // 팝업 표시 (선택 아래쪽 — iOS 콜아웃 회피). fixed 좌표라 스크롤 오프셋 불필요
       const last = clientRects[clientRects.length - 1];
-      showColorPopup(last.left, last.bottom, (color) => {
-        const hl = {
-          hid: "h_" + Date.now(),
-          page: pageNo,
-          text,
-          rects: norm,
-          color,
-          created_at: nowKst(),
-        };
-        highlights.push(hl);
-        rerenderAllHighlights();
-        sel.removeAllRanges();
-        persist();
-      });
+
+      const pdfWrap = node.closest(".page-wrap");
+      const rdPage = node.closest(".rd-page");
+
+      if (pdfWrap) {
+        // PDF 모드: 화면 좌표 → 페이지 정규화 좌표
+        const pageNo = parseInt(pdfWrap.dataset.page, 10);
+        const wr = pdfWrap.getBoundingClientRect();
+        let norm = clientRects.map((r) => ({
+          x: (r.left - wr.left) / wr.width, y: (r.top - wr.top) / wr.height,
+          w: r.width / wr.width, h: r.height / wr.height,
+        }));
+        norm = mergeLineRects(norm);
+        showColorPopup(last.left, last.bottom, (color) => createHighlight(pageNo, text, norm, color));
+      } else if (rdPage) {
+        // 읽기 모드: 텍스트 → PDF 좌표 역산
+        const pageNo = parseInt(rdPage.dataset.page, 10);
+        showColorPopup(last.left, last.bottom, (color) =>
+          createHighlight(pageNo, text, computeRectsFromText(pageNo, text), color));
+      } else {
+        removePopup();
+      }
+    }
+
+    /* 두 모드 공통 하이라이트 생성 */
+    function createHighlight(pageNo, text, rects, color) {
+      const hl = { hid: "h_" + Date.now(), page: pageNo, text, rects: rects || [], color, created_at: nowKst() };
+      highlights.push(hl);
+      if (mode === "reading") { renderReadingHighlights(); } else { rerenderAllHighlights(); }
+      const sel = window.getSelection();
+      if (sel) sel.removeAllRanges();
+      persist();
     }
 
     function mergeLineRects(rects) {
@@ -302,7 +304,7 @@
         removePopup();
         highlights = highlights.filter((h) => h.hid !== hl.hid);
         deletedHids.add(hl.hid);
-        rerenderAllHighlights();
+        if (mode === "reading") { renderReadingHighlights(); } else { rerenderAllHighlights(); }
         persist();
       };
       const b = p.querySelector("[data-a='del']");
@@ -371,9 +373,11 @@
         } else {
           rdC.style.display = ""; pdfC.style.display = "none";
         }
+        renderReadingHighlights();   // PDF에서 친 하이라이트 반영
         btn.textContent = "📄 PDF";
       } else {
         rdC.style.display = "none"; pdfC.style.display = "";
+        rerenderAllHighlights();     // 읽기에서 친 하이라이트 반영
         btn.textContent = "📖 읽기";
       }
       window.scrollTo(0, 0);
@@ -396,15 +400,21 @@
       const vp = page.getViewport({ scale: 1 });
       const tc = await page.getTextContent();
       const rows = [];
+      const items = [];
       for (const it of tc.items) {
         if (!it.str || !it.str.trim()) continue;
         const tx = pdfjsLib.Util.transform(vp.transform, it.transform);
-        rows.push({ str: it.str, x: tx[4], y: tx[5], h: Math.hypot(tx[2], tx[3]) });
+        const fh = Math.hypot(tx[2], tx[3]);
+        rows.push({ str: it.str, x: tx[4], y: tx[5], h: fh });
+        // 정규화 좌표 캐시 (읽기→PDF 좌표 역산용)
+        items.push({ str: it.str, x: tx[4] / vp.width, y: (tx[5] - fh) / vp.height,
+                     w: (it.width || 0) / vp.width, h: fh / vp.height });
       }
+      pageItems[pageNo] = items;
       if (!rows.length) {
         // 텍스트 없는 페이지(차트/이미지 전용) → 원본 이미지로
         container.insertAdjacentHTML("beforeend",
-          `<div class="rd-page"><div class="rd-pageno">p.${pageNo}</div>` +
+          `<div class="rd-page" data-page="${pageNo}"><div class="rd-pageno">p.${pageNo}</div>` +
           `<button class="rd-img-btn" data-page="${pageNo}">🖼 이 페이지 보기 (이미지)</button></div>`);
         return;
       }
@@ -443,7 +453,7 @@
       }
       flush();
       html += `<button class="rd-img-btn" data-page="${pageNo}">🖼 원본 페이지 보기</button>`;
-      container.insertAdjacentHTML("beforeend", `<div class="rd-page">${html}</div>`);
+      container.insertAdjacentHTML("beforeend", `<div class="rd-page" data-page="${pageNo}">${html}</div>`);
     }
 
     async function renderPageImage(pageNo, btn) {
@@ -464,6 +474,72 @@
       ctx.scale(dpr, dpr);
       await page.render({ canvasContext: ctx, viewport: vp }).promise;
       btn.replaceWith(canvas);
+    }
+
+    /* ── 읽기 모드 하이라이트 (텍스트 기준) ── */
+    const NW = (s) => (s || "").replace(/\s+/g, "");        // 공백 제거 정규화
+    const NS = (s) => (s || "").replace(/\s+/g, " ").trim(); // 공백 단일화
+
+    function clearReadingMarks() {
+      const rdC = document.getElementById("readingContainer");
+      rdC.querySelectorAll("mark.rd-hl").forEach((m) => m.replaceWith(document.createTextNode(m.textContent)));
+      rdC.querySelectorAll(".rd-para, .rd-h").forEach((b) => b.normalize());
+    }
+
+    function renderReadingHighlights() {
+      if (!readingBuilt) return;
+      clearReadingMarks();
+      for (const hl of highlights) wrapReading(hl);
+    }
+
+    /* 읽기 화면의 해당 페이지 문단에서 hl.text를 찾아 <mark>로 감싼다 */
+    function wrapReading(hl) {
+      const rdC = document.getElementById("readingContainer");
+      const page = rdC.querySelector(`.rd-page[data-page="${hl.page}"]`);
+      if (!page) return false;
+      const t = NS(hl.text);
+      if (!t) return false;
+      for (const b of page.querySelectorAll(".rd-para, .rd-h")) {
+        const node = b.firstChild;
+        if (!node || node.nodeType !== 3) continue;
+        const idx = node.textContent.indexOf(t);
+        if (idx >= 0) {
+          const r = document.createRange();
+          r.setStart(node, idx);
+          r.setEnd(node, idx + t.length);
+          const mark = document.createElement("mark");
+          mark.className = "rd-hl " + (hl.color || "yellow");
+          mark.dataset.hid = hl.hid;
+          try {
+            r.surroundContents(mark);
+            mark.addEventListener("click", (e) => {
+              e.stopPropagation();
+              showDeletePopup(hl, e.clientX, e.clientY);
+            });
+            return true;
+          } catch (e) { /* 경계가 여러 노드에 걸치면 스킵 */ }
+        }
+      }
+      return false;
+    }
+
+    /* 읽기 모드에서 고른 텍스트를 PDF 정규화 좌표로 역산 */
+    function computeRectsFromText(pageNo, text) {
+      const items = pageItems[pageNo];
+      if (!items || !items.length) return [];
+      const target = NW(text);
+      if (!target) return [];
+      let big = "";
+      const map = [];
+      items.forEach((it, ii) => {
+        const s = NW(it.str);
+        for (let k = 0; k < s.length; k++) { big += s[k]; map.push(ii); }
+      });
+      const pos = big.indexOf(target);
+      if (pos < 0) return [];
+      const from = map[pos], to = map[pos + target.length - 1];
+      let rects = items.slice(from, to + 1).map((it) => ({ x: it.x, y: it.y, w: it.w, h: it.h }));
+      return mergeLineRects(rects);
     }
 
     document.getElementById("modeBtn").onclick = () => setMode(mode === "pdf" ? "reading" : "pdf");

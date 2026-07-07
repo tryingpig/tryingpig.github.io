@@ -151,6 +151,11 @@ a { color: inherit; text-decoration: none; }
   border: 1px solid var(--line); background: var(--card); color: var(--sub);
   border-radius: 8px; padding: 7px 12px; font-size: 13px; cursor: pointer; margin-top: 6px;
 }
+/* 읽기 모드 하이라이트 (PDF와 색 공유) */
+mark.rd-hl { color: inherit; border-radius: 2px; padding: 0 1px; cursor: pointer; }
+mark.rd-hl.yellow { background: rgba(255, 214, 0, .5); }
+mark.rd-hl.green  { background: rgba(52, 199, 89, .42); }
+mark.rd-hl.pink   { background: rgba(255, 45, 120, .34); }
 
 /* 모아보기 */
 .hl-item {

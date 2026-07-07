@@ -73,10 +73,15 @@
         const buf = await loadPdf(report.pdf_path);
         await renderPdf(buf);
 
+        // 삭제 예정 배너
+        if (report.pending_deletion) {
+          document.getElementById("banner").insertAdjacentHTML("beforeend",
+            `<div class="banner warn">🗑 이 PDF는 ${esc(report.delete_after)} 삭제 예정 — 하이라이트·요약은 Notion에 보존됩니다</div>`);
+        }
         // 텍스트 레이어가 비었으면 스캔본 배너
         if (totalTextLen < 5) {
-          document.getElementById("banner").innerHTML =
-            `<div class="banner">텍스트 레이어 없음 — 하이라이트 불가 (스캔본)</div>`;
+          document.getElementById("banner").insertAdjacentHTML("beforeend",
+            `<div class="banner">텍스트 레이어 없음 — 하이라이트 불가 (스캔본)</div>`);
         }
         if (GOTO_PAGE > 0) {
           const el = document.querySelector(`.page-wrap[data-page="${GOTO_PAGE}"]`);

@@ -64,6 +64,7 @@
       list.innerHTML = rows.map((r) => {
         const sector = r.sector ? `<span class="badge sector">${esc(r.sector)}</span>` : "";
         const scan = r.has_text_layer === false ? `<span class="badge scan">스캔본</span>` : "";
+        const pend = r.pending_deletion ? `<span class="badge del">🗑 삭제예정 ~${esc((r.delete_after || "").slice(5))}</span>` : "";
         const hl = (r.highlight_count || 0) > 0 ? `<span class="hl">✏️ ${r.highlight_count}</span>` : "";
         const dateStr = r.publish_date || (r.uploaded_at || "").slice(0, 10);
         return `
@@ -71,7 +72,7 @@
             <div class="title">${esc(r.title)}</div>
             <div class="meta">
               <span class="badge">${esc(r.broker || "미분류")}</span>
-              ${sector}${scan}
+              ${sector}${scan}${pend}
               <span>${esc(dateStr)}</span>
               <span>· ${r.size_mb ?? "?"}MB</span>
             </div>

@@ -139,6 +139,17 @@ a { color: inherit; text-decoration: none; }
 }
 .toast.show { opacity: 1; }
 
+/* ── 읽기 모드 (텍스트 리플로우) ── */
+.reading { max-width: 720px; margin: 0 auto; padding: 8px 18px 90px; }
+.rd-page { margin-bottom: 26px; border-bottom: 1px dashed var(--line); padding-bottom: 18px; }
+.rd-pageno { color: var(--sub); font-size: 12px; margin: 6px 0; letter-spacing: .05em; }
+.rd-h { font-size: 19px; font-weight: 700; margin: 20px 0 8px; line-height: 1.45; }
+.rd-para { font-size: 17px; line-height: 1.85; margin: 0 0 14px; word-break: break-word; }
+.rd-img-btn {
+  border: 1px solid var(--line); background: var(--card); color: var(--sub);
+  border-radius: 8px; padding: 7px 12px; font-size: 13px; cursor: pointer; margin-top: 6px;
+}
+
 /* 모아보기 */
 .hl-item {
   background: var(--card); border: 1px solid var(--line); border-left-width: 5px;

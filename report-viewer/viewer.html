@@ -12,10 +12,12 @@
     <a class="back" href="index.html">‹</a>
     <h1 id="docTitle">불러오는 중…</h1>
     <div class="spacer"></div>
+    <button class="btn" id="modeBtn" title="읽기/PDF 전환">📖 읽기</button>
     <a class="btn" id="hlLink">모아보기</a>
   </div>
   <div id="banner"></div>
   <div id="pdfContainer"><div class="loading">PDF 여는 중…</div></div>
+  <div id="readingContainer" class="reading" style="display:none"></div>
   <div class="toast" id="toast"></div>
 
   <script src="app.js"></script>
@@ -35,6 +37,14 @@
     let annoSha = null;
     const deletedHids = new Set();
     let totalTextLen = 0;
+    let pdfDoc = null;        // 읽기 모드 재사용
+    let readingBuilt = false;
+    let mode = "pdf";         // "pdf" | "reading"
+
+    function esc(s) {
+      return (s == null ? "" : String(s)).replace(/[&<>"]/g, (c) =>
+        ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+    }
 
     const COLORS = ["yellow", "green", "pink"];
 
@@ -80,7 +90,8 @@
     async function renderPdf(buf) {
       const container = document.getElementById("pdfContainer");
       container.innerHTML = "";
-      const pdf = await pdfjsLib.getDocument({ data: buf }).promise;
+      pdfDoc = await pdfjsLib.getDocument({ data: buf }).promise;
+      const pdf = pdfDoc;
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
       const cssWidth = Math.min(window.innerWidth - 16, 900);
 
@@ -330,6 +341,120 @@
         });
       } catch (e) { console.warn("count 갱신 생략", e); }
     }
+
+    /* ── 읽기 모드 (텍스트 리플로우) ── */
+    async function setMode(m) {
+      if (m === "reading" && !pdfDoc) { toast("PDF 로딩 중…"); return; }
+      mode = m;
+      const pdfC = document.getElementById("pdfContainer");
+      const rdC = document.getElementById("readingContainer");
+      const btn = document.getElementById("modeBtn");
+      if (m === "reading") {
+        if (!readingBuilt) {
+          rdC.innerHTML = `<div class="loading">읽기 화면 구성 중…</div>`;
+          rdC.style.display = "";
+          pdfC.style.display = "none";
+          await buildReadingView();
+          readingBuilt = true;
+        } else {
+          rdC.style.display = ""; pdfC.style.display = "none";
+        }
+        btn.textContent = "📄 PDF";
+      } else {
+        rdC.style.display = "none"; pdfC.style.display = "";
+        btn.textContent = "📖 읽기";
+      }
+      window.scrollTo(0, 0);
+    }
+
+    async function buildReadingView() {
+      const rdC = document.getElementById("readingContainer");
+      rdC.innerHTML = "";
+      for (let n = 1; n <= pdfDoc.numPages; n++) {
+        const page = await pdfDoc.getPage(n);
+        await buildPageReading(page, n, rdC);
+      }
+      // 원본 페이지 이미지 지연 렌더 버튼
+      rdC.querySelectorAll(".rd-img-btn").forEach((b) => {
+        b.onclick = () => renderPageImage(parseInt(b.dataset.page, 10), b);
+      });
+    }
+
+    async function buildPageReading(page, pageNo, container) {
+      const vp = page.getViewport({ scale: 1 });
+      const tc = await page.getTextContent();
+      const rows = [];
+      for (const it of tc.items) {
+        if (!it.str || !it.str.trim()) continue;
+        const tx = pdfjsLib.Util.transform(vp.transform, it.transform);
+        rows.push({ str: it.str, x: tx[4], y: tx[5], h: Math.hypot(tx[2], tx[3]) });
+      }
+      if (!rows.length) {
+        // 텍스트 없는 페이지(차트/이미지 전용) → 원본 이미지로
+        container.insertAdjacentHTML("beforeend",
+          `<div class="rd-page"><div class="rd-pageno">p.${pageNo}</div>` +
+          `<button class="rd-img-btn" data-page="${pageNo}">🖼 이 페이지 보기 (이미지)</button></div>`);
+        return;
+      }
+      // 줄 묶기 (y 근접)
+      rows.sort((a, b) => a.y - b.y || a.x - b.x);
+      const lines = [];
+      for (const r of rows) {
+        const last = lines[lines.length - 1];
+        if (last && Math.abs(last.y - r.y) < r.h * 0.6) {
+          last.items.push(r); last.h = Math.max(last.h, r.h);
+        } else {
+          lines.push({ y: r.y, h: r.h, items: [r] });
+        }
+      }
+      for (const ln of lines) {
+        ln.items.sort((a, b) => a.x - b.x);
+        ln.text = ln.items.map((i) => i.str).join("").replace(/\s+/g, " ").trim();
+      }
+      const hs = lines.map((l) => l.h).sort((a, b) => a - b);
+      const body = hs[Math.floor(hs.length / 2)] || 10;
+
+      let html = `<div class="rd-pageno">p.${pageNo}</div>`;
+      let para = [];
+      let prevY = null, prevH = body;
+      const flush = () => { if (para.length) { html += `<p class="rd-para">${esc(para.join(" "))}</p>`; para = []; } };
+      for (const ln of lines) {
+        if (!ln.text) continue;
+        const heading = ln.h > body * 1.35;
+        const gap = prevY == null ? 0 : ln.y - prevY;
+        if (heading) { flush(); html += `<h3 class="rd-h">${esc(ln.text)}</h3>`; }
+        else {
+          if (prevY != null && gap > prevH * 1.9) flush();
+          para.push(ln.text);
+        }
+        prevY = ln.y; prevH = ln.h;
+      }
+      flush();
+      html += `<button class="rd-img-btn" data-page="${pageNo}">🖼 원본 페이지 보기</button>`;
+      container.insertAdjacentHTML("beforeend", `<div class="rd-page">${html}</div>`);
+    }
+
+    async function renderPageImage(pageNo, btn) {
+      btn.disabled = true; btn.textContent = "불러오는 중…";
+      const page = await pdfDoc.getPage(pageNo);
+      const cssW = Math.min(window.innerWidth - 32, 860);
+      const scale = cssW / page.getViewport({ scale: 1 }).width;
+      const vp = page.getViewport({ scale });
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const canvas = document.createElement("canvas");
+      canvas.width = Math.floor(vp.width * dpr);
+      canvas.height = Math.floor(vp.height * dpr);
+      canvas.style.width = "100%";
+      canvas.style.border = "1px solid var(--line)";
+      canvas.style.borderRadius = "8px";
+      canvas.style.marginTop = "8px";
+      const ctx = canvas.getContext("2d");
+      ctx.scale(dpr, dpr);
+      await page.render({ canvasContext: ctx, viewport: vp }).promise;
+      btn.replaceWith(canvas);
+    }
+
+    document.getElementById("modeBtn").onclick = () => setMode(mode === "pdf" ? "reading" : "pdf");
 
     /* 이벤트 */
     document.addEventListener("mouseup", () => setTimeout(onSelectionEnd, 10));

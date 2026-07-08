@@ -464,28 +464,46 @@
       const inFig = (y) => figBands.some((b) => y >= b.top - 1 && y <= b.bottom + 1);
       const textLines = lines.filter((ln) => !inFig(ln.y + ln.h / 2));
 
-      const colX = detectColumnSplit(textLines, W);
+      // 우측 데이터 사이드바(기업코멘트: 좌=본문, 우=Buy/재무 박스) 감지
+      const sb = detectRightSidebar(raw, W, vp.height);
       let els = [];
-      if (colX == null) {
-        const arr = textLines.map((ln) => ({ y: ln.y, h: ln.h, text: ln.text }));
-        els = paraBlocks(arr).map((b) => ({ y: b.y, kind: b.heading ? "h" : "p", text: b.text }));
-      } else if (colX < W * 0.34) {
-        // 왼쪽 사이드바(소제목) + 오른쪽 본문
-        const left = [], right = [];
-        for (const ln of textLines) splitLine(ln, colX, left, right);
-        els = blockLines(left, 1.8).map((b) => ({ y: b.y - 3, kind: "label", text: b.text }))
-          .concat(paraBlocks(right).map((b) => ({ y: b.y, kind: b.heading ? "h" : "p", text: b.text })));
+      const cropList = figBands.slice();
+      if (sb) {
+        // 사이드밴드의 우측 아이템 제거 → 좌측 본문만 깨끗이 리플로우, 우측은 이미지로
+        const flowRaw = raw.filter((it) => {
+          const cy = it.y + it.h / 2;
+          if (inFig(cy)) return false;
+          if (cy >= sb.top && cy <= sb.bot && (it.x + it.xr) / 2 >= sb.x) return false;
+          return true;
+        });
+        const flowLines = groupLines(flowRaw);
+        for (const ln of flowLines) ln.text = joinItems(ln.items);
+        els = paraBlocks(flowLines.map((l) => ({ y: l.y, h: l.h, text: l.text })))
+          .map((b) => ({ y: b.y, kind: b.heading ? "h" : "p", text: b.text }));
+        cropList.push({ top: sb.top, bottom: sb.bot, left: sb.x, right: W });
       } else {
-        // 2단 본문: 왼쪽 컬럼 먼저(그대로), 오른쪽은 뒤로 (y에 큰 오프셋)
-        const left = [], right = [];
-        for (const ln of textLines) splitLine(ln, colX, left, right);
-        els = paraBlocks(left).map((b) => ({ y: b.y, kind: b.heading ? "h" : "p", text: b.text }))
-          .concat(paraBlocks(right).map((b) => ({ y: 1e9 + b.y, kind: b.heading ? "h" : "p", text: b.text })));
+        const colX = detectColumnSplit(textLines, W);
+        if (colX == null) {
+          const arr = textLines.map((ln) => ({ y: ln.y, h: ln.h, text: ln.text }));
+          els = paraBlocks(arr).map((b) => ({ y: b.y, kind: b.heading ? "h" : "p", text: b.text }));
+        } else if (colX < W * 0.34) {
+          // 왼쪽 사이드바(소제목) + 오른쪽 본문
+          const left = [], right = [];
+          for (const ln of textLines) splitLine(ln, colX, left, right);
+          els = blockLines(left, 1.8).map((b) => ({ y: b.y - 3, kind: "label", text: b.text }))
+            .concat(paraBlocks(right).map((b) => ({ y: b.y, kind: b.heading ? "h" : "p", text: b.text })));
+        } else {
+          // 2단 본문: 왼쪽 컬럼 먼저(그대로), 오른쪽은 뒤로 (y에 큰 오프셋)
+          const left = [], right = [];
+          for (const ln of textLines) splitLine(ln, colX, left, right);
+          els = paraBlocks(left).map((b) => ({ y: b.y, kind: b.heading ? "h" : "p", text: b.text }))
+            .concat(paraBlocks(right).map((b) => ({ y: 1e9 + b.y, kind: b.heading ? "h" : "p", text: b.text })));
+        }
       }
 
-      // 표/그림 이미지 크롭 삽입
-      if (figBands.length) {
-        const figs = await cropBands(page, figBands, W, vp.height);
+      // 표/그림 + 우측 사이드바 이미지 크롭 삽입
+      if (cropList.length) {
+        const figs = await cropBands(page, cropList, W, vp.height);
         for (const f of figs) els.push({ y: f.y, kind: "fig", url: f.url });
       }
 
@@ -536,6 +554,55 @@
       }
       if (crossing < 3) return null;
       return mid;
+    }
+
+    /* 아이템 묶음의 숫자 밀도 (0~1). 산문↔데이터 구분용 */
+    function numDensity(items) {
+      let digits = 0, chars = 0;
+      for (const it of items) {
+        const s = (it.str || "").replace(/\s/g, "");
+        chars += s.length;
+        digits += (s.match(/[0-9]/g) || []).length;
+      }
+      return chars ? digits / chars : 0;
+    }
+
+    /* 우측 데이터 사이드바 감지 (기업코멘트: 좌 본문 + 우 Buy/재무 박스).
+       아이템 단위로 우측(0.55~0.72W)에 '세로로 긴 빈 스트립(거터)'이 있고,
+       좌측=산문(<0.30) · 우측=데이터(>0.30)일 때만 {x, top, bot} 반환. 아니면 null. */
+    function detectRightSidebar(raw, W, H) {
+      const delta = 4;
+      let best = null;
+      for (let f = 0.55; f <= 0.72; f += 0.01) {
+        const x = W * f;
+        const ys = [];
+        for (const it of raw) if (it.x < x + delta && it.xr > x - delta) ys.push(it.y + it.h / 2);
+        ys.sort((a, b) => a - b);
+        let top = 0, bot = 0, prev = 0;   // 최장 빈 y구간
+        for (let k = 0; k <= ys.length; k++) {
+          const y = (k < ys.length) ? ys[k] : H;
+          if (y - prev > bot - top) { top = prev; bot = y; }
+          prev = y;
+        }
+        if (bot - top <= H * 0.3) continue;
+        let L = 0, R = 0;
+        for (const it of raw) {
+          const cy = it.y + it.h / 2;
+          if (cy < top || cy > bot) continue;
+          if (it.xr <= x) L++; else if (it.x >= x) R++;
+        }
+        if (L >= 15 && R >= 15 && (best == null || (bot - top) > (best.bot - best.top))) best = { x, top, bot };
+      }
+      if (!best) return null;
+      const left = [], right = [];
+      for (const it of raw) {
+        const cy = it.y + it.h / 2;
+        if (cy < best.top || cy > best.bot) continue;
+        if (it.xr <= best.x) left.push(it); else if (it.x >= best.x) right.push(it);
+      }
+      if (numDensity(left) >= 0.30) return null;    // 좌측도 표(재무제표 등) → 미적용
+      if (numDensity(right) <= 0.30) return null;    // 우측이 데이터 아님 → 미적용
+      return best;
     }
 
     /* 한 줄을 컬럼 경계로 좌/우로 분리 */
@@ -638,11 +705,13 @@
         const pad = 3;
         const sy = Math.max(0, Math.floor((b.top - pad) * scale * dpr));
         const ey = Math.min(full.height, Math.ceil((b.bottom + pad) * scale * dpr));
-        const sh = ey - sy;
-        if (sh < 8) continue;
+        const sx = Math.max(0, Math.floor(((b.left || 0) - pad) * scale * dpr));
+        const ex = Math.min(full.width, Math.ceil(((b.right != null ? b.right : W) + pad) * scale * dpr));
+        const sh = ey - sy, sw = ex - sx;
+        if (sh < 8 || sw < 8) continue;
         const crop = document.createElement("canvas");
-        crop.width = full.width; crop.height = sh;
-        crop.getContext("2d").drawImage(full, 0, sy, full.width, sh, 0, 0, full.width, sh);
+        crop.width = sw; crop.height = sh;
+        crop.getContext("2d").drawImage(full, sx, sy, sw, sh, 0, 0, sw, sh);
         out.push({ y: b.top, url: crop.toDataURL("image/jpeg", 0.82) });
       }
       return out;

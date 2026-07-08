@@ -432,7 +432,18 @@
       });
     }
 
-    const joinItems = (its) => its.map((i) => i.str).join("").replace(/\s+/g, " ").trim();
+    function joinItems(its) {
+      let out = "";
+      for (let i = 0; i < its.length; i++) {
+        if (i > 0) {
+          const gap = its[i].x - its[i - 1].xr;
+          const h = its[i].h || its[i - 1].h || 10;
+          if (gap > h * 0.25) out += " ";   // 시각적 간격이 크면 띄어쓰기 복원(공백 아이템 없는 PDF 대비)
+        }
+        out += its[i].str;
+      }
+      return out.replace(/\s+/g, " ").trim();
+    }
 
     async function buildPageReading(page, pageNo, container) {
       const vp = page.getViewport({ scale: 1 });
@@ -441,9 +452,10 @@
       const raw = [];
       const items = [];
       for (const it of tc.items) {
-        if (!it.str || !it.str.trim()) continue;
+        if (!it.str) continue;                 // 공백 아이템도 유지 → 단어 사이 띄어쓰기 보존
         const tx = pdfjsLib.Util.transform(vp.transform, it.transform);
         const fh = Math.hypot(tx[2], tx[3]);
+        if (fh === 0) continue;                // 높이 0 아이템 제외(줄묶기 안정)
         const w = it.width || 0;
         raw.push({ str: it.str, x: tx[4], xr: tx[4] + w, y: tx[5] - fh, h: fh });
         items.push({ str: it.str, x: tx[4] / W, y: (tx[5] - fh) / vp.height, w: w / W, h: fh / vp.height });
@@ -489,11 +501,10 @@
           const arr = textLines.map((ln) => ({ y: ln.y, h: ln.h, text: ln.text }));
           els = paraBlocks(arr).map((b) => ({ y: b.y, kind: b.heading ? "h" : "p", text: b.text }));
         } else if (colX < W * 0.34) {
-          // 왼쪽 사이드바(소제목) + 오른쪽 본문
+          // 왼쪽 요약 사이드바 + 오른쪽 본문 → 본문 우선: 오른쪽 본문만 살림(요약 라벨은 애매해서 생략)
           const left = [], right = [];
           for (const ln of textLines) splitLine(ln, colX, left, right);
-          els = blockLines(left, 1.8).map((b) => ({ y: b.y - 3, kind: "label", text: b.text }))
-            .concat(paraBlocks(right).map((b) => ({ y: b.y, kind: b.heading ? "h" : "p", text: b.text })));
+          els = paraBlocks(right).map((b) => ({ y: b.y, kind: b.heading ? "h" : "p", text: b.text }));
         } else {
           // 2단 본문: 왼쪽 컬럼 먼저(그대로), 오른쪽은 뒤로 (y에 큰 오프셋)
           const left = [], right = [];

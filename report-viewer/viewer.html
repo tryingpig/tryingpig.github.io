@@ -572,9 +572,12 @@
     /* 캡션(표N/그림N)부터 자료: 줄까지를 표/그림 영역으로 인식 */
     function detectCaptionFigures(lines, H) {
       const capRe = /^\s*[<\[【(]?\s*(그림|표|차트|도표|Figure|Fig|Table|Chart|Exhibit)\s*[-.]?\s*\d+(?!\s*(?:개|명|원|년|월|일|위|배|가지|%))/i;
+      const unitRe = /\(\s*단위\s*[:：]/;  // "(단위: 원, %, 배 …)" → 대개 표 제목
       const srcRe = /^\s*(자료|출처|주|참고|Source|Note)\s*[:：]/;
       const caps = [];
-      for (let i = 0; i < lines.length; i++) if (capRe.test(lines[i].text)) caps.push(i);
+      for (let i = 0; i < lines.length; i++) {
+        if (capRe.test(lines[i].text) || unitRe.test(lines[i].text)) caps.push(i);
+      }
       const bands = [];
       for (let k = 0; k < caps.length; k++) {
         const ci = caps[k];

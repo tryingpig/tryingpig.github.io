@@ -11,10 +11,16 @@
     <a class="back" href="index.html">‹</a>
     <h1 id="title">모아보기</h1>
     <div class="spacer"></div>
+    <button id="selBtn">선택</button>
     <button id="copyBtn">전체 복사</button>
   </div>
   <div class="wrap">
     <div id="list"><div class="loading">불러오는 중…</div></div>
+  </div>
+  <div class="selbar" id="selbar">
+    <span id="selCount">0개 선택</span>
+    <div class="spacer"></div>
+    <button id="selDel" class="danger" disabled>삭제</button>
   </div>
   <div class="toast" id="toast"></div>
 
@@ -22,7 +28,8 @@
   <script>
     const params = new URLSearchParams(location.search);
     const REPORT_ID = params.get("id");
-    let HLS = [], TITLE = REPORT_ID;
+    let HLS = [], TITLE = REPORT_ID, ANNO_SHA = null;
+    const DELETED = new Set();
 
     function esc(s) {
       return (s == null ? "" : String(s)).replace(/[&<>"]/g, (c) =>
@@ -34,6 +41,9 @@
       setTimeout(() => t.classList.remove("show"), 1600);
     }
 
+    let selectMode = false;
+    const SELECTED = new Set();
+
     function render() {
       const list = document.getElementById("list");
       if (!HLS.length) {
@@ -42,16 +52,60 @@
       }
       const sorted = HLS.slice().sort((a, b) => a.page - b.page);
       list.innerHTML = sorted.map((h) => `
-        <div class="hl-item ${esc(h.color || "yellow")}" data-page="${h.page}">
-          <div class="pg">p.${h.page}</div>
+        <div class="hl-item ${esc(h.color || "yellow")}${selectMode ? " selectable" : ""}${SELECTED.has(h.hid) ? " sel" : ""}" data-hid="${esc(h.hid)}" data-page="${h.page}">
+          ${selectMode ? `<span class="hl-check"></span>` : ""}
+          <div class="pg">p.${h.page}${(h.rects && h.rects.length) ? "" : " · 위치없음"}</div>
           <div>${esc(h.text)}</div>
         </div>`).join("");
       list.querySelectorAll(".hl-item").forEach((it) => {
         it.onclick = () => {
-          location.href = `viewer.html?id=${encodeURIComponent(REPORT_ID)}&page=${it.dataset.page}`;
+          const hid = it.dataset.hid;
+          if (selectMode) {
+            if (SELECTED.has(hid)) { SELECTED.delete(hid); it.classList.remove("sel"); }
+            else { SELECTED.add(hid); it.classList.add("sel"); }
+            updateSelUI();
+          } else {
+            location.href = `viewer.html?id=${encodeURIComponent(REPORT_ID)}&page=${it.dataset.page}`;
+          }
         };
       });
     }
+
+    function updateSelUI() {
+      const n = SELECTED.size;
+      document.getElementById("selCount").textContent = n + "개 선택";
+      document.getElementById("selDel").disabled = n === 0;
+      document.getElementById("selbar").classList.toggle("show", selectMode);
+      document.getElementById("selBtn").textContent = selectMode ? "취소" : "선택";
+    }
+
+    function toggleSelectMode() {
+      selectMode = !selectMode;
+      if (!selectMode) SELECTED.clear();
+      render();
+      updateSelUI();
+    }
+
+    async function saveList() {
+      try {
+        const res = await saveAnnotations(REPORT_ID, HLS, DELETED, ANNO_SHA);
+        ANNO_SHA = res.sha;
+        HLS = res.highlights;
+        render();
+        toast("삭제됨");
+      } catch (err) { handleError(err, () => {}); }
+    }
+
+    document.getElementById("selBtn").onclick = toggleSelectMode;
+    document.getElementById("selDel").onclick = async () => {
+      if (!SELECTED.size) return;
+      for (const hid of SELECTED) DELETED.add(hid);
+      HLS = HLS.filter((h) => !SELECTED.has(h.hid));
+      SELECTED.clear();
+      render();
+      updateSelUI();
+      await saveList();
+    };
 
     async function load() {
       try {
@@ -61,6 +115,7 @@
         const r = (reportsDoc.reports || []).find((x) => x.id === REPORT_ID);
         TITLE = r ? r.title : REPORT_ID;
         document.getElementById("title").textContent = TITLE;
+        ANNO_SHA = anno.sha;
         HLS = anno.data.highlights || [];
         render();
       } catch (err) {

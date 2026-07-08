@@ -244,18 +244,21 @@
         norm = mergeLineRects(norm);
         showColorPopup(last.left, last.bottom, (color) => createHighlight(pageNo, text, norm, color));
       } else if (rdPage) {
-        // 읽기 모드: 텍스트 → PDF 좌표 역산
+        // 읽기 모드: 블록 단위로 쪼개 각 블록의 PDF 좌표를 역산 (걸쳐선택 대응)
         const pageNo = parseInt(rdPage.dataset.page, 10);
+        const built = buildReadingHighlight(pageNo, range);
+        if (!built) { removePopup(); toast("PDF에서 위치를 못 찾았어요"); return; }
         showColorPopup(last.left, last.bottom, (color) =>
-          createHighlight(pageNo, text, computeRectsFromText(pageNo, text), color));
+          createHighlight(pageNo, built.text, built.rects, color, built.segs));
       } else {
         removePopup();
       }
     }
 
-    /* 두 모드 공통 하이라이트 생성 */
-    function createHighlight(pageNo, text, rects, color) {
+    /* 두 모드 공통 하이라이트 생성. segs: 읽기 모드 다중 블록 조각(선택) */
+    function createHighlight(pageNo, text, rects, color, segs) {
       const hl = { hid: "h_" + Date.now(), page: pageNo, text, rects: rects || [], color, created_at: nowKst() };
+      if (segs && segs.length) hl.segs = segs;
       highlights.push(hl);
       if (mode === "reading") { renderReadingHighlights(); } else { rerenderAllHighlights(); }
       const sel = window.getSelection();
@@ -701,14 +704,24 @@
       for (const hl of highlights) wrapReading(hl);
     }
 
-    /* 읽기 화면의 해당 페이지 문단에서 hl.text를 찾아 <mark>로 감싼다 */
+    /* 읽기 화면의 해당 페이지에서 hl을 <mark>로 감싼다.
+       hl.segs(블록별 조각)가 있으면 조각마다, 없으면 hl.text 통째로 매칭 */
     function wrapReading(hl) {
       const rdC = document.getElementById("readingContainer");
       const page = rdC.querySelector(`.rd-page[data-page="${hl.page}"]`);
       if (!page) return false;
-      const t = NS(hl.text);
-      if (!t) return false;
-      for (const b of page.querySelectorAll(".rd-para, .rd-h")) {
+      const targets = (hl.segs && hl.segs.length) ? hl.segs : [hl.text];
+      let any = false;
+      for (const seg of targets) {
+        const t = NS(seg);
+        if (t && wrapSegInPage(page, t, hl)) any = true;
+      }
+      return any;
+    }
+
+    /* 페이지 내 한 블록에서 텍스트 t를 찾아 mark로 감싼다 */
+    function wrapSegInPage(page, t, hl) {
+      for (const b of page.querySelectorAll(".rd-para, .rd-h, .rd-label")) {
         const node = b.firstChild;
         if (!node || node.nodeType !== 3) continue;
         const idx = node.textContent.indexOf(t);
@@ -749,6 +762,34 @@
       const from = map[pos], to = map[pos + target.length - 1];
       let rects = items.slice(from, to + 1).map((it) => ({ x: it.x, y: it.y, w: it.w, h: it.h }));
       return mergeLineRects(rects);
+    }
+
+    /* 읽기 모드 선택(range)을 블록 단위로 쪼개 각 블록의 PDF 좌표를 역산.
+       좌표를 못 찾은 블록은 text·rects 양쪽에서 제외해 유령 항목을 방지.
+       반환: { text, rects, segs } | null (하나도 못 찾음) */
+    function buildReadingHighlight(pageNo, range) {
+      const rdC = document.getElementById("readingContainer");
+      const page = rdC.querySelector(`.rd-page[data-page="${pageNo}"]`);
+      if (!page) return null;
+      const segs = [];
+      let allRects = [];
+      for (const b of page.querySelectorAll(".rd-para, .rd-h, .rd-label")) {
+        const node = b.firstChild;
+        if (!node || node.nodeType !== 3) continue;
+        if (!range.intersectsNode(node)) continue;
+        const full = node.textContent;
+        let s = 0, e = full.length;
+        if (node === range.startContainer) s = range.startOffset;
+        if (node === range.endContainer) e = range.endOffset;
+        const sub = full.slice(s, e).trim();
+        if (!sub) continue;
+        const rects = computeRectsFromText(pageNo, sub);
+        if (!rects.length) continue;          // 좌표 못 찾은 조각은 버림 (text↔rects 일치 보장)
+        allRects = allRects.concat(rects);
+        segs.push(sub);
+      }
+      if (!segs.length) return null;
+      return { text: segs.join(" "), rects: mergeLineRects(allRects), segs };
     }
 
     document.getElementById("modeBtn").onclick = () => setMode(mode === "pdf" ? "reading" : "pdf");

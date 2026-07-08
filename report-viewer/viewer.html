@@ -467,9 +467,11 @@
       // 우측 데이터 사이드바(기업코멘트: 좌=본문, 우=Buy/재무 박스) 감지
       const sb = detectRightSidebar(raw, W, vp.height);
       let els = [];
-      const cropList = figBands.slice();
+      // 캡션 명확한(그림N/표N…) 밴드만 원본 크롭 유지, 애매한 건 '원본 참고' 노트
+      const cropList = figBands.filter((b) => b.captioned);
+      const noteYs = figBands.filter((b) => !b.captioned).map((b) => b.top);
       if (sb) {
-        // 사이드밴드의 우측 아이템 제거 → 좌측 본문만 깨끗이 리플로우, 우측은 이미지로
+        // 사이드밴드의 우측 아이템 제거 → 좌측 본문만 깨끗이 리플로우
         const flowRaw = raw.filter((it) => {
           const cy = it.y + it.h / 2;
           if (inFig(cy)) return false;
@@ -480,7 +482,7 @@
         for (const ln of flowLines) ln.text = joinItems(ln.items);
         els = paraBlocks(flowLines.map((l) => ({ y: l.y, h: l.h, text: l.text })))
           .map((b) => ({ y: b.y, kind: b.heading ? "h" : "p", text: b.text }));
-        cropList.push({ top: sb.top, bottom: sb.bot, left: sb.x, right: W });
+        noteYs.push(sb.top);   // 우측 Buy/재무 박스는 크롭하지 않고 노트로 안내
       } else {
         const colX = detectColumnSplit(textLines, W);
         if (colX == null) {
@@ -501,16 +503,19 @@
         }
       }
 
-      // 표/그림 + 우측 사이드바 이미지 크롭 삽입
+      // 캡션 명확한 표/그림만 원본에서 잘라 삽입
       if (cropList.length) {
         const figs = await cropBands(page, cropList, W, vp.height);
         for (const f of figs) els.push({ y: f.y, kind: "fig", url: f.url });
       }
+      // 애매한 표/그림·우측 박스 자리엔 '원본 참고' 노트 (탭하면 원본 페이지 렌더)
+      for (const y of noteYs) els.push({ y, kind: "note" });
 
       els.sort((a, b) => a.y - b.y);
       let html = `<div class="rd-pageno">p.${pageNo}</div>`;
       for (const b of els) {
         if (b.kind === "fig") html += `<img class="rd-fig" src="${b.url}" alt="표/그림">`;
+        else if (b.kind === "note") html += `<button class="rd-img-btn rd-note" data-page="${pageNo}">📊 표·그림은 원본 페이지에서 확인 — 눌러서 보기</button>`;
         else if (b.kind === "label") html += `<h4 class="rd-label">${esc(b.text)}</h4>`;
         else if (b.kind === "h") html += `<h3 class="rd-h">${esc(b.text)}</h3>`;
         else html += `<p class="rd-para">${esc(b.text)}</p>`;
@@ -658,14 +663,17 @@
       const capRe = /^\s*[<\[【(]?\s*(그림|표|차트|도표|Figure|Fig|Table|Chart|Exhibit)\s*[-.]?\s*\d+(?!\s*(?:개|명|원|년|월|일|위|배|가지|%))/i;
       const unitRe = /\(\s*단위\s*[:：]/;  // "(단위: 원, %, 배 …)" → 대개 표 제목
       const srcRe = /^\s*(자료|출처|주|참고|Source|Note)\s*[:：]/;
+      // cap=true: 「그림N/표N/차트N…」 명확한 캡션 → 원본 크롭 유지
+      // cap=false: 「(단위:…)」만 있는 애매한 밴드 → 본문에서만 제외하고 '원본 참고' 노트로
       const caps = [];
       for (let i = 0; i < lines.length; i++) {
-        if (capRe.test(lines[i].text) || unitRe.test(lines[i].text)) caps.push(i);
+        const isCap = capRe.test(lines[i].text);
+        if (isCap || unitRe.test(lines[i].text)) caps.push({ i, cap: isCap });
       }
       const bands = [];
       for (let k = 0; k < caps.length; k++) {
-        const ci = caps[k];
-        const nextCap = (k + 1 < caps.length) ? caps[k + 1] : lines.length;
+        const ci = caps[k].i;
+        const nextCap = (k + 1 < caps.length) ? caps[k + 1].i : lines.length;
         const top = lines[ci].y;
         let bottom = null;
         for (let j = ci + 1; j < nextCap; j++) {
@@ -675,14 +683,16 @@
           const lastJ = nextCap - 1;
           bottom = (lastJ > ci) ? (lines[lastJ].y + lines[lastJ].h) : (top + H * 0.08);
         }
-        if (bottom - top > H * 0.03) bands.push({ top, bottom });
+        if (bottom - top > H * 0.03) bands.push({ top, bottom, captioned: caps[k].cap });
       }
       bands.sort((a, b) => a.top - b.top);
       const merged = [];
       for (const b of bands) {
         const last = merged[merged.length - 1];
-        if (last && b.top <= last.bottom + 2) last.bottom = Math.max(last.bottom, b.bottom);
-        else merged.push({ ...b });
+        if (last && b.top <= last.bottom + 2) {
+          last.bottom = Math.max(last.bottom, b.bottom);
+          last.captioned = last.captioned || b.captioned;   // 하나라도 캡션 있으면 크롭 유지
+        } else merged.push({ ...b });
       }
       return merged;
     }

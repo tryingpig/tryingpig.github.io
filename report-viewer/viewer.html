@@ -519,20 +519,20 @@
         const figs = await cropBands(page, cropList, W, vp.height);
         for (const f of figs) els.push({ y: f.y, kind: "fig", url: f.url });
       }
-      // 애매한 표/그림·우측 박스 자리엔 '원본 참고' 노트 (탭하면 원본 페이지 렌더)
-      for (const y of noteYs) els.push({ y, kind: "note" });
+      // 애매한 표/그림·우측 박스는 인라인 노트 대신 하단 버튼 라벨로만 안내
+      const hasFig = cropList.length > 0 || noteYs.length > 0;
 
       els.sort((a, b) => a.y - b.y);
       let html = `<div class="rd-pageno">p.${pageNo}</div>`;
       for (const b of els) {
         if (b.kind === "fig") html += `<img class="rd-fig" src="${b.url}" alt="표/그림">`;
-        else if (b.kind === "note") html += `<button class="rd-img-btn rd-note" data-page="${pageNo}">📊 표·그림은 원본 페이지에서 확인 — 눌러서 보기</button>`;
         else if (b.kind === "label") html += `<h4 class="rd-label">${esc(b.text)}</h4>`;
         else if (b.kind === "h") html += `<h3 class="rd-h">${esc(b.text)}</h3>`;
         else html += `<p class="rd-para">${esc(b.text)}</p>`;
       }
 
-      html += `<button class="rd-img-btn" data-page="${pageNo}">🖼 원본 페이지 보기</button>`;
+      const figTag = hasFig ? " · 표·그림 있음" : "";
+      html += `<button class="rd-img-btn" data-page="${pageNo}">🖼 원본 페이지 보기${figTag}</button>`;
       container.insertAdjacentHTML("beforeend", `<div class="rd-page" data-page="${pageNo}">${html}</div>`);
     }
 
@@ -765,7 +765,17 @@
       } catch (e) { /* 용량초과 등 무시 */ }
     }
 
+    /* 원본 페이지 이미지 열기/닫기 토글 (버튼 유지, 캔버스는 버튼 바로 아래) */
     async function renderPageImage(pageNo, btn) {
+      // 이미 렌더된 적 있으면 표시/숨김만 토글
+      if (btn._canvas) {
+        const open = btn._canvas.style.display === "none";
+        btn._canvas.style.display = open ? "" : "none";
+        btn.textContent = open ? "🖼 원본 페이지 닫기" : btn._label;
+        return;
+      }
+      // 최초: 렌더 후 버튼 아래 삽입
+      btn._label = btn.textContent;
       btn.disabled = true; btn.textContent = "불러오는 중…";
       const page = await pdfDoc.getPage(pageNo);
       const cssW = Math.min(window.innerWidth - 32, 860);
@@ -782,7 +792,10 @@
       const ctx = canvas.getContext("2d");
       ctx.scale(dpr, dpr);
       await page.render({ canvasContext: ctx, viewport: vp }).promise;
-      btn.replaceWith(canvas);
+      btn.insertAdjacentElement("afterend", canvas);
+      btn._canvas = canvas;
+      btn.disabled = false;
+      btn.textContent = "🖼 원본 페이지 닫기";
     }
 
     /* ── 읽기 모드 하이라이트 (텍스트 기준) ── */

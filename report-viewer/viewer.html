@@ -692,10 +692,13 @@
     const NW = (s) => (s || "").replace(/\s+/g, "");        // 공백 제거 정규화
     const NS = (s) => (s || "").replace(/\s+/g, " ").trim(); // 공백 단일화
 
+    const RD_SEL = ".rd-para, .rd-h, .rd-label";
+    const escRe = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
     function clearReadingMarks() {
       const rdC = document.getElementById("readingContainer");
       rdC.querySelectorAll("mark.rd-hl").forEach((m) => m.replaceWith(document.createTextNode(m.textContent)));
-      rdC.querySelectorAll(".rd-para, .rd-h").forEach((b) => b.normalize());
+      rdC.querySelectorAll(RD_SEL).forEach((b) => b.normalize());
     }
 
     function renderReadingHighlights() {
@@ -704,45 +707,81 @@
       for (const hl of highlights) wrapReading(hl);
     }
 
-    /* 읽기 화면의 해당 페이지에서 hl을 <mark>로 감싼다.
-       hl.segs(블록별 조각)가 있으면 조각마다, 없으면 hl.text 통째로 매칭 */
+    /* 텍스트 노드의 [idx, idx+len)을 mark로 감싼다 */
+    function wrapRange(node, idx, len, hl) {
+      const r = document.createRange();
+      r.setStart(node, idx);
+      r.setEnd(node, idx + len);
+      const mark = document.createElement("mark");
+      mark.className = "rd-hl " + (hl.color || "yellow");
+      mark.dataset.hid = hl.hid;
+      try {
+        r.surroundContents(mark);
+        mark.addEventListener("click", (e) => { e.stopPropagation(); showDeletePopup(hl, e.clientX, e.clientY); });
+        return true;
+      } catch (e) { return false; }   // 경계가 여러 노드에 걸치면 스킵
+    }
+
+    /* 읽기 화면에서 hl을 <mark>로 감싼다. segs가 있으면 조각별, 없으면 text 전체.
+       (1) 한 블록에서 공백 무시 통짜 매칭 → (2) 실패 시 단어 런 단위 분할 매칭
+       (리플로우로 PDF 하이라이트 텍스트가 여러 블록에 쪼개진 경우 대응) */
     function wrapReading(hl) {
-      const rdC = document.getElementById("readingContainer");
-      const page = rdC.querySelector(`.rd-page[data-page="${hl.page}"]`);
+      const page = document.querySelector(`#readingContainer .rd-page[data-page="${hl.page}"]`);
       if (!page) return false;
       const targets = (hl.segs && hl.segs.length) ? hl.segs : [hl.text];
       let any = false;
       for (const seg of targets) {
         const t = NS(seg);
-        if (t && wrapSegInPage(page, t, hl)) any = true;
+        if (!t) continue;
+        if (wrapWhole(page, t, hl) || wrapByRuns(page, t, hl)) any = true;
       }
       return any;
     }
 
-    /* 페이지 내 한 블록에서 텍스트 t를 찾아 mark로 감싼다 */
-    function wrapSegInPage(page, t, hl) {
-      for (const b of page.querySelectorAll(".rd-para, .rd-h, .rd-label")) {
+    /* 한 블록 안에서 공백 차이를 무시하고(단어 사이 \s*) 통짜로 찾아 감싼다 */
+    function wrapWhole(page, t, hl) {
+      let re;
+      try { re = new RegExp(t.split(/\s+/).map(escRe).join("\\s*")); }
+      catch (e) { return false; }
+      for (const b of page.querySelectorAll(RD_SEL)) {
         const node = b.firstChild;
         if (!node || node.nodeType !== 3) continue;
-        const idx = node.textContent.indexOf(t);
-        if (idx >= 0) {
-          const r = document.createRange();
-          r.setStart(node, idx);
-          r.setEnd(node, idx + t.length);
-          const mark = document.createElement("mark");
-          mark.className = "rd-hl " + (hl.color || "yellow");
-          mark.dataset.hid = hl.hid;
-          try {
-            r.surroundContents(mark);
-            mark.addEventListener("click", (e) => {
-              e.stopPropagation();
-              showDeletePopup(hl, e.clientX, e.clientY);
-            });
-            return true;
-          } catch (e) { /* 경계가 여러 노드에 걸치면 스킵 */ }
-        }
+        const m = re.exec(node.textContent);
+        if (m && m[0] && wrapRange(node, m.index, m[0].length, hl)) return true;
       }
       return false;
+    }
+
+    /* 리플로우로 텍스트가 여러 블록에 쪼개진 경우: 단어 런 단위로 최대한 감싼다 */
+    function wrapByRuns(page, t, hl) {
+      const words = t.split(/\s+/).filter(Boolean);
+      const blocks = [...page.querySelectorAll(RD_SEL)];
+      let wi = 0, any = false, guard = 0;
+      while (wi < words.length && guard++ < 2000) {
+        let best = null;   // 가장 긴 런: {node, idx, len, end}
+        for (const b of blocks) {
+          const node = b.firstChild;
+          if (!node || node.nodeType !== 3) continue;
+          const txt = node.textContent;
+          let end = -1, mIdx = -1, mLen = 0;
+          for (let j = wi; j < words.length; j++) {
+            let re;
+            try { re = new RegExp(words.slice(wi, j + 1).map(escRe).join("\\s*")); } catch (e) { break; }
+            const m = re.exec(txt);
+            if (m && m[0]) { end = j; mIdx = m.index; mLen = m[0].length; }
+            else break;
+          }
+          if (end >= wi && (!best || end > best.end)) best = { node, idx: mIdx, len: mLen, end };
+        }
+        // 2단어 이상 런, 또는 4자 이상 단어만 감싼다(짧은 흔한 단어 오매칭 방지)
+        if (best && (best.end > wi || words[wi].length >= 4)) {
+          if (wrapRange(best.node, best.idx, best.len, hl)) any = true;
+          wi = best.end + 1;
+        } else {
+          wi++;
+        }
+      }
+      return any;
     }
 
     /* 읽기 모드에서 고른 텍스트를 PDF 정규화 좌표로 역산 */

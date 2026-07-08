@@ -427,29 +427,42 @@
 
       const lines = groupLines(raw);
       const colX = detectColumnSplit(lines, W);
-      let html = `<div class="rd-pageno">p.${pageNo}</div>`;
 
+      let els = [], twoCol = false;
       if (colX == null) {
-        // 단일 컬럼
         const arr = lines.map((ln) => ({ y: ln.y, h: ln.h, text: joinItems(ln.items) }));
-        html += renderBlocks(paraBlocks(arr));
+        els = paraBlocks(arr).map((b) => ({ y: b.y, kind: b.heading ? "h" : "p", text: b.text }));
       } else if (colX < W * 0.34) {
-        // 왼쪽 사이드바(소제목) + 오른쪽 본문 → y순으로 라벨/본문 정렬
+        // 왼쪽 사이드바(소제목) + 오른쪽 본문
         const left = [], right = [];
         for (const ln of lines) splitLine(ln, colX, left, right);
-        const labels = blockLines(left, 1.8).map((b) => ({ y: b.y - 3, kind: "label", text: b.text }));
-        const body = paraBlocks(right).map((b) => ({ y: b.y, kind: b.heading ? "h" : "p", text: b.text }));
-        const all = labels.concat(body).sort((a, b) => a.y - b.y);
-        for (const b of all) {
-          if (b.kind === "label") html += `<h4 class="rd-label">${esc(b.text)}</h4>`;
-          else if (b.kind === "h") html += `<h3 class="rd-h">${esc(b.text)}</h3>`;
-          else html += `<p class="rd-para">${esc(b.text)}</p>`;
-        }
+        els = blockLines(left, 1.8).map((b) => ({ y: b.y - 3, kind: "label", text: b.text }))
+          .concat(paraBlocks(right).map((b) => ({ y: b.y, kind: b.heading ? "h" : "p", text: b.text })));
       } else {
-        // 2단 본문: 왼쪽 컬럼 먼저, 오른쪽 컬럼 나중
+        // 2단 본문: 왼쪽 컬럼 먼저(그대로), 오른쪽은 뒤로 (y에 큰 오프셋)
+        twoCol = true;
         const left = [], right = [];
         for (const ln of lines) splitLine(ln, colX, left, right);
-        html += renderBlocks(paraBlocks(left)) + renderBlocks(paraBlocks(right));
+        els = paraBlocks(left).map((b) => ({ y: b.y, kind: b.heading ? "h" : "p", text: b.text }))
+          .concat(paraBlocks(right).map((b) => ({ y: 1e9 + b.y, kind: b.heading ? "h" : "p", text: b.text })));
+      }
+
+      // 표/그림: 글자 사이 빈 밴드에 잉크가 있으면 그 영역만 잘라 이미지로 삽입
+      if (!twoCol) {
+        const bands = findFigureBands(lines, vp.height);
+        if (bands.length) {
+          const figs = await renderFigures(page, bands, W, vp.height);
+          for (const f of figs) els.push({ y: f.y, kind: "fig", url: f.url });
+        }
+      }
+
+      els.sort((a, b) => a.y - b.y);
+      let html = `<div class="rd-pageno">p.${pageNo}</div>`;
+      for (const b of els) {
+        if (b.kind === "fig") html += `<img class="rd-fig" src="${b.url}" alt="표/그림">`;
+        else if (b.kind === "label") html += `<h4 class="rd-label">${esc(b.text)}</h4>`;
+        else if (b.kind === "h") html += `<h3 class="rd-h">${esc(b.text)}</h3>`;
+        else html += `<p class="rd-para">${esc(b.text)}</p>`;
       }
 
       html += `<button class="rd-img-btn" data-page="${pageNo}">🖼 원본 페이지 보기</button>`;
@@ -538,6 +551,65 @@
       let html = "";
       for (const b of blocks) html += b.heading ? `<h3 class="rd-h">${esc(b.text)}</h3>` : `<p class="rd-para">${esc(b.text)}</p>`;
       return html;
+    }
+
+    /* 텍스트가 덮지 않는 세로 빈 밴드(그림/표 후보) 찾기 */
+    function findFigureBands(lines, H) {
+      if (!lines.length) return [];
+      const iv = lines.map((l) => [l.y, l.y + l.h]).sort((a, b) => a[0] - b[0]);
+      const merged = [];
+      for (const seg of iv) {
+        const last = merged[merged.length - 1];
+        if (last && seg[0] <= last[1] + H * 0.006) last[1] = Math.max(last[1], seg[1]);
+        else merged.push([seg[0], seg[1]]);
+      }
+      const bands = [];
+      for (let i = 0; i < merged.length - 1; i++) {
+        const top = merged[i][1], bot = merged[i + 1][0];
+        if (bot - top > H * 0.05) bands.push([top, bot]);   // 페이지 높이 5% 이상 빈 밴드만
+      }
+      return bands;
+    }
+
+    /* 후보 밴드 중 실제로 잉크(그림/표)가 있는 것만 잘라서 dataURL 반환 */
+    async function renderFigures(page, bands, W, H) {
+      const cssW = Math.min(window.innerWidth - 40, 820);
+      const scale = cssW / W;
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const vp = page.getViewport({ scale });
+      const full = document.createElement("canvas");
+      full.width = Math.floor(vp.width * dpr);
+      full.height = Math.floor(vp.height * dpr);
+      const ctx = full.getContext("2d");
+      ctx.scale(dpr, dpr);
+      await page.render({ canvasContext: ctx, viewport: vp }).promise;
+
+      const out = [];
+      for (const [y0, y1] of bands) {
+        const pad = 4;
+        const sy = Math.max(0, Math.floor((y0 - pad) * scale * dpr));
+        const ey = Math.min(full.height, Math.ceil((y1 + pad) * scale * dpr));
+        const sh = ey - sy;
+        if (sh < 8 || !hasInk(ctx, sy, full.width, sh)) continue;
+        const crop = document.createElement("canvas");
+        crop.width = full.width; crop.height = sh;
+        crop.getContext("2d").drawImage(full, 0, sy, full.width, sh, 0, 0, full.width, sh);
+        out.push({ y: y0, url: crop.toDataURL("image/jpeg", 0.82) });
+      }
+      return out;
+    }
+
+    /* 밴드 영역에 흰색이 아닌 픽셀 비율로 잉크 유무 판정 */
+    function hasInk(ctx, sy, w, sh) {
+      try {
+        const data = ctx.getImageData(0, sy, w, sh).data;
+        let nonwhite = 0, sampled = 0;
+        for (let i = 0; i < data.length; i += 4 * 6) {   // 6픽셀마다 샘플
+          sampled++;
+          if (data[i] < 245 || data[i + 1] < 245 || data[i + 2] < 245) nonwhite++;
+        }
+        return sampled > 0 && nonwhite / sampled > 0.004;
+      } catch (e) { return true; }
     }
 
     async function renderPageImage(pageNo, btn) {

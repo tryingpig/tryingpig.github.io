@@ -38,9 +38,11 @@
     const deletedHids = new Set();
     let totalTextLen = 0;
     let pdfDoc = null;        // 읽기 모드 재사용
+    let pdfRendered = false;  // PDF 캔버스 렌더 여부 (지연 렌더)
     let readingBuilt = false;
     let mode = "pdf";         // "pdf" | "reading"
     const pageItems = {};     // pageNo -> [{str,x,y,w,h}] 정규화 좌표 (텍스트↔좌표 역산용)
+    const START_MODE = (params.get("mode") === "read") ? "reading" : "pdf";
 
     function esc(s) {
       return (s == null ? "" : String(s)).replace(/[&<>"]/g, (c) =>
@@ -71,32 +73,43 @@
         annoSha = anno.sha;
 
         const buf = await loadPdf(report.pdf_path);
-        await renderPdf(buf);
+        pdfDoc = await pdfjsLib.getDocument({ data: buf }).promise;
 
         // 삭제 예정 배너
         if (report.pending_deletion) {
           document.getElementById("banner").insertAdjacentHTML("beforeend",
             `<div class="banner warn">🗑 이 PDF는 ${esc(report.delete_after)} 삭제 예정 — 하이라이트·요약은 Notion에 보존됩니다</div>`);
         }
-        // 텍스트 레이어가 비었으면 스캔본 배너
-        if (totalTextLen < 5) {
-          document.getElementById("banner").insertAdjacentHTML("beforeend",
-            `<div class="banner">텍스트 레이어 없음 — 하이라이트 불가 (스캔본)</div>`);
-        }
-        if (GOTO_PAGE > 0) {
-          const el = document.querySelector(`.page-wrap[data-page="${GOTO_PAGE}"]`);
-          if (el) el.scrollIntoView();
+
+        if (START_MODE === "reading") {
+          await setMode("reading");   // 목록에서 '읽기'로 바로 진입 → PDF 캔버스는 지연
+        } else {
+          await ensurePdfRendered();
+          if (GOTO_PAGE > 0) {
+            const el = document.querySelector(`.page-wrap[data-page="${GOTO_PAGE}"]`);
+            if (el) el.scrollIntoView();
+          }
         }
       } catch (err) {
         handleError(err, start);
       }
     }
 
+    /* PDF 캔버스는 실제로 PDF 모드를 볼 때만 렌더 (지연) */
+    async function ensurePdfRendered() {
+      if (pdfRendered) return;
+      await renderPdf();
+      pdfRendered = true;
+      if (totalTextLen < 5) {
+        document.getElementById("banner").insertAdjacentHTML("beforeend",
+          `<div class="banner">텍스트 레이어 없음 — 하이라이트 불가 (스캔본)</div>`);
+      }
+    }
+
     /* ── PDF 렌더 ── */
-    async function renderPdf(buf) {
+    async function renderPdf() {
       const container = document.getElementById("pdfContainer");
       container.innerHTML = "";
-      pdfDoc = await pdfjsLib.getDocument({ data: buf }).promise;
       const pdf = pdfDoc;
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
       const cssWidth = Math.min(window.innerWidth - 16, 900);
@@ -381,6 +394,7 @@
         renderReadingHighlights();   // PDF에서 친 하이라이트 반영
         btn.textContent = "📄 PDF";
       } else {
+        await ensurePdfRendered();   // 아직 렌더 안 했으면 지금 렌더
         rdC.style.display = "none"; pdfC.style.display = "";
         rerenderAllHighlights();     // 읽기에서 친 하이라이트 반영
         btn.textContent = "📖 읽기";
@@ -426,34 +440,36 @@
       }
 
       const lines = groupLines(raw);
-      const colX = detectColumnSplit(lines, W);
+      for (const ln of lines) ln.text = joinItems(ln.items);
 
-      let els = [], twoCol = false;
+      // 캡션(표N/그림N)~자료: 구간을 표/그림으로 인식 → 본문에서 제외하고 이미지로
+      const figBands = detectCaptionFigures(lines, vp.height);
+      const inFig = (y) => figBands.some((b) => y >= b.top - 1 && y <= b.bottom + 1);
+      const textLines = lines.filter((ln) => !inFig(ln.y + ln.h / 2));
+
+      const colX = detectColumnSplit(textLines, W);
+      let els = [];
       if (colX == null) {
-        const arr = lines.map((ln) => ({ y: ln.y, h: ln.h, text: joinItems(ln.items) }));
+        const arr = textLines.map((ln) => ({ y: ln.y, h: ln.h, text: ln.text }));
         els = paraBlocks(arr).map((b) => ({ y: b.y, kind: b.heading ? "h" : "p", text: b.text }));
       } else if (colX < W * 0.34) {
         // 왼쪽 사이드바(소제목) + 오른쪽 본문
         const left = [], right = [];
-        for (const ln of lines) splitLine(ln, colX, left, right);
+        for (const ln of textLines) splitLine(ln, colX, left, right);
         els = blockLines(left, 1.8).map((b) => ({ y: b.y - 3, kind: "label", text: b.text }))
           .concat(paraBlocks(right).map((b) => ({ y: b.y, kind: b.heading ? "h" : "p", text: b.text })));
       } else {
         // 2단 본문: 왼쪽 컬럼 먼저(그대로), 오른쪽은 뒤로 (y에 큰 오프셋)
-        twoCol = true;
         const left = [], right = [];
-        for (const ln of lines) splitLine(ln, colX, left, right);
+        for (const ln of textLines) splitLine(ln, colX, left, right);
         els = paraBlocks(left).map((b) => ({ y: b.y, kind: b.heading ? "h" : "p", text: b.text }))
           .concat(paraBlocks(right).map((b) => ({ y: 1e9 + b.y, kind: b.heading ? "h" : "p", text: b.text })));
       }
 
-      // 표/그림: 글자 사이 빈 밴드에 잉크가 있으면 그 영역만 잘라 이미지로 삽입
-      if (!twoCol) {
-        const bands = findFigureBands(lines, vp.height);
-        if (bands.length) {
-          const figs = await renderFigures(page, bands, W, vp.height);
-          for (const f of figs) els.push({ y: f.y, kind: "fig", url: f.url });
-        }
+      // 표/그림 이미지 크롭 삽입
+      if (figBands.length) {
+        const figs = await cropBands(page, figBands, W, vp.height);
+        for (const f of figs) els.push({ y: f.y, kind: "fig", url: f.url });
       }
 
       els.sort((a, b) => a.y - b.y);
@@ -553,26 +569,39 @@
       return html;
     }
 
-    /* 텍스트가 덮지 않는 세로 빈 밴드(그림/표 후보) 찾기 */
-    function findFigureBands(lines, H) {
-      if (!lines.length) return [];
-      const iv = lines.map((l) => [l.y, l.y + l.h]).sort((a, b) => a[0] - b[0]);
-      const merged = [];
-      for (const seg of iv) {
-        const last = merged[merged.length - 1];
-        if (last && seg[0] <= last[1] + H * 0.006) last[1] = Math.max(last[1], seg[1]);
-        else merged.push([seg[0], seg[1]]);
-      }
+    /* 캡션(표N/그림N)부터 자료: 줄까지를 표/그림 영역으로 인식 */
+    function detectCaptionFigures(lines, H) {
+      const capRe = /^\s*[<\[【(]?\s*(그림|표|차트|도표|Figure|Fig|Table|Chart|Exhibit)\s*[-.]?\s*\d+(?!\s*(?:개|명|원|년|월|일|위|배|가지|%))/i;
+      const srcRe = /^\s*(자료|출처|주|참고|Source|Note)\s*[:：]/;
+      const caps = [];
+      for (let i = 0; i < lines.length; i++) if (capRe.test(lines[i].text)) caps.push(i);
       const bands = [];
-      for (let i = 0; i < merged.length - 1; i++) {
-        const top = merged[i][1], bot = merged[i + 1][0];
-        if (bot - top > H * 0.05) bands.push([top, bot]);   // 페이지 높이 5% 이상 빈 밴드만
+      for (let k = 0; k < caps.length; k++) {
+        const ci = caps[k];
+        const nextCap = (k + 1 < caps.length) ? caps[k + 1] : lines.length;
+        const top = lines[ci].y;
+        let bottom = null;
+        for (let j = ci + 1; j < nextCap; j++) {
+          if (srcRe.test(lines[j].text)) { bottom = lines[j].y + lines[j].h; break; }
+        }
+        if (bottom == null) {
+          const lastJ = nextCap - 1;
+          bottom = (lastJ > ci) ? (lines[lastJ].y + lines[lastJ].h) : (top + H * 0.08);
+        }
+        if (bottom - top > H * 0.03) bands.push({ top, bottom });
       }
-      return bands;
+      bands.sort((a, b) => a.top - b.top);
+      const merged = [];
+      for (const b of bands) {
+        const last = merged[merged.length - 1];
+        if (last && b.top <= last.bottom + 2) last.bottom = Math.max(last.bottom, b.bottom);
+        else merged.push({ ...b });
+      }
+      return merged;
     }
 
-    /* 후보 밴드 중 실제로 잉크(그림/표)가 있는 것만 잘라서 dataURL 반환 */
-    async function renderFigures(page, bands, W, H) {
+    /* 지정 밴드들을 원본에서 잘라 dataURL 이미지로 반환 */
+    async function cropBands(page, bands, W, H) {
       const cssW = Math.min(window.innerWidth - 40, 820);
       const scale = cssW / W;
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -585,31 +614,18 @@
       await page.render({ canvasContext: ctx, viewport: vp }).promise;
 
       const out = [];
-      for (const [y0, y1] of bands) {
-        const pad = 4;
-        const sy = Math.max(0, Math.floor((y0 - pad) * scale * dpr));
-        const ey = Math.min(full.height, Math.ceil((y1 + pad) * scale * dpr));
+      for (const b of bands) {
+        const pad = 3;
+        const sy = Math.max(0, Math.floor((b.top - pad) * scale * dpr));
+        const ey = Math.min(full.height, Math.ceil((b.bottom + pad) * scale * dpr));
         const sh = ey - sy;
-        if (sh < 8 || !hasInk(ctx, sy, full.width, sh)) continue;
+        if (sh < 8) continue;
         const crop = document.createElement("canvas");
         crop.width = full.width; crop.height = sh;
         crop.getContext("2d").drawImage(full, 0, sy, full.width, sh, 0, 0, full.width, sh);
-        out.push({ y: y0, url: crop.toDataURL("image/jpeg", 0.82) });
+        out.push({ y: b.top, url: crop.toDataURL("image/jpeg", 0.82) });
       }
       return out;
-    }
-
-    /* 밴드 영역에 흰색이 아닌 픽셀 비율로 잉크 유무 판정 */
-    function hasInk(ctx, sy, w, sh) {
-      try {
-        const data = ctx.getImageData(0, sy, w, sh).data;
-        let nonwhite = 0, sampled = 0;
-        for (let i = 0; i < data.length; i += 4 * 6) {   // 6픽셀마다 샘플
-          sampled++;
-          if (data[i] < 245 || data[i + 1] < 245 || data[i + 2] < 245) nonwhite++;
-        }
-        return sampled > 0 && nonwhite / sampled > 0.004;
-      } catch (e) { return true; }
     }
 
     async function renderPageImage(pageNo, btn) {

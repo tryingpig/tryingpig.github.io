@@ -74,6 +74,7 @@
 
         const buf = await loadPdf(report.pdf_path);
         pdfDoc = await pdfjsLib.getDocument({ data: buf }).promise;
+        cacheThumb(REPORT_ID);   // 목록 썸네일용 (백그라운드)
 
         // 삭제 예정 배너
         if (report.pending_deletion) {
@@ -405,6 +406,12 @@
     async function buildReadingView() {
       const rdC = document.getElementById("readingContainer");
       rdC.innerHTML = "";
+      // 맨 앞에 1페이지 전체 이미지(표지)
+      try {
+        const p1 = await pdfDoc.getPage(1);
+        const url = await renderPageToDataURL(p1, 820);
+        rdC.insertAdjacentHTML("beforeend", `<img class="rd-cover" src="${url}" alt="1페이지">`);
+      } catch (e) { /* 무시 */ }
       for (let n = 1; n <= pdfDoc.numPages; n++) {
         const page = await pdfDoc.getPage(n);
         await buildPageReading(page, n, rdC);
@@ -629,6 +636,33 @@
         out.push({ y: b.top, url: crop.toDataURL("image/jpeg", 0.82) });
       }
       return out;
+    }
+
+    /* 페이지를 화면폭 이미지 dataURL로 렌더 (표지용) */
+    async function renderPageToDataURL(page, maxW) {
+      const cssW = Math.min(window.innerWidth - 36, maxW || 820);
+      const scale = cssW / page.getViewport({ scale: 1 }).width;
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const vp = page.getViewport({ scale });
+      const c = document.createElement("canvas");
+      c.width = Math.floor(vp.width * dpr); c.height = Math.floor(vp.height * dpr);
+      const ctx = c.getContext("2d"); ctx.scale(dpr, dpr);
+      await page.render({ canvasContext: ctx, viewport: vp }).promise;
+      return c.toDataURL("image/jpeg", 0.85);
+    }
+
+    /* 목록 카드용 1페이지 썸네일을 localStorage에 캐시 (이 기기에서 연 리포트만) */
+    async function cacheThumb(id) {
+      try {
+        if (localStorage.getItem("rv_thumb_" + id)) return;
+        const p1 = await pdfDoc.getPage(1);
+        const scale = 200 / p1.getViewport({ scale: 1 }).width;
+        const vp = p1.getViewport({ scale });
+        const c = document.createElement("canvas");
+        c.width = Math.floor(vp.width); c.height = Math.floor(vp.height);
+        await p1.render({ canvasContext: c.getContext("2d"), viewport: vp }).promise;
+        localStorage.setItem("rv_thumb_" + id, c.toDataURL("image/jpeg", 0.7));
+      } catch (e) { /* 용량초과 등 무시 */ }
     }
 
     async function renderPageImage(pageNo, btn) {

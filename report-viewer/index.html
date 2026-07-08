@@ -67,19 +67,24 @@
         const pend = r.pending_deletion ? `<span class="badge del">🗑 삭제예정 ~${esc((r.delete_after || "").slice(5))}</span>` : "";
         const hl = (r.highlight_count || 0) > 0 ? `<span class="hl">✏️ ${r.highlight_count}</span>` : "";
         const dateStr = r.publish_date || (r.uploaded_at || "").slice(0, 10);
+        const thumb = localStorage.getItem("rv_thumb_" + r.id);
+        const thumbHtml = thumb ? `<img src="${thumb}" alt="">` : `📄`;
         return `
           <div class="card" data-id="${esc(r.id)}">
-            <div class="title">${esc(r.title)}</div>
-            <div class="meta">
-              <span class="badge">${esc(r.broker || "미분류")}</span>
-              ${sector}${scan}${pend}
-              <span>${esc(dateStr)}</span>
-              <span>· ${r.size_mb ?? "?"}MB</span>
-            </div>
-            <div class="row2">
-              ${hl}<div class="spacer"></div>
-              <a class="mini read" href="viewer.html?id=${encodeURIComponent(r.id)}&mode=read">📖 읽기</a>
-              <a class="mini" href="highlights.html?id=${encodeURIComponent(r.id)}">모아보기</a>
+            <div class="card-thumb">${thumbHtml}</div>
+            <div class="card-body">
+              <div class="title">${esc(r.title)}</div>
+              <div class="meta">
+                <span class="badge">${esc(r.broker || "미분류")}</span>
+                ${sector}${scan}${pend}
+                <span>${esc(dateStr)}</span>
+                <span>· ${r.size_mb ?? "?"}MB</span>
+              </div>
+              <div class="row2">
+                ${hl}<div class="spacer"></div>
+                <a class="mini read" href="viewer.html?id=${encodeURIComponent(r.id)}&mode=read">📖 읽기</a>
+                <a class="mini" href="highlights.html?id=${encodeURIComponent(r.id)}">모아보기</a>
+              </div>
             </div>
           </div>`;
       }).join("");

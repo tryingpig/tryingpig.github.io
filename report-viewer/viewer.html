@@ -806,6 +806,51 @@
 
     document.getElementById("modeBtn").onclick = () => setMode(mode === "pdf" ? "reading" : "pdf");
 
+    /* ── 더블탭/더블클릭 → 그 지점의 '문장'을 선택하고 색상 피커 표시 (읽기 모드) ── */
+    function caretFromPoint(x, y) {
+      if (document.caretRangeFromPoint) {
+        const r = document.caretRangeFromPoint(x, y);
+        return r ? { node: r.startContainer, offset: r.startOffset } : null;
+      }
+      if (document.caretPositionFromPoint) {
+        const p = document.caretPositionFromPoint(x, y);
+        return p ? { node: p.offsetNode, offset: p.offset } : null;
+      }
+      return null;
+    }
+
+    function selectSentenceAt(x, y, target) {
+      if (mode !== "reading") return;
+      if (!target || !target.closest || !target.closest(RD_SEL)) return;
+      const pos = caretFromPoint(x, y);
+      if (!pos || !pos.node || pos.node.nodeType !== 3) return;
+      const node = pos.node, txt = node.textContent, off = pos.offset;
+      // 문장 끝: 마침표/물음표/느낌표 뒤가 공백이거나 끝
+      const isEnd = (i) => /[.!?。]/.test(txt[i]) && (i + 1 >= txt.length || /\s/.test(txt[i + 1]));
+      let start = 0, end = txt.length;
+      for (let i = off - 1; i >= 0; i--) { if (isEnd(i)) { start = i + 1; break; } }
+      for (let i = off; i < txt.length; i++) { if (isEnd(i)) { end = i + 1; break; } }
+      while (start < end && /\s/.test(txt[start])) start++;
+      if (start >= end) return;
+      const sel = window.getSelection();
+      const r = document.createRange();
+      r.setStart(node, start); r.setEnd(node, end);
+      sel.removeAllRanges(); sel.addRange(r);
+      onSelectionEnd();
+    }
+
+    const rdContainer = document.getElementById("readingContainer");
+    rdContainer.addEventListener("dblclick", (e) => selectSentenceAt(e.clientX, e.clientY, e.target));
+    let dtLast = 0, dtX = 0, dtY = 0;   // 모바일 더블탭 수동 감지
+    rdContainer.addEventListener("touchend", (e) => {
+      if (e.changedTouches.length !== 1) return;
+      const t = e.changedTouches[0], now = Date.now();
+      if (now - dtLast < 320 && Math.abs(t.clientX - dtX) < 30 && Math.abs(t.clientY - dtY) < 30) {
+        dtLast = 0;
+        selectSentenceAt(t.clientX, t.clientY, e.target);
+      } else { dtLast = now; dtX = t.clientX; dtY = t.clientY; }
+    });
+
     /* 이벤트 — selectionchange 디바운스로 모바일 길게눌러 선택에 대응 */
     let selTimer = null;
     function scheduleSel() { clearTimeout(selTimer); selTimer = setTimeout(onSelectionEnd, 280); }

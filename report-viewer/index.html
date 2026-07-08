@@ -71,7 +71,7 @@
         const thumbHtml = thumb ? `<img src="${thumb}" alt="">` : `📄`;
         return `
           <div class="card" data-id="${esc(r.id)}">
-            <div class="card-thumb">${thumbHtml}</div>
+            <div class="card-thumb" data-thumb="${esc(r.id)}">${thumbHtml}</div>
             <div class="card-body">
               <div class="title">${esc(r.title)}</div>
               <div class="meta">
@@ -95,6 +95,36 @@
           location.href = "viewer.html?id=" + encodeURIComponent(card.dataset.id);
         });
       });
+
+      // 캐시에 없는 썸네일은 vault(index/thumbs)에서 지연 로드
+      for (const r of rows) {
+        if (localStorage.getItem("rv_thumb_" + r.id) || !r.thumb) continue;
+        loadThumb(r).then((url) => {
+          if (!url) return;
+          const el = list.querySelector(`.card-thumb[data-thumb="${r.id}"]`);
+          if (el) el.innerHTML = `<img src="${url}" alt="">`;
+        });
+      }
+    }
+
+    function blobToDataURL(blob) {
+      return new Promise((resolve, reject) => {
+        const fr = new FileReader();
+        fr.onload = () => resolve(fr.result);
+        fr.onerror = reject;
+        fr.readAsDataURL(blob);
+      });
+    }
+
+    /* 서버 썸네일(index/thumbs/<id>.jpg)을 GitHub API로 받아 localStorage에 캐시 */
+    async function loadThumb(r) {
+      try {
+        const res = await ghFetch("contents/" + r.thumb, { accept: "application/vnd.github.raw" });
+        if (!res.ok) return null;
+        const dataUrl = await blobToDataURL(await res.blob());
+        try { localStorage.setItem("rv_thumb_" + r.id, dataUrl); } catch (e) { /* 용량초과 무시 */ }
+        return dataUrl;
+      } catch (e) { return null; }
     }
 
     async function load() {

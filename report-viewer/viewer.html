@@ -401,64 +401,143 @@
       });
     }
 
+    const joinItems = (its) => its.map((i) => i.str).join("").replace(/\s+/g, " ").trim();
+
     async function buildPageReading(page, pageNo, container) {
       const vp = page.getViewport({ scale: 1 });
+      const W = vp.width;
       const tc = await page.getTextContent();
-      const rows = [];
+      const raw = [];
       const items = [];
       for (const it of tc.items) {
         if (!it.str || !it.str.trim()) continue;
         const tx = pdfjsLib.Util.transform(vp.transform, it.transform);
         const fh = Math.hypot(tx[2], tx[3]);
-        rows.push({ str: it.str, x: tx[4], y: tx[5], h: fh });
-        // 정규화 좌표 캐시 (읽기→PDF 좌표 역산용)
-        items.push({ str: it.str, x: tx[4] / vp.width, y: (tx[5] - fh) / vp.height,
-                     w: (it.width || 0) / vp.width, h: fh / vp.height });
+        const w = it.width || 0;
+        raw.push({ str: it.str, x: tx[4], xr: tx[4] + w, y: tx[5] - fh, h: fh });
+        items.push({ str: it.str, x: tx[4] / W, y: (tx[5] - fh) / vp.height, w: w / W, h: fh / vp.height });
       }
       pageItems[pageNo] = items;
-      if (!rows.length) {
-        // 텍스트 없는 페이지(차트/이미지 전용) → 원본 이미지로
+      if (!raw.length) {
         container.insertAdjacentHTML("beforeend",
           `<div class="rd-page" data-page="${pageNo}"><div class="rd-pageno">p.${pageNo}</div>` +
           `<button class="rd-img-btn" data-page="${pageNo}">🖼 이 페이지 보기 (이미지)</button></div>`);
         return;
       }
-      // 줄 묶기 (y 근접)
-      rows.sort((a, b) => a.y - b.y || a.x - b.x);
+
+      const lines = groupLines(raw);
+      const colX = detectColumnSplit(lines, W);
+      let html = `<div class="rd-pageno">p.${pageNo}</div>`;
+
+      if (colX == null) {
+        // 단일 컬럼
+        const arr = lines.map((ln) => ({ y: ln.y, h: ln.h, text: joinItems(ln.items) }));
+        html += renderBlocks(paraBlocks(arr));
+      } else if (colX < W * 0.34) {
+        // 왼쪽 사이드바(소제목) + 오른쪽 본문 → y순으로 라벨/본문 정렬
+        const left = [], right = [];
+        for (const ln of lines) splitLine(ln, colX, left, right);
+        const labels = blockLines(left, 1.8).map((b) => ({ y: b.y - 3, kind: "label", text: b.text }));
+        const body = paraBlocks(right).map((b) => ({ y: b.y, kind: b.heading ? "h" : "p", text: b.text }));
+        const all = labels.concat(body).sort((a, b) => a.y - b.y);
+        for (const b of all) {
+          if (b.kind === "label") html += `<h4 class="rd-label">${esc(b.text)}</h4>`;
+          else if (b.kind === "h") html += `<h3 class="rd-h">${esc(b.text)}</h3>`;
+          else html += `<p class="rd-para">${esc(b.text)}</p>`;
+        }
+      } else {
+        // 2단 본문: 왼쪽 컬럼 먼저, 오른쪽 컬럼 나중
+        const left = [], right = [];
+        for (const ln of lines) splitLine(ln, colX, left, right);
+        html += renderBlocks(paraBlocks(left)) + renderBlocks(paraBlocks(right));
+      }
+
+      html += `<button class="rd-img-btn" data-page="${pageNo}">🖼 원본 페이지 보기</button>`;
+      container.insertAdjacentHTML("beforeend", `<div class="rd-page" data-page="${pageNo}">${html}</div>`);
+    }
+
+    /* 줄 묶기 (y 근접) */
+    function groupLines(raw) {
+      raw.sort((a, b) => a.y - b.y || a.x - b.x);
       const lines = [];
-      for (const r of rows) {
+      for (const r of raw) {
         const last = lines[lines.length - 1];
-        if (last && Math.abs(last.y - r.y) < r.h * 0.6) {
-          last.items.push(r); last.h = Math.max(last.h, r.h);
-        } else {
-          lines.push({ y: r.y, h: r.h, items: [r] });
+        if (last && Math.abs(last.y - r.y) < r.h * 0.6) { last.items.push(r); last.h = Math.max(last.h, r.h); }
+        else lines.push({ y: r.y, h: r.h, items: [r] });
+      }
+      for (const ln of lines) ln.items.sort((a, b) => a.x - b.x);
+      return lines;
+    }
+
+    /* 컬럼 경계 감지: 여러 줄에서 일관된 세로 여백(거터)이 있으면 그 x를 반환, 없으면 null */
+    function detectColumnSplit(lines, W) {
+      const cand = [];
+      for (const ln of lines) {
+        const its = ln.items;
+        for (let i = 0; i < its.length - 1; i++) {
+          const gap = its[i + 1].x - its[i].xr;
+          if (gap > 0.06 * W) cand.push((its[i].xr + its[i + 1].x) / 2);
         }
       }
+      if (cand.length < 3) return null;
+      cand.sort((a, b) => a - b);
+      const mid = cand[Math.floor(cand.length / 2)];
+      const near = cand.filter((c) => Math.abs(c - mid) < 0.04 * W).length;
+      if (near < 3 || near < cand.length * 0.4) return null;
+      let crossing = 0;
       for (const ln of lines) {
-        ln.items.sort((a, b) => a.x - b.x);
-        ln.text = ln.items.map((i) => i.str).join("").replace(/\s+/g, " ").trim();
+        if (ln.items.some((it) => it.xr < mid) && ln.items.some((it) => it.x > mid)) crossing++;
       }
-      const hs = lines.map((l) => l.h).sort((a, b) => a - b);
-      const body = hs[Math.floor(hs.length / 2)] || 10;
+      if (crossing < 3) return null;
+      return mid;
+    }
 
-      let html = `<div class="rd-pageno">p.${pageNo}</div>`;
-      let para = [];
-      let prevY = null, prevH = body;
-      const flush = () => { if (para.length) { html += `<p class="rd-para">${esc(para.join(" "))}</p>`; para = []; } };
-      for (const ln of lines) {
+    /* 한 줄을 컬럼 경계로 좌/우로 분리 */
+    function splitLine(ln, colX, left, right) {
+      const L = ln.items.filter((it) => (it.x + it.xr) / 2 < colX);
+      const R = ln.items.filter((it) => (it.x + it.xr) / 2 >= colX);
+      if (L.length) left.push({ y: ln.y, h: Math.max(...L.map((i) => i.h)), text: joinItems(L) });
+      if (R.length) right.push({ y: ln.y, h: Math.max(...R.map((i) => i.h)), text: joinItems(R) });
+    }
+
+    /* 세로 간격 작은 줄들을 한 블록(라벨)으로 */
+    function blockLines(arr, gapFactor) {
+      const blocks = [];
+      let prevY = null, prevH = null, cur = null;
+      for (const ln of arr) {
         if (!ln.text) continue;
+        if (cur && prevY != null && (ln.y - prevY) < prevH * gapFactor) { cur.text += " " + ln.text; cur.h = Math.max(cur.h, ln.h); }
+        else { cur = { y: ln.y, h: ln.h, text: ln.text }; blocks.push(cur); }
+        prevY = ln.y; prevH = ln.h;
+      }
+      return blocks;
+    }
+
+    /* 본문 문단 블록 (+ 폰트 크기로 제목 감지) */
+    function paraBlocks(arr) {
+      const texts = arr.filter((l) => l.text);
+      if (!texts.length) return [];
+      const hs = texts.map((l) => l.h).sort((a, b) => a - b);
+      const body = hs[Math.floor(hs.length / 2)] || 10;
+      const blocks = [];
+      let cur = null, prevY = null, prevH = body;
+      for (const ln of texts) {
         const heading = ln.h > body * 1.35;
         const gap = prevY == null ? 0 : ln.y - prevY;
-        if (heading) { flush(); html += `<h3 class="rd-h">${esc(ln.text)}</h3>`; }
+        if (heading) { blocks.push({ y: ln.y, heading: true, text: ln.text }); cur = null; }
         else {
-          if (prevY != null && gap > prevH * 1.9) flush();
-          para.push(ln.text);
+          if (!cur || (prevY != null && gap > prevH * 1.9)) { cur = { y: ln.y, heading: false, text: ln.text }; blocks.push(cur); }
+          else cur.text += " " + ln.text;
         }
         prevY = ln.y; prevH = ln.h;
       }
-      flush();
-      html += `<button class="rd-img-btn" data-page="${pageNo}">🖼 원본 페이지 보기</button>`;
-      container.insertAdjacentHTML("beforeend", `<div class="rd-page" data-page="${pageNo}">${html}</div>`);
+      return blocks;
+    }
+
+    function renderBlocks(blocks) {
+      let html = "";
+      for (const b of blocks) html += b.heading ? `<h3 class="rd-h">${esc(b.text)}</h3>` : `<p class="rd-para">${esc(b.text)}</p>`;
+      return html;
     }
 
     async function renderPageImage(pageNo, btn) {

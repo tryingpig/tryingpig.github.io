@@ -179,10 +179,11 @@ mark.rd-hl.pink   { background: rgba(255, 45, 120, .34); }
   background: var(--card); border: 1px solid var(--line); border-left-width: 5px;
   border-radius: 10px; padding: 12px 14px; margin-bottom: 10px; cursor: pointer;
 }
-/* p.N 앞 체크박스 */
+/* 삭제 모드: p.N 앞 체크박스(표시용, 항목 탭으로 토글) */
 .hl-head { display: flex; align-items: center; gap: 8px; }
-.hl-chk { width: 18px; height: 18px; flex-shrink: 0; cursor: pointer; accent-color: var(--accent); margin: 0; }
+.hl-chk { width: 18px; height: 18px; flex-shrink: 0; accent-color: var(--accent); margin: 0; pointer-events: none; }
 .hl-head .pg { margin: 0; }
+.hl-item.selectable { cursor: pointer; }
 .hl-item.sel { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent) inset; }
 /* 상단 삭제 버튼 */
 #delBtn.danger-btn:not(:disabled) { background: #dc2626; color: #fff; border-color: #dc2626; font-weight: 600; }

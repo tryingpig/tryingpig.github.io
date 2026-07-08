@@ -11,7 +11,8 @@
     <a class="back" href="index.html">‹</a>
     <h1 id="title">모아보기</h1>
     <div class="spacer"></div>
-    <button id="delBtn" class="danger-btn" disabled>삭제</button>
+    <button id="delBtn">삭제</button>
+    <button id="cancelBtn" style="display:none">취소</button>
     <button id="copyBtn">전체 복사</button>
   </div>
   <div class="wrap">
@@ -37,44 +38,65 @@
     }
 
     const SELECTED = new Set();
+    let delMode = false;
 
     function render() {
       const list = document.getElementById("list");
       if (!HLS.length) {
         list.innerHTML = `<div class="empty">아직 하이라이트가 없습니다.<br>뷰어에서 문장을 선택해 줄을 쳐보세요.</div>`;
-        updateDelBtn();
+        updateBar();
         return;
       }
       const sorted = HLS.slice().sort((a, b) => a.page - b.page);
       list.innerHTML = sorted.map((h) => `
-        <div class="hl-item ${esc(h.color || "yellow")}${SELECTED.has(h.hid) ? " sel" : ""}" data-hid="${esc(h.hid)}" data-page="${h.page}">
+        <div class="hl-item ${esc(h.color || "yellow")}${delMode ? " selectable" : ""}${SELECTED.has(h.hid) ? " sel" : ""}" data-hid="${esc(h.hid)}" data-page="${h.page}">
           <div class="hl-head">
-            <input type="checkbox" class="hl-chk"${SELECTED.has(h.hid) ? " checked" : ""}>
+            ${delMode ? `<input type="checkbox" class="hl-chk"${SELECTED.has(h.hid) ? " checked" : ""}>` : ""}
             <span class="pg">p.${h.page}${(h.rects && h.rects.length) ? "" : " · 위치없음"}</span>
           </div>
           <div>${esc(h.text)}</div>
         </div>`).join("");
       list.querySelectorAll(".hl-item").forEach((it) => {
-        const chk = it.querySelector(".hl-chk");
-        chk.onclick = (e) => e.stopPropagation();
-        chk.onchange = () => {
-          const hid = it.dataset.hid;
-          if (chk.checked) { SELECTED.add(hid); it.classList.add("sel"); }
-          else { SELECTED.delete(hid); it.classList.remove("sel"); }
-          updateDelBtn();
-        };
         it.onclick = () => {
-          location.href = `viewer.html?id=${encodeURIComponent(REPORT_ID)}&page=${it.dataset.page}`;
+          const hid = it.dataset.hid;
+          if (delMode) {
+            if (SELECTED.has(hid)) { SELECTED.delete(hid); it.classList.remove("sel"); }
+            else { SELECTED.add(hid); it.classList.add("sel"); }
+            const chk = it.querySelector(".hl-chk");
+            if (chk) chk.checked = SELECTED.has(hid);
+            updateBar();
+          } else {
+            location.href = `viewer.html?id=${encodeURIComponent(REPORT_ID)}&page=${it.dataset.page}`;
+          }
         };
       });
-      updateDelBtn();
+      updateBar();
     }
 
-    function updateDelBtn() {
-      const n = SELECTED.size;
-      const b = document.getElementById("delBtn");
-      b.disabled = n === 0;
-      b.textContent = n ? `삭제 (${n})` : "삭제";
+    /* 삭제/취소/복사 버튼 상태 갱신 */
+    function updateBar() {
+      const del = document.getElementById("delBtn");
+      const cancel = document.getElementById("cancelBtn");
+      const copy = document.getElementById("copyBtn");
+      if (delMode) {
+        cancel.style.display = "";
+        copy.style.display = "none";
+        del.classList.add("danger-btn");
+        del.disabled = SELECTED.size === 0;
+        del.textContent = SELECTED.size ? `삭제 (${SELECTED.size})` : "삭제";
+      } else {
+        cancel.style.display = "none";
+        copy.style.display = "";
+        del.classList.remove("danger-btn");
+        del.disabled = false;
+        del.textContent = "삭제";
+      }
+    }
+
+    function setDelMode(on) {
+      delMode = on;
+      if (!on) SELECTED.clear();
+      render();
     }
 
     async function saveList() {
@@ -88,13 +110,16 @@
     }
 
     document.getElementById("delBtn").onclick = async () => {
-      if (!SELECTED.size) return;
+      if (!delMode) { setDelMode(true); return; }   // 1단계: 삭제 모드 진입(체크박스 표시)
+      if (!SELECTED.size) return;                    // 2단계: 체크된 항목 삭제
       for (const hid of SELECTED) DELETED.add(hid);
       HLS = HLS.filter((h) => !SELECTED.has(h.hid));
       SELECTED.clear();
+      delMode = false;
       render();
       await saveList();
     };
+    document.getElementById("cancelBtn").onclick = () => setDelMode(false);
 
     async function load() {
       try {

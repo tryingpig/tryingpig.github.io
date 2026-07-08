@@ -179,35 +179,14 @@ mark.rd-hl.pink   { background: rgba(255, 45, 120, .34); }
   background: var(--card); border: 1px solid var(--line); border-left-width: 5px;
   border-radius: 10px; padding: 12px 14px; margin-bottom: 10px; cursor: pointer;
 }
-/* 선택 모드: 왼쪽 체크 표시 + 본문 들여쓰기 */
-.hl-item.selectable { padding-left: 42px; }
-.hl-check {
-  position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
-  width: 20px; height: 20px; border: 2px solid var(--line); border-radius: 6px;
-  background: var(--card);
-}
-.hl-item.sel { border-color: var(--accent); }
-.hl-item.sel .hl-check { background: var(--accent); border-color: var(--accent); }
-.hl-item.sel .hl-check::after {
-  content: "✓"; position: absolute; inset: 0; color: #fff;
-  font-size: 13px; line-height: 16px; text-align: center;
-}
-/* 하단 선택 삭제 바 */
-.selbar {
-  position: fixed; left: 0; right: 0; bottom: 0; z-index: 40;
-  display: none; align-items: center; gap: 10px;
-  padding: 12px 16px calc(12px + env(safe-area-inset-bottom));
-  background: var(--card); border-top: 1px solid var(--line);
-  box-shadow: 0 -2px 10px rgba(0,0,0,.08);
-}
-.selbar.show { display: flex; }
-.selbar .spacer { flex: 1; }
-.selbar #selCount { font-size: 14px; color: var(--sub); }
-.selbar .danger {
-  background: #dc2626; color: #fff; border: none;
-  border-radius: 9px; padding: 9px 20px; font-size: 14px; font-weight: 600; cursor: pointer;
-}
-.selbar .danger:disabled { background: #f1a9a9; cursor: default; }
+/* p.N 앞 체크박스 */
+.hl-head { display: flex; align-items: center; gap: 8px; }
+.hl-chk { width: 18px; height: 18px; flex-shrink: 0; cursor: pointer; accent-color: var(--accent); margin: 0; }
+.hl-head .pg { margin: 0; }
+.hl-item.sel { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent) inset; }
+/* 상단 삭제 버튼 */
+#delBtn.danger-btn:not(:disabled) { background: #dc2626; color: #fff; border-color: #dc2626; font-weight: 600; }
+#delBtn:disabled { color: #c7c9cd; background: var(--card); cursor: default; }
 .hl-item.yellow { border-left-color: #e5c100; }
 .hl-item.green { border-left-color: #34a853; }
 .hl-item.pink { border-left-color: #e5497d; }

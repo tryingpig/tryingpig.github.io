@@ -416,20 +416,17 @@
     async function buildReadingView() {
       const rdC = document.getElementById("readingContainer");
       rdC.innerHTML = "";
-      // 맨 앞에 1페이지 전체 이미지(표지)
-      try {
-        const p1 = await pdfDoc.getPage(1);
-        const url = await renderPageToDataURL(p1, 820);
-        rdC.insertAdjacentHTML("beforeend", `<img class="rd-cover" src="${url}" alt="1페이지">`);
-      } catch (e) { /* 무시 */ }
       for (let n = 1; n <= pdfDoc.numPages; n++) {
         const page = await pdfDoc.getPage(n);
         await buildPageReading(page, n, rdC);
       }
-      // 원본 페이지 이미지 지연 렌더 버튼
-      rdC.querySelectorAll(".rd-img-btn").forEach((b) => {
-        b.onclick = () => renderPageImage(parseInt(b.dataset.page, 10), b);
-      });
+      // 페이지 전체 이미지는 뷰포트 근처에 오면 지연 렌더(기본 펼침 상태)
+      const io = new IntersectionObserver((entries, obs) => {
+        for (const en of entries) {
+          if (en.isIntersecting) { obs.unobserve(en.target); renderPageInto(en.target); }
+        }
+      }, { rootMargin: "800px 0px" });
+      rdC.querySelectorAll(".rd-pageimg").forEach((w) => io.observe(w));
     }
 
     function joinItems(its) {
@@ -462,9 +459,10 @@
       }
       pageItems[pageNo] = items;
       if (!raw.length) {
+        const imgH0 = Math.round(Math.min(window.innerWidth - 36, 820) * vp.height / vp.width);
         container.insertAdjacentHTML("beforeend",
           `<div class="rd-page" data-page="${pageNo}"><div class="rd-pageno">p.${pageNo}</div>` +
-          `<button class="rd-img-btn" data-page="${pageNo}">🖼 이 페이지 보기 (이미지)</button></div>`);
+          `<div class="rd-pageimg" data-page="${pageNo}" style="min-height:${imgH0}px"></div></div>`);
         return;
       }
 
@@ -479,9 +477,6 @@
       // 우측 데이터 사이드바(기업코멘트: 좌=본문, 우=Buy/재무 박스) 감지
       const sb = detectRightSidebar(raw, W, vp.height);
       let els = [];
-      // 캡션 명확한(그림N/표N…) 밴드만 원본 크롭 유지, 애매한 건 '원본 참고' 노트
-      const cropList = figBands.filter((b) => b.captioned);
-      const noteYs = figBands.filter((b) => !b.captioned).map((b) => b.top);
       if (sb) {
         // 사이드밴드의 우측 아이템 제거 → 좌측 본문만 깨끗이 리플로우
         const flowRaw = raw.filter((it) => {
@@ -494,7 +489,6 @@
         for (const ln of flowLines) ln.text = joinItems(ln.items);
         els = paraBlocks(flowLines.map((l) => ({ y: l.y, h: l.h, text: l.text })))
           .map((b) => ({ y: b.y, kind: b.heading ? "h" : "p", text: b.text }));
-        noteYs.push(sb.top);   // 우측 Buy/재무 박스는 크롭하지 않고 노트로 안내
       } else {
         const colX = detectColumnSplit(textLines, W);
         if (colX == null) {
@@ -514,25 +508,16 @@
         }
       }
 
-      // 캡션 명확한 표/그림만 원본에서 잘라 삽입
-      if (cropList.length) {
-        const figs = await cropBands(page, cropList, W, vp.height);
-        for (const f of figs) els.push({ y: f.y, kind: "fig", url: f.url });
-      }
-      // 애매한 표/그림·우측 박스는 인라인 노트 대신 하단 버튼 라벨로만 안내
-      const hasFig = cropList.length > 0 || noteYs.length > 0;
-
+      // 표/그림은 따로 잘라오지 않음 — 페이지 전체 이미지를 맨 위에 두고 본문 텍스트만 리플로우
       els.sort((a, b) => a.y - b.y);
+      const imgH = Math.round(Math.min(window.innerWidth - 36, 820) * vp.height / vp.width);
       let html = `<div class="rd-pageno">p.${pageNo}</div>`;
+      html += `<div class="rd-pageimg" data-page="${pageNo}" style="min-height:${imgH}px"></div>`;
       for (const b of els) {
-        if (b.kind === "fig") html += `<img class="rd-fig" src="${b.url}" alt="표/그림">`;
-        else if (b.kind === "label") html += `<h4 class="rd-label">${esc(b.text)}</h4>`;
+        if (b.kind === "label") html += `<h4 class="rd-label">${esc(b.text)}</h4>`;
         else if (b.kind === "h") html += `<h3 class="rd-h">${esc(b.text)}</h3>`;
         else html += `<p class="rd-para">${esc(b.text)}</p>`;
       }
-
-      const figTag = hasFig ? " · 표·그림 있음" : "";
-      html += `<button class="rd-img-btn" data-page="${pageNo}">🖼 원본 페이지 보기${figTag}</button>`;
       container.insertAdjacentHTML("beforeend", `<div class="rd-page" data-page="${pageNo}">${html}</div>`);
     }
 
@@ -765,37 +750,53 @@
       } catch (e) { /* 용량초과 등 무시 */ }
     }
 
-    /* 원본 페이지 이미지 열기/닫기 토글 (버튼 유지, 캔버스는 버튼 바로 아래) */
-    async function renderPageImage(pageNo, btn) {
-      // 이미 렌더된 적 있으면 표시/숨김만 토글
-      if (btn._canvas) {
-        const open = btn._canvas.style.display === "none";
-        btn._canvas.style.display = open ? "" : "none";
-        btn.textContent = open ? "🖼 원본 페이지 닫기" : btn._label;
-        return;
+    /* 페이지 전체 이미지: 뷰포트 근처에서 지연 렌더(JPEG img). 이미지 탭 → 접힘(버튼), 버튼 → 펼침 */
+    async function renderPageInto(wrap) {
+      if (wrap._rendered || wrap._collapsed) return;
+      wrap._rendered = true;
+      const pageNo = parseInt(wrap.dataset.page, 10);
+      try {
+        const page = await pdfDoc.getPage(pageNo);
+        const cssW = Math.min(window.innerWidth - 36, 820);
+        const scale = cssW / page.getViewport({ scale: 1 }).width;
+        const vp = page.getViewport({ scale });
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+        const canvas = document.createElement("canvas");
+        canvas.width = Math.floor(vp.width * dpr);
+        canvas.height = Math.floor(vp.height * dpr);
+        const ctx = canvas.getContext("2d");
+        ctx.scale(dpr, dpr);
+        await page.render({ canvasContext: ctx, viewport: vp }).promise;
+        // 라이브 캔버스는 메모리를 많이 먹으므로 JPEG로 바꿔 <img>로 (캔버스는 GC)
+        const url = canvas.toDataURL("image/jpeg", 0.85);
+        const img = document.createElement("img");
+        img.className = "rd-pagecanvas";
+        img.src = url;
+        img.alt = `p.${pageNo} 이미지`;
+        img.addEventListener("click", () => collapseImg(wrap));
+        wrap.innerHTML = "";
+        wrap.appendChild(img);
+        wrap.style.minHeight = "";
+      } catch (e) {
+        wrap._rendered = false;   // 실패 시 다시 시도할 수 있게
       }
-      // 최초: 렌더 후 버튼 아래 삽입
-      btn._label = btn.textContent;
-      btn.disabled = true; btn.textContent = "불러오는 중…";
-      const page = await pdfDoc.getPage(pageNo);
-      const cssW = Math.min(window.innerWidth - 32, 860);
-      const scale = cssW / page.getViewport({ scale: 1 }).width;
-      const vp = page.getViewport({ scale });
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
-      const canvas = document.createElement("canvas");
-      canvas.width = Math.floor(vp.width * dpr);
-      canvas.height = Math.floor(vp.height * dpr);
-      canvas.style.width = "100%";
-      canvas.style.border = "1px solid var(--line)";
-      canvas.style.borderRadius = "8px";
-      canvas.style.marginTop = "8px";
-      const ctx = canvas.getContext("2d");
-      ctx.scale(dpr, dpr);
-      await page.render({ canvasContext: ctx, viewport: vp }).promise;
-      btn.insertAdjacentElement("afterend", canvas);
-      btn._canvas = canvas;
-      btn.disabled = false;
-      btn.textContent = "🖼 원본 페이지 닫기";
+    }
+
+    function collapseImg(wrap) {
+      wrap._collapsed = true;
+      wrap.style.minHeight = "";
+      wrap.innerHTML = `<button class="rd-img-btn rd-imgtoggle">🖼 페이지 이미지 보기</button>`;
+      wrap.querySelector(".rd-imgtoggle").addEventListener("click", (e) => {
+        e.stopPropagation();
+        expandImg(wrap);
+      });
+    }
+
+    function expandImg(wrap) {
+      wrap._collapsed = false;
+      wrap._rendered = false;
+      wrap.innerHTML = "";
+      renderPageInto(wrap);
     }
 
     /* ── 읽기 모드 하이라이트 (텍스트 기준) ── */

@@ -79,10 +79,19 @@ a { color: inherit; text-decoration: none; }
 .s-search { background: var(--accent); color: #fff; border-color: var(--accent); font-weight: 600; }
 
 .card {
+  position: relative;
   background: var(--card); border: 1px solid var(--line);
   border-radius: 12px; padding: 14px; margin-bottom: 10px;
   display: flex; gap: 12px; align-items: flex-start;
 }
+.card-del {
+  position: absolute; top: 6px; right: 8px; z-index: 2;
+  width: 26px; height: 26px; border-radius: 50%; padding: 0;
+  border: none; background: transparent; color: var(--sub);
+  font-size: 20px; line-height: 1; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+}
+.card-del:hover, .card-del:active { background: #fee2e2; color: #dc2626; }
 .card-thumb {
   width: 58px; height: 82px; flex-shrink: 0; border-radius: 6px; overflow: hidden;
   background: #f1f3f5; border: 1px solid var(--line);
@@ -95,7 +104,7 @@ a { color: inherit; text-decoration: none; }
 .card.sel { border-color: #dc2626; box-shadow: 0 0 0 1px #dc2626 inset; }
 .card-chk { width: 20px; height: 20px; flex-shrink: 0; align-self: center; accent-color: #dc2626; margin: 0; pointer-events: none; }
 .card.selectable a { pointer-events: none; }   /* 삭제 모드에선 읽기/모아보기 링크 비활성화 */
-.card .title { font-size: 16px; font-weight: 700; margin-bottom: 6px; }
+.card .title { font-size: 16px; font-weight: 700; margin-bottom: 6px; padding-right: 22px; }
 .card .meta { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; color: var(--sub); font-size: 12.5px; }
 .badge {
   background: #eef2ff; color: #3949ab; border-radius: 6px;

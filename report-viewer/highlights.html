@@ -48,14 +48,28 @@
         return;
       }
       const sorted = HLS.slice().sort((a, b) => a.page - b.page);
-      list.innerHTML = sorted.map((h) => `
+      list.innerHTML = sorted.map((h) => {
+        const body = (h.type === "image")
+          ? `<div class="hl-img-wrap" data-hid="${esc(h.hid)}"><div class="hl-img-ph">🖼 이미지 불러오는 중…</div></div>`
+          : `<div>${esc(h.text)}</div>`;
+        const tag = (h.type === "image") ? ` · ✂️ 캡처` : "";
+        return `
         <div class="hl-item ${esc(h.color || "yellow")}${delMode ? " selectable" : ""}${SELECTED.has(h.hid) ? " sel" : ""}" data-hid="${esc(h.hid)}" data-page="${h.page}">
           <div class="hl-head">
             ${delMode ? `<input type="checkbox" class="hl-chk"${SELECTED.has(h.hid) ? " checked" : ""}>` : ""}
-            <span class="pg">p.${h.page}${(h.rects && h.rects.length) ? "" : " · 위치없음"}</span>
+            <span class="pg">p.${h.page}${tag}${(h.rects && h.rects.length) ? "" : " · 위치없음"}</span>
           </div>
-          <div>${esc(h.text)}</div>
-        </div>`).join("");
+          ${body}
+        </div>`;
+      }).join("");
+      // 이미지 캡처는 vault에서 지연 로드
+      for (const h of sorted) {
+        if (h.type !== "image" || !h.clip) continue;
+        fetchImageDataURL(h.clip).then((url) => {
+          const el = list.querySelector(`.hl-img-wrap[data-hid="${h.hid}"]`);
+          if (el) el.innerHTML = url ? `<img src="${url}" alt="캡처">` : `<div class="hl-img-ph">이미지 없음</div>`;
+        }).catch(() => {});
+      }
       list.querySelectorAll(".hl-item").forEach((it) => {
         it.onclick = () => {
           const hid = it.dataset.hid;
@@ -140,7 +154,8 @@
     document.getElementById("copyBtn").onclick = async () => {
       if (!HLS.length) return;
       const sorted = HLS.slice().sort((a, b) => a.page - b.page);
-      const md = `# ${TITLE}\n\n` + sorted.map((h) => `> (p.${h.page}) ${h.text}`).join("\n\n");
+      const md = `# ${TITLE}\n\n` + sorted.map((h) =>
+        `> (p.${h.page}) ${h.type === "image" ? "[이미지 캡처]" : h.text}`).join("\n\n");
       try { await navigator.clipboard.writeText(md); toast("복사됨"); }
       catch { toast("복사 실패"); }
     };

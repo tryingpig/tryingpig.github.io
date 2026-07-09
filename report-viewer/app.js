@@ -73,6 +73,44 @@ async function loadPdf(pdfPath) {
   return await res.arrayBuffer();
 }
 
+/* Blob → base64 문자열 (data URI 접두 제거) */
+function blobToBase64(blob) {
+  return new Promise((resolve, reject) => {
+    const fr = new FileReader();
+    fr.onload = () => resolve(String(fr.result).split(",")[1] || "");
+    fr.onerror = reject;
+    fr.readAsDataURL(blob);
+  });
+}
+
+/* Blob → data URL (이미지 표시용) */
+function blobToDataURL(blob) {
+  return new Promise((resolve, reject) => {
+    const fr = new FileReader();
+    fr.onload = () => resolve(fr.result);
+    fr.onerror = reject;
+    fr.readAsDataURL(blob);
+  });
+}
+
+/* 바이너리 파일(이미지 캡처 등)을 vault에 PUT. hid로 경로가 유일하므로 sha 불필요(신규) */
+async function putBinaryFile(path, blob, message) {
+  const content = await blobToBase64(blob);
+  const res = await ghFetch("contents/" + path, {
+    method: "PUT",
+    body: { message: message || ("add " + path), content },
+  });
+  if (!res.ok) throw new Error("파일 업로드 실패: " + res.status);
+  return await res.json();
+}
+
+/* vault의 이미지 파일을 받아 data URL로 (모아보기 캡처 표시용) */
+async function fetchImageDataURL(path) {
+  const res = await ghFetch("contents/" + path, { accept: "application/vnd.github.raw" });
+  if (!res.ok) return null;
+  return await blobToDataURL(await res.blob());
+}
+
 /* annotations 로드 → {sha, data}. 없으면 sha=null, 빈 배열 */
 async function loadAnnotations(reportId) {
   const res = await ghFetch("contents/annotations/" + reportId + ".json");

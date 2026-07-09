@@ -42,6 +42,7 @@
     let readingBuilt = false;
     let mode = "pdf";         // "pdf" | "reading"
     const pageItems = {};     // pageNo -> [{str,x,y,w,h}] 정규화 좌표 (텍스트↔좌표 역산용)
+    const pageSnap = {};      // pageNo -> [{x,y,w,h}] 정규화 (표/그림 캡처 탭 스냅 후보)
     const START_MODE = (params.get("mode") === "read") ? "reading" : "pdf";
 
     function esc(s) {
@@ -193,7 +194,7 @@
         if (hl.page !== pageNo) continue;
         for (const r of hl.rects) {
           const div = document.createElement("div");
-          div.className = "hl-rect " + (hl.color || "yellow");
+          div.className = "hl-rect " + (hl.color || "yellow") + (hl.type === "image" ? " hl-img" : "");
           div.style.left = r.x * w + "px";
           div.style.top = r.y * h + "px";
           div.style.width = r.w * w + "px";
@@ -435,6 +436,9 @@
         }
       }, { rootMargin: "800px 0px" });
       rdC.querySelectorAll(".rd-pageimg").forEach((w) => io.observe(w));
+      rdC.querySelectorAll(".rd-capture").forEach((b) => {
+        b.onclick = () => startCapture(parseInt(b.dataset.page, 10));
+      });
     }
 
     function joinItems(its) {
@@ -466,11 +470,13 @@
         items.push({ str: it.str, x: tx[4] / W, y: (tx[5] - fh) / vp.height, w: w / W, h: fh / vp.height });
       }
       pageItems[pageNo] = items;
+      pageSnap[pageNo] = [];
       if (!raw.length) {
         const imgH0 = Math.round(Math.min(window.innerWidth - 36, 820) * vp.height / vp.width);
         container.insertAdjacentHTML("beforeend",
           `<div class="rd-page" data-page="${pageNo}"><div class="rd-pageno">p.${pageNo}</div>` +
-          `<div class="rd-pageimg" data-page="${pageNo}" style="min-height:${imgH0}px"></div></div>`);
+          `<div class="rd-pageimg" data-page="${pageNo}" style="min-height:${imgH0}px"></div>` +
+          `<button class="rd-capture" data-page="${pageNo}">✂️ 이미지 캡처</button></div>`);
         return;
       }
 
@@ -484,6 +490,10 @@
 
       // 우측 데이터 사이드바(기업코멘트: 좌=본문, 우=Buy/재무 박스) 감지
       const sb = detectRightSidebar(raw, W, vp.height);
+      // 캡처 탭 스냅 후보: 표/그림 밴드(전폭) + 우측 데이터 박스 (정규화)
+      const snaps = figBands.map((b) => ({ x: 0, y: b.top / vp.height, w: 1, h: (b.bottom - b.top) / vp.height }));
+      if (sb) snaps.push({ x: sb.x / W, y: sb.top / vp.height, w: (W - sb.x) / W, h: (sb.bot - sb.top) / vp.height });
+      pageSnap[pageNo] = snaps;
       let els = [];
       if (sb) {
         // 사이드밴드의 우측 아이템 제거 → 좌측 본문만 깨끗이 리플로우
@@ -521,6 +531,7 @@
       const imgH = Math.round(Math.min(window.innerWidth - 36, 820) * vp.height / vp.width);
       let html = `<div class="rd-pageno">p.${pageNo}</div>`;
       html += `<div class="rd-pageimg" data-page="${pageNo}" style="min-height:${imgH}px"></div>`;
+      html += `<button class="rd-capture" data-page="${pageNo}">✂️ 이미지 캡처</button>`;
       for (const b of els) {
         if (b.kind === "label") html += `<h4 class="rd-label">${esc(b.text)}</h4>`;
         else if (b.kind === "h") html += `<h3 class="rd-h">${esc(b.text)}</h3>`;
@@ -805,6 +816,130 @@
       wrap._rendered = false;
       wrap.innerHTML = "";
       renderPageInto(wrap);
+    }
+
+    /* ── 이미지 캡처: 페이지 이미지에서 영역 선택 → clip 저장 → 이미지 하이라이트 ── */
+    async function startCapture(pageNo) {
+      const wrap = document.querySelector(`#readingContainer .rd-pageimg[data-page="${pageNo}"]`);
+      if (!wrap) return;
+      if (wrap._captureEls) { closeCapture(wrap); return; }   // 토글: 이미 열려 있으면 닫기
+      // 이미지가 아직 없으면(접힘/미렌더) 먼저 렌더
+      if (!wrap.querySelector("img.rd-pagecanvas")) {
+        wrap._collapsed = false; wrap._rendered = false; wrap.innerHTML = "";
+        await renderPageInto(wrap);
+      }
+      const img = wrap.querySelector("img.rd-pagecanvas");
+      if (!img) { toast("이미지 준비 중이에요"); return; }
+      openCaptureOverlay(pageNo, wrap);
+    }
+
+    function closeCapture(wrap) {
+      if (wrap._captureEls) wrap._captureEls.forEach((el) => el.remove());
+      wrap._captureEls = null;
+      wrap.style.position = "";
+    }
+
+    function openCaptureOverlay(pageNo, wrap) {
+      wrap.style.position = "relative";
+      const ov = document.createElement("div");
+      ov.className = "capture-overlay";
+      const box = document.createElement("div");
+      box.className = "capture-box";
+      box.style.display = "none";
+      ov.appendChild(box);
+      const bar = document.createElement("div");
+      bar.className = "capture-bar";
+      bar.innerHTML = `<span>드래그로 영역 선택 · 표/그림은 탭</span><button class="capture-cancel">✕</button>`;
+      wrap.appendChild(ov);
+      wrap.appendChild(bar);
+      bar.querySelector(".capture-cancel").onclick = () => closeCapture(wrap);
+      wrap._captureEls = [ov, bar];
+
+      const setBox = (x, y, w, h) => {
+        box.style.left = x + "px"; box.style.top = y + "px";
+        box.style.width = w + "px"; box.style.height = h + "px";
+      };
+      const xy = (e) => {
+        const r = ov.getBoundingClientRect();
+        return {
+          x: Math.max(0, Math.min(r.width, e.clientX - r.left)),
+          y: Math.max(0, Math.min(r.height, e.clientY - r.top)),
+          W: r.width, H: r.height,
+        };
+      };
+      let sx = 0, sy = 0, drawing = false, moved = false;
+      ov.addEventListener("pointerdown", (e) => {
+        e.preventDefault();
+        const p = xy(e); sx = p.x; sy = p.y; drawing = true; moved = false;
+        box.style.display = "block"; setBox(sx, sy, 0, 0);
+        ov.setPointerCapture(e.pointerId);
+      });
+      ov.addEventListener("pointermove", (e) => {
+        if (!drawing) return;
+        const p = xy(e);
+        if (Math.abs(p.x - sx) > 6 || Math.abs(p.y - sy) > 6) moved = true;
+        setBox(Math.min(sx, p.x), Math.min(sy, p.y), Math.abs(p.x - sx), Math.abs(p.y - sy));
+      });
+      ov.addEventListener("pointerup", (e) => {
+        if (!drawing) return; drawing = false;
+        const r = ov.getBoundingClientRect();
+        let rect = null;
+        if (!moved) {
+          // 탭 → 그 지점을 포함하는 표/그림 밴드로 스냅
+          const px = sx / r.width, py = sy / r.height;
+          const s = (pageSnap[pageNo] || []).find((z) => px >= z.x && px <= z.x + z.w && py >= z.y && py <= z.y + z.h);
+          if (!s) { box.style.display = "none"; toast("표/그림 위를 탭하거나 드래그하세요"); return; }
+          rect = s;
+          setBox(s.x * r.width, s.y * r.height, s.w * r.width, s.h * r.height);
+        } else {
+          const bw = parseFloat(box.style.width), bh = parseFloat(box.style.height);
+          if (bw < 12 || bh < 12) { box.style.display = "none"; return; }
+          rect = { x: parseFloat(box.style.left) / r.width, y: parseFloat(box.style.top) / r.height,
+                   w: bw / r.width, h: bh / r.height };
+        }
+        const br = box.getBoundingClientRect();
+        showColorPopup(br.left + br.width / 2, br.bottom, (color) => {
+          closeCapture(wrap);
+          captureRegion(pageNo, rect, color);
+        });
+      });
+    }
+
+    /* 선택 영역만 PDF에서 고배율 렌더 → JPEG blob */
+    async function renderRegionBlob(pageNo, rect) {
+      const page = await pdfDoc.getPage(pageNo);
+      const base = page.getViewport({ scale: 1 });
+      const cropWpts = Math.max(1, rect.w * base.width);
+      const scale = Math.max(1.5, Math.min(5, 1200 / cropWpts));
+      const full = page.getViewport({ scale });
+      const rx = rect.x * full.width, ry = rect.y * full.height;
+      const rw = Math.max(1, Math.round(rect.w * full.width));
+      const rh = Math.max(1, Math.round(rect.h * full.height));
+      const vp = page.getViewport({ scale, offsetX: -rx, offsetY: -ry });
+      const canvas = document.createElement("canvas");
+      canvas.width = rw; canvas.height = rh;
+      const ctx = canvas.getContext("2d");
+      ctx.fillStyle = "#fff"; ctx.fillRect(0, 0, rw, rh);   // JPEG는 알파 없음
+      await page.render({ canvasContext: ctx, viewport: vp }).promise;
+      return await new Promise((res) => canvas.toBlob((b) => res(b), "image/jpeg", 0.85));
+    }
+
+    async function captureRegion(pageNo, rect, color) {
+      try {
+        toast("캡처 저장 중…");
+        const blob = await renderRegionBlob(pageNo, rect);
+        const hid = "h_" + Date.now();
+        const clip = `clips/${REPORT_ID}/${hid}.jpg`;
+        await putBinaryFile(clip, blob, `clip: ${REPORT_ID} ${hid}`);
+        const hl = { hid, page: pageNo, type: "image", rects: [rect], clip, color, created_at: nowKst() };
+        highlights.push(hl);
+        if (mode === "pdf") rerenderAllHighlights();
+        persist();
+        toast("캡처 저장됨 · 모아보기에서 확인");
+      } catch (e) {
+        console.error(e);
+        toast("캡처 저장 실패");
+      }
     }
 
     /* ── 읽기 모드 하이라이트 (텍스트 기준) ── */

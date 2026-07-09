@@ -454,6 +454,36 @@
       return out.replace(/\s+/g, " ").trim();
     }
 
+    /* 저해상 렌더로 각 줄의 텍스트 색을 샘플링 → 유채색(빨강/파랑 등)이면 ln.colored=true.
+       broker 리포트의 색 소제목을 크기 대신 색으로 감지(본문은 검정, 소제목은 색). */
+    async function markColoredLines(page, lines, W, H) {
+      for (const ln of lines) ln.colored = false;
+      try {
+        const cw = 400, k = cw / W;
+        const vp = page.getViewport({ scale: k });
+        const cv = document.createElement("canvas");
+        cv.width = Math.ceil(vp.width); cv.height = Math.ceil(vp.height);
+        const ctx = cv.getContext("2d", { willReadFrequently: true });
+        ctx.fillStyle = "#fff"; ctx.fillRect(0, 0, cv.width, cv.height);
+        await page.render({ canvasContext: ctx, viewport: vp }).promise;
+        for (const ln of lines) {
+          const x0 = Math.max(0, Math.floor(Math.min(...ln.items.map((i) => i.x)) * k));
+          const x1 = Math.min(cv.width, Math.ceil(Math.max(...ln.items.map((i) => i.xr)) * k));
+          const y0 = Math.max(0, Math.floor(ln.y * k));
+          const y1 = Math.min(cv.height, Math.ceil((ln.y + ln.h) * k));
+          if (x1 <= x0 || y1 <= y0) continue;
+          const data = ctx.getImageData(x0, y0, x1 - x0, y1 - y0).data;
+          let ink = 0, colored = 0;
+          for (let i = 0; i < data.length; i += 4) {
+            const r = data[i], g = data[i + 1], b = data[i + 2];
+            const mx = Math.max(r, g, b), mn = Math.min(r, g, b);
+            if (mx < 210) { ink++; if (mx - mn > 55) colored++; }   // 잉크 픽셀 중 유채색 비율
+          }
+          ln.colored = ink >= 5 && colored >= ink * 0.33;
+        }
+      } catch (e) { /* 실패 시 색 기준 없이(크기만) */ }
+    }
+
     async function buildPageReading(page, pageNo, container) {
       const vp = page.getViewport({ scale: 1 });
       const W = vp.width;
@@ -482,6 +512,7 @@
 
       const lines = groupLines(raw);
       for (const ln of lines) ln.text = joinItems(ln.items);
+      await markColoredLines(page, lines, W, vp.height);   // 색 소제목 감지
 
       // 캡션(표N/그림N)~자료: 구간을 표/그림으로 인식 → 본문에서 제외하고 이미지로
       const figBands = detectCaptionFigures(lines, vp.height);
@@ -510,19 +541,19 @@
       } else {
         const colX = detectColumnSplit(textLines, W);
         if (colX == null) {
-          const arr = textLines.map((ln) => ({ y: ln.y, h: ln.h, text: ln.text }));
-          els = paraBlocks(arr).map((b) => ({ y: b.y, kind: b.heading ? "h" : "p", text: b.text }));
+          const arr = textLines.map((ln) => ({ y: ln.y, h: ln.h, text: ln.text, colored: ln.colored }));
+          els = paraBlocks(arr).map((b) => ({ y: b.y, kind: b.heading ? "h" : "p", text: b.text, sub: b.colored }));
         } else if (colX < W * 0.34) {
           // 왼쪽 요약 사이드바 + 오른쪽 본문 → 본문 우선: 오른쪽 본문만 살림(요약 라벨은 애매해서 생략)
           const left = [], right = [];
           for (const ln of textLines) splitLine(ln, colX, left, right);
-          els = paraBlocks(right).map((b) => ({ y: b.y, kind: b.heading ? "h" : "p", text: b.text }));
+          els = paraBlocks(right).map((b) => ({ y: b.y, kind: b.heading ? "h" : "p", text: b.text, sub: b.colored }));
         } else {
           // 2단 본문: 왼쪽 컬럼 먼저(그대로), 오른쪽은 뒤로 (y에 큰 오프셋)
           const left = [], right = [];
           for (const ln of textLines) splitLine(ln, colX, left, right);
-          els = paraBlocks(left).map((b) => ({ y: b.y, kind: b.heading ? "h" : "p", text: b.text }))
-            .concat(paraBlocks(right).map((b) => ({ y: 1e9 + b.y, kind: b.heading ? "h" : "p", text: b.text })));
+          els = paraBlocks(left).map((b) => ({ y: b.y, kind: b.heading ? "h" : "p", text: b.text, sub: b.colored }))
+            .concat(paraBlocks(right).map((b) => ({ y: 1e9 + b.y, kind: b.heading ? "h" : "p", text: b.text, sub: b.colored })));
         }
       }
 
@@ -534,7 +565,7 @@
       html += `<button class="rd-capture" data-page="${pageNo}">✂️ 이미지 캡처</button>`;
       for (const b of els) {
         if (b.kind === "label") html += `<h4 class="rd-label">${esc(b.text)}</h4>`;
-        else if (b.kind === "h") html += `<h3 class="rd-h">${esc(b.text)}</h3>`;
+        else if (b.kind === "h") html += `<h3 class="rd-h${b.sub ? " rd-sub" : ""}">${esc(b.text)}</h3>`;
         else html += `<p class="rd-para">${esc(b.text)}</p>`;
       }
       container.insertAdjacentHTML("beforeend", `<div class="rd-page" data-page="${pageNo}">${html}</div>`);
@@ -629,8 +660,8 @@
     function splitLine(ln, colX, left, right) {
       const L = ln.items.filter((it) => (it.x + it.xr) / 2 < colX);
       const R = ln.items.filter((it) => (it.x + it.xr) / 2 >= colX);
-      if (L.length) left.push({ y: ln.y, h: Math.max(...L.map((i) => i.h)), text: joinItems(L) });
-      if (R.length) right.push({ y: ln.y, h: Math.max(...R.map((i) => i.h)), text: joinItems(R) });
+      if (L.length) left.push({ y: ln.y, h: Math.max(...L.map((i) => i.h)), text: joinItems(L), colored: ln.colored });
+      if (R.length) right.push({ y: ln.y, h: Math.max(...R.map((i) => i.h)), text: joinItems(R), colored: ln.colored });
     }
 
     /* 세로 간격 작은 줄들을 한 블록(라벨)으로 */
@@ -655,10 +686,17 @@
       const blocks = [];
       let cur = null, prevY = null, prevH = body;
       for (const ln of texts) {
-        const heading = ln.h > body * 1.35;
+        const heading = ln.colored || ln.h > body * 1.35;   // 색 소제목도 제목으로
         const gap = prevY == null ? 0 : ln.y - prevY;
-        if (heading) { blocks.push({ y: ln.y, heading: true, text: ln.text }); cur = null; }
-        else {
+        if (heading) {
+          const last = blocks[blocks.length - 1];
+          if (last && last.heading && last.colored && ln.colored && gap < prevH * 1.8) {
+            last.text += " " + ln.text;   // 여러 줄 색 소제목 병합
+          } else {
+            blocks.push({ y: ln.y, heading: true, colored: !!ln.colored, text: ln.text });
+          }
+          cur = null;
+        } else {
           if (!cur || (prevY != null && gap > prevH * 1.9)) { cur = { y: ln.y, heading: false, text: ln.text }; blocks.push(cur); }
           else cur.text += " " + ln.text;
         }

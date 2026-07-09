@@ -52,7 +52,9 @@
       "유안타","교보","하이","IBK","DB","SK","이베스트","신영","다올","한화","BNK","유진","현대차","케이프","상상인",
       "iM","IM","아이엠","IR","DS"];
     const BROKER_ALIAS = { "IM": "iM", "아이엠": "iM", "DS": "대신" };
-    const normBroker = (t) => BROKER_ALIAS[t] || t;
+    const NORM = {};   // 소문자 토큰 → 표준 증권사명 (대소문자 무시 + 별칭)
+    for (const b of KNOWN) NORM[b.toLowerCase()] = BROKER_ALIAS[b] || b;
+    for (const k in BROKER_ALIAS) NORM[k.toLowerCase()] = BROKER_ALIAS[k];
 
     const $ = (id) => document.getElementById(id);
     const setStatus = (msg, err) => { const s = $("status"); s.textContent = msg || ""; s.className = "up-status" + (err ? " err" : ""); };
@@ -67,10 +69,10 @@
         date = `20${p.slice(0, 2)}-${p.slice(2, 4)}-${p.slice(4, 6)}`;
         parts = parts.slice(1);
       }
-      const bi = parts.findIndex((t) => KNOWN.includes(t));
+      const bi = parts.findIndex((t) => NORM[t.toLowerCase()]);
       let broker = "미분류", sector = null, title = stem;
       if (bi >= 0) {
-        broker = normBroker(parts[bi]);
+        broker = NORM[parts[bi].toLowerCase()];
         sector = parts.slice(0, bi).join("_") || null;
         title = parts.slice(bi + 1).join(" ") || stem;
       } else if (parts.length >= 2) {

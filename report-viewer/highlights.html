@@ -16,6 +16,11 @@
     <button id="copyBtn">전체 복사</button>
   </div>
   <div class="wrap">
+    <div class="hl-openmode">
+      <span>열기 방식</span>
+      <button class="seg" id="segRead">📖 읽기</button>
+      <button class="seg" id="segPdf">📄 PDF</button>
+    </div>
     <div id="list"><div class="loading">불러오는 중…</div></div>
   </div>
   <div class="toast" id="toast"></div>
@@ -26,6 +31,13 @@
     const REPORT_ID = params.get("id");
     let HLS = [], TITLE = REPORT_ID, ANNO_SHA = null;
     const DELETED = new Set();
+    let OPEN_MODE = localStorage.getItem("rv_hl_open_mode") || "read";   // 하이라이트 클릭 시 열기 방식
+
+    function renderSeg() {
+      document.getElementById("segRead").classList.toggle("active", OPEN_MODE === "read");
+      document.getElementById("segPdf").classList.toggle("active", OPEN_MODE === "pdf");
+    }
+    function setOpenMode(m) { OPEN_MODE = m; localStorage.setItem("rv_hl_open_mode", m); renderSeg(); }
 
     function esc(s) {
       return (s == null ? "" : String(s)).replace(/[&<>"]/g, (c) =>
@@ -80,7 +92,9 @@
             if (chk) chk.checked = SELECTED.has(hid);
             updateBar();
           } else {
-            location.href = `viewer.html?id=${encodeURIComponent(REPORT_ID)}&page=${it.dataset.page}`;
+            const modeParam = OPEN_MODE === "pdf" ? "" : "&mode=read";
+            location.href = `viewer.html?id=${encodeURIComponent(REPORT_ID)}`
+              + `&hl=${encodeURIComponent(hid)}&page=${it.dataset.page}${modeParam}`;
           }
         };
       });
@@ -159,6 +173,10 @@
       try { await navigator.clipboard.writeText(md); toast("복사됨"); }
       catch { toast("복사 실패"); }
     };
+
+    document.getElementById("segRead").onclick = () => setOpenMode("read");
+    document.getElementById("segPdf").onclick = () => setOpenMode("pdf");
+    renderSeg();
 
     requirePat(load);
   </script>

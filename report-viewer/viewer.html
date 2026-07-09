@@ -29,6 +29,7 @@
     const params = new URLSearchParams(location.search);
     const REPORT_ID = params.get("id");
     const GOTO_PAGE = parseInt(params.get("page") || "0", 10);
+    const GOTO_HL = params.get("hl") || "";   // 모아보기에서 특정 하이라이트로 점프
 
     document.getElementById("hlLink").href = "highlights.html?id=" + encodeURIComponent(REPORT_ID);
 
@@ -96,10 +97,12 @@
           await setMode("reading");   // 목록에서 '읽기'로 바로 진입 → PDF 캔버스는 지연
         } else {
           await ensurePdfRendered();
-          if (GOTO_PAGE > 0) {
-            const el = document.querySelector(`.page-wrap[data-page="${GOTO_PAGE}"]`);
-            if (el) el.scrollIntoView();
-          }
+        }
+        // 특정 하이라이트/페이지로 점프 (모아보기에서 진입)
+        if (GOTO_HL) gotoHighlight(GOTO_HL, GOTO_PAGE);
+        else if (GOTO_PAGE > 0 && mode === "pdf") {
+          const el = document.querySelector(`.page-wrap[data-page="${GOTO_PAGE}"]`);
+          if (el) el.scrollIntoView();
         }
       } catch (err) {
         handleError(err, start);
@@ -401,6 +404,24 @@
           // 충돌이면 루프 재시도(최신 sha 재조회)
         } catch (e) { console.warn("count 갱신 생략", e); return; }
       }
+    }
+
+    /* 특정 하이라이트로 스크롤 + 잠깐 강조. 요소가 아직 없으면 페이지로 폴백. */
+    function gotoHighlight(hid, fallbackPage) {
+      const sel = (mode === "reading")
+        ? `#readingContainer mark.rd-hl[data-hid="${hid}"]`
+        : `.hlLayer .hl-rect[data-hid="${hid}"]`;
+      let el = document.querySelector(sel);
+      if (!el && fallbackPage > 0) {
+        el = (mode === "reading")
+          ? document.querySelector(`#readingContainer .rd-page[data-page="${fallbackPage}"]`)
+          : document.querySelector(`.page-wrap[data-page="${fallbackPage}"]`);
+      }
+      if (!el) return;
+      el.scrollIntoView({ block: "center", behavior: "smooth" });
+      const flashEl = el.closest("mark.rd-hl, .hl-rect, .rd-page, .page-wrap") || el;
+      flashEl.classList.add("hl-flash");
+      setTimeout(() => flashEl.classList.remove("hl-flash"), 1600);
     }
 
     /* ── 읽기 모드 (텍스트 리플로우) ── */

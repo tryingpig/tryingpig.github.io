@@ -28,6 +28,12 @@
       <input type="date" id="qTo" class="s-input s-date" title="발행일 종료">
       <label class="s-chk"><input type="checkbox" id="qHl"> ✏️ 하이라이트</label>
       <div class="spacer"></div>
+      <select id="qSort" class="s-input" title="정렬 기준">
+        <option value="pub">📅 발행일순</option>
+        <option value="up">📥 수집순</option>
+        <option value="hl">✏️ 하이라이트순</option>
+        <option value="title">🔤 제목순</option>
+      </select>
       <button id="resetBtn" class="s-reset">초기화</button>
       <button id="searchBtn" class="s-search">🔍 검색</button>
     </div>
@@ -38,6 +44,7 @@
   <script>
     let ALL = [];
     let FILTER = { title: "", broker: "", from: "", to: "", onlyHl: false };
+    let SORT = "pub";   // pub=발행일 · up=수집순 · hl=하이라이트 · title=제목
     let delMode = false;
     const SELECTED = new Set();
 
@@ -71,11 +78,13 @@
 
     function resetSearch() {
       FILTER = { title: "", broker: "", from: "", to: "", onlyHl: false };
+      SORT = "pub";
       document.getElementById("qTitle").value = "";
       document.getElementById("qBroker").value = "";
       document.getElementById("qFrom").value = "";
       document.getElementById("qTo").value = "";
       document.getElementById("qHl").checked = false;
+      document.getElementById("qSort").value = "pub";
       renderList();
     }
 
@@ -88,6 +97,16 @@
       if (FILTER.from) rows = rows.filter((r) => cardDate(r) >= FILTER.from);
       if (FILTER.to) rows = rows.filter((r) => cardDate(r) <= FILTER.to);
       if (FILTER.onlyHl) rows = rows.filter((r) => (r.highlight_count || 0) > 0);
+
+      const CMP = {
+        pub: (a, b) => (cardDate(b) || "").localeCompare(cardDate(a) || "") ||
+                       (b.uploaded_at || "").localeCompare(a.uploaded_at || ""),
+        up: (a, b) => (b.uploaded_at || "").localeCompare(a.uploaded_at || ""),
+        hl: (a, b) => ((b.highlight_count || 0) - (a.highlight_count || 0)) ||
+                      (cardDate(b) || "").localeCompare(cardDate(a) || ""),
+        title: (a, b) => (a.title || "").localeCompare(b.title || "", "ko"),
+      };
+      rows.sort(CMP[SORT] || CMP.pub);
 
       const list = document.getElementById("list");
       if (!rows.length) {
@@ -250,6 +269,9 @@
 
     document.getElementById("searchBtn").onclick = applySearch;
     document.getElementById("resetBtn").onclick = resetSearch;
+    document.getElementById("qSort").addEventListener("change", (e) => {
+      SORT = e.target.value; renderList();     // 정렬은 선택 즉시 반영
+    });
     document.getElementById("qTitle").addEventListener("keydown", (e) => {
       if (e.key === "Enter") applySearch();
     });

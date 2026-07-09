@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>휴젤 밸류체인 — 균주에서 얼굴까지</title>
+<style>
+  :root{--accent:#7c3aed;--accent-dark:#6d28d9;--light:#ede9fe;--light2:#f5f3ff;--gray:#595959;--line:#ddd0f5;--ink:#1d2733;--kr:#6d28d9;}
+  *{box-sizing:border-box;}
+  body{font-family:"Malgun Gothic","맑은 고딕",-apple-system,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;color:var(--ink);line-height:1.75;margin:0;background:#f5f6f8;font-size:16px;}
+  .page{max-width:840px;margin:24px auto;background:#fff;padding:56px 62px;box-shadow:0 1px 8px rgba(0,0,0,.08);}
+  h1{color:var(--accent-dark);font-size:1.46rem;border-bottom:3px solid var(--accent);padding-bottom:8px;margin:2.2em 0 .7em;}h1:first-of-type{margin-top:.3em;}
+  h2{color:var(--accent);font-size:1.16rem;margin:1.5em 0 .45em;}
+  p{margin:.6em 0;}ul,ol{margin:.4em 0 .95em;padding-left:1.35em;}li{margin:.36em 0;}
+  .em{color:var(--accent-dark);font-weight:700;}.kr{color:var(--kr);font-weight:700;}.muted{color:var(--gray);font-size:.9rem;}
+  .callout{background:var(--light);border:1px solid var(--accent);border-left:6px solid var(--accent);border-radius:4px;padding:14px 18px;margin:1.1em 0;}
+  .callout .ct{font-weight:700;color:var(--accent-dark);margin-bottom:6px;}.callout p{margin:.35em 0;font-size:.96rem;}
+  table{border-collapse:collapse;width:100%;margin:1em 0;font-size:.84rem;}
+  th{background:var(--accent);color:#fff;font-weight:700;padding:9px 10px;text-align:center;border:1px solid var(--line);}
+  td{padding:8px 10px;border:1px solid var(--line);vertical-align:top;text-align:left;}td:first-child{font-weight:700;background:#f5f3ff;text-align:center;}
+  tbody tr:nth-child(even) td{background:var(--light2);}
+  .cover{text-align:center;padding:96px 0 66px;}.cover .big{font-size:2.15rem;font-weight:800;color:var(--accent-dark);line-height:1.3;}
+  .cover .sub{font-size:1.12rem;color:var(--accent);margin-top:14px;}.cover .sub2{font-size:1rem;color:var(--gray);margin-top:22px;}.cover .date{font-size:.88rem;color:var(--gray);margin-top:50px;}
+  a{color:var(--accent-dark);word-break:break-all;}.src{font-size:.83rem;}
+  figure{margin:1.5em 0;text-align:center;}figure svg{width:100%;max-width:760px;height:auto;display:block;margin:0 auto;}figcaption{font-size:.85rem;color:var(--gray);margin-top:8px;}
+  @media print{body{background:#fff;font-size:11pt;}.page{box-shadow:none;margin:0;max-width:none;padding:0;}.pb{page-break-before:always;}}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="cover">
+    <div class="big">휴젤 밸류체인</div>
+    <div class="sub">균주에서 얼굴까지 — 톡신은 어떻게 돈이 되나</div>
+    <div class="sub2">원료·균주 → 생산 → 규제 허가 → 유통 → 시술</div>
+    <div class="date">2026년 7월 9일 작성 · 휴젤 세트 ①-3(밸류체인)</div>
+  </div>
+
+  <div class="pb"></div>
+  <h1>1. 들어가며 — 밸류체인으로 보면 '해자'가 보인다</h1>
+  <p>휴젤 같은 톡신 기업의 강점은 밸류체인의 <span class="em">어느 길목을 틀어쥐고 있느냐</span>로 설명돼요. 톡신은 원료(균이 만든 단백질)가 극소량이라 원가가 낮은 대신, <span class="kr">균주 확보·생산 기술·규제 허가</span>라는 세 개의 문턱이 아주 높습니다. 이 문서는 그 사슬을 따라가며 휴젤이 어디에서 가치를 만들고, 어디에 리스크가 있는지 정리해요.</p>
+
+  <h1>2. 전체 지도</h1>
+  <figure><svg viewBox="0 0 720 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="밸류체인">
+    <style>.t{font-family:'Malgun Gothic',sans-serif;}.ln{font-size:12.5px;font-weight:700;fill:#fff;}.rl{font-size:10.5px;fill:#1d2733;}.kr{font-size:10.5px;fill:#6d28d9;font-weight:700;}.hd{font-size:12px;font-weight:700;fill:#6d28d9;}</style>
+    <text class="t hd" x="120" y="20" text-anchor="middle">단계</text><text class="t hd" x="345" y="20" text-anchor="middle">내용</text><text class="t hd" x="575" y="20" text-anchor="middle">문턱·비고</text>
+    <rect x="14" y="32" width="200" height="48" rx="6" fill="#4c1d95"/><text class="t ln" x="114" y="60" text-anchor="middle">① 균주·원료</text>
+    <rect x="222" y="32" width="230" height="48" rx="6" fill="#ede9fe"/><text class="t rl" x="232" y="52">보툴리눔 균주 확보·배양</text><text class="t rl" x="232" y="70">→ 톡신 단백질 정제</text>
+    <rect x="460" y="32" width="246" height="48" rx="6" fill="#f5f3ff"/><text class="t kr" x="470" y="60">균주 확보=업의 출발점(소송 쟁점)</text>
+    <rect x="14" y="88" width="200" height="48" rx="6" fill="#5b21b6"/><text class="t ln" x="114" y="116" text-anchor="middle">② 생산·제형</text>
+    <rect x="222" y="88" width="230" height="48" rx="6" fill="#ede9fe"/><text class="t rl" x="232" y="108">동결건조·바이알 충전</text><text class="t rl" x="232" y="126">GMP 대량 생산(춘천 등)</text>
+    <rect x="460" y="88" width="246" height="48" rx="6" fill="#f5f3ff"/><text class="t kr" x="470" y="116">생산능력·품질관리(cGMP)</text>
+    <rect x="14" y="144" width="200" height="56" rx="6" fill="#6d28d9"/><text class="t ln" x="114" y="168" text-anchor="middle">③ 규제 허가</text><text class="t ln" x="114" y="188" text-anchor="middle" font-size="10">★핵심 관문</text>
+    <rect x="222" y="144" width="230" height="56" rx="6" fill="#ede9fe"/><text class="t rl" x="232" y="166">FDA·NMPA·EMA·식약처</text><text class="t rl" x="232" y="186">국가별 임상·허가</text>
+    <rect x="460" y="144" width="246" height="56" rx="6" fill="#f5f3ff"/><text class="t kr" x="470" y="168">미·중·유 3대 허가 보유</text><text class="t kr" x="470" y="188">= 휴젤의 최대 해자</text>
+    <rect x="14" y="208" width="200" height="48" rx="6" fill="#7c3aed"/><text class="t ln" x="114" y="236" text-anchor="middle">④ 유통·판매</text>
+    <rect x="222" y="208" width="230" height="48" rx="6" fill="#ede9fe"/><text class="t rl" x="232" y="228">국내 직판 / 해외 파트너·직판</text><text class="t rl" x="232" y="246">(미국 BENEV·Hugel America)</text>
+    <rect x="460" y="208" width="246" height="48" rx="6" fill="#f5f3ff"/><text class="t kr" x="470" y="236">직판 전환 → 마진↑ 관건</text>
+    <rect x="14" y="264" width="200" height="48" rx="6" fill="#8b5cf6"/><text class="t ln" x="114" y="292" text-anchor="middle">⑤ 시술·소비</text>
+    <rect x="222" y="264" width="484" height="48" rx="6" fill="#ede9fe"/><text class="t rl" x="240" y="292" text-anchor="middle">피부과·성형외과 등 병·의원 → 최종 소비자(반복 재구매)</text>
+    <text class="t" x="360" y="338" text-anchor="middle" font-size="11" fill="#595959">③규제 허가가 사슬 전체의 병목이자 해자 — 휴젤은 3대 시장을 모두 통과</text>
+  </svg><figcaption>그림 1. 톡신 밸류체인과 휴젤의 위치. ③규제 관문 통과력이 경쟁의 핵심.</figcaption></figure>
+
+  <h1>3. 단계별 상세</h1>
+  <h2>① 균주·원료 — 업(業)의 출발점</h2>
+  <p>톡신은 <span class="em">보툴리눔 균</span>이 만들어내는 단백질이에요. 그래서 <span class="kr">'어떤 균주를 갖고 있느냐'</span>가 회사의 근본입니다. 균주는 극소량으로도 대량의 제품을 만들 수 있어 원가는 낮지만, 균주의 <span class="em">출처·소유권</span>은 업계 소송의 핵심 쟁점이 되어 왔어요(뒤 5절 참고).</p>
+  <h2>② 생산·제형 — 눈에 안 보이는 경쟁력</h2>
+  <p>정제한 톡신을 <span class="em">동결건조 분말</span>로 만들어 바이알에 충전합니다. 이 과정은 <span class="kr">GMP(우수 제조·품질 관리)</span> 기준을 충족해야 하고, 미국 판매를 위해선 더 엄격한 <span class="em">cGMP</span>가 필요해요. 안정적인 대량 생산과 품질 균일성은 눈에 잘 안 띄지만 강력한 진입장벽입니다.</p>
+  <h2>③ 규제 허가 — 진짜 해자</h2>
+  <p>같은 제품이라도 나라마다 <span class="em">임상시험과 허가</span>를 새로 받아야 팔 수 있어요. 이 문턱이 수년~십수 년 걸리기 때문에, 허가 자체가 곧 <span class="kr">경쟁자를 막는 벽</span>이 됩니다. 휴젤은 <span class="em">미국(FDA)·중국(NMPA)·유럽(EMA)</span> 3대 시장을 모두 통과한 유일한 한국 기업이라, 이 단계에서 가장 큰 가치를 확보하고 있습니다.</p>
+  <h2>④ 유통·판매 — 마진의 갈림길</h2>
+  <p>해외는 초기에 <span class="em">현지 파트너</span>를 통해 팔다가, 시장이 열리면 <span class="kr">직접 판매(직판)</span>로 전환해 중간 마진을 회사가 가져가는 게 이상적이에요. 휴젤이 미국에서 <span class="em">'하이브리드 세일즈(파트너+직판)'</span>로 넘어가려는 이유가 이 마진 때문입니다.</p>
+  <h2>⑤ 시술·소비 — 반복 구매의 힘</h2>
+  <p>최종 수요는 피부과·성형외과의 시술이에요. 효과가 3~6개월이라 소비자가 <span class="em">반복해서 재방문·재구매</span>하고, 이게 병원의 재주문 → 휴젤 매출로 이어지는 <span class="kr">'리필 사이클'</span>을 만듭니다.</p>
+
+  <h1>4. 국내외 경쟁 지형</h1>
+  <table><thead><tr><th>구분</th><th>대표 기업·제품</th><th>포지션</th></tr></thead><tbody>
+    <tr><td>글로벌 3강</td><td>애브비(보톡스)·멀츠(제오민)·입센(디스포트)</td><td>합산 점유율 85~93% 추정, 치료 영역까지 강함</td></tr>
+    <tr><td>한국 3사</td><td>휴젤·메디톡스·대웅제약(나보타)</td><td>가격·품질로 글로벌 침투, 미국 진출 경쟁</td></tr>
+    <tr><td>필러(HA)</td><td>앨러간(쥬비덤)·갈더마 vs 휴젤(더채움)</td><td>톡신 고객에 교차 판매 가능</td></tr>
+  </tbody></table>
+
+  <h1>5. 핵심 길목(초크포인트)과 리스크</h1>
+  <ul>
+    <li><span class="em">규제 허가:</span> 사슬 전체의 병목이자 최대 해자. 신규 시장·적응증 허가가 성장을 좌우.</li>
+    <li><span class="em">균주 분쟁:</span> 균주·영업비밀을 둘러싼 소송이 업계 리스크. 휴젤은 메디톡스와의 미국 ITC 소송에서 <span class="kr">승소</span>했으나, 관련 법적 이슈는 업계 전반의 변수로 남아 있음.</li>
+    <li><span class="em">직판 전환:</span> 파트너→직판 이동이 성공하면 마진↑, 실패·지연되면 기대 하회.</li>
+    <li><span class="em">국내 저가 경쟁:</span> 국산 공급 과잉으로 내수 판가 하락 압박.</li>
+  </ul>
+  <div class="callout"><div class="ct">한 줄 요약</div><p>휴젤은 톡신 밸류체인에서 <strong>'규제 허가'라는 가장 높은 관문을 3대 시장에서 모두 통과</strong>한 회사예요. 앞으로의 가치는 <strong>①신규 허가 확장 × ②직판을 통한 마진 개선 × ③리필 사이클의 지속</strong>에 달려 있습니다.</p></div>
+
+  <h1>6. 함께 보면 좋은 문서</h1>
+  <p class="muted">톡신의 작용 원리·시장 전체 그림은 이 세트의 두 번째 주제 <span class="em">'보툴리눔 톡신 입문 세트(입문·투자·밸류체인)'</span>에서 더 깊게 다룹니다.</p>
+
+  <h1>출처</h1>
+  <ol class="src">
+    <li>더구루 — 글로벌 보툴리눔 시장·K-톡신 3사 — <a href="https://www.theguru.co.kr/news/article.html?no=89658">link</a></li>
+    <li>서울경제 — 메디톡스·휴젤 美 ITC 소송(균주 쟁점) — <a href="https://m.sedaily.com/article/13781496">link</a></li>
+    <li>PR Newswire — Letybo 미국 상업화(BENEV·Hugel) — <a href="https://www.prnewswire.com/news-releases/benev-company-inc-and-hugel-inc-are-pleased-to-announce-that-letybo-letibotulinumtoxina-wlbg-is-now-fully-commercialized-in-the-us-marking-a-significant-milestone-in-the-neuromodulator-market-302409966.html">link</a></li>
+    <li>메디포뉴스 — 휴젤 HA필러 더채움 유럽 확대 — <a href="https://www.medifonews.com/news/article.html?no=181580">link</a></li>
+  </ol>
+  <p class="muted"><em>※ 거론 기업·점유율은 밸류체인 위치 설명을 위한 예시이며 수혜·실적을 보장하지 않습니다. 투자 권유가 아닙니다.</em></p>
+</div>
+</body>
+</html>

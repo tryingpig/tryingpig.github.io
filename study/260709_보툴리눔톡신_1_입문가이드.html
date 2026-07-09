@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>보툴리눔 톡신 입문 가이드 — '보톡스'의 모든 것</title>
+<style>
+  :root{--accent:#0d9488;--accent-dark:#0f766e;--light:#d5f5f0;--light2:#f0fbf9;--gray:#595959;--line:#b8e6de;--ink:#1d2733;--kr:#0f766e;}
+  *{box-sizing:border-box;}
+  body{font-family:"Malgun Gothic","맑은 고딕",-apple-system,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;color:var(--ink);line-height:1.75;margin:0;background:#f5f6f8;font-size:16px;}
+  .page{max-width:840px;margin:24px auto;background:#fff;padding:56px 62px;box-shadow:0 1px 8px rgba(0,0,0,.08);}
+  h1{color:var(--accent-dark);font-size:1.46rem;border-bottom:3px solid var(--accent);padding-bottom:8px;margin:2.2em 0 .7em;}h1:first-of-type{margin-top:.3em;}
+  h2{color:var(--accent);font-size:1.16rem;margin:1.5em 0 .45em;}
+  p{margin:.6em 0;}ul,ol{margin:.4em 0 .95em;padding-left:1.35em;}li{margin:.36em 0;}
+  .em{color:var(--accent-dark);font-weight:700;}.kr{color:var(--kr);font-weight:700;}.muted{color:var(--gray);font-size:.9rem;}
+  .callout{background:var(--light);border:1px solid var(--accent);border-left:6px solid var(--accent);border-radius:4px;padding:14px 18px;margin:1.1em 0;}
+  .callout .ct{font-weight:700;color:var(--accent-dark);margin-bottom:6px;}.callout p{margin:.35em 0;font-size:.96rem;}
+  table{border-collapse:collapse;width:100%;margin:1em 0;font-size:.85rem;}
+  th{background:var(--accent);color:#fff;font-weight:700;padding:9px 10px;text-align:center;border:1px solid var(--line);}
+  td{padding:8px 10px;border:1px solid var(--line);vertical-align:top;text-align:left;}td:first-child{font-weight:700;background:#f0fbf9;text-align:center;}
+  tbody tr:nth-child(even) td{background:var(--light2);}
+  .cover{text-align:center;padding:96px 0 66px;}.cover .big{font-size:2.15rem;font-weight:800;color:var(--accent-dark);line-height:1.3;}
+  .cover .sub{font-size:1.12rem;color:var(--accent);margin-top:14px;}.cover .sub2{font-size:1rem;color:var(--gray);margin-top:22px;}.cover .date{font-size:.88rem;color:var(--gray);margin-top:50px;}
+  a{color:var(--accent-dark);word-break:break-all;}.src{font-size:.83rem;}
+  figure{margin:1.5em 0;text-align:center;}figure svg{width:100%;max-width:760px;height:auto;display:block;margin:0 auto;}figcaption{font-size:.85rem;color:var(--gray);margin-top:8px;}
+  .gallery{display:flex;flex-wrap:wrap;gap:12px;margin:1.2em 0;}
+  .gcard{flex:1 1 210px;border:1px solid var(--line);border-radius:8px;overflow:hidden;background:#fff;}
+  .gcard svg{width:100%;height:150px;display:block;}.gcard .cap{padding:8px 10px;font-size:.82rem;color:var(--gray);border-top:1px solid var(--line);background:#f0fbf9;}
+  @media print{body{background:#fff;font-size:11pt;}.page{box-shadow:none;margin:0;max-width:none;padding:0;}.pb{page-break-before:always;}.gcard{flex:1 1 30%;}}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="cover">
+    <div class="big">보툴리눔 톡신 입문 가이드</div>
+    <div class="sub">흔히 '보톡스'라 부르는 그것, 처음부터 이해하기</div>
+    <div class="sub2">작용 원리 · 종류 · 미용/치료 · 시술 · 브랜드</div>
+    <div class="date">2026년 7월 9일 작성 · 보툴리눔 톡신 세트 ②-1(입문가이드)</div>
+  </div>
+
+  <div class="pb"></div>
+  <div class="callout"><div class="ct">이 문서를 한 줄로</div>
+    <p>보툴리눔 톡신은 <span class="em">특정 세균이 만드는 단백질</span>이에요. 신경이 근육에 보내는 '수축 신호'를 일시적으로 끊어, <span class="em">주름을 펴거나(미용)</span> <span class="em">과도한 근육·땀·통증을 가라앉힙니다(치료)</span>. 효과는 3~6개월이라 <span class="kr">반복 시술</span>이 핵심이고, 이 '반복 구매' 특성이 관련 기업들의 사업 모델을 떠받칩니다.</p></div>
+
+  <h1>1. 보툴리눔 톡신이란?</h1>
+  <p>보툴리눔 톡신(Botulinum Toxin)은 <span class="em">'클로스트리디움 보툴리눔'</span>이라는 세균이 만들어내는 단백질 독소예요. 원래는 식중독(보툴리누스 중독)을 일으키는 위험한 물질이지만, <span class="kr">아주 미량을 정제해 정확한 부위에 주사</span>하면 근육을 일시적으로 이완시키는 의약품이 됩니다. '독을 약으로' 바꾼 대표 사례죠.</p>
+  <p>사람들이 흔히 <span class="em">'보톡스'</span>라고 부르지만, 이는 미국 애브비(옛 앨러간)의 <span class="kr">상표명</span>일 뿐이에요. 볼펜을 '모나미', 대일밴드를 '밴드'라 부르듯, 톡신 전체를 보톡스라 통칭하는 것뿐입니다. 실제로는 휴젤의 <span class="em">보툴렉스/레티보</span>, 대웅의 <span class="em">나보타</span>, 멀츠의 <span class="em">제오민</span> 등 여러 제품이 있어요.</p>
+
+  <h1>2. 어떻게 주름이 펴지나 — 작용 원리</h1>
+  <p>핵심만 말하면, 톡신은 <span class="em">신경 → 근육 신호 전달을 끊습니다.</span> 우리가 인상을 쓰면 신경이 근육에 "수축해!"라는 신호(아세틸콜린이라는 물질)를 보내고, 근육이 움직이며 주름이 잡혀요. 톡신은 이 신호 전달을 막아 근육이 힘을 못 쓰게 하고, 그 위 피부가 펴집니다.</p>
+  <figure><svg viewBox="0 0 720 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="작용 기전">
+    <style>.t{font-family:'Malgun Gothic',sans-serif;}.lb{font-size:11px;fill:#1d2733;}.hd{font-size:12px;font-weight:700;fill:#0f766e;}.sm{font-size:10px;fill:#595959;}</style>
+    <text class="t hd" x="180" y="24" text-anchor="middle">정상: 신호가 전달됨</text>
+    <text class="t hd" x="540" y="24" text-anchor="middle">톡신 주사 후: 신호 차단</text>
+    <line x1="360" y1="40" x2="360" y2="270" stroke="#ddd" stroke-dasharray="4 4"/>
+    <!-- normal -->
+    <rect x="40" y="60" width="110" height="50" rx="8" fill="#0f766e"/><text class="t" x="95" y="90" text-anchor="middle" fill="#fff" font-size="11">신경 말단</text>
+    <circle cx="180" cy="85" r="6" fill="#14b8a6"/><circle cx="205" cy="95" r="6" fill="#14b8a6"/><circle cx="230" cy="80" r="6" fill="#14b8a6"/>
+    <text class="t sm" x="205" y="120" text-anchor="middle">아세틸콜린 방출</text>
+    <rect x="255" y="60" width="80" height="120" rx="8" fill="#5eead4"/><text class="t" x="295" y="125" text-anchor="middle" fill="#0f766e" font-size="11">근육</text>
+    <text class="t lb" x="180" y="210" text-anchor="middle">→ 근육 수축 → 주름 생김</text>
+    <!-- after -->
+    <rect x="400" y="60" width="110" height="50" rx="8" fill="#0f766e"/><text class="t" x="455" y="90" text-anchor="middle" fill="#fff" font-size="11">신경 말단</text>
+    <rect x="520" y="66" width="70" height="38" rx="6" fill="#b5481f"/><text class="t" x="555" y="90" text-anchor="middle" fill="#fff" font-size="10">톡신이 차단</text>
+    <line x1="520" y1="120" x2="560" y2="150" stroke="#b5481f" stroke-width="2"/><text class="t sm" x="600" y="130">SNAP-25 절단</text>
+    <rect x="615" y="60" width="70" height="120" rx="8" fill="#c7f5ec"/><text class="t" x="650" y="125" text-anchor="middle" fill="#0f766e" font-size="11">근육</text>
+    <text class="t lb" x="540" y="210" text-anchor="middle">→ 근육 이완 → 주름 펴짐</text>
+    <text class="t sm" x="360" y="260" text-anchor="middle">효과는 3~5일 후 나타나 10일쯤 최대, 3~6개월 유지 후 서서히 회복</text>
+  </svg><figcaption>그림 1. 톡신은 신경 말단의 'SNAP-25' 단백질을 잘라 아세틸콜린 방출을 막는다.</figcaption></figure>
+  <p>조금 더 들어가면, 톡신은 신경 말단 안에서 <span class="em">'SNARE'</span>라 불리는 단백질 묶음(특히 <span class="kr">SNAP-25</span>)을 잘라버려요. 이 단백질은 아세틸콜린을 담은 주머니를 세포막에 붙여 밖으로 내보내는 역할을 하는데, 이게 잘리면 신호 물질이 나가지 못합니다. 그래서 근육이 신호를 못 받아 이완되는 거예요.</p>
+  <p>중요한 건 이게 <span class="em">'가역적(reversible)'</span>이라는 점이에요. 시간이 지나면 신경이 새 연결을 만들어 기능이 돌아옵니다. 그래서 효과가 영구적이지 않고 <span class="kr">3~6개월 뒤 사라져 다시 맞아야</span> 해요 — 이 점이 사업적으로 반복 매출을 만드는 핵심입니다.</p>
+
+  <h1>3. 종류 — 왜 'A형'만 주로 쓰나</h1>
+  <p>보툴리눔 톡신은 A부터 G까지 여러 유형이 있지만, 의약품으로 상업화된 건 대부분 <span class="em">A형(Type A)</span>이에요. 효과가 강하고 지속시간이 길며 데이터가 많이 쌓여 있기 때문입니다. 일부 B형(치료용)도 쓰이지만 미용 시장은 사실상 A형이 표준이에요.</p>
+  <table>
+    <thead><tr><th>구분</th><th>내용</th></tr></thead>
+    <tbody>
+      <tr><td>주 성분</td><td>A형 보툴리눔 톡신(BoNT-A)이 미용·치료의 표준</td></tr>
+      <tr><td>형태</td><td>동결건조 분말 → 생리식염수로 녹여(희석) 주사</td></tr>
+      <tr><td>단위(Unit)</td><td>용량을 'U(유닛)'로 표기. 제품마다 유닛 기준이 달라 1:1 비교 주의</td></tr>
+      <tr><td>복합/순수</td><td>톡신 외 보호 단백질을 포함(복합형) vs 제거(순수형, 예: 제오민)</td></tr>
+    </tbody>
+  </table>
+
+  <h1>4. 어디에 쓰나 — 미용과 치료</h1>
+  <p>톡신은 크게 <span class="em">미용(에스테틱)</span>과 <span class="em">치료(테라퓨틱)</span> 두 갈래로 쓰여요. 대중에겐 미용이 익숙하지만, 실제로는 치료 영역이 매우 넓고 시장도 큽니다.</p>
+  <table>
+    <thead><tr><th>구분</th><th>대표 용도</th></tr></thead>
+    <tbody>
+      <tr><td>미용</td><td>미간·눈가(눈웃음)·이마 주름, 사각턱(교근) 축소, 종아리, 다한증(땀)</td></tr>
+      <tr><td>치료</td><td>편두통(만성), 눈꺼풀·목 근육 경련, 뇌졸중 후 근육 강직, 과민성 방광, 사시, 침 흘림 등</td></tr>
+    </tbody>
+  </table>
+  <div class="callout"><div class="ct">투자 관점의 포인트</div>
+    <p>미용은 진입이 상대적으로 쉽고 경쟁이 치열한 반면, <span class="em">치료 적응증</span>은 임상·허가 문턱이 높아 <span class="kr">한 번 따면 오래 가는 고부가 시장</span>이에요. 그래서 기업들이 미용에서 번 돈으로 치료 영역 확장을 노립니다. '적응증을 얼마나 넓히느냐'가 성장의 열쇠 중 하나예요.</p></div>
+
+  <h1>5. 시술은 어떻게 이뤄지나</h1>
+  <ol>
+    <li><span class="em">상담·부위 결정:</span> 어느 근육에 얼마를 놓을지 결정(미간, 눈가 등).</li>
+    <li><span class="em">희석:</span> 분말 톡신을 생리식염수로 녹임.</li>
+    <li><span class="em">주사:</span> 가는 바늘로 표적 근육에 소량씩 여러 지점 주사(몇 분 소요).</li>
+    <li><span class="em">발현:</span> 3~5일 후 효과 시작, 10일쯤 최대.</li>
+    <li><span class="em">유지·재시술:</span> 3~6개월 유지 후 서서히 회복 → 재방문.</li>
+  </ol>
+
+  <h1>6. 이렇게 생겼어요 — 제품·시술 이미지</h1>
+  <p class="muted">실제 모습을 도식으로 표현했어요(실사진은 제조사 홈페이지·의학 자료 등에서 확인 가능).</p>
+  <div class="gallery">
+    <div class="gcard"><svg viewBox="0 0 210 150" xmlns="http://www.w3.org/2000/svg"><rect width="210" height="150" fill="#f0fbf9"/><rect x="82" y="34" width="46" height="82" rx="6" fill="#fff" stroke="#0d9488" stroke-width="2"/><rect x="90" y="24" width="30" height="14" rx="3" fill="#0f766e"/><rect x="82" y="92" width="46" height="24" fill="#d5f5f0"/><text x="105" y="132" text-anchor="middle" font-size="10" fill="#595959">톡신 바이알</text></svg><div class="cap">동결건조 분말이 든 유리 바이알</div></div>
+    <div class="gcard"><svg viewBox="0 0 210 150" xmlns="http://www.w3.org/2000/svg"><rect width="210" height="150" fill="#f0fbf9"/><rect x="40" y="66" width="110" height="16" rx="8" fill="#fff" stroke="#0d9488" stroke-width="2"/><rect x="150" y="69" width="26" height="10" rx="5" fill="#5eead4"/><line x1="40" y1="74" x2="20" y2="74" stroke="#0f766e" stroke-width="3"/><path d="M60 66 l0 -8 M80 66 l0 -8" stroke="#14b8a6" stroke-width="2"/><text x="105" y="118" text-anchor="middle" font-size="10" fill="#595959">주사기·미세 바늘</text></svg><div class="cap">희석한 톡신을 담은 주사기</div></div>
+    <div class="gcard"><svg viewBox="0 0 210 150" xmlns="http://www.w3.org/2000/svg"><rect width="210" height="150" fill="#f0fbf9"/><ellipse cx="105" cy="72" rx="42" ry="52" fill="#fff" stroke="#0d9488" stroke-width="2"/><path d="M85 55 q20 -14 40 0" stroke="#94d3ca" stroke-width="3" fill="none"/><circle cx="96" cy="60" r="2.5" fill="#0f766e"/><circle cx="114" cy="60" r="2.5" fill="#0f766e"/><line x1="105" y1="46" x2="118" y2="32" stroke="#5eead4" stroke-width="2"/><line x1="99" y1="47" x2="88" y2="34" stroke="#5eead4" stroke-width="2"/><text x="105" y="138" text-anchor="middle" font-size="10" fill="#595959">미간·눈가·이마</text></svg><div class="cap">얼굴 상부 — 대표 미용 시술 부위</div></div>
+    <div class="gcard"><svg viewBox="0 0 210 150" xmlns="http://www.w3.org/2000/svg"><rect width="210" height="150" fill="#f0fbf9"/><path d="M60 40 L60 110 M60 75 L150 75" stroke="#0d9488" stroke-width="2" fill="none"/><path d="M60 100 Q95 55 150 48" stroke="#0f766e" stroke-width="3" fill="none"/><circle cx="150" cy="48" r="4" fill="#0f766e"/><text x="105" y="132" text-anchor="middle" font-size="10" fill="#595959">효과 곡선(시간)</text></svg><div class="cap">발현→최대→회복의 3~6개월 사이클</div></div>
+  </div>
+
+  <h1>7. 자주 묻는 질문 (FAQ)</h1>
+  <h2>Q. 톡신은 위험한 독 아닌가요?</h2>
+  <p>고농도로는 위험하지만, 의약품은 <span class="em">극미량을 정제·표준화</span>해 안전 범위 안에서 사용해요. 다만 <span class="kr">반드시 의료진</span>이 적정 용량으로 시술해야 합니다.</p>
+  <h2>Q. 왜 계속 맞아야 하나요?</h2>
+  <p>효과가 <span class="em">가역적</span>이라 신경 기능이 3~6개월 뒤 회복되기 때문이에요. 이 반복성이 소비자에겐 번거로움이지만, 기업엔 <span class="kr">안정적 반복 매출</span>이 됩니다.</p>
+  <h2>Q. 필러랑 뭐가 다른가요?</h2>
+  <p>톡신은 <span class="em">'근육을 멈춰' 표정 주름</span>을 펴고, 필러는 <span class="em">'꺼진 곳을 채워' 볼륨·팔자주름</span>을 개선해요. 원리가 달라 함께 쓰기도 합니다(보완재).</p>
+  <h2>Q. 내성이 생기나요?</h2>
+  <p>반복 시술 시 드물게 <span class="em">중화항체</span>가 생겨 효과가 떨어질 수 있어, 순도·단백질 함량을 낮춘 제품들이 개발돼 왔어요.</p>
+
+  <h1>8. 용어 사전</h1>
+  <table>
+    <thead><tr><th>용어</th><th>뜻</th></tr></thead>
+    <tbody>
+      <tr><td>BoNT-A</td><td>A형 보툴리눔 톡신. 미용·치료의 표준 성분.</td></tr>
+      <tr><td>아세틸콜린</td><td>신경이 근육에 '수축' 신호를 전할 때 쓰는 물질.</td></tr>
+      <tr><td>SNARE / SNAP-25</td><td>신호 물질을 세포 밖으로 내보내게 돕는 단백질. 톡신이 이걸 잘라 신호를 막음.</td></tr>
+      <tr><td>유닛(Unit, U)</td><td>톡신 용량 단위. 제품마다 기준이 달라 단순 비교 주의.</td></tr>
+      <tr><td>적응증</td><td>허가된 사용 용도(미간주름, 편두통 등).</td></tr>
+      <tr><td>순수 톡신</td><td>보호 단백질을 제거한 제형(내성 저감 콘셉트).</td></tr>
+    </tbody>
+  </table>
+
+  <h1>출처</h1>
+  <ol class="src">
+    <li>Journal of Neurochemistry(2025) — Botulinum Neurotoxins: History, Mechanism, Applications — <a href="https://onlinelibrary.wiley.com/doi/full/10.1111/jnc.70187">link</a></li>
+    <li>OpenAnesthesia — Botulinum Toxin: Mechanism of Action and Clinical Use — <a href="https://www.openanesthesia.org/keywords/botulinum-toxin-mechanism-of-action-and-clinical-use/">link</a></li>
+    <li>Dr Tim Pearce — The SNARE Complex: Target of Botulinum Toxin — <a href="https://drtimpearce.com/2025/10/02/understanding-the-snare-complex-the-true-target-of-botulinum-toxin/">link</a></li>
+  </ol>
+  <p class="muted"><em>※ 본 문서는 공개 자료를 정리한 교육용 자료로, 의학적 진단·시술 안내나 투자 권유가 아닙니다. 시술은 반드시 전문 의료진과 상담하세요.</em></p>
+</div>
+</body>
+</html>

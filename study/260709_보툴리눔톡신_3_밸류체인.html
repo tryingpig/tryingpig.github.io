@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>보툴리눔 톡신 밸류체인 — 균에서 시술까지</title>
+<style>
+  :root{--accent:#0d9488;--accent-dark:#0f766e;--light:#d5f5f0;--light2:#f0fbf9;--gray:#595959;--line:#b8e6de;--ink:#1d2733;--kr:#0f766e;}
+  *{box-sizing:border-box;}
+  body{font-family:"Malgun Gothic","맑은 고딕",-apple-system,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;color:var(--ink);line-height:1.75;margin:0;background:#f5f6f8;font-size:16px;}
+  .page{max-width:840px;margin:24px auto;background:#fff;padding:56px 62px;box-shadow:0 1px 8px rgba(0,0,0,.08);}
+  h1{color:var(--accent-dark);font-size:1.46rem;border-bottom:3px solid var(--accent);padding-bottom:8px;margin:2.2em 0 .7em;}h1:first-of-type{margin-top:.3em;}
+  h2{color:var(--accent);font-size:1.16rem;margin:1.5em 0 .45em;}
+  p{margin:.6em 0;}ul,ol{margin:.4em 0 .95em;padding-left:1.35em;}li{margin:.36em 0;}
+  .em{color:var(--accent-dark);font-weight:700;}.kr{color:var(--kr);font-weight:700;}.muted{color:var(--gray);font-size:.9rem;}
+  .callout{background:var(--light);border:1px solid var(--accent);border-left:6px solid var(--accent);border-radius:4px;padding:14px 18px;margin:1.1em 0;}
+  .callout .ct{font-weight:700;color:var(--accent-dark);margin-bottom:6px;}.callout p{margin:.35em 0;font-size:.96rem;}
+  table{border-collapse:collapse;width:100%;margin:1em 0;font-size:.84rem;}
+  th{background:var(--accent);color:#fff;font-weight:700;padding:9px 10px;text-align:center;border:1px solid var(--line);}
+  td{padding:8px 10px;border:1px solid var(--line);vertical-align:top;text-align:left;}td:first-child{font-weight:700;background:#f0fbf9;text-align:center;}
+  tbody tr:nth-child(even) td{background:var(--light2);}
+  .cover{text-align:center;padding:96px 0 66px;}.cover .big{font-size:2.15rem;font-weight:800;color:var(--accent-dark);line-height:1.3;}
+  .cover .sub{font-size:1.12rem;color:var(--accent);margin-top:14px;}.cover .sub2{font-size:1rem;color:var(--gray);margin-top:22px;}.cover .date{font-size:.88rem;color:var(--gray);margin-top:50px;}
+  a{color:var(--accent-dark);word-break:break-all;}.src{font-size:.83rem;}
+  figure{margin:1.5em 0;text-align:center;}figure svg{width:100%;max-width:760px;height:auto;display:block;margin:0 auto;}figcaption{font-size:.85rem;color:var(--gray);margin-top:8px;}
+  @media print{body{background:#fff;font-size:11pt;}.page{box-shadow:none;margin:0;max-width:none;padding:0;}.pb{page-break-before:always;}}
+</style>
+</head>
+<body>
+<div class="page">
+  <div class="cover">
+    <div class="big">보툴리눔 톡신 밸류체인</div>
+    <div class="sub">균에서 시술까지 — 가치는 어디서 만들어지나</div>
+    <div class="sub2">균주 → 생산 → 규제 허가 → 유통 → 시술</div>
+    <div class="date">2026년 7월 9일 작성 · 보툴리눔 톡신 세트 ②-3(밸류체인)</div>
+  </div>
+
+  <div class="pb"></div>
+  <h1>1. 들어가며 — 톡신은 '규제 산업'이다</h1>
+  <p>보툴리눔 톡신 산업의 밸류체인은 반도체 같은 '부품 사슬'과 성격이 달라요. 원료·제조 비중이 작은 대신, <span class="em">균주 소유·품질관리·국가별 규제 허가</span>라는 <span class="kr">무형의 관문</span>이 가치의 대부분을 결정합니다. 즉 <span class="em">'규제를 통과하는 능력'이 곧 밸류체인의 핵심 자산</span>이에요. 이 문서는 그 사슬을 따라가며 각 단계에서 누가 가치를 쥐는지 정리합니다.</p>
+
+  <h1>2. 전체 지도</h1>
+  <figure><svg viewBox="0 0 720 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="밸류체인">
+    <style>.t{font-family:'Malgun Gothic',sans-serif;}.ln{font-size:12.5px;font-weight:700;fill:#fff;}.rl{font-size:10.5px;fill:#1d2733;}.kr{font-size:10.5px;fill:#0f766e;font-weight:700;}.hd{font-size:12px;font-weight:700;fill:#0f766e;}</style>
+    <text class="t hd" x="120" y="20" text-anchor="middle">단계</text><text class="t hd" x="345" y="20" text-anchor="middle">내용</text><text class="t hd" x="580" y="20" text-anchor="middle">가치·플레이어</text>
+    <rect x="14" y="32" width="200" height="48" rx="6" fill="#134e4a"/><text class="t ln" x="114" y="60" text-anchor="middle">① 균주·원료</text>
+    <rect x="222" y="32" width="230" height="48" rx="6" fill="#d5f5f0"/><text class="t rl" x="232" y="52">보툴리눔 균 배양</text><text class="t rl" x="232" y="70">→ 톡신 단백질 정제</text>
+    <rect x="460" y="32" width="246" height="48" rx="6" fill="#f0fbf9"/><text class="t kr" x="470" y="60">균주 소유권=핵심 자산·소송 쟁점</text>
+    <rect x="14" y="88" width="200" height="48" rx="6" fill="#115e59"/><text class="t ln" x="114" y="116" text-anchor="middle">② 제조·제형</text>
+    <rect x="222" y="88" width="230" height="48" rx="6" fill="#d5f5f0"/><text class="t rl" x="232" y="108">동결건조·바이알 충전</text><text class="t rl" x="232" y="126">cGMP 대량생산</text>
+    <rect x="460" y="88" width="246" height="48" rx="6" fill="#f0fbf9"/><text class="t kr" x="470" y="116">생산능력·품질 균일성</text>
+    <rect x="14" y="144" width="200" height="56" rx="6" fill="#0f766e"/><text class="t ln" x="114" y="168" text-anchor="middle">③ 규제 허가</text><text class="t ln" x="114" y="188" text-anchor="middle" font-size="10">★최대 병목·해자</text>
+    <rect x="222" y="144" width="230" height="56" rx="6" fill="#d5f5f0"/><text class="t rl" x="232" y="166">FDA·NMPA·EMA·식약처</text><text class="t rl" x="232" y="186">국가별 임상·허가</text>
+    <rect x="460" y="144" width="246" height="56" rx="6" fill="#f0fbf9"/><text class="t kr" x="470" y="168">애브비·멀츠·입센(서구 3강)</text><text class="t kr" x="470" y="188">휴젤=한국 유일 3대 허가</text>
+    <rect x="14" y="208" width="200" height="48" rx="6" fill="#0d9488"/><text class="t ln" x="114" y="236" text-anchor="middle">④ 유통·판매</text>
+    <rect x="222" y="208" width="230" height="48" rx="6" fill="#d5f5f0"/><text class="t rl" x="232" y="228">파트너·직판</text><text class="t rl" x="232" y="246">(에볼루스·BENEV 등)</text>
+    <rect x="460" y="208" width="246" height="48" rx="6" fill="#f0fbf9"/><text class="t kr" x="470" y="236">직판 전환 → 마진 확보</text>
+    <rect x="14" y="264" width="200" height="48" rx="6" fill="#14b8a6"/><text class="t ln" x="114" y="292" text-anchor="middle">⑤ 시술·소비</text>
+    <rect x="222" y="264" width="484" height="48" rx="6" fill="#d5f5f0"/><text class="t rl" x="240" y="292" text-anchor="middle">피부과·성형외과 → 소비자(3~6개월마다 반복 재구매)</text>
+    <text class="t" x="360" y="338" text-anchor="middle" font-size="11" fill="#595959">③규제 허가가 사슬 전체의 병목이자 해자 — 신규 허가·적응증이 성장의 트리거</text>
+  </svg><figcaption>그림 1. 톡신 밸류체인. 무형의 '규제 허가'가 가치를 좌우한다.</figcaption></figure>
+
+  <h1>3. 단계별 상세</h1>
+  <h2>① 균주·원료 — 소유권이 곧 자산</h2>
+  <p>모든 것의 출발점은 <span class="em">보툴리눔 균주</span>예요. 균주만 있으면 극소량으로 막대한 양의 제품을 만들 수 있어 원가는 매우 낮습니다. 그래서 역설적으로 <span class="kr">'누가 이 균주를 정당하게 확보했는가'</span>가 산업의 가장 예민한 쟁점이 됐어요. 한국에서 <span class="em">메디톡스–대웅–휴젤</span> 사이 균주·영업비밀 분쟁이 길게 이어진 배경입니다.</p>
+  <h2>② 제조·제형 — 보이지 않는 장벽</h2>
+  <p>정제 톡신을 <span class="em">동결건조</span>해 바이알에 담는 공정으로, <span class="kr">cGMP</span> 같은 엄격한 품질 기준을 충족해야 합니다. 대량으로, 균일하게, 오염 없이 만드는 능력은 겉으로 안 보이지만 강력한 진입장벽이에요. 순수 톡신·리퀴드형 등 <span class="em">제형 차별화</span>도 이 단계의 경쟁 포인트입니다.</p>
+  <h2>③ 규제 허가 — 밸류체인의 왕관</h2>
+  <p>같은 제품도 나라마다 <span class="em">임상시험 + 허가</span>를 새로 받아야 팝니다. 미국 FDA, 중국 NMPA, 유럽 EMA가 대표 관문이고, 각각 통과에 수년이 걸려요. 그래서 <span class="kr">허가 = 해자</span>입니다. 서구 3강이 오래 지배해온 것도, 휴젤이 <span class="em">'한국 유일 3대 허가'</span>로 주목받는 것도 모두 이 단계 때문이에요.</p>
+  <h2>④ 유통·판매 — 파트너에서 직판으로</h2>
+  <p>신시장 초기엔 현지 <span class="em">파트너·에이전시</span>를 통해 팔고(예: 대웅–에볼루스, 휴젤–BENEV), 시장이 열리면 <span class="kr">직판</span>으로 전환해 중간 마진을 회수합니다. 이 전환의 성공 여부가 수익성을 크게 좌우해요.</p>
+  <h2>⑤ 시술·소비 — 반복 구매 엔진</h2>
+  <p>최종 수요는 병·의원의 시술이고, 효과가 3~6개월이라 소비자가 <span class="em">주기적으로 재방문</span>합니다. 이 '리필 사이클'이 밸류체인 전체에 안정적 반복 매출을 공급하는 엔진이에요.</p>
+
+  <h1>4. 누가 어디에서 버나 — 플레이어 지도</h1>
+  <table><thead><tr><th>단계</th><th>주요 플레이어</th><th>비고</th></tr></thead><tbody>
+    <tr><td>제조·완제(글로벌)</td><td>애브비·멀츠·입센·에볼루스</td><td>서구 과점, 미용+치료</td></tr>
+    <tr><td>제조·완제(한국)</td><td>휴젤·메디톡스·대웅제약</td><td>가격·품질로 글로벌 침투</td></tr>
+    <tr><td>유통·판매</td><td>에볼루스·BENEV·각국 에이전시</td><td>초기 파트너 → 직판 전환</td></tr>
+    <tr><td>수요(시술)</td><td>피부과·성형외과 등</td><td>반복 재구매의 최종 채널</td></tr>
+  </tbody></table>
+
+  <h1>5. 핵심 길목(초크포인트)</h1>
+  <ul>
+    <li><span class="em">규제 허가:</span> 사슬 전체의 병목이자 해자. 신규 국가·적응증 허가가 성장을 만든다.</li>
+    <li><span class="em">균주·특허:</span> 소유권 분쟁이 수출·평판을 흔드는 변수. 판결에 따라 판도 변화.</li>
+    <li><span class="em">직판 전환:</span> 마진의 갈림길. 파트너 의존을 줄이는 게 수익성의 열쇠.</li>
+    <li><span class="em">제형 혁신:</span> 지속연장·내성저감·리퀴드형이 차별화·점유율 방어의 무기.</li>
+  </ul>
+  <div class="callout"><div class="ct">한 줄 요약</div><p>톡신 밸류체인의 가치는 <strong>'규제 허가'라는 무형의 관문</strong>에 집중돼 있어요. 원료·제조가 아니라 <strong>①허가 통과력 × ②직판 마진 × ③리필 사이클</strong>이 각 기업의 실력을 가릅니다. 한국에선 휴젤이 이 관문(미·중·유)을 가장 넓게 통과했습니다.</p></div>
+
+  <h1>6. 함께 보면 좋은 문서</h1>
+  <p class="muted">이 시장에서 뛰는 대표 기업의 실적·전략은 <span class="em">'휴젤 입문 세트(입문·투자·밸류체인)'</span>에서 구체적으로 다룹니다.</p>
+
+  <h1>출처</h1>
+  <ol class="src">
+    <li>더구루 — 글로벌 보툴리눔 시장·K-톡신 3사 — <a href="https://www.theguru.co.kr/news/article.html?no=89658">link</a></li>
+    <li>히트뉴스 — 메디톡스·대웅 균주 소송 연대기 — <a href="https://www.hitnews.co.kr/news/articleView.html?idxno=43675">link</a></li>
+    <li>서울경제 — 메디톡스·휴젤 美 ITC 소송(공정·균주 쟁점) — <a href="https://m.sedaily.com/article/13781496">link</a></li>
+    <li>PR Newswire — Letybo 미국 상업화(BENEV·Hugel America) — <a href="https://www.prnewswire.com/news-releases/benev-company-inc-and-hugel-inc-are-pleased-to-announce-that-letybo-letibotulinumtoxina-wlbg-is-now-fully-commercialized-in-the-us-marking-a-significant-milestone-in-the-neuromodulator-market-302409966.html">link</a></li>
+  </ol>
+  <p class="muted"><em>※ 거론 기업은 밸류체인 위치 설명을 위한 예시이며 수혜·실적을 보장하지 않습니다. 투자 권유가 아닙니다.</em></p>
+</div>
+</body>
+</html>

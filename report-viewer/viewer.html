@@ -38,6 +38,7 @@
     const deletedHids = new Set();
     let totalTextLen = 0;
     let pdfDoc = null;        // 읽기 모드 재사용
+    let READTEXT = null;      // 수집 시 추출한 페이지별 본문 {페이지번호: [{kind,text}]} (있으면 heuristic 대체)
     let pdfRendered = false;  // PDF 캔버스 렌더 여부 (지연 렌더)
     let readingBuilt = false;
     let mode = "pdf";         // "pdf" | "reading"
@@ -76,6 +77,14 @@
         const buf = await loadPdf(report.pdf_path);
         pdfDoc = await pdfjsLib.getDocument({ data: buf }).promise;
         cacheThumb(REPORT_ID);   // 목록 썸네일용 (백그라운드)
+
+        // 수집 시 추출한 본문(text/<id>.json)이 있으면 읽기모드에서 그걸 사용
+        if (report.text_path) {
+          try {
+            const res = await ghFetch("contents/" + report.text_path, { accept: "application/vnd.github.raw", cache: "no-store" });
+            if (res.ok) { const td = await res.json(); READTEXT = td && td.pages ? td.pages : null; }
+          } catch (e) { READTEXT = null; }
+        }
 
         // 삭제 예정 배너
         if (report.pending_deletion) {
@@ -510,6 +519,14 @@
         return;
       }
 
+      let els = [];
+      const pre = READTEXT ? (READTEXT[String(pageNo)] || []) : null;
+      if (pre !== null) {
+        // 수집 시 PyMuPDF로 추출·저장한 본문 사용 → 브라우저 heuristic(색감지 렌더·컬럼·사이드바) 전부 스킵.
+        // 빈 배열이면 그림/목차 페이지 → 본문 없이 페이지 이미지만.
+        els = pre.map((b, i) => ({ y: i, kind: b.kind === "p" ? "p" : "h", sub: b.kind === "sub", text: b.text }));
+        pageSnap[pageNo] = [];
+      } else {
       const lines = groupLines(raw);
       for (const ln of lines) ln.text = joinItems(ln.items);
       await markColoredLines(page, lines, W, vp.height);   // 색 소제목 감지
@@ -525,7 +542,6 @@
       const snaps = figBands.map((b) => ({ x: 0, y: b.top / vp.height, w: 1, h: (b.bottom - b.top) / vp.height }));
       if (sb) snaps.push({ x: sb.x / W, y: sb.top / vp.height, w: (W - sb.x) / W, h: (sb.bot - sb.top) / vp.height });
       pageSnap[pageNo] = snaps;
-      let els = [];
       if (sb) {
         // 사이드밴드의 우측 아이템 제거 → 좌측 본문만 깨끗이 리플로우
         const flowRaw = raw.filter((it) => {
@@ -563,6 +579,7 @@
             .concat(paraBlocks(right).map((b) => ({ y: 1e9 + b.y, kind: b.heading ? "h" : "p", text: b.text, sub: b.colored })));
         }
       }
+      }  // end else(브라우저 heuristic 추출)
 
       // 표/그림은 따로 잘라오지 않음 — 페이지 전체 이미지를 맨 위에 두고 본문 텍스트만 리플로우
       els.sort((a, b) => a.y - b.y);

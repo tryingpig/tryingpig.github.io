@@ -12,6 +12,8 @@
   <div class="topbar">
     <h1>📑 리포트 마커</h1>
     <div class="spacer"></div>
+    <button id="delBtn">삭제</button>
+    <button id="cancelBtn" style="display:none">취소</button>
     <button id="refreshBtn">새로고침</button>
     <button id="logoutBtn" title="토큰 삭제">⎋</button>
   </div>
@@ -26,6 +28,8 @@
     let ALL = [];
     let brokerFilter = null;
     let onlyHl = false;
+    let delMode = false;
+    const SELECTED = new Set();
 
     function esc(s) {
       return (s == null ? "" : String(s)).replace(/[&<>"]/g, (c) =>
@@ -69,8 +73,10 @@
         const dateStr = r.publish_date || (r.uploaded_at || "").slice(0, 10);
         const thumb = localStorage.getItem("rv_thumb_" + r.id);
         const thumbHtml = thumb ? `<img src="${thumb}" alt="">` : `📄`;
+        const chk = delMode ? `<input type="checkbox" class="card-chk"${SELECTED.has(r.id) ? " checked" : ""}>` : "";
         return `
-          <div class="card" data-id="${esc(r.id)}">
+          <div class="card${delMode ? " selectable" : ""}${SELECTED.has(r.id) ? " sel" : ""}" data-id="${esc(r.id)}">
+            ${chk}
             <div class="card-thumb" data-thumb="${esc(r.id)}">${thumbHtml}</div>
             <div class="card-body">
               <div class="title">${esc(r.title)}</div>
@@ -91,7 +97,15 @@
 
       list.querySelectorAll(".card").forEach((card) => {
         card.addEventListener("click", (e) => {
-          if (e.target.closest("a")) return; // 모아보기 링크는 예외
+          if (delMode) {                       // 삭제 모드: 카드 탭 = 선택 토글
+            const id = card.dataset.id;
+            if (SELECTED.has(id)) SELECTED.delete(id); else SELECTED.add(id);
+            card.classList.toggle("sel", SELECTED.has(id));
+            const c = card.querySelector(".card-chk"); if (c) c.checked = SELECTED.has(id);
+            updateDelBar();
+            return;
+          }
+          if (e.target.closest("a")) return;   // 읽기/모아보기 링크는 예외
           location.href = "viewer.html?id=" + encodeURIComponent(card.dataset.id);
         });
       });
@@ -138,6 +152,71 @@
         handleError(err, load);
       }
     }
+
+    function updateDelBar() {
+      const del = document.getElementById("delBtn");
+      const cancel = document.getElementById("cancelBtn");
+      const refresh = document.getElementById("refreshBtn");
+      if (delMode) {
+        cancel.style.display = ""; refresh.style.display = "none";
+        del.classList.add("danger-btn");
+        del.disabled = SELECTED.size === 0;
+        del.textContent = SELECTED.size ? `삭제 (${SELECTED.size})` : "삭제";
+      } else {
+        cancel.style.display = "none"; refresh.style.display = "";
+        del.classList.remove("danger-btn");
+        del.disabled = false; del.textContent = "삭제";
+      }
+    }
+
+    function setDelMode(on) {
+      delMode = on;
+      if (!on) SELECTED.clear();
+      updateDelBar();
+      renderList();
+    }
+
+    /* 선택 리포트를 reports.json에서 제거(+deleted 목록에 기록 → 서버 prune이 파일 정리).
+       sha 충돌 시 최신 재조회 후 재시도. */
+    async function deleteReports(ids) {
+      const del = document.getElementById("delBtn");
+      del.disabled = true; del.textContent = "삭제 중…";
+      try {
+        for (let attempt = 0; attempt < 3; attempt++) {
+          const res = await ghFetch("contents/index/reports.json", { cache: "no-store" });
+          if (!res.ok) throw new Error("목록 로드 실패: " + res.status);
+          const obj = await res.json();
+          const doc = JSON.parse(decodeB64Utf8(obj.content));
+          doc.reports = (doc.reports || []).filter((r) => !ids.includes(r.id));
+          doc.deleted = Array.from(new Set([...(doc.deleted || []), ...ids]));  // 서버 파일 정리 힌트
+          const put = await ghFetch("contents/index/reports.json", {
+            method: "PUT",
+            body: {
+              message: `delete: ${ids.length} report(s)`,
+              content: encodeUtf8B64(JSON.stringify(doc, null, 2)),
+              sha: obj.sha,
+            },
+          });
+          if (put.ok) break;
+          if (put.status !== 409 && put.status !== 422) throw new Error("삭제 실패: " + put.status);
+        }
+        ids.forEach((id) => localStorage.removeItem("rv_thumb_" + id));
+        ALL = ALL.filter((r) => !ids.includes(r.id));
+        setDelMode(false);
+      } catch (err) {
+        updateDelBar();
+        handleError(err, () => {});
+      }
+    }
+
+    document.getElementById("delBtn").onclick = async () => {
+      if (!delMode) { setDelMode(true); return; }          // 1단계: 삭제 모드 진입
+      if (!SELECTED.size) return;                            // 2단계: 확인 후 삭제
+      const ids = [...SELECTED];
+      if (!confirm(`${ids.length}개 리포트를 삭제할까요?\n하이라이트·캡처도 함께 삭제됩니다. (Notion 기록은 보존)`)) return;
+      await deleteReports(ids);
+    };
+    document.getElementById("cancelBtn").onclick = () => setDelMode(false);
 
     document.getElementById("refreshBtn").onclick = load;
     document.getElementById("logoutBtn").onclick = () => {

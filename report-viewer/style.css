@@ -55,6 +55,11 @@ a { color: inherit; text-decoration: none; }
 }
 .card-thumb img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
 .card-body { flex: 1; min-width: 0; }
+/* 삭제 모드: 카드 선택 */
+.card.selectable { cursor: pointer; }
+.card.sel { border-color: #dc2626; box-shadow: 0 0 0 1px #dc2626 inset; }
+.card-chk { width: 20px; height: 20px; flex-shrink: 0; align-self: center; accent-color: #dc2626; margin: 0; pointer-events: none; }
+.card.selectable a { pointer-events: none; }   /* 삭제 모드에선 읽기/모아보기 링크 비활성화 */
 .card .title { font-size: 16px; font-weight: 700; margin-bottom: 6px; }
 .card .meta { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; color: var(--sub); font-size: 12.5px; }
 .badge {

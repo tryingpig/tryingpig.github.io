@@ -540,7 +540,14 @@
           .map((b) => ({ y: b.y, kind: b.heading ? "h" : "p", text: b.text }));
       } else {
         const colX = detectColumnSplit(textLines, W);
-        if (colX == null) {
+        // detectColumnSplit이 놓친 '왼쪽 여백 주석' 레이아웃 보완
+        const leftGx = (colX == null) ? detectLeftGutter(raw, W) : null;
+        if (leftGx != null) {
+          // 왼쪽 여백 주석 → 오른쪽 본문만 살림 (colX<0.34 경로와 동일)
+          const left = [], right = [];
+          for (const ln of textLines) splitLine(ln, leftGx, left, right);
+          els = paraBlocks(right).map((b) => ({ y: b.y, kind: b.heading ? "h" : "p", text: b.text, sub: b.colored }));
+        } else if (colX == null) {
           const arr = textLines.map((ln) => ({ y: ln.y, h: ln.h, text: ln.text, colored: ln.colored }));
           els = paraBlocks(arr).map((b) => ({ y: b.y, kind: b.heading ? "h" : "p", text: b.text, sub: b.colored }));
         } else if (colX < W * 0.34) {
@@ -605,6 +612,29 @@
       }
       if (crossing < 3) return null;
       return mid;
+    }
+
+    /* 왼쪽 여백 주석/사이드바 감지: [0.15W,0.40W]에 아이템이 거의 안 걸치는 세로 거터가 있고,
+       그 왼쪽에 좁은 텍스트 열(여백 주석)이 3줄 이상, 오른쪽에 본문이 충분하면 거터 x를 반환.
+       detectColumnSplit(줄 내 gap·crossing 기준)이 놓치는 '여백 노트' 레이아웃 보완용. 아니면 null. */
+    function detectLeftGutter(raw, W) {
+      const delta = 3;
+      let best = null;
+      for (let f = 0.15; f <= 0.40; f += 0.005) {
+        const gx = W * f;
+        let straddle = 0, R = 0, leftMaxXr = 0;
+        const leftYs = [];
+        for (const it of raw) {
+          if (it.x < gx - delta && it.xr > gx + delta) { straddle++; }
+          else if (it.xr <= gx + delta) { leftYs.push(Math.round(it.y)); leftMaxXr = Math.max(leftMaxXr, it.xr); }
+          else if (it.x >= gx - delta) { R++; }
+        }
+        if (straddle > 1) continue;                    // 거터를 가로지르는 통짜 본문이면 컬럼 아님
+        if (new Set(leftYs).size < 3 || R < 20) continue;  // 왼쪽 열 3줄+ & 오른쪽 본문 충분
+        if (leftMaxXr > 0.34 * W) continue;            // 왼쪽 열이 넓으면 2단 본문 → 제외(여백 노트만)
+        if (best == null || R > best.R) best = { gx, R };
+      }
+      return best ? best.gx : null;
     }
 
     /* 아이템 묶음의 숫자 밀도 (0~1). 산문↔데이터 구분용 */

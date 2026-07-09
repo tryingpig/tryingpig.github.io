@@ -31,6 +31,7 @@
         <option value="하이"></option><option value="IBK"></option><option value="DB"></option>
         <option value="SK"></option><option value="이베스트"></option><option value="신영"></option>
         <option value="다올"></option><option value="한화"></option><option value="BNK"></option>
+        <option value="iM"></option><option value="IR"></option>
       </datalist>
       <label class="up-row"><span>섹터</span><input type="text" id="sector" placeholder="예: 엔터 (선택)"></label>
       <label class="up-row"><span>발행일</span><input type="date" id="pubdate"></label>
@@ -48,7 +49,10 @@
 
     const MAX_BYTES = 25 * 1024 * 1024;
     const KNOWN = ["NH","KB","삼성","미래에셋","한국투자","한투","신한","키움","대신","하나","메리츠",
-      "유안타","교보","하이","IBK","DB","SK","이베스트","신영","다올","한화","BNK","유진","현대차","케이프","상상인"];
+      "유안타","교보","하이","IBK","DB","SK","이베스트","신영","다올","한화","BNK","유진","현대차","케이프","상상인",
+      "iM","IM","아이엠","IR","DS"];
+    const BROKER_ALIAS = { "IM": "iM", "아이엠": "iM", "DS": "대신" };
+    const normBroker = (t) => BROKER_ALIAS[t] || t;
 
     const $ = (id) => document.getElementById(id);
     const setStatus = (msg, err) => { const s = $("status"); s.textContent = msg || ""; s.className = "up-status" + (err ? " err" : ""); };
@@ -66,7 +70,7 @@
       const bi = parts.findIndex((t) => KNOWN.includes(t));
       let broker = "미분류", sector = null, title = stem;
       if (bi >= 0) {
-        broker = parts[bi];
+        broker = normBroker(parts[bi]);
         sector = parts.slice(0, bi).join("_") || null;
         title = parts.slice(bi + 1).join(" ") || stem;
       } else if (parts.length >= 2) {

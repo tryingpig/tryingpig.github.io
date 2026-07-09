@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#ffffff">
+  <title>리포트 정보 수정</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="topbar">
+    <a class="back" href="index.html">‹</a>
+    <h1>정보 수정</h1>
+  </div>
+
+  <div class="wrap">
+    <div class="up-form">
+      <div id="fileMeta" class="up-meta"></div>
+
+      <label class="up-row"><span>제목</span><input type="text" id="title" placeholder="리포트 제목"></label>
+      <label class="up-row"><span>증권사</span><input type="text" id="broker" list="brokers" placeholder="예: NH (비우면 미분류)"></label>
+      <datalist id="brokers">
+        <option value="NH"></option><option value="KB"></option><option value="삼성"></option>
+        <option value="미래에셋"></option><option value="한국투자"></option><option value="신한"></option>
+        <option value="키움"></option><option value="대신"></option><option value="하나"></option>
+        <option value="메리츠"></option><option value="유안타"></option><option value="교보"></option>
+        <option value="하이"></option><option value="IBK"></option><option value="DB"></option>
+        <option value="SK"></option><option value="이베스트"></option><option value="신영"></option>
+        <option value="다올"></option><option value="한화"></option><option value="BNK"></option>
+      </datalist>
+      <label class="up-row"><span>섹터</span><input type="text" id="sector" placeholder="예: 엔터 (선택)"></label>
+      <label class="up-row"><span>발행일</span><input type="date" id="pubdate"></label>
+
+      <button id="submitBtn" disabled>저장</button>
+      <div id="status" class="up-status"></div>
+      <div class="up-meta" style="text-align:center">저장하면 다음 정시 동기화 때 Notion에도 반영됩니다.</div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+  <script>
+    const $ = (id) => document.getElementById(id);
+    const setStatus = (msg, err) => { const s = $("status"); s.textContent = msg || ""; s.className = "up-status" + (err ? " err" : ""); };
+
+    const REPORT_ID = new URLSearchParams(location.search).get("id");
+
+    async function fetchReportsDoc() {
+      const res = await ghFetch("contents/index/reports.json", { cache: "no-store" });
+      if (!res.ok) throw new Error("목록 로드 실패: " + res.status);
+      const obj = await res.json();
+      const doc = JSON.parse(decodeB64Utf8(obj.content));
+      return { obj, doc };
+    }
+
+    async function init() {
+      if (!REPORT_ID) { setStatus("잘못된 접근입니다 (id 없음)", true); return; }
+      try {
+        setStatus("불러오는 중…");
+        const { doc } = await fetchReportsDoc();
+        const rep = (doc.reports || []).find((r) => r.id === REPORT_ID);
+        if (!rep) { setStatus("리포트를 찾을 수 없습니다", true); return; }
+
+        $("title").value = rep.title || "";
+        $("broker").value = (rep.broker && rep.broker !== "미분류") ? rep.broker : "";
+        $("sector").value = rep.sector || "";
+        $("pubdate").value = rep.publish_date || "";
+
+        const dateStr = rep.publish_date || (rep.uploaded_at || "").slice(0, 10);
+        $("fileMeta").textContent = `${dateStr}${rep.size_mb != null ? " · " + rep.size_mb + "MB" : ""}${rep.pages ? " · " + rep.pages + "p" : ""}`;
+
+        $("submitBtn").disabled = false;
+        setStatus("");
+      } catch (err) {
+        handleError(err, init);
+      }
+    }
+
+    $("submitBtn").addEventListener("click", save);
+
+    async function save() {
+      const title = ($("title").value || "").trim();
+      if (!title) { setStatus("제목을 입력하세요", true); return; }
+      const broker = ($("broker").value || "").trim() || null;   // 비우면 미분류(=null)
+      const sector = ($("sector").value || "").trim() || null;
+      const pub = ($("pubdate").value || "").trim() || null;
+
+      $("submitBtn").disabled = true;
+      setStatus("저장 중…");
+      try {
+        for (let attempt = 0; attempt < 3; attempt++) {
+          const { obj, doc } = await fetchReportsDoc();
+          const rep = (doc.reports || []).find((r) => r.id === REPORT_ID);
+          if (!rep) { setStatus("리포트를 찾을 수 없습니다 (삭제됨?)", true); return; }
+
+          rep.title = title;
+          rep.broker = broker;
+          rep.sector = sector;
+          rep.publish_date = pub;
+          doc.updated_at = nowKst();
+
+          const put = await ghFetch("contents/index/reports.json", {
+            method: "PUT",
+            body: {
+              message: `edit: ${REPORT_ID} meta`,
+              content: encodeUtf8B64(JSON.stringify(doc, null, 2)),
+              sha: obj.sha,
+            },
+          });
+          if (put.ok) {
+            setStatus("저장 완료! 목록으로 이동합니다…");
+            setTimeout(() => { location.href = "index.html"; }, 700);
+            return;
+          }
+          if (put.status !== 409 && put.status !== 422) throw new Error("저장 실패: " + put.status);
+          // 409/422 → 최신 sha로 재시도
+        }
+        throw new Error("저장 충돌이 반복됩니다. 잠시 후 다시 시도하세요.");
+      } catch (err) {
+        console.error(err);
+        setStatus((err && err.message) || "저장 실패", true);
+        $("submitBtn").disabled = false;
+      }
+    }
+
+    requirePat(init);
+  </script>
+</body>
+</html>

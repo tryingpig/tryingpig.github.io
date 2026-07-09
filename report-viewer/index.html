@@ -23,9 +23,11 @@
     <div class="searchbar" id="searchbar">
       <input type="text" id="qTitle" class="s-input" placeholder="제목 검색">
       <select id="qBroker" class="s-input"><option value="">증권사 전체</option></select>
-      <input type="date" id="qFrom" class="s-input s-date" title="발행일 시작">
-      <span class="s-tilde">~</span>
-      <input type="date" id="qTo" class="s-input s-date" title="발행일 종료">
+      <select id="qSector" class="s-input"><option value="">섹터 전체</option></select>
+      <input type="date" id="qFrom" class="s-input s-date" title="발행일">
+      <label class="s-chk"><input type="checkbox" id="qRange"> 종료일</label>
+      <span class="s-tilde" id="qTilde" hidden>~</span>
+      <input type="date" id="qTo" class="s-input s-date" title="발행일 종료" hidden>
       <label class="s-chk"><input type="checkbox" id="qHl"> ✏️ 하이라이트</label>
       <div class="spacer"></div>
       <select id="qSort" class="s-input" title="정렬 기준">
@@ -43,7 +45,7 @@
   <script src="app.js"></script>
   <script>
     let ALL = [];
-    let FILTER = { title: "", broker: "", from: "", to: "", onlyHl: false };
+    let FILTER = { title: "", broker: "", sector: "", from: "", to: "", range: false, onlyHl: false };
     let SORT = "pub";   // pub=발행일 · up=수집순 · hl=하이라이트 · title=제목
     let delMode = false;
     const SELECTED = new Set();
@@ -55,7 +57,7 @@
 
     const cardDate = (r) => r.publish_date || (r.uploaded_at || "").slice(0, 10);
 
-    /* 증권사 드롭다운을 현재 목록에 실제로 있는 증권사들로 채움(선택값 유지) */
+    /* 증권사·섹터 드롭다운을 현재 목록에 실제로 있는 값들로 채움(선택값 유지) */
     function renderSearchBar() {
       const sel = document.getElementById("qBroker");
       const brokers = [...new Set(ALL.map((r) => r.broker).filter(Boolean).filter((b) => b !== "미분류"))].sort();
@@ -65,26 +67,45 @@
       for (const b of brokers) opts.push(`<option value="${esc(b)}">${esc(b)}</option>`);
       sel.innerHTML = opts.join("");
       sel.value = FILTER.broker || "";
+
+      const ssel = document.getElementById("qSector");
+      const sectors = [...new Set(ALL.map((r) => r.sector).filter(Boolean))].sort();
+      const sOpts = [`<option value="">섹터 전체</option>`];
+      for (const s of sectors) sOpts.push(`<option value="${esc(s)}">${esc(s)}</option>`);
+      ssel.innerHTML = sOpts.join("");
+      ssel.value = FILTER.sector || "";
+    }
+
+    /* '종료일' 토글: 켜면 ~ 와 종료일 입력칸 표시(범위 검색), 끄면 단일 날짜 */
+    function setRange(on) {
+      document.getElementById("qTilde").hidden = !on;
+      document.getElementById("qTo").hidden = !on;
+      if (!on) document.getElementById("qTo").value = "";
     }
 
     function applySearch() {
       FILTER.title = document.getElementById("qTitle").value || "";
       FILTER.broker = document.getElementById("qBroker").value || "";
+      FILTER.sector = document.getElementById("qSector").value || "";
       FILTER.from = document.getElementById("qFrom").value || "";
-      FILTER.to = document.getElementById("qTo").value || "";
+      FILTER.range = document.getElementById("qRange").checked;
+      FILTER.to = FILTER.range ? (document.getElementById("qTo").value || "") : "";
       FILTER.onlyHl = document.getElementById("qHl").checked;
       renderList();
     }
 
     function resetSearch() {
-      FILTER = { title: "", broker: "", from: "", to: "", onlyHl: false };
+      FILTER = { title: "", broker: "", sector: "", from: "", to: "", range: false, onlyHl: false };
       SORT = "pub";
       document.getElementById("qTitle").value = "";
       document.getElementById("qBroker").value = "";
+      document.getElementById("qSector").value = "";
       document.getElementById("qFrom").value = "";
       document.getElementById("qTo").value = "";
+      document.getElementById("qRange").checked = false;
       document.getElementById("qHl").checked = false;
       document.getElementById("qSort").value = "pub";
+      setRange(false);
       renderList();
     }
 
@@ -94,8 +115,13 @@
       if (q) rows = rows.filter((r) => (r.title || "").toLowerCase().includes(q));
       if (FILTER.broker === "__none__") rows = rows.filter((r) => !r.broker || r.broker === "미분류");
       else if (FILTER.broker) rows = rows.filter((r) => r.broker === FILTER.broker);
-      if (FILTER.from) rows = rows.filter((r) => cardDate(r) >= FILTER.from);
-      if (FILTER.to) rows = rows.filter((r) => cardDate(r) <= FILTER.to);
+      if (FILTER.sector) rows = rows.filter((r) => r.sector === FILTER.sector);
+      if (FILTER.range) {                       // 범위 검색
+        if (FILTER.from) rows = rows.filter((r) => cardDate(r) >= FILTER.from);
+        if (FILTER.to) rows = rows.filter((r) => cardDate(r) <= FILTER.to);
+      } else if (FILTER.from) {                  // 단일 날짜 = 그 날 발행분만
+        rows = rows.filter((r) => cardDate(r) === FILTER.from);
+      }
       if (FILTER.onlyHl) rows = rows.filter((r) => (r.highlight_count || 0) > 0);
 
       const CMP = {
@@ -274,6 +300,9 @@
     });
     document.getElementById("qTitle").addEventListener("keydown", (e) => {
       if (e.key === "Enter") applySearch();
+    });
+    document.getElementById("qRange").addEventListener("change", (e) => {
+      setRange(e.target.checked);              // 종료일 토글 → 종료일 칸 표시/숨김
     });
 
     document.getElementById("refreshBtn").onclick = load;

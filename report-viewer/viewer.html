@@ -789,6 +789,7 @@
       const c = document.createElement("canvas");
       c.width = Math.floor(vp.width * dpr); c.height = Math.floor(vp.height * dpr);
       const ctx = c.getContext("2d"); ctx.scale(dpr, dpr);
+      ctx.fillStyle = "#fff"; ctx.fillRect(0, 0, vp.width, vp.height);   // JPEG는 알파 없음 → 안 칠해진 영역이 검게 나오지 않도록 흰 배경
       await page.render({ canvasContext: ctx, viewport: vp }).promise;
       return c.toDataURL("image/jpeg", 0.85);
     }
@@ -802,7 +803,9 @@
         const vp = p1.getViewport({ scale });
         const c = document.createElement("canvas");
         c.width = Math.floor(vp.width); c.height = Math.floor(vp.height);
-        await p1.render({ canvasContext: c.getContext("2d"), viewport: vp }).promise;
+        const tctx = c.getContext("2d");
+        tctx.fillStyle = "#fff"; tctx.fillRect(0, 0, c.width, c.height);   // JPEG는 알파 없음 → 흰 배경
+        await p1.render({ canvasContext: tctx, viewport: vp }).promise;
         localStorage.setItem("rv_thumb_" + id, c.toDataURL("image/jpeg", 0.7));
       } catch (e) { /* 용량초과 등 무시 */ }
     }
@@ -823,6 +826,7 @@
         canvas.height = Math.floor(vp.height * dpr);
         const ctx = canvas.getContext("2d");
         ctx.scale(dpr, dpr);
+        ctx.fillStyle = "#fff"; ctx.fillRect(0, 0, vp.width, vp.height);   // JPEG는 알파 없음 → 흰 배경 (안 그러면 여백이 검게)
         await page.render({ canvasContext: ctx, viewport: vp }).promise;
         // 라이브 캔버스는 메모리를 많이 먹으므로 JPEG로 바꿔 <img>로 (캔버스는 GC)
         const url = canvas.toDataURL("image/jpeg", 0.85);

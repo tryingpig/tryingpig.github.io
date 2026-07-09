@@ -20,15 +20,24 @@
   </div>
 
   <div class="wrap">
-    <div class="filters" id="filters"></div>
+    <div class="searchbar" id="searchbar">
+      <input type="text" id="qTitle" class="s-input" placeholder="제목 검색">
+      <select id="qBroker" class="s-input"><option value="">증권사 전체</option></select>
+      <input type="date" id="qFrom" class="s-input s-date" title="발행일 시작">
+      <span class="s-tilde">~</span>
+      <input type="date" id="qTo" class="s-input s-date" title="발행일 종료">
+      <label class="s-chk"><input type="checkbox" id="qHl"> ✏️ 하이라이트</label>
+      <div class="spacer"></div>
+      <button id="resetBtn" class="s-reset">초기화</button>
+      <button id="searchBtn" class="s-search">🔍 검색</button>
+    </div>
     <div id="list"><div class="loading">불러오는 중…</div></div>
   </div>
 
   <script src="app.js"></script>
   <script>
     let ALL = [];
-    let brokerFilter = null;
-    let onlyHl = false;
+    let FILTER = { title: "", broker: "", from: "", to: "", onlyHl: false };
     let delMode = false;
     const SELECTED = new Set();
 
@@ -37,29 +46,48 @@
         ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
     }
 
-    function renderFilters() {
-      const brokers = [...new Set(ALL.map((r) => r.broker).filter(Boolean))];
-      const box = document.getElementById("filters");
-      const chips = [];
-      chips.push(`<div class="chip ${onlyHl ? "active" : ""}" data-hl="1">✏️ 하이라이트 있음</div>`);
-      for (const b of brokers) {
-        chips.push(`<div class="chip ${brokerFilter === b ? "active" : ""}" data-broker="${esc(b)}">${esc(b)}</div>`);
-      }
-      box.innerHTML = chips.join("");
-      box.querySelectorAll(".chip").forEach((c) => {
-        c.onclick = () => {
-          if (c.dataset.hl) onlyHl = !onlyHl;
-          else brokerFilter = brokerFilter === c.dataset.broker ? null : c.dataset.broker;
-          renderFilters();
-          renderList();
-        };
-      });
+    const cardDate = (r) => r.publish_date || (r.uploaded_at || "").slice(0, 10);
+
+    /* 증권사 드롭다운을 현재 목록에 실제로 있는 증권사들로 채움(선택값 유지) */
+    function renderSearchBar() {
+      const sel = document.getElementById("qBroker");
+      const brokers = [...new Set(ALL.map((r) => r.broker).filter(Boolean).filter((b) => b !== "미분류"))].sort();
+      const hasNone = ALL.some((r) => !r.broker || r.broker === "미분류");
+      const opts = [`<option value="">증권사 전체</option>`];
+      if (hasNone) opts.push(`<option value="__none__">미분류</option>`);
+      for (const b of brokers) opts.push(`<option value="${esc(b)}">${esc(b)}</option>`);
+      sel.innerHTML = opts.join("");
+      sel.value = FILTER.broker || "";
+    }
+
+    function applySearch() {
+      FILTER.title = document.getElementById("qTitle").value || "";
+      FILTER.broker = document.getElementById("qBroker").value || "";
+      FILTER.from = document.getElementById("qFrom").value || "";
+      FILTER.to = document.getElementById("qTo").value || "";
+      FILTER.onlyHl = document.getElementById("qHl").checked;
+      renderList();
+    }
+
+    function resetSearch() {
+      FILTER = { title: "", broker: "", from: "", to: "", onlyHl: false };
+      document.getElementById("qTitle").value = "";
+      document.getElementById("qBroker").value = "";
+      document.getElementById("qFrom").value = "";
+      document.getElementById("qTo").value = "";
+      document.getElementById("qHl").checked = false;
+      renderList();
     }
 
     function renderList() {
       let rows = ALL.slice();
-      if (brokerFilter) rows = rows.filter((r) => r.broker === brokerFilter);
-      if (onlyHl) rows = rows.filter((r) => (r.highlight_count || 0) > 0);
+      const q = FILTER.title.trim().toLowerCase();
+      if (q) rows = rows.filter((r) => (r.title || "").toLowerCase().includes(q));
+      if (FILTER.broker === "__none__") rows = rows.filter((r) => !r.broker || r.broker === "미분류");
+      else if (FILTER.broker) rows = rows.filter((r) => r.broker === FILTER.broker);
+      if (FILTER.from) rows = rows.filter((r) => cardDate(r) >= FILTER.from);
+      if (FILTER.to) rows = rows.filter((r) => cardDate(r) <= FILTER.to);
+      if (FILTER.onlyHl) rows = rows.filter((r) => (r.highlight_count || 0) > 0);
 
       const list = document.getElementById("list");
       if (!rows.length) {
@@ -71,7 +99,7 @@
         const scan = r.has_text_layer === false ? `<span class="badge scan">스캔본</span>` : "";
         const pend = r.pending_deletion ? `<span class="badge del">🗑 삭제예정 ~${esc((r.delete_after || "").slice(5))}</span>` : "";
         const hl = (r.highlight_count || 0) > 0 ? `<span class="hl">✏️ ${r.highlight_count}</span>` : "";
-        const dateStr = r.publish_date || (r.uploaded_at || "").slice(0, 10);
+        const dateStr = cardDate(r);
         const thumb = localStorage.getItem("rv_thumb_" + r.id);
         const thumbHtml = thumb ? `<img src="${thumb}" alt="">` : `📄`;
         const chk = delMode ? `<input type="checkbox" class="card-chk"${SELECTED.has(r.id) ? " checked" : ""}>` : "";
@@ -148,7 +176,7 @@
       try {
         const doc = await loadReports();
         ALL = doc.reports || [];
-        renderFilters();
+        renderSearchBar();
         renderList();
       } catch (err) {
         handleError(err, load);
@@ -219,6 +247,12 @@
       await deleteReports(ids);
     };
     document.getElementById("cancelBtn").onclick = () => setDelMode(false);
+
+    document.getElementById("searchBtn").onclick = applySearch;
+    document.getElementById("resetBtn").onclick = resetSearch;
+    document.getElementById("qTitle").addEventListener("keydown", (e) => {
+      if (e.key === "Enter") applySearch();
+    });
 
     document.getElementById("refreshBtn").onclick = load;
     document.getElementById("logoutBtn").onclick = () => {

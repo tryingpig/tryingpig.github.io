@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#ffffff">
+  <title>PDF 등록</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="topbar">
+    <a class="back" href="index.html">‹</a>
+    <h1>PDF 등록</h1>
+  </div>
+
+  <div class="wrap">
+    <div class="up-form">
+      <label class="up-file">
+        <input type="file" id="file" accept="application/pdf">
+        <span id="fileLabel">📄 PDF 파일 선택</span>
+      </label>
+      <div id="fileMeta" class="up-meta"></div>
+
+      <label class="up-row"><span>제목</span><input type="text" id="title" placeholder="리포트 제목"></label>
+      <label class="up-row"><span>증권사</span><input type="text" id="broker" list="brokers" placeholder="예: NH"></label>
+      <datalist id="brokers">
+        <option value="NH"></option><option value="KB"></option><option value="삼성"></option>
+        <option value="미래에셋"></option><option value="한국투자"></option><option value="신한"></option>
+        <option value="키움"></option><option value="대신"></option><option value="하나"></option>
+        <option value="메리츠"></option><option value="유안타"></option><option value="교보"></option>
+        <option value="하이"></option><option value="IBK"></option><option value="DB"></option>
+        <option value="SK"></option><option value="이베스트"></option><option value="신영"></option>
+        <option value="다올"></option><option value="한화"></option><option value="BNK"></option>
+      </datalist>
+      <label class="up-row"><span>섹터</span><input type="text" id="sector" placeholder="예: 엔터 (선택)"></label>
+      <label class="up-row"><span>발행일</span><input type="date" id="pubdate"></label>
+
+      <button id="submitBtn" disabled>등록</button>
+      <div id="status" class="up-status"></div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+  <script type="module">
+    import * as pdfjsLib from "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.6.82/pdf.min.mjs";
+    pdfjsLib.GlobalWorkerOptions.workerSrc =
+      "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.6.82/pdf.worker.min.mjs";
+
+    const MAX_BYTES = 25 * 1024 * 1024;
+    const KNOWN = ["NH","KB","삼성","미래에셋","한국투자","한투","신한","키움","대신","하나","메리츠",
+      "유안타","교보","하이","IBK","DB","SK","이베스트","신영","다올","한화","BNK","유진","현대차","케이프","상상인"];
+
+    const $ = (id) => document.getElementById(id);
+    const setStatus = (msg, err) => { const s = $("status"); s.textContent = msg || ""; s.className = "up-status" + (err ? " err" : ""); };
+
+    /* 파일명 → {date, broker, sector, title} (collect.py parse_report_name 재현) */
+    function parseName(fname) {
+      const stem = fname.replace(/\.pdf$/i, "");
+      let parts = stem.split("_").filter(Boolean);
+      let date = null;
+      if (parts[0] && /^\d{6}$/.test(parts[0])) {
+        const p = parts[0];
+        date = `20${p.slice(0, 2)}-${p.slice(2, 4)}-${p.slice(4, 6)}`;
+        parts = parts.slice(1);
+      }
+      const bi = parts.findIndex((t) => KNOWN.includes(t));
+      let broker = "미분류", sector = null, title = stem;
+      if (bi >= 0) {
+        broker = parts[bi];
+        sector = parts.slice(0, bi).join("_") || null;
+        title = parts.slice(bi + 1).join(" ") || stem;
+      } else if (parts.length >= 2) {
+        sector = parts[0];
+        title = parts.slice(1).join(" ");
+      } else {
+        title = parts.join(" ") || stem;
+      }
+      return { date, broker, sector, title };
+    }
+
+    function sanitizeTitle(t) {
+      return (t || "").replace(/[\\/:*?"<>|\r\n\t]+/g, "_").replace(/\s+/g, "_")
+        .replace(/^_+|_+$/g, "").slice(0, 60) || "untitled";
+    }
+
+    async function sha6(buf) {
+      const d = await crypto.subtle.digest("SHA-256", buf);
+      return Array.from(new Uint8Array(d)).map((b) => b.toString(16).padStart(2, "0")).join("").slice(0, 6);
+    }
+
+    let FILE = null;
+    $("file").addEventListener("change", (e) => {
+      FILE = e.target.files[0] || null;
+      setStatus("");
+      if (!FILE) { $("submitBtn").disabled = true; $("fileMeta").textContent = ""; return; }
+      $("fileLabel").textContent = "📄 " + FILE.name;
+      const mb = FILE.size / 1024 / 1024;
+      $("fileMeta").textContent = `${mb.toFixed(1)}MB`;
+      if (FILE.size > MAX_BYTES) { setStatus(`파일이 너무 큽니다 (${mb.toFixed(1)}MB > 25MB)`, true); $("submitBtn").disabled = true; return; }
+      const m = parseName(FILE.name);
+      $("title").value = m.title || "";
+      $("broker").value = m.broker === "미분류" ? "" : m.broker;
+      $("sector").value = m.sector || "";
+      $("pubdate").value = m.date || "";
+      $("submitBtn").disabled = false;
+    });
+
+    $("submitBtn").addEventListener("click", register);
+
+    async function register() {
+      if (!FILE) return;
+      const title = ($("title").value || "").trim();
+      if (!title) { setStatus("제목을 입력하세요", true); return; }
+      const broker = ($("broker").value || "").trim() || "미분류";
+      const sector = ($("sector").value || "").trim() || null;
+      const pub = ($("pubdate").value || "").trim() || null;
+
+      $("submitBtn").disabled = true;
+      try {
+        setStatus("파일 읽는 중…");
+        const buf = await FILE.arrayBuffer();
+        const id6 = await sha6(buf);
+        const k = nowKst();                       // "YYYY-MM-DD HH:MM"
+        const [Y, Mo, Da] = k.slice(0, 10).split("-");
+        const id = `${Y}${Mo}${Da}_${id6}`;
+
+        // 중복 확인
+        setStatus("목록 확인 중…");
+        let rres = await ghFetch("contents/index/reports.json", { cache: "no-store" });
+        if (!rres.ok) throw new Error("목록 로드 실패: " + rres.status);
+        let robj = await rres.json();
+        let rdoc = JSON.parse(decodeB64Utf8(robj.content));
+        if ((rdoc.reports || []).some((r) => r.id === id)) {
+          setStatus("이미 등록된 파일입니다 (내용 동일)", true);
+          return;
+        }
+
+        // pdf.js: 페이지수·텍스트레이어·썸네일
+        setStatus("PDF 분석 중…");
+        const pdf = await pdfjsLib.getDocument({ data: buf.slice(0) }).promise;
+        const pages = pdf.numPages;
+        let hasText = false;
+        for (let n = 1; n <= Math.min(3, pages); n++) {
+          const tc = await (await pdf.getPage(n)).getTextContent();
+          if (tc.items.some((i) => i.str && i.str.trim())) { hasText = true; break; }
+        }
+        const thumbBlob = await renderThumb(pdf);
+
+        const safe = sanitizeTitle(title);
+        const pdfPath = `pdfs/${Y}/${Mo}/${id}_${safe}.pdf`;
+        const thumbPath = `index/thumbs/${id}.jpg`;
+
+        setStatus("PDF 업로드 중…");
+        await putBinaryFile(pdfPath, FILE, `manual add: ${id}`);
+        setStatus("썸네일 업로드 중…");
+        await putBinaryFile(thumbPath, thumbBlob, `thumb: ${id}`);
+        setStatus("주석 생성 중…");
+        await ghFetch("contents/annotations/" + id + ".json", {
+          method: "PUT",
+          body: { message: `annotations: ${id}`, content: encodeUtf8B64(JSON.stringify({ report_id: id, updated_at: k, highlights: [] }, null, 2)) },
+        });
+
+        const entry = {
+          id, title, sector, broker,
+          uploaded_at: k, publish_date: pub,
+          pdf_path: pdfPath, thumb: thumbPath, orig_filename: FILE.name,
+          pages, size_mb: Math.round(FILE.size / 1024 / 1024 * 10) / 10,
+          has_text_layer: hasText, highlight_count: 0,
+        };
+
+        // reports.json에 추가 (409 재시도)
+        setStatus("목록 등록 중…");
+        for (let attempt = 0; attempt < 3; attempt++) {
+          if (attempt > 0) {
+            rres = await ghFetch("contents/index/reports.json", { cache: "no-store" });
+            robj = await rres.json();
+            rdoc = JSON.parse(decodeB64Utf8(robj.content));
+          }
+          if ((rdoc.reports || []).some((r) => r.id === id)) break;   // 이미 들어감
+          rdoc.reports = rdoc.reports || [];
+          rdoc.reports.push(entry);
+          rdoc.reports.sort((a, b) => (a.uploaded_at < b.uploaded_at ? 1 : -1));
+          rdoc.updated_at = k;
+          const put = await ghFetch("contents/index/reports.json", {
+            method: "PUT",
+            body: { message: `manual: +1 report (${id})`, content: encodeUtf8B64(JSON.stringify(rdoc, null, 2)), sha: robj.sha },
+          });
+          if (put.ok) break;
+          if (put.status !== 409 && put.status !== 422) throw new Error("목록 등록 실패: " + put.status);
+        }
+
+        setStatus("완료! 목록으로 이동합니다…");
+        setTimeout(() => { location.href = "index.html"; }, 700);
+      } catch (err) {
+        console.error(err);
+        setStatus((err && err.message) || "등록 실패", true);
+        $("submitBtn").disabled = false;
+      }
+    }
+
+    async function renderThumb(pdf) {
+      const page = await pdf.getPage(1);
+      const scale = 240 / page.getViewport({ scale: 1 }).width;
+      const vp = page.getViewport({ scale });
+      const c = document.createElement("canvas");
+      c.width = Math.floor(vp.width); c.height = Math.floor(vp.height);
+      const ctx = c.getContext("2d");
+      ctx.fillStyle = "#fff"; ctx.fillRect(0, 0, c.width, c.height);
+      await page.render({ canvasContext: ctx, viewport: vp }).promise;
+      return await new Promise((r) => c.toBlob((b) => r(b), "image/jpeg", 0.7));
+    }
+
+    requirePat(() => { /* PAT 준비되면 폼 사용 가능 */ });
+  </script>
+</body>
+</html>

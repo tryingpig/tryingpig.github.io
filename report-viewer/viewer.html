@@ -353,7 +353,7 @@
         try {
           const res = await saveAnnotations(REPORT_ID, highlights, deletedHids, annoSha);
           annoSha = res.sha;
-          bumpCount(REPORT_ID, highlights.length);
+          await bumpCount(REPORT_ID, highlights.length);   // 완료까지 대기(뒤로가기로 끊기지 않게)
         } catch (err) {
           if (err instanceof AuthError) { saving = false; handleError(err, () => {}); return; }
           toast("저장 실패 — 다시 시도합니다");
@@ -368,9 +368,9 @@
     /* reports.json의 highlight_count 즉시 갱신 (비필수 — 실패해도 collect의 recount가 보정).
        sha 충돌(409/422) 시 최신 재조회 후 1회 재시도. PUT 성공 여부를 반드시 확인. */
     async function bumpCount(reportId, count) {
-      for (let attempt = 0; attempt < 2; attempt++) {
+      for (let attempt = 0; attempt < 3; attempt++) {
         try {
-          const res = await ghFetch("contents/index/reports.json");
+          const res = await ghFetch("contents/index/reports.json", { cache: "no-store" });
           if (!res.ok) return;
           const obj = await res.json();
           const doc = JSON.parse(decodeB64Utf8(obj.content));

@@ -39,13 +39,14 @@ function encodeUtf8B64(str) {
 
 /* ── GitHub API ────────────────────────────────────────── */
 async function ghFetch(path, opts = {}) {
-  const { accept = "application/vnd.github+json", method = "GET", body = null } = opts;
+  const { accept = "application/vnd.github+json", method = "GET", body = null, cache } = opts;
   const headers = {
     Authorization: "Bearer " + getPat(),
     Accept: accept,
     "X-GitHub-Api-Version": "2022-11-28",
   };
   const init = { method, headers };
+  if (cache) init.cache = cache;   // 예: "no-store" (stale sha 방지)
   if (body) {
     headers["Content-Type"] = "application/json";
     init.body = JSON.stringify(body);

@@ -364,25 +364,33 @@
       toast("저장됨");
     }
 
-    /* reports.json의 highlight_count 갱신 (비필수, 실패 무시) */
+    /* reports.json의 highlight_count 즉시 갱신 (비필수 — 실패해도 collect의 recount가 보정).
+       sha 충돌(409/422) 시 최신 재조회 후 1회 재시도. PUT 성공 여부를 반드시 확인. */
     async function bumpCount(reportId, count) {
-      try {
-        const res = await ghFetch("contents/index/reports.json");
-        if (!res.ok) return;
-        const obj = await res.json();
-        const doc = JSON.parse(decodeB64Utf8(obj.content));
-        const r = (doc.reports || []).find((x) => x.id === reportId);
-        if (!r || r.highlight_count === count) return;
-        r.highlight_count = count;
-        await ghFetch("contents/index/reports.json", {
-          method: "PUT",
-          body: {
-            message: `count: ${reportId} ${count}`,
-            content: encodeUtf8B64(JSON.stringify(doc, null, 2)),
-            sha: obj.sha,
-          },
-        });
-      } catch (e) { console.warn("count 갱신 생략", e); }
+      for (let attempt = 0; attempt < 2; attempt++) {
+        try {
+          const res = await ghFetch("contents/index/reports.json");
+          if (!res.ok) return;
+          const obj = await res.json();
+          const doc = JSON.parse(decodeB64Utf8(obj.content));
+          const r = (doc.reports || []).find((x) => x.id === reportId);
+          if (!r || r.highlight_count === count) return;
+          r.highlight_count = count;
+          const put = await ghFetch("contents/index/reports.json", {
+            method: "PUT",
+            body: {
+              message: `count: ${reportId} ${count}`,
+              content: encodeUtf8B64(JSON.stringify(doc, null, 2)),
+              sha: obj.sha,
+            },
+          });
+          if (put.ok) return;
+          if (put.status !== 409 && put.status !== 422) {
+            console.warn("count 갱신 실패", put.status); return;   // 충돌 외 오류는 recount에 맡김
+          }
+          // 충돌이면 루프 재시도(최신 sha 재조회)
+        } catch (e) { console.warn("count 갱신 생략", e); return; }
+      }
     }
 
     /* ── 읽기 모드 (텍스트 리플로우) ── */

@@ -14,7 +14,6 @@
     <button id="delBtn">삭제</button>
     <button id="cancelBtn" style="display:none">취소</button>
     <button id="copyBtn">전체 복사</button>
-    <button id="llmBtn" title="읽기모드 본문을 LLM(claude)으로 다시 정리 요청">🤖 LLM</button>
   </div>
   <div class="wrap">
     <div class="hl-openmode">
@@ -32,80 +31,7 @@
     const REPORT_ID = params.get("id");
     let HLS = [], TITLE = REPORT_ID, ANNO_SHA = null;
     let PAGEITEMS = {};   // {page: [{str,x,y,w,h}]} — 사전렌더 글자좌표(텍스트 재구성용)
-    let ENGINE = null;    // 이 리포트의 본문 추출 엔진 (llm | heuristic | null)
-    let QUEUED = false;   // LLM 재추출 요청이 큐에 올라가 있는지
-    let llmPoll = null;
     const DELETED = new Set();
-
-    /* ── 온디맨드 LLM 본문 재추출 (요청→큐→집PC 처리→반영) ── */
-    const REQ_PATH = "contents/index/llm_requests.json";
-    function renderLLMBtn() {
-      const b = document.getElementById("llmBtn");
-      if (QUEUED) { b.textContent = "⏳ 처리 대기중"; b.disabled = true; b.title = "요청됨 — 집 PC가 처리 중(몇 분)"; }
-      else if (ENGINE === "llm") { b.textContent = "✅ LLM 본문"; b.disabled = false; b.title = "이미 LLM 정리됨 · 다시 요청하려면 클릭"; }
-      else { b.textContent = "🤖 LLM 정리"; b.disabled = false; b.title = "읽기모드 본문을 LLM으로 정리 요청"; }
-    }
-    async function loadLLMPending() {
-      try {
-        const res = await ghFetch(REQ_PATH, { cache: "no-store" });
-        if (!res.ok) return [];
-        const obj = await res.json();
-        return (JSON.parse(decodeB64Utf8(obj.content)).pending) || [];
-      } catch (e) { return []; }
-    }
-    async function fetchEngine() {
-      try {
-        const res = await ghFetch("contents/index/reports.json", { cache: "no-store" });
-        if (!res.ok) return ENGINE;
-        const obj = await res.json();
-        const r = (JSON.parse(decodeB64Utf8(obj.content)).reports || []).find((x) => x.id === REPORT_ID);
-        return r ? (r.text_engine || null) : ENGINE;
-      } catch (e) { return ENGINE; }
-    }
-    /* 요청 기록: llm_requests.json pending[]에 이 리포트 추가(sha 충돌 재시도) */
-    async function requestLLM() {
-      for (let attempt = 0; attempt < 4; attempt++) {
-        const res = await ghFetch(REQ_PATH, { cache: "no-store" });
-        let doc = { pending: [], done: [] }, sha = null;
-        if (res.ok) { const obj = await res.json(); doc = JSON.parse(decodeB64Utf8(obj.content)); sha = obj.sha; }
-        doc.pending = doc.pending || [];
-        if (!doc.pending.some((p) => (p.id || p) === REPORT_ID)) {
-          doc.pending.push({ id: REPORT_ID, requested_at: nowKst() });
-        }
-        const body = { message: `llm-req: ${REPORT_ID}`, content: encodeUtf8B64(JSON.stringify(doc, null, 2)) };
-        if (sha) body.sha = sha;
-        const put = await ghFetch(REQ_PATH, { method: "PUT", body });
-        if (put.ok) return;
-        if (put.status !== 409 && put.status !== 422) throw new Error("요청 실패 " + put.status);
-      }
-      throw new Error("요청 충돌(잠시 후 다시)");
-    }
-    function startLLMPoll() {
-      clearInterval(llmPoll);
-      llmPoll = setInterval(async () => {
-        const pend = await loadLLMPending();
-        const stillQueued = pend.some((p) => (p.id || p) === REPORT_ID);
-        if (!stillQueued) {
-          clearInterval(llmPoll);
-          QUEUED = false;
-          ENGINE = await fetchEngine();
-          renderLLMBtn();
-          if (ENGINE === "llm") toast("✅ 본문 정리 완료 — 읽기모드에서 확인");
-          else toast("처리 완료");
-        }
-      }, 25000);   // 25초마다 상태 확인(집 PC는 3분 주기 처리)
-    }
-    document.getElementById("llmBtn").onclick = async () => {
-      if (QUEUED) return;
-      if (ENGINE === "llm" && !confirm("이미 LLM으로 정리된 본문이에요. 다시 정리를 요청할까요?")) return;
-      const b = document.getElementById("llmBtn"); b.disabled = true;
-      try {
-        await requestLLM();
-        QUEUED = true; renderLLMBtn();
-        toast("요청됨 · 몇 분 내 읽기모드 본문에 반영돼요");
-        startLLMPoll();
-      } catch (e) { toast(e.message || "요청 실패"); renderLLMBtn(); }
-    };
 
     /* 하이라이트를 보기 좋은 텍스트로: 읽기모드 조각(segs) 우선 →
        없으면 rects+글자좌표로 줄 단위 복원(띄어쓰기·줄바꿈 살림) → 최후 저장 text */
@@ -255,14 +181,7 @@
         document.getElementById("title").textContent = TITLE;
         ANNO_SHA = anno.sha;
         HLS = anno.data.highlights || [];
-        ENGINE = r ? (r.text_engine || null) : null;
         render();
-        // LLM 버튼 상태: 큐에 요청이 있으면 대기중 표시 + 폴링
-        loadLLMPending().then((pend) => {
-          QUEUED = pend.some((p) => (p.id || p) === REPORT_ID);
-          renderLLMBtn();
-          if (QUEUED) startLLMPoll();
-        });
         // 사전렌더 글자좌표 로드(있으면) → 텍스트 재구성에 사용, 로드되면 다시 렌더
         if (r && r.layout_path) {
           try {

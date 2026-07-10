@@ -13,6 +13,7 @@
     <h1 id="docTitle">불러오는 중…</h1>
     <div class="spacer"></div>
     <button class="btn" id="modeBtn" title="읽기/PDF 전환">📖 읽기</button>
+    <button class="btn" id="llmBtn" title="읽기 본문을 LLM(claude)으로 정리 요청" style="display:none">🤖 LLM</button>
     <a class="btn" id="hlLink">모아보기</a>
   </div>
   <div id="banner"></div>
@@ -41,6 +42,11 @@
     const deletedHids = new Set();
     let totalTextLen = 0;
     let noTextLayer = false;  // 스캔본(텍스트 레이어 없음) — reports.json has_text_layer 기준
+    // 온디맨드 LLM 본문 재추출 상태
+    let llmEngine = null;     // 현재 본문 엔진 (llm | heuristic | null)
+    let llmQueued = false;    // 재추출 요청이 큐에 있음
+    let llmPoll = null;
+    let llmChecked = false;
     let pdfDoc = null;        // 읽기 모드 재사용 (사전렌더 모드에선 null)
     let READTEXT = null;      // 수집 시 추출한 페이지별 본문 {페이지번호: [{kind,text}]} (있으면 heuristic 대체)
     // ── 사전 렌더(서버에서 미리 구운 페이지 이미지 + 글자좌표) ──
@@ -163,6 +169,7 @@
         highlights = anno.data.highlights || [];
         annoSha = anno.sha;
         noTextLayer = report.has_text_layer === false;   // 스캔본 여부(지연 렌더라 텍스트 누적으론 판정 불가)
+        llmEngine = report.text_engine || null;
 
         NUMPAGES = report.pages || 0;
         PAGESDIR = report.pages_dir || null;
@@ -637,11 +644,14 @@
         }
         renderReadingHighlights();   // PDF에서 친 하이라이트 반영
         btn.textContent = "📄 PDF";
+        document.getElementById("llmBtn").style.display = "";   // 읽기모드에서만 LLM 버튼
+        ensureLlmState();
       } else {
         await ensurePdfRendered();   // 아직 렌더 안 했으면 지금 렌더
         rdC.style.display = "none"; pdfC.style.display = "";
         rerenderAllHighlights();     // 읽기에서 친 하이라이트 반영
         btn.textContent = "📖 읽기";
+        document.getElementById("llmBtn").style.display = "none";
       }
       updateCaptureFab();   // PDF 모드에서만 위젯 표시(읽기 모드 진입 시 캡처 해제)
       window.scrollTo(0, 0);
@@ -1400,6 +1410,78 @@
 
     document.getElementById("captureFab").onclick = togglePdfCapture;
     document.getElementById("captureHintX").onclick = exitPdfCapture;
+
+    /* ── 온디맨드 LLM 본문 재추출 (읽기모드 버튼 → 큐 → 집 PC 처리) ── */
+    const LLM_REQ = "contents/index/llm_requests.json";
+    function renderLlmBtn() {
+      const b = document.getElementById("llmBtn");
+      if (llmQueued) { b.textContent = "⏳ 처리 대기중"; b.disabled = true; }
+      else if (llmEngine === "llm") { b.textContent = "✅ LLM 본문"; b.disabled = false; }
+      else { b.textContent = "🤖 LLM 정리"; b.disabled = false; }
+    }
+    async function llmPending() {
+      try {
+        const res = await ghFetch(LLM_REQ, { cache: "no-store" });
+        if (!res.ok) return [];
+        return (JSON.parse(decodeB64Utf8((await res.json()).content)).pending) || [];
+      } catch (e) { return []; }
+    }
+    async function llmFetchEngine() {
+      try {
+        const res = await ghFetch("contents/index/reports.json", { cache: "no-store" });
+        if (!res.ok) return llmEngine;
+        const r = (JSON.parse(decodeB64Utf8((await res.json()).content)).reports || []).find((x) => x.id === REPORT_ID);
+        return r ? (r.text_engine || null) : llmEngine;
+      } catch (e) { return llmEngine; }
+    }
+    async function requestLlm() {
+      for (let a = 0; a < 4; a++) {
+        const res = await ghFetch(LLM_REQ, { cache: "no-store" });
+        let doc = { pending: [], done: [] }, sha = null;
+        if (res.ok) { const obj = await res.json(); doc = JSON.parse(decodeB64Utf8(obj.content)); sha = obj.sha; }
+        doc.pending = doc.pending || [];
+        if (!doc.pending.some((p) => (p.id || p) === REPORT_ID)) doc.pending.push({ id: REPORT_ID, requested_at: nowKst() });
+        const body = { message: `llm-req: ${REPORT_ID}`, content: encodeUtf8B64(JSON.stringify(doc, null, 2)) };
+        if (sha) body.sha = sha;
+        const put = await ghFetch(LLM_REQ, { method: "PUT", body });
+        if (put.ok) return;
+        if (put.status !== 409 && put.status !== 422) throw new Error("요청 실패 " + put.status);
+      }
+      throw new Error("요청 충돌(잠시 후 다시)");
+    }
+    function startLlmPoll() {
+      clearInterval(llmPoll);
+      llmPoll = setInterval(async () => {
+        const pend = await llmPending();
+        if (!pend.some((p) => (p.id || p) === REPORT_ID)) {
+          clearInterval(llmPoll);
+          llmQueued = false;
+          llmEngine = await llmFetchEngine();
+          renderLlmBtn();
+          toast(llmEngine === "llm" ? "✅ 본문 정리 완료 — 새로고침하면 반영" : "처리 완료");
+        }
+      }, 25000);   // 25초마다 상태 확인(집 PC는 3분 주기 처리)
+    }
+    async function ensureLlmState() {
+      renderLlmBtn();
+      if (llmChecked) return;
+      llmChecked = true;
+      const pend = await llmPending();
+      llmQueued = pend.some((p) => (p.id || p) === REPORT_ID);
+      renderLlmBtn();
+      if (llmQueued) startLlmPoll();
+    }
+    document.getElementById("llmBtn").onclick = async () => {
+      if (llmQueued) return;
+      if (llmEngine === "llm" && !confirm("이미 LLM으로 정리된 본문이에요. 다시 정리를 요청할까요?")) return;
+      const b = document.getElementById("llmBtn"); b.disabled = true;
+      try {
+        await requestLlm();
+        llmQueued = true; renderLlmBtn();
+        toast("요청됨 · 몇 분 내 본문에 반영돼요(완료 후 새로고침)");
+        startLlmPoll();
+      } catch (e) { toast(e.message || "요청 실패"); renderLlmBtn(); }
+    };
 
     /* ── 읽기 모드 하이라이트 (텍스트 기준) ── */
     const NW = (s) => (s || "").replace(/\s+/g, "");        // 공백 제거 정규화

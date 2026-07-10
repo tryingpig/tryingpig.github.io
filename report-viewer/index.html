@@ -231,12 +231,7 @@
             updateDelBar();
             return;
           }
-          if (e.target.closest("a")) return;           // 읽기/PDF/모아보기/수정 링크는 예외
-          if (e.target.closest(".card-thumb")) return; // 썸네일 = 미리보기(별도 처리)
-          // 그냥 탭 → 이동하지 않고 '선택됨' 표시만 토글(단일 선택)
-          const wasActive = card.classList.contains("active");
-          list.querySelectorAll(".card.active").forEach((c) => c.classList.remove("active"));
-          if (!wasActive) card.classList.add("active");
+          // 일반 모드: 카드 본문 클릭은 이동/선택 없음(이동은 버튼으로만, 시각 피드백은 CSS 호버)
         });
       });
 

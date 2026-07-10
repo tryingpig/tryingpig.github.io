@@ -83,6 +83,7 @@ a { color: inherit; text-decoration: none; }
   background: var(--card); border: 1px solid var(--line);
   border-radius: 12px; padding: 14px; margin-bottom: 10px;
   display: flex; gap: 12px; align-items: flex-start;
+  transition: background .15s ease, box-shadow .15s ease, transform .15s ease;
 }
 .card-del {
   position: absolute; top: 6px; right: 8px; z-index: 2;
@@ -121,8 +122,12 @@ a { color: inherit; text-decoration: none; }
 }
 .card .mini.read { border-color: var(--accent); color: var(--accent); font-weight: 600; }
 .card .mini.pdf { border-color: var(--accent); color: var(--accent); font-weight: 600; }
-/* 탭했을 때 '선택됨' 표시(이동 대신) */
-.card.active { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent) inset; }
+/* 마우스 올리면 부드럽게 회색으로(호버 피드백) — 데스크톱 전용 */
+@media (hover: hover) and (pointer: fine) {
+  .card:hover { background: #f2f3f5; box-shadow: 0 3px 12px rgba(0,0,0,.09); transform: translateY(-1px); }
+}
+/* 터치: 누르는 동안 잠깐 눌린 느낌 */
+.card:active { background: #eef0f3; }
 .card-thumb { cursor: zoom-in; }
 
 /* 썸네일 미리보기 — 데스크톱 호버(플로팅) */

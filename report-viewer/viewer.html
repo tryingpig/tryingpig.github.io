@@ -40,6 +40,7 @@
     let annoSha = null;
     const deletedHids = new Set();
     let totalTextLen = 0;
+    let noTextLayer = false;  // 스캔본(텍스트 레이어 없음) — reports.json has_text_layer 기준
     let pdfDoc = null;        // 읽기 모드 재사용
     let READTEXT = null;      // 수집 시 추출한 페이지별 본문 {페이지번호: [{kind,text}]} (있으면 heuristic 대체)
 
@@ -125,6 +126,7 @@
 
         highlights = anno.data.highlights || [];
         annoSha = anno.sha;
+        noTextLayer = report.has_text_layer === false;   // 스캔본 여부(지연 렌더라 텍스트 누적으론 판정 불가)
 
         // PDF(캐시 우선)와 추출 본문(text/<id>.json)을 병렬로 로드
         async function loadReadText() {
@@ -149,12 +151,12 @@
         } else {
           await ensurePdfRendered();
         }
-        // 특정 하이라이트/페이지로 점프 (모아보기에서 진입)
-        if (GOTO_HL) gotoHighlight(GOTO_HL, GOTO_PAGE);
-        else if (GOTO_PAGE > 0 && mode === "pdf") {
+        // 특정 하이라이트/페이지로 점프 (모아보기에서 진입) — 지연 렌더라 대상 페이지를 먼저 렌더
+        if (GOTO_PAGE > 0 && mode === "pdf") {
           const el = document.querySelector(`.page-wrap[data-page="${GOTO_PAGE}"]`);
-          if (el) el.scrollIntoView();
+          if (el) { await renderPdfPage(el); el.scrollIntoView(); }
         }
+        if (GOTO_HL) gotoHighlight(GOTO_HL, GOTO_PAGE);
       } catch (err) {
         handleError(err, start);
       }
@@ -166,33 +168,59 @@
       await renderPdf();
       pdfRendered = true;
       updateCaptureFab();
-      if (totalTextLen < 5) {
+      if (noTextLayer) {
         document.getElementById("banner").insertAdjacentHTML("beforeend",
           `<div class="banner">텍스트 레이어 없음 — 하이라이트 불가 (스캔본)</div>`);
       }
     }
 
-    /* ── PDF 렌더 ── */
+    /* ── PDF 렌더: 자리만 먼저 잡고, 화면 근처 페이지만 지연 렌더(큰 PDF 즉시 열림) ── */
+    let pdfPageIO = null;
     async function renderPdf() {
       const container = document.getElementById("pdfContainer");
       container.innerHTML = "";
       const pdf = pdfDoc;
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
       const cssWidth = Math.min(window.innerWidth - 16, 900);
-
+      // 1) 1페이지 비율로 전체 페이지 자리(placeholder) 높이를 추정해 한 번에 배치(스크롤 안정)
+      const p1 = await pdf.getPage(1);
+      const b1 = p1.getViewport({ scale: 1 });
+      const estH = Math.round(cssWidth * b1.height / b1.width);
+      const frag = document.createDocumentFragment();
       for (let n = 1; n <= pdf.numPages; n++) {
-        const page = await pdf.getPage(n);
-        const base = page.getViewport({ scale: 1 });
-        const scale = cssWidth / base.width;
-        const viewport = page.getViewport({ scale });
-
         const wrap = document.createElement("div");
         wrap.className = "page-wrap";
         wrap.dataset.page = n;
+        wrap.style.width = cssWidth + "px";
+        wrap.style.height = estH + "px";
+        frag.appendChild(wrap);
+      }
+      container.appendChild(frag);
+      updateCaptureFab();   // 자리 생기면 바로 위젯 표시
+      // 2) 뷰포트 근처 페이지만 실제 렌더
+      if (pdfPageIO) pdfPageIO.disconnect();
+      pdfPageIO = new IntersectionObserver((entries, obs) => {
+        for (const en of entries) {
+          if (en.isIntersecting) { obs.unobserve(en.target); renderPdfPage(en.target); }
+        }
+      }, { rootMargin: "1200px 0px" });
+      container.querySelectorAll(".page-wrap").forEach((w) => pdfPageIO.observe(w));
+    }
+
+    /* 페이지 하나를 실제로 렌더(캔버스+텍스트레이어+하이라이트). 최초 1회만. */
+    async function renderPdfPage(wrap) {
+      if (wrap._rendered) return;
+      wrap._rendered = true;
+      const n = parseInt(wrap.dataset.page, 10);
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const cssWidth = Math.min(window.innerWidth - 16, 900);
+      try {
+        const page = await pdfDoc.getPage(n);
+        const base = page.getViewport({ scale: 1 });
+        const scale = cssWidth / base.width;
+        const viewport = page.getViewport({ scale });
         wrap.style.width = viewport.width + "px";
         wrap.style.height = viewport.height + "px";
 
-        // 캔버스 (본문)
         const canvas = document.createElement("canvas");
         canvas.width = Math.floor(viewport.width * dpr);
         canvas.height = Math.floor(viewport.height * dpr);
@@ -200,24 +228,20 @@
         canvas.style.height = viewport.height + "px";
         const ctx = canvas.getContext("2d");
         ctx.scale(dpr, dpr);
-        wrap.appendChild(canvas);
+        wrap.insertBefore(canvas, wrap.firstChild);   // 오버레이(캡처 모드) 아래에 넣기
 
-        // 하이라이트 레이어
         const hlLayer = document.createElement("div");
         hlLayer.className = "hlLayer";
         wrap.appendChild(hlLayer);
-
-        // 텍스트 레이어
         const textLayer = document.createElement("div");
         textLayer.className = "textLayer";
         wrap.appendChild(textLayer);
 
-        container.appendChild(wrap);
-        if (n === 1) updateCaptureFab();   // 첫 페이지가 생기면 바로 위젯 표시(전체 렌더 대기 X)
-
         await page.render({ canvasContext: ctx, viewport }).promise;
         await buildTextLayer(page, viewport, textLayer);
         renderHighlightsForPage(n, hlLayer, wrap);
+      } catch (e) {
+        wrap._rendered = false;   // 실패 시 재시도 가능하게
       }
     }
 
@@ -282,13 +306,16 @@
     function renderOneHighlightPdf(hl) {
       const wrap = document.querySelector(`.page-wrap[data-page="${hl.page}"]`);
       if (!wrap) return;
-      appendHlRects(hl, wrap.querySelector(".hlLayer"), wrap.offsetWidth, wrap.offsetHeight);
+      const hlLayer = wrap.querySelector(".hlLayer");
+      if (!hlLayer) return;   // 미렌더 페이지면 렌더 시 그려짐
+      appendHlRects(hl, hlLayer, wrap.offsetWidth, wrap.offsetHeight);
     }
 
     function rerenderAllHighlights() {
       document.querySelectorAll(".page-wrap").forEach((wrap) => {
-        const pageNo = parseInt(wrap.dataset.page, 10);
-        renderHighlightsForPage(pageNo, wrap.querySelector(".hlLayer"), wrap);
+        const hlLayer = wrap.querySelector(".hlLayer");
+        if (!hlLayer) return;   // 아직 지연 렌더 안 된 페이지 → 렌더될 때 그려짐
+        renderHighlightsForPage(parseInt(wrap.dataset.page, 10), hlLayer, wrap);
       });
     }
 

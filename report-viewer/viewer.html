@@ -40,6 +40,55 @@
     let totalTextLen = 0;
     let pdfDoc = null;        // 읽기 모드 재사용
     let READTEXT = null;      // 수집 시 추출한 페이지별 본문 {페이지번호: [{kind,text}]} (있으면 heuristic 대체)
+
+    /* ── PDF 로컬 캐시 (IndexedDB) ── 열 때마다 재다운로드 방지, 재열람 즉시 */
+    const PDF_DB = "rv_pdfcache", PDF_STORE = "pdfs", PDF_CAP = 12;
+    function idbOpen() {
+      return new Promise((res, rej) => {
+        const r = indexedDB.open(PDF_DB, 1);
+        r.onupgradeneeded = () => { const db = r.result; if (!db.objectStoreNames.contains(PDF_STORE)) db.createObjectStore(PDF_STORE); };
+        r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error);
+      });
+    }
+    async function idbGet(id) {
+      try {
+        const db = await idbOpen();
+        return await new Promise((res) => {
+          const rq = db.transaction(PDF_STORE, "readonly").objectStore(PDF_STORE).get(id);
+          rq.onsuccess = () => res(rq.result); rq.onerror = () => res(null);
+        });
+      } catch (e) { return null; }
+    }
+    async function idbPut(id, buf) {
+      try {
+        const db = await idbOpen();
+        const st = db.transaction(PDF_STORE, "readwrite").objectStore(PDF_STORE);
+        st.put({ buf, ts: Date.now() }, id);
+        await new Promise((res) => { st.transaction.oncomplete = res; st.transaction.onerror = res; });
+        prunePdfCache();
+      } catch (e) { /* quota 초과 등 무시 */ }
+    }
+    async function prunePdfCache() {
+      try {
+        const db = await idbOpen();
+        const st = db.transaction(PDF_STORE, "readwrite").objectStore(PDF_STORE);
+        const keys = await new Promise((res) => { const rq = st.getAllKeys(); rq.onsuccess = () => res(rq.result || []); rq.onerror = () => res([]); });
+        if (keys.length <= PDF_CAP) return;
+        const vals = await new Promise((res) => { const rq = st.getAll(); rq.onsuccess = () => res(rq.result || []); rq.onerror = () => res([]); });
+        keys.map((k, i) => ({ k, ts: (vals[i] && vals[i].ts) || 0 }))
+            .sort((a, b) => a.ts - b.ts)
+            .slice(0, keys.length - PDF_CAP)
+            .forEach((o) => st.delete(o.k));
+      } catch (e) { /* 무시 */ }
+    }
+    /* 캐시에 있으면 그걸, 없으면 받아서 캐시 후 반환 */
+    async function getPdfBuffer(id, path) {
+      const hit = await idbGet(id);
+      if (hit && hit.buf) return hit.buf;
+      const buf = await loadPdf(path);
+      idbPut(id, buf.slice(0));   // 사본 캐시(원본은 pdf.js가 detach할 수 있음)
+      return buf;
+    }
     let pdfRendered = false;  // PDF 캔버스 렌더 여부 (지연 렌더)
     let readingBuilt = false;
     let mode = "pdf";         // "pdf" | "reading"
@@ -75,17 +124,17 @@
         highlights = anno.data.highlights || [];
         annoSha = anno.sha;
 
-        const buf = await loadPdf(report.pdf_path);
-        pdfDoc = await pdfjsLib.getDocument({ data: buf }).promise;
-        cacheThumb(REPORT_ID);   // 목록 썸네일용 (백그라운드)
-
-        // 수집 시 추출한 본문(text/<id>.json)이 있으면 읽기모드에서 그걸 사용
-        if (report.text_path) {
+        // PDF(캐시 우선)와 추출 본문(text/<id>.json)을 병렬로 로드
+        async function loadReadText() {
+          if (!report.text_path) return;
           try {
             const res = await ghFetch("contents/" + report.text_path, { accept: "application/vnd.github.raw", cache: "no-store" });
             if (res.ok) { const td = await res.json(); READTEXT = td && td.pages ? td.pages : null; }
           } catch (e) { READTEXT = null; }
         }
+        const [buf] = await Promise.all([getPdfBuffer(REPORT_ID, report.pdf_path), loadReadText()]);
+        pdfDoc = await pdfjsLib.getDocument({ data: buf }).promise;
+        cacheThumb(REPORT_ID);   // 목록 썸네일용 (백그라운드)
 
         // 삭제 예정 배너
         if (report.pending_deletion) {

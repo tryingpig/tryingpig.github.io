@@ -30,7 +30,28 @@
     const params = new URLSearchParams(location.search);
     const REPORT_ID = params.get("id");
     let HLS = [], TITLE = REPORT_ID, ANNO_SHA = null;
+    let PAGEITEMS = {};   // {page: [{str,x,y,w,h}]} — 사전렌더 글자좌표(텍스트 재구성용)
     const DELETED = new Set();
+
+    /* 하이라이트를 보기 좋은 텍스트로: 읽기모드 조각(segs) 우선 →
+       없으면 rects+글자좌표로 줄 단위 복원(띄어쓰기·줄바꿈 살림) → 최후 저장 text */
+    function displayText(h) {
+      if (h.segs && h.segs.length) return h.segs.join("\n");
+      const items = PAGEITEMS[h.page];
+      if (items && items.length && h.rects && h.rects.length) {
+        const lines = [];
+        for (const r of h.rects) {
+          const inside = items.filter((it) => {
+            const cx = it.x + it.w / 2, cy = it.y + it.h / 2;
+            return cx >= r.x - 0.01 && cx <= r.x + r.w + 0.01 && cy >= r.y - 0.004 && cy <= r.y + r.h + 0.004;
+          });
+          const t = inside.map((it) => it.str).join("").replace(/\s+/g, " ").trim();
+          if (t) lines.push(t);
+        }
+        if (lines.length) return lines.join("\n");
+      }
+      return h.text || "";
+    }
     let OPEN_MODE = localStorage.getItem("rv_hl_open_mode") || "read";   // 하이라이트 클릭 시 열기 방식
 
     function renderSeg() {
@@ -63,7 +84,7 @@
       list.innerHTML = sorted.map((h) => {
         const body = (h.type === "image")
           ? `<div class="hl-img-wrap" data-hid="${esc(h.hid)}"><div class="hl-img-ph">🖼 이미지 불러오는 중…</div></div>`
-          : `<div>${esc(h.text)}</div>`;
+          : `<div class="hl-text">${esc(displayText(h))}</div>`;
         const tag = (h.type === "image") ? ` · ✂️ 캡처` : "";
         return `
         <div class="hl-item ${esc(h.color || "yellow")}${delMode ? " selectable" : ""}${SELECTED.has(h.hid) ? " sel" : ""}" data-hid="${esc(h.hid)}" data-page="${h.page}">
@@ -161,6 +182,20 @@
         ANNO_SHA = anno.sha;
         HLS = anno.data.highlights || [];
         render();
+        // 사전렌더 글자좌표 로드(있으면) → 텍스트 재구성에 사용, 로드되면 다시 렌더
+        if (r && r.layout_path) {
+          try {
+            const lr = await ghFetch("contents/" + r.layout_path, { accept: "application/vnd.github.raw", cache: "no-store" });
+            if (lr.ok) {
+              const j = await lr.json();
+              const pages = j && j.pages ? j.pages : {};
+              for (const [n, pg] of Object.entries(pages)) {
+                PAGEITEMS[n] = (pg.spans || []).map((s) => ({ str: s.s, x: s.x, y: s.y, w: s.w, h: s.h }));
+              }
+              render();
+            }
+          } catch (e) { /* 좌표 없으면 저장 text로 폴백 */ }
+        }
       } catch (err) {
         handleError(err, load);
       }
@@ -170,7 +205,7 @@
       if (!HLS.length) return;
       const sorted = HLS.slice().sort((a, b) => a.page - b.page);
       const md = `# ${TITLE}\n\n` + sorted.map((h) =>
-        `> (p.${h.page}) ${h.type === "image" ? "[이미지 캡처]" : h.text}`).join("\n\n");
+        `> (p.${h.page}) ${h.type === "image" ? "[이미지 캡처]" : displayText(h).replace(/\n/g, " ")}`).join("\n\n");
       try { await navigator.clipboard.writeText(md); toast("복사됨"); }
       catch { toast("복사 실패"); }
     };

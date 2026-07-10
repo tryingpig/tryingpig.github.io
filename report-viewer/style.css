@@ -339,6 +339,8 @@ mark.rd-hl.pink   { background: rgba(255, 45, 120, .34); }
 .hl-head { display: flex; align-items: center; gap: 8px; }
 .hl-chk { width: 18px; height: 18px; flex-shrink: 0; accent-color: var(--accent); margin: 0; pointer-events: none; }
 .hl-head .pg { margin: 0; }
+/* 하이라이트 본문: 줄바꿈(\n) 살리고 자연스럽게 줄바꿈 */
+.hl-text { margin-top: 5px; white-space: pre-wrap; word-break: break-word; line-height: 1.6; }
 .hl-item.selectable { cursor: pointer; }
 .hl-item.sel { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent) inset; }
 /* 상단 삭제 버튼 */

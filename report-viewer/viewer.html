@@ -1104,21 +1104,33 @@
     }
 
     async function captureRegion(pageNo, rect, color) {
+      const hid = "h_" + Date.now();
+      const clip = `clips/${REPORT_ID}/${hid}.jpg`;
+      const hl = { hid, page: pageNo, type: "image", rects: [rect], clip, color, created_at: nowKst() };
+      // 낙관적: 캡처 흔적을 '즉시' 표시(업로드 끝나기 전에도 바로 보이게) + 잠깐 반짝임
+      highlights.push(hl);
+      if (mode === "pdf") { renderOneHighlightPdf(hl); flashCaptured(hid); }
+      toast("캡처 저장 중…");
       try {
-        toast("캡처 저장 중…");
         const blob = await renderRegionBlob(pageNo, rect);
-        const hid = "h_" + Date.now();
-        const clip = `clips/${REPORT_ID}/${hid}.jpg`;
         await putBinaryFile(clip, blob, `clip: ${REPORT_ID} ${hid}`);
-        const hl = { hid, page: pageNo, type: "image", rects: [rect], clip, color, created_at: nowKst() };
-        highlights.push(hl);
-        if (mode === "pdf") renderOneHighlightPdf(hl);
         persist();
-        toast("캡처 저장됨 · 모아보기에서 확인");
+        toast("✂️ 캡처됨 · 모아보기에서 확인");
       } catch (e) {
         console.error(e);
-        toast("캡처 저장 실패");
+        // 업로드 실패 → 방금 추가한 캡처 롤백
+        highlights = highlights.filter((h) => h.hid !== hid);
+        if (mode === "pdf") rerenderAllHighlights();
+        toast("캡처 저장 실패 — 다시 시도해 주세요");
       }
+    }
+
+    /* 방금 만든 캡처 박스를 잠깐 반짝여 눈에 띄게 */
+    function flashCaptured(hid) {
+      document.querySelectorAll(`.hl-rect[data-hid="${hid}"]`).forEach((el) => {
+        el.classList.add("just-captured");
+        setTimeout(() => el.classList.remove("just-captured"), 1400);
+      });
     }
 
     /* ── PDF 모드 이미지 캡처 (우상단 위젯 → 아무 페이지나 드래그) ── */
@@ -1128,9 +1140,20 @@
     /* PDF 모드 & 렌더 완료면 위젯 표시, 아니면 숨김(+캡처 모드 해제) */
     function updateCaptureFab() {
       const fab = document.getElementById("captureFab");
-      if (mode === "pdf" && pdfRendered) { fab.style.display = ""; }
+      if (mode === "pdf" && pdfRendered) { fab.style.display = ""; positionCaptureFab(); }
       else { fab.style.display = "none"; if (pdfCaptureOn) exitPdfCapture(); }
     }
+
+    /* 위젯을 리포트 페이지의 오른쪽 상단 모서리에 맞춰 붙임(화면 맨끝 여백이 아니라) */
+    function positionCaptureFab() {
+      const fab = document.getElementById("captureFab");
+      if (fab.style.display === "none") return;
+      const page = document.querySelector("#pdfContainer .page-wrap");
+      if (!page) return;
+      const r = page.getBoundingClientRect();
+      fab.style.right = Math.max(8, Math.round(window.innerWidth - r.right - 6)) + "px";
+    }
+    window.addEventListener("resize", positionCaptureFab);
 
     function togglePdfCapture() { pdfCaptureOn ? exitPdfCapture() : enterPdfCapture(); }
 

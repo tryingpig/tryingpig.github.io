@@ -173,6 +173,7 @@ a { color: inherit; text-decoration: none; }
   isolation: isolate; /* mix-blend-mode 블렌드 범위 고정 */
 }
 .page-wrap canvas { display: block; }
+.page-wrap img.pdf-pageimg { display: block; }
 /* 투명 텍스트 레이어 (선택용) */
 .textLayer {
   position: absolute; inset: 0; overflow: hidden; opacity: 1; line-height: 1;

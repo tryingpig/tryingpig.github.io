@@ -43,7 +43,6 @@
   </div>
 
   <div id="thumbHover" style="display:none"><img alt="미리보기"></div>
-  <div id="thumbLightbox" style="display:none"><img alt="미리보기"></div>
 
   <script src="app.js"></script>
   <script>
@@ -77,16 +76,14 @@
       };
       img.onload = place;
       img.src = src;
+      box.dataset.for = id;
       box.style.display = "";
       place();
     }
-    function hideThumbHover() { document.getElementById("thumbHover").style.display = "none"; }
-    function openThumbLightbox(id) {
-      const src = thumbSrc(id);
-      if (!src) return;
-      const lb = document.getElementById("thumbLightbox");
-      lb.querySelector("img").src = src;
-      lb.style.display = "";
+    function hideThumbHover() {
+      const box = document.getElementById("thumbHover");
+      box.style.display = "none";
+      box.dataset.for = "";
     }
 
     function esc(s) {
@@ -244,7 +241,11 @@
         }
         th.addEventListener("click", (e) => {
           if (delMode) return;   // 삭제 모드에선 카드 선택 토글로 넘김(가로채지 않음)
-          e.stopPropagation(); hideThumbHover(); openThumbLightbox(id);
+          e.stopPropagation();
+          const box = document.getElementById("thumbHover");
+          // 같은 썸네일을 다시 탭하면 닫기(토글), 아니면 미리보기 표시
+          if (box.style.display !== "none" && box.dataset.for === id) hideThumbHover();
+          else showThumbHover(th, id);
         });
       });
 
@@ -373,9 +374,8 @@
       if (confirm("이 기기에서 토큰을 삭제할까요?")) { clearPat(); location.reload(); }
     };
 
-    document.getElementById("thumbLightbox").onclick = () => {
-      document.getElementById("thumbLightbox").style.display = "none";
-    };
+    // 미리보기 밖을 탭/클릭하거나 스크롤하면 닫기(썸네일 탭은 자체 토글이 처리)
+    document.addEventListener("click", (e) => { if (!e.target.closest(".card-thumb")) hideThumbHover(); });
     window.addEventListener("scroll", hideThumbHover, { passive: true });
 
     requirePat(load);

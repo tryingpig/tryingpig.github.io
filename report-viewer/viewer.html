@@ -41,8 +41,44 @@
     const deletedHids = new Set();
     let totalTextLen = 0;
     let noTextLayer = false;  // 스캔본(텍스트 레이어 없음) — reports.json has_text_layer 기준
-    let pdfDoc = null;        // 읽기 모드 재사용
+    let pdfDoc = null;        // 읽기 모드 재사용 (사전렌더 모드에선 null)
     let READTEXT = null;      // 수집 시 추출한 페이지별 본문 {페이지번호: [{kind,text}]} (있으면 heuristic 대체)
+    // ── 사전 렌더(서버에서 미리 구운 페이지 이미지 + 글자좌표) ──
+    let PRE = null;           // {페이지: {w,h,spans:[{s,x,y,w,h,fs}]}} — 있으면 PDF 안 받고 이걸로 구동
+    let PAGESDIR = null;      // 페이지 이미지 폴더 vault 경로 (pages/<id>)
+    let NUMPAGES = 0;         // 총 페이지 수
+    const _pageImgCache = {}; // 페이지 이미지 objectURL 캐시
+    function numPages() { return pdfDoc ? pdfDoc.numPages : NUMPAGES; }
+    /* 사전 렌더 페이지 이미지를 vault(비공개)에서 인증 fetch → objectURL (지연·1회) */
+    async function loadPageImage(n) {
+      if (_pageImgCache[n]) return _pageImgCache[n];
+      const res = await ghFetch("contents/" + PAGESDIR + "/" + n + ".jpg", { accept: "application/vnd.github.raw" });
+      if (!res.ok) throw new Error("page image " + n + " " + res.status);
+      const url = URL.createObjectURL(await res.blob());
+      _pageImgCache[n] = url;
+      return url;
+    }
+    /* 글자좌표(spans, 정규화)로 투명 텍스트 레이어 구성 — pdf.js 없이 선택/밑줄 가능 */
+    function buildTextLayerFromSpans(spans, W, H, layer) {
+      const frag = document.createDocumentFragment();
+      const measured = [];
+      for (const s of spans) {
+        if (!s.s) continue;
+        totalTextLen += s.s.length;
+        const span = document.createElement("span");
+        span.textContent = s.s;
+        span.style.left = (s.x * W) + "px";
+        span.style.top = (s.y * H) + "px";
+        span.style.fontSize = ((s.fs || s.h) * H) + "px";
+        frag.appendChild(span);
+        measured.push({ span, wantW: s.w * W });
+      }
+      layer.appendChild(frag);
+      for (const m of measured) {
+        const w = m.span.offsetWidth;
+        if (w > 0 && m.wantW > 0) m.span.style.transform = `scaleX(${m.wantW / w})`;
+      }
+    }
 
     /* ── PDF 로컬 캐시 (IndexedDB) ── 열 때마다 재다운로드 방지, 재열람 즉시 */
     const PDF_DB = "rv_pdfcache", PDF_STORE = "pdfs", PDF_CAP = 12;
@@ -128,7 +164,10 @@
         annoSha = anno.sha;
         noTextLayer = report.has_text_layer === false;   // 스캔본 여부(지연 렌더라 텍스트 누적으론 판정 불가)
 
-        // PDF(캐시 우선)와 추출 본문(text/<id>.json)을 병렬로 로드
+        NUMPAGES = report.pages || 0;
+        PAGESDIR = report.pages_dir || null;
+
+        // 추출 본문(text/<id>.json)
         async function loadReadText() {
           if (!report.text_path) return;
           try {
@@ -136,9 +175,34 @@
             if (res.ok) { const td = await res.json(); READTEXT = td && td.pages ? td.pages : null; }
           } catch (e) { READTEXT = null; }
         }
-        const [buf] = await Promise.all([getPdfBuffer(REPORT_ID, report.pdf_path), loadReadText()]);
-        pdfDoc = await pdfjsLib.getDocument({ data: buf }).promise;
-        cacheThumb(REPORT_ID);   // 목록 썸네일용 (백그라운드)
+        // 사전 렌더 글자좌표(pagelayout/<id>.json)
+        async function loadLayout() {
+          if (!report.layout_path) return;
+          try {
+            const res = await ghFetch("contents/" + report.layout_path, { accept: "application/vnd.github.raw", cache: "no-store" });
+            if (res.ok) { const j = await res.json(); PRE = j && j.pages ? j.pages : null; }
+          } catch (e) { PRE = null; }
+        }
+
+        const preAvail = !!(report.layout_path && report.pages_dir);
+        if (preAvail) {
+          // 사전 렌더 경로: PDF를 아예 안 받는다(즉시 로딩). 실패 시 PDF로 폴백.
+          await Promise.all([loadLayout(), loadReadText()]);
+          if (PRE) {
+            NUMPAGES = NUMPAGES || Object.keys(PRE).length;
+            for (const [n, pg] of Object.entries(PRE)) {   // 좌표 역산용 pageItems를 좌표에서 채움
+              pageItems[n] = (pg.spans || []).map((s) => ({ str: s.s, x: s.x, y: s.y, w: s.w, h: s.h }));
+              pageSnap[n] = [];
+            }
+          }
+        }
+        if (!PRE) {
+          // 폴백: 기존 pdf.js 경로 (PDF 다운로드 + 파싱)
+          const [buf] = await Promise.all([getPdfBuffer(REPORT_ID, report.pdf_path), loadReadText()]);
+          pdfDoc = await pdfjsLib.getDocument({ data: buf }).promise;
+          NUMPAGES = pdfDoc.numPages;
+          cacheThumb(REPORT_ID);   // 목록 썸네일용 (백그라운드)
+        }
 
         // 삭제 예정 배너
         if (report.pending_deletion) {
@@ -179,14 +243,19 @@
     async function renderPdf() {
       const container = document.getElementById("pdfContainer");
       container.innerHTML = "";
-      const pdf = pdfDoc;
       const cssWidth = Math.min(window.innerWidth - 16, 900);
       // 1) 1페이지 비율로 전체 페이지 자리(placeholder) 높이를 추정해 한 번에 배치(스크롤 안정)
-      const p1 = await pdf.getPage(1);
-      const b1 = p1.getViewport({ scale: 1 });
-      const estH = Math.round(cssWidth * b1.height / b1.width);
+      let estH;
+      if (PRE) {
+        const p1 = PRE["1"] || Object.values(PRE)[0];
+        estH = Math.round(cssWidth * p1.h / p1.w);
+      } else {
+        const p1 = await pdfDoc.getPage(1);
+        const b1 = p1.getViewport({ scale: 1 });
+        estH = Math.round(cssWidth * b1.height / b1.width);
+      }
       const frag = document.createDocumentFragment();
-      for (let n = 1; n <= pdf.numPages; n++) {
+      for (let n = 1; n <= numPages(); n++) {
         const wrap = document.createElement("div");
         wrap.className = "page-wrap";
         wrap.dataset.page = n;
@@ -206,14 +275,39 @@
       container.querySelectorAll(".page-wrap").forEach((w) => pdfPageIO.observe(w));
     }
 
-    /* 페이지 하나를 실제로 렌더(캔버스+텍스트레이어+하이라이트). 최초 1회만. */
+    /* 페이지 하나를 실제로 렌더(이미지/캔버스+텍스트레이어+하이라이트). 최초 1회만. */
     async function renderPdfPage(wrap) {
       if (wrap._rendered) return;
       wrap._rendered = true;
       const n = parseInt(wrap.dataset.page, 10);
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
       const cssWidth = Math.min(window.innerWidth - 16, 900);
       try {
+        if (PRE) {
+          // ── 사전 렌더: 미리 구운 이미지 + 글자좌표(PDF 불필요) ──
+          const pg = PRE[String(n)];
+          if (!pg) { return; }
+          const vw = cssWidth, vh = cssWidth * pg.h / pg.w;
+          wrap.style.width = vw + "px";
+          wrap.style.height = vh + "px";
+          const img = document.createElement("img");
+          img.className = "pdf-pageimg";
+          img.style.width = vw + "px";
+          img.style.height = vh + "px";
+          img.alt = "p." + n;
+          wrap.insertBefore(img, wrap.firstChild);   // 오버레이(캡처 모드) 아래
+          const hlLayer = document.createElement("div");
+          hlLayer.className = "hlLayer";
+          wrap.appendChild(hlLayer);
+          const textLayer = document.createElement("div");
+          textLayer.className = "textLayer";
+          wrap.appendChild(textLayer);
+          img.src = await loadPageImage(n);
+          buildTextLayerFromSpans(pg.spans || [], vw, vh, textLayer);
+          renderHighlightsForPage(n, hlLayer, wrap);
+          return;
+        }
+        // ── 폴백: pdf.js 캔버스 렌더 ──
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
         const page = await pdfDoc.getPage(n);
         const base = page.getViewport({ scale: 1 });
         const scale = cssWidth / base.width;
@@ -526,7 +620,7 @@
 
     /* ── 읽기 모드 (텍스트 리플로우) ── */
     async function setMode(m) {
-      if (m === "reading" && !pdfDoc) { toast("PDF 로딩 중…"); return; }
+      if (m === "reading" && !pdfDoc && !PRE) { toast("PDF 로딩 중…"); return; }
       mode = m;
       const pdfC = document.getElementById("pdfContainer");
       const rdC = document.getElementById("readingContainer");
@@ -556,9 +650,9 @@
     async function buildReadingView() {
       const rdC = document.getElementById("readingContainer");
       rdC.innerHTML = "";
-      for (let n = 1; n <= pdfDoc.numPages; n++) {
-        const page = await pdfDoc.getPage(n);
-        await buildPageReading(page, n, rdC);
+      for (let n = 1; n <= numPages(); n++) {
+        if (PRE) buildPageReadingPre(n, rdC);           // 사전렌더: PDF 없이 좌표+본문으로
+        else { const page = await pdfDoc.getPage(n); await buildPageReading(page, n, rdC); }
       }
       // 페이지 전체 이미지는 뷰포트 근처에 오면 지연 렌더(기본 펼침 상태)
       const io = new IntersectionObserver((entries, obs) => {
@@ -613,6 +707,23 @@
           ln.colored = ink >= 5 && colored >= ink * 0.33;
         }
       } catch (e) { /* 실패 시 색 기준 없이(크기만) */ }
+    }
+
+    /* 사전 렌더 읽기 페이지: PDF 없이 이미지 자리 + 저장된 본문(READTEXT)만 (pageItems는 start에서 좌표로 채움) */
+    function buildPageReadingPre(pageNo, container) {
+      const pg = PRE[String(pageNo)] || { w: 1, h: 1.414 };
+      pageSnap[pageNo] = pageSnap[pageNo] || [];
+      const imgH = Math.round(Math.min(window.innerWidth - 36, 820) * pg.h / pg.w);
+      let html = `<div class="rd-pageno">p.${pageNo}</div>`;
+      html += `<div class="rd-pageimg" data-page="${pageNo}" style="min-height:${imgH}px"></div>`;
+      html += `<button class="rd-capture" data-page="${pageNo}">✂️ 이미지 캡처</button>`;
+      const pre = READTEXT ? (READTEXT[String(pageNo)] || []) : [];
+      for (const b of pre) {
+        if (b.kind === "sub") html += `<h3 class="rd-h rd-sub">${esc(b.text)}</h3>`;
+        else if (b.kind !== "p") html += `<h3 class="rd-h">${esc(b.text)}</h3>`;
+        else html += `<p class="rd-para">${esc(b.text)}</p>`;
+      }
+      container.insertAdjacentHTML("beforeend", `<div class="rd-page" data-page="${pageNo}">${html}</div>`);
     }
 
     async function buildPageReading(page, pageNo, container) {
@@ -985,6 +1096,18 @@
       wrap._rendered = true;
       const pageNo = parseInt(wrap.dataset.page, 10);
       try {
+        if (PRE) {
+          // 사전 렌더: 미리 구운 페이지 이미지 사용(PDF 불필요)
+          const img = document.createElement("img");
+          img.className = "rd-pagecanvas";
+          img.alt = `p.${pageNo} 이미지`;
+          img.addEventListener("click", () => collapseImg(wrap));
+          img.src = await loadPageImage(pageNo);
+          wrap.innerHTML = "";
+          wrap.appendChild(img);
+          wrap.style.minHeight = "";
+          return;
+        }
         const page = await pdfDoc.getPage(pageNo);
         const cssW = Math.min(window.innerWidth - 36, 820);
         const scale = cssW / page.getViewport({ scale: 1 }).width;
@@ -1118,6 +1241,23 @@
 
     /* 선택 영역만 PDF에서 고배율 렌더 → JPEG blob */
     async function renderRegionBlob(pageNo, rect) {
+      if (PRE) {
+        // 사전 렌더: 미리 구운 페이지 이미지에서 영역만 잘라냄(PDF 불필요)
+        const url = await loadPageImage(pageNo);
+        const im = await new Promise((res, rej) => {
+          const i = new Image(); i.onload = () => res(i); i.onerror = rej; i.src = url;
+        });
+        const sx = Math.max(0, Math.round(rect.x * im.naturalWidth));
+        const sy = Math.max(0, Math.round(rect.y * im.naturalHeight));
+        const sw = Math.max(1, Math.round(rect.w * im.naturalWidth));
+        const sh = Math.max(1, Math.round(rect.h * im.naturalHeight));
+        const canvas = document.createElement("canvas");
+        canvas.width = sw; canvas.height = sh;
+        const ctx = canvas.getContext("2d");
+        ctx.fillStyle = "#fff"; ctx.fillRect(0, 0, sw, sh);
+        ctx.drawImage(im, sx, sy, sw, sh, 0, 0, sw, sh);
+        return await new Promise((res) => canvas.toBlob((b) => res(b), "image/jpeg", 0.88));
+      }
       const page = await pdfDoc.getPage(pageNo);
       const base = page.getViewport({ scale: 1 });
       const cropWpts = Math.max(1, rect.w * base.width);

@@ -133,6 +133,7 @@
         ANNO_SHA = res.sha;
         HLS = res.highlights;
         render();
+        await bumpCount(REPORT_ID, HLS.length);   // 카드 ✏️ 카운트도 즉시 갱신
         toast("삭제됨");
       } catch (err) { handleError(err, () => {}); }
     }

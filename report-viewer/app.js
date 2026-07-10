@@ -171,6 +171,32 @@ async function saveAnnotations(reportId, localHls, deletedHids, sha) {
   return { sha: j.content.sha, highlights: dataObj.highlights };
 }
 
+/* reports.json의 highlight_count 즉시 갱신 (비필수 — 실패해도 collect의 recount가 보정).
+   sha 충돌(409/422) 시 최신 재조회 후 재시도. 뷰어/모아보기 공용. */
+async function bumpCount(reportId, count) {
+  for (let attempt = 0; attempt < 3; attempt++) {
+    try {
+      const res = await ghFetch("contents/index/reports.json", { cache: "no-store" });
+      if (!res.ok) return;
+      const obj = await res.json();
+      const doc = JSON.parse(decodeB64Utf8(obj.content));
+      const r = (doc.reports || []).find((x) => x.id === reportId);
+      if (!r || r.highlight_count === count) return;
+      r.highlight_count = count;
+      const put = await ghFetch("contents/index/reports.json", {
+        method: "PUT",
+        body: {
+          message: `count: ${reportId} ${count}`,
+          content: encodeUtf8B64(JSON.stringify(doc, null, 2)),
+          sha: obj.sha,
+        },
+      });
+      if (put.ok) return;
+      if (put.status !== 409 && put.status !== 422) return;   // 충돌 외 오류는 recount에 맡김
+    } catch (e) { return; }
+  }
+}
+
 /* ── PAT 게이트: 없으면 입력 오버레이 표시 ───────────────── */
 function requirePat(onReady) {
   if (getPat()) {

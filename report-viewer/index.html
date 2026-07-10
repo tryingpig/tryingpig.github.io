@@ -160,6 +160,7 @@
                 ${sector}${scan}${pend}
                 <span>${esc(dateStr)}</span>
                 <span>· ${r.size_mb ?? "?"}MB</span>
+                <span class="engine" title="본문 추출: ${r.text_engine === "llm" ? "AI(LLM)" : "휴리스틱"}">${r.text_engine === "llm" ? "🤖" : "🧑"}</span>
               </div>
               <div class="row2">
                 ${hl}<div class="spacer"></div>

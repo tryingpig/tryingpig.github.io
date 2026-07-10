@@ -213,6 +213,7 @@
         wrap.appendChild(textLayer);
 
         container.appendChild(wrap);
+        if (n === 1) updateCaptureFab();   // 첫 페이지가 생기면 바로 위젯 표시(전체 렌더 대기 X)
 
         await page.render({ canvasContext: ctx, viewport }).promise;
         await buildTextLayer(page, viewport, textLayer);
@@ -298,7 +299,10 @@
     let selPopupText = null;   // 색 팝업이 현재 떠 있는 선택 텍스트(중복 재생성 방지)
     function onSelectionEnd() {
       const sel = window.getSelection();
-      if (!sel || sel.rangeCount === 0 || sel.isCollapsed || !sel.toString().trim()) { removePopup(); selPopupText = null; return; }
+      if (!sel || sel.rangeCount === 0 || sel.isCollapsed || !sel.toString().trim()) {
+        if (popupEl && popupEl._protect) return;   // 캡처 색상 팝업은 선택이 없어도 유지
+        removePopup(); selPopupText = null; return;
+      }
       const range = sel.getRangeAt(0);
       let node = range.startContainer;
       if (node.nodeType === 3) node = node.parentElement;
@@ -363,10 +367,11 @@
       return out;
     }
 
-    function showColorPopup(cx, cy, onPick) {
+    function showColorPopup(cx, cy, onPick, protect) {
       removePopup();
       const p = document.createElement("div");
       p.className = "hl-popup";
+      p._protect = !!protect;   // 캡처 팝업: 선택 변화(mouseup/touchend→onSelectionEnd)로 닫히지 않게
       const W = 172, H = 42;
       const left = Math.max(8, Math.min(cx, window.innerWidth - W - 8));
       let top = cy + 10;
@@ -1080,7 +1085,7 @@
         showColorPopup(br.left + br.width / 2, br.bottom, (color) => {
           closeCapture(wrap);
           captureRegion(pageNo, rect, color);
-        });
+        }, true);
       });
     }
 
@@ -1140,7 +1145,8 @@
     /* PDF 모드 & 렌더 완료면 위젯 표시, 아니면 숨김(+캡처 모드 해제) */
     function updateCaptureFab() {
       const fab = document.getElementById("captureFab");
-      if (mode === "pdf" && pdfRendered) { fab.style.display = ""; positionCaptureFab(); }
+      const hasPages = !!document.querySelector("#pdfContainer .page-wrap");
+      if (mode === "pdf" && hasPages) { fab.style.display = ""; positionCaptureFab(); }
       else { fab.style.display = "none"; if (pdfCaptureOn) exitPdfCapture(); }
     }
 
@@ -1221,7 +1227,7 @@
                        w: bw / r.width, h: bh / r.height };
         const br = box.getBoundingClientRect();
         exitPdfCapture();
-        showColorPopup(br.left + br.width / 2, br.bottom, (color) => captureRegion(pageNo, rect, color));
+        showColorPopup(br.left + br.width / 2, br.bottom, (color) => captureRegion(pageNo, rect, color), true);
       });
     }
 

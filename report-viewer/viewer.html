@@ -18,6 +18,8 @@
   <div id="banner"></div>
   <div id="pdfContainer"><div class="loading">PDF 여는 중…</div></div>
   <div id="readingContainer" class="reading" style="display:none"></div>
+  <button id="captureFab" title="이미지 캡처" style="display:none">✂️</button>
+  <div id="captureHint" style="display:none">드래그로 영역 선택 · 표/그림 캡처<button id="captureHintX">✕</button></div>
   <div class="toast" id="toast"></div>
 
   <script src="app.js"></script>
@@ -163,6 +165,7 @@
       if (pdfRendered) return;
       await renderPdf();
       pdfRendered = true;
+      updateCaptureFab();
       if (totalTextLen < 5) {
         document.getElementById("banner").insertAdjacentHTML("beforeend",
           `<div class="banner">텍스트 레이어 없음 — 하이라이트 불가 (스캔본)</div>`);
@@ -248,26 +251,37 @@
     }
 
     /* ── 하이라이트 렌더 ── */
+    /* 하이라이트 1개의 사각형들을 레이어에 append (증분 렌더 공용) */
+    function appendHlRects(hl, hlLayer, w, h) {
+      for (const r of hl.rects) {
+        const div = document.createElement("div");
+        div.className = "hl-rect " + (hl.color || "yellow") + (hl.type === "image" ? " hl-img" : "");
+        div.style.left = r.x * w + "px";
+        div.style.top = r.y * h + "px";
+        div.style.width = r.w * w + "px";
+        div.style.height = r.h * h + "px";
+        div.dataset.hid = hl.hid;
+        div.addEventListener("click", (e) => {
+          e.stopPropagation();
+          showDeletePopup(hl, e.clientX, e.clientY);
+        });
+        hlLayer.appendChild(div);
+      }
+    }
+
     function renderHighlightsForPage(pageNo, hlLayer, wrap) {
       hlLayer.innerHTML = "";
       const w = wrap.offsetWidth, h = wrap.offsetHeight;
       for (const hl of highlights) {
-        if (hl.page !== pageNo) continue;
-        for (const r of hl.rects) {
-          const div = document.createElement("div");
-          div.className = "hl-rect " + (hl.color || "yellow") + (hl.type === "image" ? " hl-img" : "");
-          div.style.left = r.x * w + "px";
-          div.style.top = r.y * h + "px";
-          div.style.width = r.w * w + "px";
-          div.style.height = r.h * h + "px";
-          div.dataset.hid = hl.hid;
-          div.addEventListener("click", (e) => {
-            e.stopPropagation();
-            showDeletePopup(hl, e.clientX, e.clientY);
-          });
-          hlLayer.appendChild(div);
-        }
+        if (hl.page === pageNo) appendHlRects(hl, hlLayer, w, h);
       }
+    }
+
+    /* 새로 친 하이라이트 하나만 해당 PDF 페이지에 즉시 그림(전체 재렌더 없이 → 빠른 반응) */
+    function renderOneHighlightPdf(hl) {
+      const wrap = document.querySelector(`.page-wrap[data-page="${hl.page}"]`);
+      if (!wrap) return;
+      appendHlRects(hl, wrap.querySelector(".hlLayer"), wrap.offsetWidth, wrap.offsetHeight);
     }
 
     function rerenderAllHighlights() {
@@ -279,15 +293,19 @@
 
     /* ── 선택 → 하이라이트 생성 ── */
     let popupEl = null;
-    function removePopup() { if (popupEl) { popupEl.remove(); popupEl = null; } }
+    function removePopup() { if (popupEl) { popupEl.remove(); popupEl = null; } selPopupText = null; }
 
+    let selPopupText = null;   // 색 팝업이 현재 떠 있는 선택 텍스트(중복 재생성 방지)
     function onSelectionEnd() {
       const sel = window.getSelection();
-      if (!sel || sel.rangeCount === 0 || sel.isCollapsed || !sel.toString().trim()) { removePopup(); return; }
+      if (!sel || sel.rangeCount === 0 || sel.isCollapsed || !sel.toString().trim()) { removePopup(); selPopupText = null; return; }
       const range = sel.getRangeAt(0);
       let node = range.startContainer;
       if (node.nodeType === 3) node = node.parentElement;
       const text = sel.toString().trim();
+      // 같은 선택에 이미 색 팝업이 떠 있으면 재생성 생략(느린 트리거가 뒤늦게 팝업을 깜빡이게 하는 것 방지)
+      if (popupEl && selPopupText === text) return;
+      selPopupText = text;
       const clientRects = Array.from(range.getClientRects()).filter((r) => r.width > 1 && r.height > 1);
       if (!clientRects.length) return;
       const last = clientRects[clientRects.length - 1];
@@ -322,7 +340,8 @@
       const hl = { hid: "h_" + Date.now(), page: pageNo, text, rects: rects || [], color, created_at: nowKst() };
       if (segs && segs.length) hl.segs = segs;
       highlights.push(hl);
-      if (mode === "reading") { renderReadingHighlights(); } else { rerenderAllHighlights(); }
+      // 새로 친 것 하나만 즉시 그림(전체 재렌더 X → 리포트가 커도 툭 끊기지 않음)
+      if (mode === "reading") { wrapReading(hl); } else { renderOneHighlightPdf(hl); }
       const sel = window.getSelection();
       if (sel) sel.removeAllRanges();
       persist();
@@ -498,6 +517,7 @@
         rerenderAllHighlights();     // 읽기에서 친 하이라이트 반영
         btn.textContent = "📖 읽기";
       }
+      updateCaptureFab();   // PDF 모드에서만 위젯 표시(읽기 모드 진입 시 캡처 해제)
       window.scrollTo(0, 0);
     }
 
@@ -1092,7 +1112,7 @@
         await putBinaryFile(clip, blob, `clip: ${REPORT_ID} ${hid}`);
         const hl = { hid, page: pageNo, type: "image", rects: [rect], clip, color, created_at: nowKst() };
         highlights.push(hl);
-        if (mode === "pdf") rerenderAllHighlights();
+        if (mode === "pdf") renderOneHighlightPdf(hl);
         persist();
         toast("캡처 저장됨 · 모아보기에서 확인");
       } catch (e) {
@@ -1100,6 +1120,90 @@
         toast("캡처 저장 실패");
       }
     }
+
+    /* ── PDF 모드 이미지 캡처 (우상단 위젯 → 아무 페이지나 드래그) ── */
+    let pdfCaptureOn = false;
+    let pdfCaptureEls = [];
+
+    /* PDF 모드 & 렌더 완료면 위젯 표시, 아니면 숨김(+캡처 모드 해제) */
+    function updateCaptureFab() {
+      const fab = document.getElementById("captureFab");
+      if (mode === "pdf" && pdfRendered) { fab.style.display = ""; }
+      else { fab.style.display = "none"; if (pdfCaptureOn) exitPdfCapture(); }
+    }
+
+    function togglePdfCapture() { pdfCaptureOn ? exitPdfCapture() : enterPdfCapture(); }
+
+    function enterPdfCapture() {
+      if (mode !== "pdf") return;
+      pdfCaptureOn = true;
+      document.getElementById("captureFab").classList.add("active");
+      document.getElementById("captureHint").style.display = "";
+      document.body.classList.add("capturing");
+      removePopup();
+      // 모든 PDF 페이지에 크로스헤어 오버레이 → 어느 페이지에서 드래그해도 캡처
+      document.querySelectorAll("#pdfContainer .page-wrap").forEach((wrap) => {
+        const pageNo = parseInt(wrap.dataset.page, 10);
+        const ov = document.createElement("div");
+        ov.className = "capture-overlay";
+        const box = document.createElement("div");
+        box.className = "capture-box";
+        box.style.display = "none";
+        ov.appendChild(box);
+        wrap.appendChild(ov);
+        pdfCaptureEls.push(ov);
+        wireCaptureDrag(ov, box, pageNo);
+      });
+    }
+
+    function exitPdfCapture() {
+      pdfCaptureOn = false;
+      pdfCaptureEls.forEach((el) => el.remove());
+      pdfCaptureEls = [];
+      document.getElementById("captureFab").classList.remove("active");
+      document.getElementById("captureHint").style.display = "none";
+      document.body.classList.remove("capturing");
+    }
+
+    /* 오버레이 드래그 → 정규화 rect → 색 선택 → captureRegion(공용 저장) */
+    function wireCaptureDrag(ov, box, pageNo) {
+      const setBox = (x, y, w, h) => {
+        box.style.left = x + "px"; box.style.top = y + "px";
+        box.style.width = w + "px"; box.style.height = h + "px";
+      };
+      const xy = (e) => {
+        const r = ov.getBoundingClientRect();
+        return { x: Math.max(0, Math.min(r.width, e.clientX - r.left)),
+                 y: Math.max(0, Math.min(r.height, e.clientY - r.top)) };
+      };
+      let sx = 0, sy = 0, drawing = false, moved = false;
+      ov.addEventListener("pointerdown", (e) => {
+        e.preventDefault();
+        const p = xy(e); sx = p.x; sy = p.y; drawing = true; moved = false;
+        box.style.display = "block"; setBox(sx, sy, 0, 0);
+        ov.setPointerCapture(e.pointerId);
+      });
+      ov.addEventListener("pointermove", (e) => {
+        if (!drawing) return;
+        const p = xy(e);
+        if (Math.abs(p.x - sx) > 6 || Math.abs(p.y - sy) > 6) moved = true;
+        setBox(Math.min(sx, p.x), Math.min(sy, p.y), Math.abs(p.x - sx), Math.abs(p.y - sy));
+      });
+      ov.addEventListener("pointerup", (e) => {
+        if (!drawing) return; drawing = false;
+        const r = ov.getBoundingClientRect();
+        const bw = parseFloat(box.style.width) || 0, bh = parseFloat(box.style.height) || 0;
+        if (!moved || bw < 12 || bh < 12) { box.style.display = "none"; return; }
+        const rect = { x: parseFloat(box.style.left) / r.width, y: parseFloat(box.style.top) / r.height,
+                       w: bw / r.width, h: bh / r.height };
+        const br = box.getBoundingClientRect();
+        exitPdfCapture();
+        showColorPopup(br.left + br.width / 2, br.bottom, (color) => captureRegion(pageNo, rect, color));
+      });
+    }
+
+    document.getElementById("captureFab").onclick = togglePdfCapture;
+    document.getElementById("captureHintX").onclick = exitPdfCapture;
 
     /* ── 읽기 모드 하이라이트 (텍스트 기준) ── */
     const NW = (s) => (s || "").replace(/\s+/g, "");        // 공백 제거 정규화

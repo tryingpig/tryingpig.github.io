@@ -42,6 +42,9 @@
     <div id="list"><div class="loading">불러오는 중…</div></div>
   </div>
 
+  <div id="thumbHover" style="display:none"><img alt="미리보기"></div>
+  <div id="thumbLightbox" style="display:none"><img alt="미리보기"></div>
+
   <script src="app.js"></script>
   <script>
     let ALL = [];
@@ -49,6 +52,42 @@
     let SORT = "pub";   // pub=발행일 · up=수집순 · hl=하이라이트 · title=제목
     let delMode = false;
     const SELECTED = new Set();
+    const HOVER_OK = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+
+    /* ── 썸네일 미리보기 ── */
+    function thumbSrc(id) {
+      const cached = localStorage.getItem("rv_thumb_" + id);
+      if (cached) return cached;
+      const el = document.querySelector(`.card-thumb[data-thumb="${id}"] img`);
+      return el ? el.src : null;
+    }
+    function showThumbHover(th, id) {
+      const src = thumbSrc(id);
+      if (!src) return;
+      const box = document.getElementById("thumbHover");
+      const img = box.querySelector("img");
+      const place = () => {
+        const r = th.getBoundingClientRect();
+        const bw = box.offsetWidth, bh = box.offsetHeight;
+        let left = r.right + 10;
+        if (left + bw > window.innerWidth - 8) left = r.left - bw - 10;   // 넘치면 왼쪽으로
+        if (left < 8) left = 8;
+        const top = Math.max(8, Math.min(r.top + r.height / 2 - bh / 2, window.innerHeight - bh - 8));
+        box.style.left = left + "px"; box.style.top = top + "px";
+      };
+      img.onload = place;
+      img.src = src;
+      box.style.display = "";
+      place();
+    }
+    function hideThumbHover() { document.getElementById("thumbHover").style.display = "none"; }
+    function openThumbLightbox(id) {
+      const src = thumbSrc(id);
+      if (!src) return;
+      const lb = document.getElementById("thumbLightbox");
+      lb.querySelector("img").src = src;
+      lb.style.display = "";
+    }
 
     function esc(s) {
       return (s == null ? "" : String(s)).replace(/[&<>"]/g, (c) =>
@@ -165,6 +204,7 @@
               <div class="row2">
                 ${hl}<div class="spacer"></div>
                 <a class="mini read" href="viewer.html?id=${encodeURIComponent(r.id)}&mode=read">📖 읽기</a>
+                <a class="mini pdf" href="viewer.html?id=${encodeURIComponent(r.id)}">📄 PDF</a>
                 <a class="mini" href="highlights.html?id=${encodeURIComponent(r.id)}">모아보기</a>
                 <a class="mini" href="edit.html?id=${encodeURIComponent(r.id)}">⚙️ 수정</a>
               </div>
@@ -191,8 +231,25 @@
             updateDelBar();
             return;
           }
-          if (e.target.closest("a")) return;   // 읽기/모아보기 링크는 예외
-          location.href = "viewer.html?id=" + encodeURIComponent(card.dataset.id);
+          if (e.target.closest("a")) return;           // 읽기/PDF/모아보기/수정 링크는 예외
+          if (e.target.closest(".card-thumb")) return; // 썸네일 = 미리보기(별도 처리)
+          // 그냥 탭 → 이동하지 않고 '선택됨' 표시만 토글(단일 선택)
+          const wasActive = card.classList.contains("active");
+          list.querySelectorAll(".card.active").forEach((c) => c.classList.remove("active"));
+          if (!wasActive) card.classList.add("active");
+        });
+      });
+
+      // 썸네일 미리보기: 데스크톱은 호버, 모바일은 탭(라이트박스)
+      list.querySelectorAll(".card-thumb").forEach((th) => {
+        const id = th.dataset.thumb;
+        if (HOVER_OK) {
+          th.addEventListener("mouseenter", () => { if (!delMode) showThumbHover(th, id); });
+          th.addEventListener("mouseleave", hideThumbHover);
+        }
+        th.addEventListener("click", (e) => {
+          if (delMode) return;   // 삭제 모드에선 카드 선택 토글로 넘김(가로채지 않음)
+          e.stopPropagation(); hideThumbHover(); openThumbLightbox(id);
         });
       });
 
@@ -320,6 +377,11 @@
     document.getElementById("logoutBtn").onclick = () => {
       if (confirm("이 기기에서 토큰을 삭제할까요?")) { clearPat(); location.reload(); }
     };
+
+    document.getElementById("thumbLightbox").onclick = () => {
+      document.getElementById("thumbLightbox").style.display = "none";
+    };
+    window.addEventListener("scroll", hideThumbHover, { passive: true });
 
     requirePat(load);
   </script>

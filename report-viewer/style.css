@@ -123,6 +123,14 @@ a { color: inherit; text-decoration: none; }
 }
 .card .mini.read { border-color: var(--accent); color: var(--accent); font-weight: 600; }
 .card .mini.pdf { border-color: var(--accent); color: var(--accent); font-weight: 600; }
+/* 텔레그램 전송 버튼: 아이콘만(파랑) → 보내면 회색 */
+.card .tg-send {
+  border: none; background: none; padding: 2px; cursor: pointer;
+  display: inline-flex; align-items: center; color: #29a9ea; line-height: 0;
+}
+.card .tg-send svg { width: 22px; height: 22px; display: block; }
+.card .tg-send.sent { color: #9aa3af; }
+.card .tg-send:hover { filter: brightness(1.08); }
 /* 마우스 올리면 부드럽게 회색으로(호버 피드백) — 데스크톱 전용 */
 @media (hover: hover) and (pointer: fine) {
   .card:hover { background: #f2f3f5; box-shadow: 0 3px 12px rgba(0,0,0,.09); transform: translateY(-1px); }

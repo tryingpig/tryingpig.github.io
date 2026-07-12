@@ -43,10 +43,13 @@
   </div>
 
   <div id="thumbHover" style="display:none"><img alt="미리보기"></div>
+  <div class="toast" id="toast"></div>
 
   <script src="app.js"></script>
   <script>
     let ALL = [];
+    /* 텔레그램 로고 (벡터 = 고해상, 파랑=미전송 / 회색=전송됨은 CSS의 color로) */
+    const TG_SVG = '<svg viewBox="0 0 496 512" aria-hidden="true" fill="currentColor"><path d="M248 8C111 8 0 119 0 256s111 248 248 248 248-111 248-248S385 8 248 8zm121.8 169.9l-40.7 191.8c-3 13.6-11.1 16.9-22.4 10.5l-62-45.7-29.9 28.8c-3.3 3.3-6.1 6.1-12.5 6.1l4.4-63.1 114.9-103.8c5-4.4-1.1-6.9-7.7-2.5l-142 89.4-61.2-19.1c-13.3-4.2-13.6-13.3 2.8-19.7l239.1-92.2c11.1-4 20.8 2.7 17.2 19.4z"/></svg>';
     let FILTER = { title: "", broker: "", sector: "", from: "", to: "", range: false, onlyHl: false };
     let SORT = "pub";   // pub=발행일 · up=수집순 · hl=하이라이트 · title=제목
     let delMode = false;
@@ -89,6 +92,41 @@
     function esc(s) {
       return (s == null ? "" : String(s)).replace(/[&<>"]/g, (c) =>
         ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+    }
+
+    function toast(m) {
+      const t = document.getElementById("toast");
+      t.textContent = m; t.classList.add("show");
+      setTimeout(() => t.classList.remove("show"), 2000);
+    }
+
+    /* 카드 텔레그램 버튼: 확인 → 전송 → 회색 처리. 이미 보낸 리포트는 재확인. */
+    async function sendCardToTelegram(id, btn) {
+      const r = ALL.find((x) => x.id === id);
+      if (!r) return;
+      const already = isTgSent(id);
+      const msg = already
+        ? `"${r.title || id}"\n이미 텔레그램으로 보낸 리포트입니다. 다시 보낼까요?`
+        : `"${r.title || id}"\n하이라이트를 텔레그램으로 보낼까요?`;
+      if (!confirm(msg)) return;
+      requireTg(async () => {
+        if (btn.dataset.busy) return;
+        btn.dataset.busy = "1";
+        try {
+          toast("전송 중…");
+          const res = await tgSendReport(r);   // 성공 시 markTgSent
+          btn.classList.add("sent");
+          btn.title = "이미 텔레그램으로 보냄 · 다시 보내기";
+          toast(`텔레그램으로 보냈어요 (텍스트 ${res.texts}·이미지 ${res.images})`);
+        } catch (err) {
+          console.error(err);
+          const authErr = err instanceof TgError && /토큰|chat_id/.test(err.message);
+          toast(err.message || "전송 실패");
+          if (authErr) { clearTgCreds(); showTgOverlay(() => sendCardToTelegram(id, btn)); }
+        } finally {
+          delete btn.dataset.busy;
+        }
+      });
     }
 
     const cardDate = (r) => r.publish_date || (r.uploaded_at || "").slice(0, 10);
@@ -202,6 +240,7 @@
                 ${hl}<div class="spacer"></div>
                 <a class="mini read" href="viewer.html?id=${encodeURIComponent(r.id)}&mode=read">📖 읽기</a>
                 <a class="mini pdf" href="viewer.html?id=${encodeURIComponent(r.id)}">📄 PDF</a>
+                ${(r.highlight_count || 0) > 0 ? `<button class="tg-send${isTgSent(r.id) ? " sent" : ""}" data-id="${esc(r.id)}" title="${isTgSent(r.id) ? "이미 텔레그램으로 보냄 · 다시 보내기" : "하이라이트를 텔레그램으로 보내기"}" aria-label="텔레그램으로 보내기">${TG_SVG}</button>` : ""}
                 <a class="mini" href="highlights.html?id=${encodeURIComponent(r.id)}">모아보기</a>
                 <a class="mini" href="edit.html?id=${encodeURIComponent(r.id)}">⚙️ 수정</a>
               </div>
@@ -211,6 +250,13 @@
 
       list.querySelectorAll(".card").forEach((card) => {
         card.addEventListener("click", (e) => {
+          const tgBtn = e.target.closest(".tg-send");
+          if (tgBtn) {                            // 텔레그램 전송 버튼
+            e.stopPropagation();
+            if (delMode) return;
+            sendCardToTelegram(tgBtn.dataset.id, tgBtn);
+            return;
+          }
           if (e.target.closest(".card-del")) {   // 카드 우상단 X → 바로 삭제
             e.stopPropagation();
             const id = card.dataset.id;

@@ -349,3 +349,88 @@ function showTgOverlay(onReady) {
   ov.querySelectorAll("input").forEach((el) =>
     el.addEventListener("keydown", (e) => { if (e.key === "Enter") save(); }));
 }
+
+/* ── 전송 이력 (리포트별, 이 기기 기준) ─────────────────────
+   한 번 보낸 리포트는 아이콘을 회색으로 표시하고 재전송 시 다시 확인받는다. */
+RV.TG_SENT_KEY = "rv_tg_sent";
+function getTgSentSet() {
+  try { return new Set(JSON.parse(localStorage.getItem(RV.TG_SENT_KEY) || "[]")); }
+  catch (e) { return new Set(); }
+}
+function isTgSent(id) { return getTgSentSet().has(id); }
+function markTgSent(id) {
+  const s = getTgSentSet(); s.add(id);
+  localStorage.setItem(RV.TG_SENT_KEY, JSON.stringify(Array.from(s)));
+}
+
+function tgEsc(s) {
+  return (s == null ? "" : String(s)).replace(/[&<>"]/g, (c) =>
+    ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+}
+
+/* 하이라이트 → 보기 좋은 텍스트: 읽기조각(segs) → rects+글자좌표 복원 → 저장 text.
+   pageItems = {page: [{str,x,y,w,h}]} (없으면 segs/text만 사용). highlights.html displayText와 동일 로직. */
+function hlDisplayText(h, pageItems) {
+  if (h.segs && h.segs.length) return h.segs.join("\n");
+  const items = pageItems && pageItems[h.page];
+  if (items && items.length && h.rects && h.rects.length) {
+    const lines = [];
+    for (const r of h.rects) {
+      const inside = items.filter((it) => {
+        const cx = it.x + it.w / 2, cy = it.y + it.h / 2;
+        return cx >= r.x - 0.01 && cx <= r.x + r.w + 0.01 && cy >= r.y - 0.004 && cy <= r.y + r.h + 0.004;
+      });
+      const t = inside.map((it) => it.str).join("").replace(/\s+/g, " ").trim();
+      if (t) lines.push(t);
+    }
+    if (lines.length) return lines.join("\n");
+  }
+  return h.text || "";
+}
+
+/* 리포트 하이라이트를 텔레그램으로 통째 전송: 제목+텍스트(인용, 4096자 분할) → 이미지 캡처 개별.
+   반환 {texts, images}. 하이라이트 0개면 오류. */
+async function tgSendHighlights(title, highlights, pageItems) {
+  const sorted = highlights.slice().sort((a, b) => a.page - b.page);
+  const texts = sorted.filter((h) => h.type !== "image");
+  const images = sorted.filter((h) => h.type === "image" && h.clip);
+  const header = `📄 <b>${tgEsc(title)}</b>`;
+  const blocks = texts.map((h) =>
+    `<blockquote>(p.${h.page}) ${tgEsc(hlDisplayText(h, pageItems).replace(/\n/g, " "))}</blockquote>`);
+  let buf = header;
+  const flush = async () => { if (buf.trim()) { await tgSendMessage(buf); buf = ""; } };
+  for (const b of blocks) {
+    if ((buf + "\n\n" + b).length > 3800) await flush();
+    buf = buf ? buf + "\n\n" + b : b;
+  }
+  await flush();   // texts가 없으면 제목만 먼저(이미지 캡션 앞에 옴)
+  let sentImg = 0;
+  for (const h of images) {
+    const blob = await fetchImageBlob(h.clip);
+    if (blob) { await tgSendPhoto(blob, `(p.${h.page}) ✂️ 캡처`); sentImg++; }
+  }
+  return { texts: texts.length, images: sentImg };
+}
+
+/* 리포트 항목(reports.json entry)을 받아 주석·좌표를 로드해 전송. index 카드에서 사용. */
+async function tgSendReport(report) {
+  const anno = await loadAnnotations(report.id);
+  const hls = (anno.data && anno.data.highlights) || [];
+  if (!hls.length) throw new Error("보낼 하이라이트가 없습니다");
+  let pageItems = null;
+  if (report.layout_path) {
+    try {
+      const lr = await ghFetch("contents/" + report.layout_path, { accept: "application/vnd.github.raw", cache: "no-store" });
+      if (lr.ok) {
+        const j = await lr.json();
+        pageItems = {};
+        for (const [n, pg] of Object.entries((j && j.pages) || {})) {
+          pageItems[n] = (pg.spans || []).map((s) => ({ str: s.s, x: s.x, y: s.y, w: s.w, h: s.h }));
+        }
+      }
+    } catch (e) { /* 좌표 없으면 segs/text로 폴백 */ }
+  }
+  const res = await tgSendHighlights(report.title || report.id, hls, pageItems);
+  markTgSent(report.id);
+  return res;
+}

@@ -431,8 +431,15 @@ async function tgSendReport(report) {
       }
     } catch (e) { /* 좌표 없으면 segs/text로 폴백 */ }
   }
-  // ① 커버: 제목 + 첫 페이지 이미지(고해상 pages/1.jpg 우선, 없으면 썸네일)
-  const caption = `📄 <b>${tgEsc(report.title || report.id)}</b>`;
+  // ① 커버: 제목 + 기본 정보 + 첫 페이지 이미지(고해상 pages/1.jpg 우선, 없으면 썸네일)
+  const info = [
+    report.broker, report.sector,
+    report.publish_date || (report.uploaded_at || "").slice(0, 10),
+    report.pages ? report.pages + "p" : null,
+    (report.size_mb != null) ? report.size_mb + "MB" : null,
+  ].filter(Boolean).join(" · ");
+  const caption = `📄 <b>${tgEsc(report.title || report.id)}</b>`
+    + (info ? `\n${tgEsc(info)}` : "");
   const coverPath = (report.pages_dir ? report.pages_dir + "/1.jpg" : null) || report.thumb || null;
   let coverSent = false;
   if (coverPath) {

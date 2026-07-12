@@ -247,8 +247,9 @@ function handleError(err, retry) {
    api.telegram.org는 CORS 허용이라 브라우저에서 직접 sendMessage/sendPhoto 호출. */
 RV.TG_TOKEN_KEY = "rv_tg_token";
 RV.TG_CHAT_KEY = "rv_tg_chat";
+RV.TG_CHAT_DEFAULT = "-1004346135391";   // 저장방 기본값(비밀 아님) — 토큰만 있으면 바로 전송
 function getTgToken() { return localStorage.getItem(RV.TG_TOKEN_KEY) || ""; }
-function getTgChat() { return localStorage.getItem(RV.TG_CHAT_KEY) || ""; }
+function getTgChat() { return localStorage.getItem(RV.TG_CHAT_KEY) || RV.TG_CHAT_DEFAULT; }
 function setTgCreds(token, chat) {
   localStorage.setItem(RV.TG_TOKEN_KEY, (token || "").trim());
   localStorage.setItem(RV.TG_CHAT_KEY, (chat || "").trim());
@@ -315,9 +316,9 @@ async function fetchImageBlob(path) {
   return await res.blob();
 }
 
-/* 텔레그램 자격증명 게이트: 봇 토큰·chat_id 없으면 입력 오버레이 */
+/* 텔레그램 게이트: 봇 토큰만 있으면 통과(chat_id는 기본값 있음). 이 기기에서 최초 1회만 뜸. */
 function requireTg(onReady) {
-  if (getTgToken() && getTgChat()) { onReady(); return; }
+  if (getTgToken()) { onReady(); return; }
   showTgOverlay(onReady);
 }
 
@@ -329,8 +330,8 @@ function showTgOverlay(onReady) {
   ov.innerHTML = `
     <div class="pat-box">
       <h2>✈️ 텔레그램 전송 설정</h2>
-      <p>보낼 봇 토큰과 받을 chat_id를 입력하세요. 이 기기에만 저장됩니다.<br>
-         봇에게 먼저 말을 걸어 두어야 DM으로 받을 수 있어요.</p>
+      <p><b>이 기기에서 처음 한 번만</b> 봇 토큰을 넣으면 됩니다(공개 사이트라 토큰을 저장 못 해요).
+         저장 후엔 다시 안 뜹니다. chat_id는 기본값이 채워져 있어요.</p>
       <input type="password" id="tgToken" placeholder="봇 토큰 (123456:ABC...)" autocomplete="off" value="${escA(getTgToken())}">
       <input type="text" id="tgChat" placeholder="chat_id (예: 123456789 또는 @채널명)" autocomplete="off" value="${escA(getTgChat())}">
       <button id="tgSave">저장</button>
@@ -339,8 +340,8 @@ function showTgOverlay(onReady) {
   document.body.appendChild(ov);
   const save = () => {
     const t = ov.querySelector("#tgToken").value.trim();
-    const c = ov.querySelector("#tgChat").value.trim();
-    if (!t || !c) { ov.querySelector("#tgErr").textContent = "토큰과 chat_id를 모두 입력하세요."; return; }
+    const c = ov.querySelector("#tgChat").value.trim() || RV.TG_CHAT_DEFAULT;
+    if (!t) { ov.querySelector("#tgErr").textContent = "봇 토큰을 입력하세요."; return; }
     setTgCreds(t, c);
     ov.remove();
     onReady();

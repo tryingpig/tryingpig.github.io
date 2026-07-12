@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>하이라이트 모아보기</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css?v=6">
 </head>
 <body>
   <div class="topbar">
@@ -25,7 +25,7 @@
   </div>
   <div class="toast" id="toast"></div>
 
-  <script src="app.js"></script>
+  <script src="app.js?v=6"></script>
   <script>
     const params = new URLSearchParams(location.search);
     const REPORT_ID = params.get("id");
@@ -33,10 +33,11 @@
     let PAGEITEMS = {};   // {page: [{str,x,y,w,h}]} — 사전렌더 글자좌표(텍스트 재구성용)
     const DELETED = new Set();
 
-    /* 하이라이트를 보기 좋은 텍스트로: 읽기모드 조각(segs) 우선 →
-       없으면 rects+글자좌표로 줄 단위 복원(띄어쓰기·줄바꿈 살림) → 최후 저장 text */
+    /* 하이라이트 텍스트: 읽기모드 조각(segs) → 저장 text(=실제 친 내용) →
+       (둘 다 없을 때만) rects+글자좌표 복원. 재구성은 좌표오차로 실제 영역과 어긋날 수 있어 후순위. */
     function displayText(h) {
       if (h.segs && h.segs.length) return h.segs.join("\n");
+      if (h.text) return h.text;
       const items = PAGEITEMS[h.page];
       if (items && items.length && h.rects && h.rects.length) {
         const lines = [];

@@ -375,6 +375,7 @@ function tgEsc(s) {
    pageItems = {page: [{str,x,y,w,h}]} (없으면 segs/text만 사용). highlights.html displayText와 동일 로직. */
 function hlDisplayText(h, pageItems) {
   if (h.segs && h.segs.length) return h.segs.join("\n");
+  if (h.text) return h.text;
   const items = pageItems && pageItems[h.page];
   if (items && items.length && h.rects && h.rects.length) {
     const lines = [];

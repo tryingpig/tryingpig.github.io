@@ -331,18 +331,16 @@ function showTgOverlay(onReady) {
     <div class="pat-box">
       <h2>✈️ 텔레그램 전송 설정</h2>
       <p><b>이 기기에서 처음 한 번만</b> 봇 토큰을 넣으면 됩니다(공개 사이트라 토큰을 저장 못 해요).
-         저장 후엔 다시 안 뜹니다. chat_id는 기본값이 채워져 있어요.</p>
+         저장 후엔 다시 안 뜹니다. 보내는 방은 정해져 있어 따로 입력 안 해도 돼요.</p>
       <input type="password" id="tgToken" placeholder="봇 토큰 (123456:ABC...)" autocomplete="off" value="${escA(getTgToken())}">
-      <input type="text" id="tgChat" placeholder="chat_id (예: 123456789 또는 @채널명)" autocomplete="off" value="${escA(getTgChat())}">
       <button id="tgSave">저장</button>
       <div class="pat-err" id="tgErr"></div>
     </div>`;
   document.body.appendChild(ov);
   const save = () => {
     const t = ov.querySelector("#tgToken").value.trim();
-    const c = ov.querySelector("#tgChat").value.trim() || RV.TG_CHAT_DEFAULT;
     if (!t) { ov.querySelector("#tgErr").textContent = "봇 토큰을 입력하세요."; return; }
-    setTgCreds(t, c);
+    setTgCreds(t, getTgChat());   // chat_id는 고정 기본값 사용
     ov.remove();
     onReady();
   };

@@ -241,3 +241,111 @@ function handleError(err, retry) {
     alert(err.message || String(err));
   }
 }
+
+/* ── 텔레그램 전송 (모아보기 → 봇 DM/저장방) ─────────────────
+   개인용: 봇 토큰·chat_id를 이 기기 localStorage에만 저장.
+   api.telegram.org는 CORS 허용이라 브라우저에서 직접 sendMessage/sendPhoto 호출. */
+RV.TG_TOKEN_KEY = "rv_tg_token";
+RV.TG_CHAT_KEY = "rv_tg_chat";
+function getTgToken() { return localStorage.getItem(RV.TG_TOKEN_KEY) || ""; }
+function getTgChat() { return localStorage.getItem(RV.TG_CHAT_KEY) || ""; }
+function setTgCreds(token, chat) {
+  localStorage.setItem(RV.TG_TOKEN_KEY, (token || "").trim());
+  localStorage.setItem(RV.TG_CHAT_KEY, (chat || "").trim());
+}
+function clearTgCreds() {
+  localStorage.removeItem(RV.TG_TOKEN_KEY);
+  localStorage.removeItem(RV.TG_CHAT_KEY);
+}
+
+class TgError extends Error {}
+
+/* 텔레그램 Bot API 호출. method 예: "sendMessage". body는 객체(JSON) 또는 FormData. */
+async function tgCall(method, body) {
+  const token = getTgToken();
+  if (!token) throw new TgError("봇 토큰 없음");
+  const init = { method: "POST" };
+  if (body instanceof FormData) {
+    init.body = body;
+  } else {
+    init.headers = { "Content-Type": "application/json" };
+    init.body = JSON.stringify(body);
+  }
+  let j = null;
+  try {
+    const res = await fetch(`https://api.telegram.org/bot${token}/${method}`, init);
+    j = await res.json();
+  } catch (e) {
+    throw new TgError("네트워크 오류 — 연결을 확인하세요");
+  }
+  if (!j || !j.ok) {
+    const code = j && j.error_code;
+    if (code === 401) throw new TgError("봇 토큰이 올바르지 않습니다");
+    if (code === 400 && /chat not found/i.test(j.description || "")) {
+      throw new TgError("chat_id를 찾을 수 없습니다 (봇에게 먼저 말을 걸어두세요)");
+    }
+    throw new TgError("텔레그램 오류: " + ((j && j.description) || "알 수 없음"));
+  }
+  return j.result;
+}
+
+/* 텍스트 메시지 (HTML parse_mode). 4096자 제한은 호출부에서 분할. */
+async function tgSendMessage(text) {
+  return tgCall("sendMessage", {
+    chat_id: getTgChat(),
+    text,
+    parse_mode: "HTML",
+    disable_web_page_preview: true,
+  });
+}
+
+/* 사진 전송. blob + 캡션(HTML). */
+async function tgSendPhoto(blob, caption) {
+  const fd = new FormData();
+  fd.append("chat_id", getTgChat());
+  if (caption) { fd.append("caption", caption); fd.append("parse_mode", "HTML"); }
+  fd.append("photo", blob, "clip.jpg");
+  return tgCall("sendPhoto", fd);
+}
+
+/* vault 이미지 파일 → Blob (sendPhoto용) */
+async function fetchImageBlob(path) {
+  const res = await ghFetch("contents/" + path, { accept: "application/vnd.github.raw" });
+  if (!res.ok) return null;
+  return await res.blob();
+}
+
+/* 텔레그램 자격증명 게이트: 봇 토큰·chat_id 없으면 입력 오버레이 */
+function requireTg(onReady) {
+  if (getTgToken() && getTgChat()) { onReady(); return; }
+  showTgOverlay(onReady);
+}
+
+function showTgOverlay(onReady) {
+  const escA = (s) => (s || "").replace(/[&<>"]/g, (c) =>
+    ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  const ov = document.createElement("div");
+  ov.className = "pat-overlay";
+  ov.innerHTML = `
+    <div class="pat-box">
+      <h2>✈️ 텔레그램 전송 설정</h2>
+      <p>보낼 봇 토큰과 받을 chat_id를 입력하세요. 이 기기에만 저장됩니다.<br>
+         봇에게 먼저 말을 걸어 두어야 DM으로 받을 수 있어요.</p>
+      <input type="password" id="tgToken" placeholder="봇 토큰 (123456:ABC...)" autocomplete="off" value="${escA(getTgToken())}">
+      <input type="text" id="tgChat" placeholder="chat_id (예: 123456789 또는 @채널명)" autocomplete="off" value="${escA(getTgChat())}">
+      <button id="tgSave">저장</button>
+      <div class="pat-err" id="tgErr"></div>
+    </div>`;
+  document.body.appendChild(ov);
+  const save = () => {
+    const t = ov.querySelector("#tgToken").value.trim();
+    const c = ov.querySelector("#tgChat").value.trim();
+    if (!t || !c) { ov.querySelector("#tgErr").textContent = "토큰과 chat_id를 모두 입력하세요."; return; }
+    setTgCreds(t, c);
+    ov.remove();
+    onReady();
+  };
+  ov.querySelector("#tgSave").onclick = save;
+  ov.querySelectorAll("input").forEach((el) =>
+    el.addEventListener("keydown", (e) => { if (e.key === "Enter") save(); }));
+}

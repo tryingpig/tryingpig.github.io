@@ -9,6 +9,7 @@
 <body>
   <div class="topbar">
     <a class="back" href="index.html">‹</a>
+    <button id="tgBtn" class="back" title="하이라이트를 텔레그램으로 보내기">✈️</button>
     <h1 id="title">모아보기</h1>
     <div class="spacer"></div>
     <button id="delBtn">삭제</button>
@@ -209,6 +210,49 @@
       try { await navigator.clipboard.writeText(md); toast("복사됨"); }
       catch { toast("복사 실패"); }
     };
+
+    /* ── 텔레그램으로 보내기: 리포트 통째로(제목+텍스트 하이라이트 → 이미지 캡처) ── */
+    document.getElementById("tgBtn").onclick = () => {
+      if (!HLS.length) { toast("보낼 하이라이트가 없습니다"); return; }
+      requireTg(sendToTelegram);
+    };
+
+    async function sendToTelegram() {
+      const btn = document.getElementById("tgBtn");
+      if (btn.disabled) return;
+      btn.disabled = true;
+      const sorted = HLS.slice().sort((a, b) => a.page - b.page);
+      const texts = sorted.filter((h) => h.type !== "image");
+      const images = sorted.filter((h) => h.type === "image" && h.clip);
+      try {
+        toast("전송 중…");
+        // 1) 제목 + 텍스트 하이라이트(인용) — 4096자 제한 분할
+        const header = `📄 <b>${esc(TITLE)}</b>`;
+        const blocks = texts.map((h) =>
+          `<blockquote>(p.${h.page}) ${esc(displayText(h).replace(/\n/g, " "))}</blockquote>`);
+        let buf = header;
+        const flush = async () => { if (buf.trim()) { await tgSendMessage(buf); buf = ""; } };
+        for (const b of blocks) {
+          if ((buf + "\n\n" + b).length > 3800) await flush();
+          buf = buf ? buf + "\n\n" + b : b;
+        }
+        await flush();   // texts가 없으면 제목만 먼저 감(이미지 캡션 앞에 옴)
+        // 2) 이미지 캡처 → 개별 사진
+        let sentImg = 0;
+        for (const h of images) {
+          const blob = await fetchImageBlob(h.clip);
+          if (blob) { await tgSendPhoto(blob, `(p.${h.page}) ✂️ 캡처`); sentImg++; }
+        }
+        toast(`텔레그램으로 보냈어요 ✈️ (텍스트 ${texts.length}·이미지 ${sentImg})`);
+      } catch (err) {
+        console.error(err);
+        const authErr = err instanceof TgError && /토큰|chat_id/.test(err.message);
+        toast(err.message || "전송 실패");
+        if (authErr) { clearTgCreds(); showTgOverlay(sendToTelegram); }
+      } finally {
+        btn.disabled = false;
+      }
+    }
 
     document.getElementById("segRead").onclick = () => setOpenMode("read");
     document.getElementById("segPdf").onclick = () => setOpenMode("pdf");

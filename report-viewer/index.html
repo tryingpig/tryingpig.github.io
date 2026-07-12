@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#ffffff">
   <link rel="manifest" href="manifest.json">
   <title>리포트 마커</title>
-  <link rel="stylesheet" href="style.css?v=4">
+  <link rel="stylesheet" href="style.css?v=5">
 </head>
 <body>
   <div class="topbar">
@@ -45,7 +45,7 @@
   <div id="thumbHover" style="display:none"><img alt="미리보기"></div>
   <div class="toast" id="toast"></div>
 
-  <script src="app.js?v=4"></script>
+  <script src="app.js?v=5"></script>
   <script>
     let ALL = [];
     /* 텔레그램 로고 (원+비행기 각각 칠함 → 전송 후 둘 다 회색으로 바뀌게. CSS .tg-disc/.tg-plane) */
@@ -118,16 +118,21 @@
       requireTg(async () => {
         if (btn.dataset.busy) return;
         btn.dataset.busy = "1";
+        // ① 누르는 즉시 아이콘을 동그라미 X로 교체(낙관적) — 전송은 뒤에서 처리
+        markTgSent(id);
+        btn.classList.add("sent");
+        btn.innerHTML = SENT_SVG;
+        toast("전송 중…");
         try {
-          toast("전송 중…");
-          const res = await tgSendReport(r);   // 성공 시 markTgSent(localStorage)
-          btn.classList.add("sent");           // 즉시 피드백
-          btn.innerHTML = SENT_SVG;            // 아이콘을 동그라미 X로 즉시 교체
-          renderList();                        // localStorage(isTgSent) 기준으로 다시 그려 확정
+          const res = await tgSendReport(r);
           toast(`텔레그램으로 보냈어요 (텍스트 ${res.texts}·이미지 ${res.images})`);
         } catch (err) {
           console.error(err);
           const authErr = err instanceof TgError && /토큰|chat_id/.test(err.message);
+          // ② 실패하면 원래 아이콘으로 되돌림
+          unmarkTgSent(id);
+          btn.classList.remove("sent");
+          btn.innerHTML = TG_SVG;
           toast(err.message || "전송 실패");
           if (authErr) { clearTgCreds(); showTgOverlay(() => sendCardToTelegram(id, btn)); }
         } finally {

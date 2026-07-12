@@ -361,6 +361,10 @@ function markTgSent(id) {
   const s = getTgSentSet(); s.add(id);
   localStorage.setItem(RV.TG_SENT_KEY, JSON.stringify(Array.from(s)));
 }
+function unmarkTgSent(id) {
+  const s = getTgSentSet(); s.delete(id);
+  localStorage.setItem(RV.TG_SENT_KEY, JSON.stringify(Array.from(s)));
+}
 
 function tgEsc(s) {
   return (s == null ? "" : String(s)).replace(/[&<>"]/g, (c) =>
@@ -448,6 +452,5 @@ async function tgSendReport(report) {
   if (!coverSent) await tgSendMessage(caption);   // 이미지 없으면 제목만
   // ② 모아보기 내용
   const res = await tgSendHighlights(hls, pageItems);
-  markTgSent(report.id);
-  return res;
+  return res;   // 전송 이력(markTgSent)은 호출부에서 낙관적으로 처리
 }

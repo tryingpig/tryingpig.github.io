@@ -58,9 +58,17 @@
     /* 사전 렌더 페이지 이미지를 vault(비공개)에서 인증 fetch → objectURL (지연·1회) */
     async function loadPageImage(n) {
       if (_pageImgCache[n]) return _pageImgCache[n];
-      const res = await ghFetch("contents/" + PAGESDIR + "/" + n + ".jpg", { accept: "application/vnd.github.raw" });
-      if (!res.ok) throw new Error("page image " + n + " " + res.status);
-      const url = URL.createObjectURL(await res.blob());
+      let blob = null;
+      const key = "img:" + REPORT_ID + "/" + n;
+      const hit = await idbGetAsset(key);          // 영구 캐시 우선(재열람·스크롤 즉시)
+      if (hit && hit.val) blob = hit.val;
+      if (!blob) {
+        const res = await ghFetch("contents/" + PAGESDIR + "/" + n + ".jpg", { accept: "application/vnd.github.raw" });
+        if (!res.ok) throw new Error("page image " + n + " " + res.status);
+        blob = await res.blob();
+        idbPutAsset(key, blob);                    // 페이지 이미지는 id 기준 불변 → 캐시 안전
+      }
+      const url = URL.createObjectURL(blob);
       _pageImgCache[n] = url;
       return url;
     }
@@ -88,12 +96,48 @@
 
     /* ── PDF 로컬 캐시 (IndexedDB) ── 열 때마다 재다운로드 방지, 재열람 즉시 */
     const PDF_DB = "rv_pdfcache", PDF_STORE = "pdfs", PDF_CAP = 12;
+    const ASSET_STORE = "assets", ASSET_CAP = 500;   // 페이지 이미지·layout 캐시(리포트 id 기준 불변)
     function idbOpen() {
       return new Promise((res, rej) => {
-        const r = indexedDB.open(PDF_DB, 1);
-        r.onupgradeneeded = () => { const db = r.result; if (!db.objectStoreNames.contains(PDF_STORE)) db.createObjectStore(PDF_STORE); };
+        const r = indexedDB.open(PDF_DB, 2);
+        r.onupgradeneeded = () => {
+          const db = r.result;
+          if (!db.objectStoreNames.contains(PDF_STORE)) db.createObjectStore(PDF_STORE);
+          if (!db.objectStoreNames.contains(ASSET_STORE)) db.createObjectStore(ASSET_STORE);
+        };
         r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error);
       });
+    }
+    async function idbGetAsset(key) {
+      try {
+        const db = await idbOpen();
+        return await new Promise((res) => {
+          const rq = db.transaction(ASSET_STORE, "readonly").objectStore(ASSET_STORE).get(key);
+          rq.onsuccess = () => res(rq.result); rq.onerror = () => res(null);
+        });
+      } catch (e) { return null; }
+    }
+    async function idbPutAsset(key, val) {
+      try {
+        const db = await idbOpen();
+        const st = db.transaction(ASSET_STORE, "readwrite").objectStore(ASSET_STORE);
+        st.put({ val, ts: Date.now() }, key);
+        await new Promise((res) => { st.transaction.oncomplete = res; st.transaction.onerror = res; });
+        pruneAssets();
+      } catch (e) { /* quota 등 무시 */ }
+    }
+    async function pruneAssets() {
+      try {
+        const db = await idbOpen();
+        const st = db.transaction(ASSET_STORE, "readwrite").objectStore(ASSET_STORE);
+        const keys = await new Promise((res) => { const rq = st.getAllKeys(); rq.onsuccess = () => res(rq.result || []); rq.onerror = () => res([]); });
+        if (keys.length <= ASSET_CAP) return;
+        const vals = await new Promise((res) => { const rq = st.getAll(); rq.onsuccess = () => res(rq.result || []); rq.onerror = () => res([]); });
+        keys.map((k, i) => ({ k, ts: (vals[i] && vals[i].ts) || 0 }))
+            .sort((a, b) => a.ts - b.ts)
+            .slice(0, keys.length - ASSET_CAP)
+            .forEach((o) => st.delete(o.k));
+      } catch (e) { /* 무시 */ }
     }
     async function idbGet(id) {
       try {
@@ -182,12 +226,17 @@
             if (res.ok) { const td = await res.json(); READTEXT = td && td.pages ? td.pages : null; }
           } catch (e) { READTEXT = null; }
         }
-        // 사전 렌더 글자좌표(pagelayout/<id>.json)
+        // 사전 렌더 글자좌표(pagelayout/<id>.json) — id 기준 불변이라 영구 캐시(3MB급 재다운로드 방지)
         async function loadLayout() {
           if (!report.layout_path) return;
+          const key = "layout:" + REPORT_ID;
+          try {
+            const hit = await idbGetAsset(key);
+            if (hit && hit.val && hit.val.pages) { PRE = hit.val.pages; return; }
+          } catch (e) { /* 캐시 미스 무시 */ }
           try {
             const res = await ghFetch("contents/" + report.layout_path, { accept: "application/vnd.github.raw", cache: "no-store" });
-            if (res.ok) { const j = await res.json(); PRE = j && j.pages ? j.pages : null; }
+            if (res.ok) { const j = await res.json(); PRE = j && j.pages ? j.pages : null; if (j) idbPutAsset(key, j); }
           } catch (e) { PRE = null; }
         }
 

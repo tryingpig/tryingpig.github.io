@@ -129,7 +129,7 @@ a { color: inherit; text-decoration: none; }
   display: inline-flex; align-items: center; color: #29a9ea; line-height: 0;
 }
 .card .tg-send svg { width: 22px; height: 22px; display: block; }
-.card .tg-send.sent { color: #9aa3af; }
+.card .tg-send.sent { color: #9aa3af; opacity: .5; }
 .card .tg-send:hover { filter: brightness(1.08); }
 /* 마우스 올리면 부드럽게 회색으로(호버 피드백) — 데스크톱 전용 */
 @media (hover: hover) and (pointer: fine) {

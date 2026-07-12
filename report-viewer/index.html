@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#ffffff">
   <link rel="manifest" href="manifest.json">
   <title>리포트 마커</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css?v=2">
 </head>
 <body>
   <div class="topbar">
@@ -45,7 +45,7 @@
   <div id="thumbHover" style="display:none"><img alt="미리보기"></div>
   <div class="toast" id="toast"></div>
 
-  <script src="app.js"></script>
+  <script src="app.js?v=2"></script>
   <script>
     let ALL = [];
     /* 텔레그램 로고 (벡터 = 고해상, 파랑=미전송 / 회색=전송됨은 CSS의 color로) */
@@ -114,9 +114,9 @@
         btn.dataset.busy = "1";
         try {
           toast("전송 중…");
-          const res = await tgSendReport(r);   // 성공 시 markTgSent
-          btn.classList.add("sent");
-          btn.title = "이미 텔레그램으로 보냄 · 다시 보내기";
+          const res = await tgSendReport(r);   // 성공 시 markTgSent(localStorage)
+          btn.classList.add("sent");           // 즉시 피드백
+          renderList();                        // localStorage(isTgSent) 기준으로 다시 그려 회색 확정
           toast(`텔레그램으로 보냈어요 (텍스트 ${res.texts}·이미지 ${res.images})`);
         } catch (err) {
           console.error(err);

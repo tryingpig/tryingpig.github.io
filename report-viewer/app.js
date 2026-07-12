@@ -388,22 +388,21 @@ function hlDisplayText(h, pageItems) {
   return h.text || "";
 }
 
-/* 리포트 하이라이트를 텔레그램으로 통째 전송: 제목+텍스트(인용, 4096자 분할) → 이미지 캡처 개별.
-   반환 {texts, images}. 하이라이트 0개면 오류. */
-async function tgSendHighlights(title, highlights, pageItems) {
+/* 모아보기 내용만 전송: 텍스트 하이라이트(인용, 4096자 분할) → 이미지 캡처 개별.
+   제목은 커버(tgSendReport)에서 이미 보냈으므로 여기선 넣지 않는다. 반환 {texts, images}. */
+async function tgSendHighlights(highlights, pageItems) {
   const sorted = highlights.slice().sort((a, b) => a.page - b.page);
   const texts = sorted.filter((h) => h.type !== "image");
   const images = sorted.filter((h) => h.type === "image" && h.clip);
-  const header = `📄 <b>${tgEsc(title)}</b>`;
   const blocks = texts.map((h) =>
     `<blockquote>(p.${h.page}) ${tgEsc(hlDisplayText(h, pageItems).replace(/\n/g, " "))}</blockquote>`);
-  let buf = header;
+  let buf = "";
   const flush = async () => { if (buf.trim()) { await tgSendMessage(buf); buf = ""; } };
   for (const b of blocks) {
     if ((buf + "\n\n" + b).length > 3800) await flush();
     buf = buf ? buf + "\n\n" + b : b;
   }
-  await flush();   // texts가 없으면 제목만 먼저(이미지 캡션 앞에 옴)
+  await flush();
   let sentImg = 0;
   for (const h of images) {
     const blob = await fetchImageBlob(h.clip);
@@ -412,11 +411,13 @@ async function tgSendHighlights(title, highlights, pageItems) {
   return { texts: texts.length, images: sentImg };
 }
 
-/* 리포트 항목(reports.json entry)을 받아 주석·좌표를 로드해 전송. index 카드에서 사용. */
+/* 리포트 항목(reports.json entry)을 텔레그램으로: ① 제목 + 첫 페이지 이미지 → ② 모아보기 내용.
+   index 카드에서 사용. 하이라이트 0개면 오류. */
 async function tgSendReport(report) {
   const anno = await loadAnnotations(report.id);
   const hls = (anno.data && anno.data.highlights) || [];
   if (!hls.length) throw new Error("보낼 하이라이트가 없습니다");
+  // 좌표(텍스트 복원용)
   let pageItems = null;
   if (report.layout_path) {
     try {
@@ -430,7 +431,17 @@ async function tgSendReport(report) {
       }
     } catch (e) { /* 좌표 없으면 segs/text로 폴백 */ }
   }
-  const res = await tgSendHighlights(report.title || report.id, hls, pageItems);
+  // ① 커버: 제목 + 첫 페이지 이미지(고해상 pages/1.jpg 우선, 없으면 썸네일)
+  const caption = `📄 <b>${tgEsc(report.title || report.id)}</b>`;
+  const coverPath = (report.pages_dir ? report.pages_dir + "/1.jpg" : null) || report.thumb || null;
+  let coverSent = false;
+  if (coverPath) {
+    const blob = await fetchImageBlob(coverPath);
+    if (blob) { await tgSendPhoto(blob, caption); coverSent = true; }
+  }
+  if (!coverSent) await tgSendMessage(caption);   // 이미지 없으면 제목만
+  // ② 모아보기 내용
+  const res = await tgSendHighlights(hls, pageItems);
   markTgSent(report.id);
   return res;
 }

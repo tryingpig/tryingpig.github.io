@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#ffffff">
   <link rel="manifest" href="manifest.json">
   <title>리포트 마커</title>
-  <link rel="stylesheet" href="style.css?v=3">
+  <link rel="stylesheet" href="style.css?v=4">
 </head>
 <body>
   <div class="topbar">
@@ -45,13 +45,17 @@
   <div id="thumbHover" style="display:none"><img alt="미리보기"></div>
   <div class="toast" id="toast"></div>
 
-  <script src="app.js?v=3"></script>
+  <script src="app.js?v=4"></script>
   <script>
     let ALL = [];
     /* 텔레그램 로고 (원+비행기 각각 칠함 → 전송 후 둘 다 회색으로 바뀌게. CSS .tg-disc/.tg-plane) */
     const TG_SVG = '<svg viewBox="0 0 512 512" aria-hidden="true">'
       + '<circle class="tg-disc" cx="256" cy="256" r="256"/>'
       + '<path class="tg-plane" transform="translate(96 86) scale(0.68)" d="M446.7 98.6l-67.6 318.8c-5.1 22.5-18.4 28.1-37.3 17.5l-103-75.9-49.7 47.8c-5.5 5.5-10.1 10.1-20.7 10.1l7.4-104.9 190.9-172.5c8.3-7.4-1.8-11.5-12.9-4.1L117.8 284 16.2 252.2c-22.1-6.9-22.5-22.1 4.6-32.7L418.2 66.4c18.4-6.8 34.5 4.4 28.5 32.2z"/></svg>';
+    /* 전송됨 표시: 동그라미 X (아이콘 자체를 통째로 교체) */
+    const SENT_SVG = '<svg viewBox="0 0 512 512" aria-hidden="true">'
+      + '<circle cx="256" cy="256" r="256" fill="#9aa3af"/>'
+      + '<path d="M176 176 L336 336 M336 176 L176 336" stroke="#fff" stroke-width="52" stroke-linecap="round" fill="none"/></svg>';
     let FILTER = { title: "", broker: "", sector: "", from: "", to: "", range: false, onlyHl: false };
     let SORT = "pub";   // pub=발행일 · up=수집순 · hl=하이라이트 · title=제목
     let delMode = false;
@@ -118,7 +122,8 @@
           toast("전송 중…");
           const res = await tgSendReport(r);   // 성공 시 markTgSent(localStorage)
           btn.classList.add("sent");           // 즉시 피드백
-          renderList();                        // localStorage(isTgSent) 기준으로 다시 그려 회색 확정
+          btn.innerHTML = SENT_SVG;            // 아이콘을 동그라미 X로 즉시 교체
+          renderList();                        // localStorage(isTgSent) 기준으로 다시 그려 확정
           toast(`텔레그램으로 보냈어요 (텍스트 ${res.texts}·이미지 ${res.images})`);
         } catch (err) {
           console.error(err);
@@ -242,7 +247,7 @@
                 ${hl}<div class="spacer"></div>
                 <a class="mini read" href="viewer.html?id=${encodeURIComponent(r.id)}&mode=read">📖 읽기</a>
                 <a class="mini pdf" href="viewer.html?id=${encodeURIComponent(r.id)}">📄 PDF</a>
-                ${(r.highlight_count || 0) > 0 ? `<button class="tg-send${isTgSent(r.id) ? " sent" : ""}" data-id="${esc(r.id)}" title="${isTgSent(r.id) ? "이미 텔레그램으로 보냄 · 다시 보내기" : "하이라이트를 텔레그램으로 보내기"}" aria-label="텔레그램으로 보내기">${TG_SVG}</button>` : ""}
+                ${(r.highlight_count || 0) > 0 ? `<button class="tg-send${isTgSent(r.id) ? " sent" : ""}" data-id="${esc(r.id)}" title="${isTgSent(r.id) ? "이미 텔레그램으로 보냄 · 다시 보내기" : "하이라이트를 텔레그램으로 보내기"}" aria-label="텔레그램으로 보내기">${isTgSent(r.id) ? SENT_SVG : TG_SVG}</button>` : ""}
                 <a class="mini" href="highlights.html?id=${encodeURIComponent(r.id)}">모아보기</a>
                 <a class="mini" href="edit.html?id=${encodeURIComponent(r.id)}">⚙️ 수정</a>
               </div>

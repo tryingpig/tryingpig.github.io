@@ -33,26 +33,9 @@
     let PAGEITEMS = {};   // {page: [{str,x,y,w,h}]} — 사전렌더 글자좌표(텍스트 재구성용)
     const DELETED = new Set();
 
-    /* 하이라이트 텍스트: 읽기모드 조각(segs) → 저장 text(=실제 친 내용) →
-       (둘 다 없을 때만) rects+글자좌표 복원. 재구성은 좌표오차로 실제 영역과 어긋날 수 있어 후순위. */
-    function displayText(h) {
-      if (h.segs && h.segs.length) return h.segs.join("\n");
-      if (h.text) return h.text;
-      const items = PAGEITEMS[h.page];
-      if (items && items.length && h.rects && h.rects.length) {
-        const lines = [];
-        for (const r of h.rects) {
-          const inside = items.filter((it) => {
-            const cx = it.x + it.w / 2, cy = it.y + it.h / 2;
-            return cx >= r.x - 0.01 && cx <= r.x + r.w + 0.01 && cy >= r.y - 0.004 && cy <= r.y + r.h + 0.004;
-          });
-          const t = inside.map((it) => it.str).join("").replace(/\s+/g, " ").trim();
-          if (t) lines.push(t);
-        }
-        if (lines.length) return lines.join("\n");
-      }
-      return h.text || "";
-    }
+    /* 하이라이트 표시 텍스트는 app.js의 공용 hlDisplayText 하나로 통일(모아보기·복사·텔레그램 동일).
+       우선순위: 읽기조각(segs) → 저장 text(실제 친 내용) → 좌표재구성(폴백). 로직은 app.js에서만 관리. */
+    const displayText = (h) => hlDisplayText(h, PAGEITEMS);
     let OPEN_MODE = localStorage.getItem("rv_hl_open_mode") || "read";   // 하이라이트 클릭 시 열기 방식
 
     function renderSeg() {

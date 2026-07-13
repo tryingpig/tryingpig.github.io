@@ -367,10 +367,14 @@ mark.rd-hl.pink   { background: rgba(255, 45, 120, .34); }
 .hl-item .pg { color: var(--sub); font-size: 12px; margin-bottom: 4px; }
 
 /* ── 모바일 정리 (좁은 화면에서 카드·검색바 압축) ── */
+.filter-toggle { display: none; }   /* 데스크톱에선 필터 토글 버튼 숨김(항상 다 보임) */
 @media (max-width: 600px) {
-  /* 검색바: 제목검색은 한 줄 전체, 나머지 필터는 2열로 촘촘하게 */
+  /* 필터 접기: 기본은 접힘(제목검색+필터버튼+검색만) → '🔎 필터' 탭하면 펼침 */
+  .filter-toggle { display: inline-block; }
   .searchbar { gap: 6px; margin: 6px 0 10px; }
-  .searchbar #qTitle { flex: 1 1 100%; }
+  .searchbar #qTitle { flex: 1 1 120px; }                    /* 접힘: 한 줄 공유 */
+  .searchbar:not(.collapsed) #qTitle { flex: 1 1 100%; }     /* 펼침: 전체폭 */
+  .searchbar.collapsed > *:not(#qTitle):not(.filter-toggle):not(#searchBtn) { display: none; }
   .searchbar #qBroker, .searchbar #qSector { flex: 1 1 calc(50% - 3px); min-width: 0; }
   .s-input, .s-search, .s-reset { height: 32px; font-size: 13px; padding: 6px 9px; }
 

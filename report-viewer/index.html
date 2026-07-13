@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#ffffff">
   <link rel="manifest" href="manifest.json">
   <title>리포트 마커</title>
-  <link rel="stylesheet" href="style.css?v=13">
+  <link rel="stylesheet" href="style.css?v=14">
 </head>
 <body>
   <div class="topbar">
@@ -20,8 +20,9 @@
   </div>
 
   <div class="wrap">
-    <div class="searchbar" id="searchbar">
+    <div class="searchbar collapsed" id="searchbar">
       <input type="text" id="qTitle" class="s-input" placeholder="제목 검색">
+      <button id="filterToggle" class="s-reset filter-toggle" type="button">🔎 필터</button>
       <select id="qBroker" class="s-input"><option value="">증권사 전체</option></select>
       <select id="qSector" class="s-input"><option value="">섹터 전체</option></select>
       <input type="date" id="qFrom" class="s-input s-date" title="발행일">
@@ -45,7 +46,7 @@
   <div id="thumbHover" style="display:none"><img alt="미리보기"></div>
   <div class="toast" id="toast"></div>
 
-  <script src="app.js?v=13"></script>
+  <script src="app.js?v=14"></script>
   <script>
     let ALL = [];
     /* 텔레그램 로고 (원+비행기 각각 칠함 → 전송 후 둘 다 회색으로 바뀌게. CSS .tg-disc/.tg-plane) */
@@ -255,9 +256,10 @@
                 <span>${esc(dateStr)}</span>
                 <span>· ${r.size_mb ?? "?"}MB</span>
                 <span class="engine" title="본문 추출: ${r.text_engine === "llm" ? "AI(LLM)" : "휴리스틱"}">${r.text_engine === "llm" ? "🤖" : "🧑"}</span>${llmSug}
+                ${hl}
               </div>
               <div class="row2">
-                ${hl}<div class="spacer"></div>
+                <div class="spacer"></div>
                 <a class="mini read" href="viewer.html?id=${encodeURIComponent(r.id)}&mode=read">📖 읽기</a>
                 <a class="mini pdf" href="viewer.html?id=${encodeURIComponent(r.id)}">📄 PDF</a>
                 ${(r.highlight_count || 0) > 0 ? `<button class="tg-send${isTgSent(r.id) ? " sent" : ""}" data-id="${esc(r.id)}" title="${isTgSent(r.id) ? "이미 텔레그램으로 보냄 · 다시 보내기" : "하이라이트를 텔레그램으로 보내기"}" aria-label="텔레그램으로 보내기">${isTgSent(r.id) ? SENT_SVG : TG_SVG}</button>` : ""}
@@ -426,6 +428,12 @@
 
     document.getElementById("searchBtn").onclick = applySearch;
     document.getElementById("resetBtn").onclick = resetSearch;
+    // 모바일: 필터 접기/펼치기 토글
+    document.getElementById("filterToggle").onclick = () => {
+      const sb = document.getElementById("searchbar");
+      const open = sb.classList.toggle("collapsed") === false;
+      document.getElementById("filterToggle").textContent = open ? "🔎 필터 ▴" : "🔎 필터";
+    };
     document.getElementById("qSort").addEventListener("change", (e) => {
       SORT = e.target.value; renderList();     // 정렬은 선택 즉시 반영
     });

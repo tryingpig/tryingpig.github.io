@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#ffffff">
   <link rel="manifest" href="manifest.json">
   <title>리포트 마커</title>
-  <link rel="stylesheet" href="style.css?v=14">
+  <link rel="stylesheet" href="style.css?v=15">
 </head>
 <body>
   <div class="topbar">
@@ -46,7 +46,7 @@
   <div id="thumbHover" style="display:none"><img alt="미리보기"></div>
   <div class="toast" id="toast"></div>
 
-  <script src="app.js?v=14"></script>
+  <script src="app.js?v=15"></script>
   <script>
     let ALL = [];
     /* 텔레그램 로고 (원+비행기 각각 칠함 → 전송 후 둘 다 회색으로 바뀌게. CSS .tg-disc/.tg-plane) */
@@ -259,7 +259,6 @@
                 ${hl}
               </div>
               <div class="row2">
-                <div class="spacer"></div>
                 <a class="mini read" href="viewer.html?id=${encodeURIComponent(r.id)}&mode=read">📖 읽기</a>
                 <a class="mini pdf" href="viewer.html?id=${encodeURIComponent(r.id)}">📄 PDF</a>
                 ${(r.highlight_count || 0) > 0 ? `<button class="tg-send${isTgSent(r.id) ? " sent" : ""}" data-id="${esc(r.id)}" title="${isTgSent(r.id) ? "이미 텔레그램으로 보냄 · 다시 보내기" : "하이라이트를 텔레그램으로 보내기"}" aria-label="텔레그램으로 보내기">${isTgSent(r.id) ? SENT_SVG : TG_SVG}</button>` : ""}

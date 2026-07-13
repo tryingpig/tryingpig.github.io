@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#ffffff">
   <link rel="manifest" href="manifest.json">
   <title>리포트 마커</title>
-  <link rel="stylesheet" href="style.css?v=10">
+  <link rel="stylesheet" href="style.css?v=11">
 </head>
 <body>
   <div class="topbar">
@@ -45,7 +45,7 @@
   <div id="thumbHover" style="display:none"><img alt="미리보기"></div>
   <div class="toast" id="toast"></div>
 
-  <script src="app.js?v=10"></script>
+  <script src="app.js?v=11"></script>
   <script>
     let ALL = [];
     /* 텔레그램 로고 (원+비행기 각각 칠함 → 전송 후 둘 다 회색으로 바뀌게. CSS .tg-disc/.tg-plane) */
@@ -251,7 +251,7 @@
               <div class="title">${esc(r.title)}</div>
               <div class="meta">
                 <span class="badge">${esc(r.broker || "미분류")}</span>
-                ${sector}${scan}${pend}
+                ${sector}${scan}${pend}${llmSug}
                 <span>${esc(dateStr)}</span>
                 <span>· ${r.size_mb ?? "?"}MB</span>
                 <span class="engine" title="본문 추출: ${r.text_engine === "llm" ? "AI(LLM)" : "휴리스틱"}">${r.text_engine === "llm" ? "🤖" : "🧑"}</span>

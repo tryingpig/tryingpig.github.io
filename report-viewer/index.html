@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#ffffff">
   <link rel="manifest" href="manifest.json">
   <title>리포트 마커</title>
-  <link rel="stylesheet" href="style.css?v=9">
+  <link rel="stylesheet" href="style.css?v=10">
 </head>
 <body>
   <div class="topbar">
@@ -45,7 +45,7 @@
   <div id="thumbHover" style="display:none"><img alt="미리보기"></div>
   <div class="toast" id="toast"></div>
 
-  <script src="app.js?v=9"></script>
+  <script src="app.js?v=10"></script>
   <script>
     let ALL = [];
     /* 텔레그램 로고 (원+비행기 각각 칠함 → 전송 후 둘 다 회색으로 바뀌게. CSS .tg-disc/.tg-plane) */
@@ -234,6 +234,10 @@
         const scan = r.has_text_layer === false ? `<span class="badge scan">스캔본</span>` : "";
         const pend = r.pending_deletion ? `<span class="badge del">🗑 삭제예정 ~${esc((r.delete_after || "").slice(5))}</span>` : "";
         const hl = (r.highlight_count || 0) > 0 ? `<span class="hl">✏️ ${r.highlight_count}</span>` : "";
+        // 휴리스틱 품질 낮으면 'AI 추출 추천' 배지(이미 LLM으로 뽑은 건 제외)
+        const llmSug = (r.llm_suggested && r.text_engine !== "llm")
+          ? `<span class="badge llm-sug" title="휴리스틱 본문 추출 품질이 낮아 보임 → AI(LLM) 재추출 추천${(r.heur_flags && r.heur_flags.length) ? " · " + r.heur_flags.map(esc).join(", ") : ""}">🤖 추천</span>`
+          : "";
         const dateStr = cardDate(r);
         const thumb = localStorage.getItem("rv_thumb_" + r.id);
         const thumbHtml = thumb ? `<img src="${thumb}" alt="">` : `📄`;

@@ -365,3 +365,25 @@ mark.rd-hl.pink   { background: rgba(255, 45, 120, .34); }
 .hl-item.green { border-left-color: #34a853; }
 .hl-item.pink { border-left-color: #e5497d; }
 .hl-item .pg { color: var(--sub); font-size: 12px; margin-bottom: 4px; }
+
+/* ── 모바일 정리 (좁은 화면에서 카드·검색바 압축) ── */
+@media (max-width: 600px) {
+  /* 검색바: 제목검색은 한 줄 전체, 나머지 필터는 2열로 촘촘하게 */
+  .searchbar { gap: 6px; margin: 6px 0 10px; }
+  .searchbar #qTitle { flex: 1 1 100%; }
+  .searchbar #qBroker, .searchbar #qSector { flex: 1 1 calc(50% - 3px); min-width: 0; }
+  .s-input, .s-search, .s-reset { height: 32px; font-size: 13px; padding: 6px 9px; }
+
+  /* 카드: 여백·썸네일·글자 축소 */
+  .card { padding: 11px; gap: 10px; border-radius: 10px; margin-bottom: 8px; }
+  .card-thumb { width: 46px; height: 64px; }
+  .card .title { font-size: 15px; padding-right: 20px; }
+  .card .meta { font-size: 12px; gap: 5px 6px; }
+
+  /* 액션 버튼: 작게 + 한 줄에 촘촘히(어지러운 2줄 줄바꿈 완화) */
+  .card .row2 { gap: 6px; margin-top: 8px; }
+  .card .mini { padding: 4px 8px; font-size: 12px; border-radius: 7px; }
+  .card .hl { font-size: 12px; }
+  .card .tg-send svg { width: 20px; height: 20px; }
+  .card-del { width: 30px; height: 30px; font-size: 22px; }
+}

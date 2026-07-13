@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#ffffff">
   <link rel="manifest" href="manifest.json">
   <title>리포트 마커</title>
-  <link rel="stylesheet" href="style.css?v=6">
+  <link rel="stylesheet" href="style.css?v=8">
 </head>
 <body>
   <div class="topbar">
@@ -45,7 +45,7 @@
   <div id="thumbHover" style="display:none"><img alt="미리보기"></div>
   <div class="toast" id="toast"></div>
 
-  <script src="app.js?v=6"></script>
+  <script src="app.js?v=8"></script>
   <script>
     let ALL = [];
     /* 텔레그램 로고 (원+비행기 각각 칠함 → 전송 후 둘 다 회색으로 바뀌게. CSS .tg-disc/.tg-plane) */
@@ -124,17 +124,21 @@
         btn.innerHTML = SENT_SVG;
         toast("전송 중…");
         try {
-          const res = await tgSendReport(r);
-          toast(`텔레그램으로 보냈어요 (텍스트 ${res.texts}·이미지 ${res.images})`);
+          const res = await tgSendReport(r);   // best-effort: 부분 실패는 res.failed로만
+          toast(res.failed
+            ? `보냈어요 · 일부 ${res.failed}건 실패(다시 눌러 재전송 가능)`
+            : `텔레그램으로 보냈어요 (텍스트 ${res.texts}·이미지 ${res.images})`);
+          // 부분 실패든 성공이든 X 유지(한번 누르면 계속 X)
         } catch (err) {
+          // 여기까지 오면 인증오류(토큰) = 아무것도 못 보냄 → 그때만 원래대로 되돌리고 토큰 재입력
           console.error(err);
-          const authErr = err instanceof TgError && /토큰|chat_id/.test(err.message);
-          // ② 실패하면 원래 아이콘으로 되돌림
           unmarkTgSent(id);
           btn.classList.remove("sent");
           btn.innerHTML = TG_SVG;
           toast(err.message || "전송 실패");
-          if (authErr) { clearTgCreds(); showTgOverlay(() => sendCardToTelegram(id, btn)); }
+          if (err instanceof TgError && /토큰|chat_id/.test(err.message)) {
+            clearTgCreds(); showTgOverlay(() => sendCardToTelegram(id, btn));
+          }
         } finally {
           delete btn.dataset.busy;
         }

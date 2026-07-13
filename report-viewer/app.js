@@ -400,8 +400,17 @@ async function tgSendHighlights(highlights, pageItems) {
   const images = sorted.filter((h) => h.type === "image" && h.clip);
   const blocks = texts.map((h) =>
     `<blockquote>(p.${h.page}) ${tgEsc(hlDisplayText(h, pageItems).replace(/\n/g, " "))}</blockquote>`);
+  // 개별 전송은 best-effort: 인증오류(토큰)만 위로 던지고, 나머지 실패는 세고 계속.
+  let failed = 0;
+  const send = async (fn) => {
+    try { await fn(); return true; }
+    catch (e) {
+      if (e instanceof TgError && /토큰|chat_id/.test(e.message)) throw e;
+      console.error("tg 항목 전송 실패:", e); failed++; return false;
+    }
+  };
   let buf = "";
-  const flush = async () => { if (buf.trim()) { await tgSendMessage(buf); buf = ""; } };
+  const flush = async () => { if (buf.trim()) { await send(() => tgSendMessage(buf)); buf = ""; } };
   for (const b of blocks) {
     if ((buf + "\n\n" + b).length > 3800) await flush();
     buf = buf ? buf + "\n\n" + b : b;
@@ -410,9 +419,9 @@ async function tgSendHighlights(highlights, pageItems) {
   let sentImg = 0;
   for (const h of images) {
     const blob = await fetchImageBlob(h.clip);
-    if (blob) { await tgSendPhoto(blob, `(p.${h.page}) ✂️ 캡처`); sentImg++; }
+    if (blob && await send(() => tgSendPhoto(blob, `(p.${h.page}) ✂️ 캡처`))) sentImg++;
   }
-  return { texts: texts.length, images: sentImg };
+  return { texts: texts.length, images: sentImg, failed };
 }
 
 /* 리포트 항목(reports.json entry)을 텔레그램으로: ① 제목 + 첫 페이지 이미지 → ② 모아보기 내용.
@@ -445,12 +454,14 @@ async function tgSendReport(report) {
   const caption = `📄 <b>${tgEsc(report.title || report.id)}</b>`
     + (info ? `\n${tgEsc(info)}` : "");
   const coverPath = (report.pages_dir ? report.pages_dir + "/1.jpg" : null) || report.thumb || null;
+  // 커버도 best-effort: 인증오류만 위로, 사진 실패 시 제목 텍스트로 폴백
+  const coverErr = (e) => { if (e instanceof TgError && /토큰|chat_id/.test(e.message)) throw e; console.error("커버 전송 실패:", e); };
   let coverSent = false;
   if (coverPath) {
     const blob = await fetchImageBlob(coverPath);
-    if (blob) { await tgSendPhoto(blob, caption); coverSent = true; }
+    if (blob) { try { await tgSendPhoto(blob, caption); coverSent = true; } catch (e) { coverErr(e); } }
   }
-  if (!coverSent) await tgSendMessage(caption);   // 이미지 없으면 제목만
+  if (!coverSent) { try { await tgSendMessage(caption); } catch (e) { coverErr(e); } }
   // ② 모아보기 내용
   const res = await tgSendHighlights(hls, pageItems);
   return res;   // 전송 이력(markTgSent)은 호출부에서 낙관적으로 처리

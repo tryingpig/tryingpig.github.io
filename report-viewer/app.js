@@ -262,7 +262,7 @@ function clearTgCreds() {
 class TgError extends Error {}
 
 /* 텔레그램 Bot API 호출. method 예: "sendMessage". body는 객체(JSON) 또는 FormData. */
-async function tgCall(method, body) {
+async function tgCall(method, body, _retry = 0) {
   const token = getTgToken();
   if (!token) throw new TgError("봇 토큰 없음");
   const init = { method: "POST" };
@@ -281,6 +281,12 @@ async function tgCall(method, body) {
   }
   if (!j || !j.ok) {
     const code = j && j.error_code;
+    // 429(속도제한): 텔레그램이 알려주는 retry_after만큼 쉬었다 재시도 → 연속 전송 누락 방지
+    if (code === 429 && _retry < 5) {
+      const wait = ((j.parameters && j.parameters.retry_after) || 1) * 1000 + 300;
+      await new Promise((r) => setTimeout(r, wait));
+      return tgCall(method, body, _retry + 1);
+    }
     if (code === 401) throw new TgError("봇 토큰이 올바르지 않습니다");
     if (code === 400 && /chat not found/i.test(j.description || "")) {
       throw new TgError("chat_id를 찾을 수 없습니다 (봇에게 먼저 말을 걸어두세요)");
@@ -458,6 +464,7 @@ async function tgSendHighlights(highlights, pageItems) {
   for (const h of images) {
     const blob = await fetchImageBlob(h.clip);
     if (blob && await send(() => tgSendPhoto(blob, `(p.${h.page}) ✂️ 캡처`))) sentImg++;
+    await new Promise((r) => setTimeout(r, 350));   // 사진 연속 전송 시 속도제한(429) 완화
   }
   return { texts: texts.length, images: sentImg, failed };
 }

@@ -410,6 +410,66 @@ async function persistTgSent(id, add) {
 function markTgSent(id) { TG_SENT.add(id); saveTgSentCache(); persistTgSent(id, true); }
 function unmarkTgSent(id) { TG_SENT.delete(id); saveTgSentCache(); persistTgSent(id, false); }
 
+/* ── 즐겨찾기(⭐) ─────────────────────────────────────────
+   tg_sent와 동일 구조: vault 공유 파일(index/bookmarks.json)이 원본 → 모든 기기 공통.
+   localStorage는 즉시표시용 캐시. 메모리 BOOKMARKS가 렌더 기준. */
+RV.BOOKMARK_KEY = "rv_bookmarks";            // localStorage 캐시
+RV.BOOKMARK_PATH = "index/bookmarks.json";   // vault 공유 원본
+let BOOKMARKS = new Set();
+
+function saveBookmarkCache() { localStorage.setItem(RV.BOOKMARK_KEY, JSON.stringify([...BOOKMARKS])); }
+function isBookmarked(id) { return BOOKMARKS.has(id); }
+
+/* 캐시에서 즉시 초기화(스크립트 로드 시 1회) */
+try { BOOKMARKS = new Set(JSON.parse(localStorage.getItem(RV.BOOKMARK_KEY) || "[]")); } catch (e) {}
+
+/* vault 공유 목록을 받아 메모리+캐시 갱신(로드 시 호출). 실패하면 캐시 유지. */
+async function fetchBookmarksShared() {
+  try {
+    const res = await ghFetch("contents/" + RV.BOOKMARK_PATH, { accept: "application/vnd.github.raw", cache: "no-store" });
+    if (res.ok) {
+      BOOKMARKS = new Set((await res.json()).ids || []);
+      saveBookmarkCache();
+      return;
+    }
+    // 파일이 아직 없으면(404) 이 기기 캐시를 공유 원본으로 시드(기존 별표 보존)
+    if (res.status === 404 && BOOKMARKS.size) {
+      await ghFetch("contents/" + RV.BOOKMARK_PATH, {
+        method: "PUT",
+        body: { message: "bookmarks init", content: encodeUtf8B64(JSON.stringify({ ids: [...BOOKMARKS] }, null, 2)) },
+      });
+    }
+  } catch (e) { /* 네트워크 실패 시 캐시 유지 */ }
+}
+
+/* vault 파일에 id 추가/삭제 반영(sha 충돌 409/422 재시도). 비필수 — 실패해도 캐시엔 남음. */
+async function persistBookmark(id, add) {
+  for (let attempt = 0; attempt < 3; attempt++) {
+    try {
+      let sha = null, ids = [];
+      const res = await ghFetch("contents/" + RV.BOOKMARK_PATH, { cache: "no-store" });
+      if (res.ok) { const o = await res.json(); sha = o.sha; try { ids = JSON.parse(decodeB64Utf8(o.content)).ids || []; } catch (e) {} }
+      else if (res.status !== 404) return;
+      const set = new Set(ids);
+      if (add) set.add(id); else set.delete(id);
+      const body = { message: `bookmark ${add ? "+" : "-"}${id}`, content: encodeUtf8B64(JSON.stringify({ ids: [...set] }, null, 2)) };
+      if (sha) body.sha = sha;
+      const put = await ghFetch("contents/" + RV.BOOKMARK_PATH, { method: "PUT", body });
+      if (put.ok) return;
+      if (put.status !== 409 && put.status !== 422) return;
+    } catch (e) { return; }
+  }
+}
+
+/* 낙관적 토글: 메모리·캐시 즉시 반영 후 vault에 백그라운드 저장. 반영된 상태 반환. */
+function toggleBookmark(id) {
+  const add = !BOOKMARKS.has(id);
+  if (add) BOOKMARKS.add(id); else BOOKMARKS.delete(id);
+  saveBookmarkCache();
+  persistBookmark(id, add);
+  return add;
+}
+
 function tgEsc(s) {
   return (s == null ? "" : String(s)).replace(/[&<>"]/g, (c) =>
     ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));

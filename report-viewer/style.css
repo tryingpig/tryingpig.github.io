@@ -137,6 +137,14 @@ a { color: inherit; text-decoration: none; }
 .card .tg-send.sent .tg-disc { fill: #d1d5db; }
 .card .tg-send.sent .tg-plane { fill: #7c8592; }
 .card .tg-send:hover { filter: brightness(1.05); }
+/* 즐겨찾기 별: 빈 별(회색) → 채운 별(노랑) */
+.card .fav-btn {
+  border: none; background: none; cursor: pointer; padding: 2px 4px;
+  font-size: 18px; line-height: 1; color: #c2c7cf;
+  display: inline-flex; align-items: center;
+}
+.card .fav-btn.on { color: #f5b301; }
+.card .fav-btn:hover { color: #f5b301; }
 /* 마우스 올리면 부드럽게 회색으로(호버 피드백) — 데스크톱 전용 */
 @media (hover: hover) and (pointer: fine) {
   .card:hover { background: #f2f3f5; box-shadow: 0 3px 12px rgba(0,0,0,.09); transform: translateY(-1px); }
@@ -389,5 +397,6 @@ mark.rd-hl.pink   { background: rgba(255, 45, 120, .34); }
   .card .mini { padding: 4px 8px; font-size: 12px; border-radius: 7px; }
   .card .hl { font-size: 12px; }
   .card .tg-send svg { width: 20px; height: 20px; }
+  .card .fav-btn { font-size: 17px; }
   .card-del { width: 30px; height: 30px; font-size: 22px; }
 }

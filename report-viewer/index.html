@@ -6,7 +6,7 @@
   <meta name="theme-color" content="#ffffff">
   <link rel="manifest" href="manifest.json">
   <title>리포트 마커</title>
-  <link rel="stylesheet" href="style.css?v=16">
+  <link rel="stylesheet" href="style.css?v=17">
 </head>
 <body>
   <div class="topbar">
@@ -30,6 +30,7 @@
       <span class="s-tilde" id="qTilde" hidden>~</span>
       <input type="date" id="qTo" class="s-input s-date" title="발행일 종료" hidden>
       <label class="s-chk"><input type="checkbox" id="qHl"> ✏️ 하이라이트</label>
+      <label class="s-chk"><input type="checkbox" id="qFav"> ⭐ 즐겨찾기</label>
       <div class="spacer"></div>
       <select id="qSort" class="s-input" title="정렬 기준">
         <option value="pub">📅 발행일순</option>
@@ -46,7 +47,7 @@
   <div id="thumbHover" style="display:none"><img alt="미리보기"></div>
   <div class="toast" id="toast"></div>
 
-  <script src="app.js?v=16"></script>
+  <script src="app.js?v=17"></script>
   <script>
     let ALL = [];
     /* 텔레그램 로고 (원+비행기 각각 칠함 → 전송 후 둘 다 회색으로 바뀌게. CSS .tg-disc/.tg-plane) */
@@ -57,7 +58,7 @@
     const SENT_SVG = '<svg viewBox="0 0 512 512" aria-hidden="true">'
       + '<circle cx="256" cy="256" r="256" fill="#9aa3af"/>'
       + '<path d="M176 176 L336 336 M336 176 L176 336" stroke="#fff" stroke-width="52" stroke-linecap="round" fill="none"/></svg>';
-    let FILTER = { title: "", broker: "", sector: "", from: "", to: "", range: false, onlyHl: false };
+    let FILTER = { title: "", broker: "", sector: "", from: "", to: "", range: false, onlyHl: false, onlyFav: false };
     let SORT = "pub";   // pub=발행일 · up=수집순 · hl=하이라이트 · title=제목
     let delMode = false;
     const SELECTED = new Set();
@@ -182,11 +183,12 @@
       FILTER.range = document.getElementById("qRange").checked;
       FILTER.to = FILTER.range ? (document.getElementById("qTo").value || "") : "";
       FILTER.onlyHl = document.getElementById("qHl").checked;
+      FILTER.onlyFav = document.getElementById("qFav").checked;
       renderList();
     }
 
     function resetSearch() {
-      FILTER = { title: "", broker: "", sector: "", from: "", to: "", range: false, onlyHl: false };
+      FILTER = { title: "", broker: "", sector: "", from: "", to: "", range: false, onlyHl: false, onlyFav: false };
       SORT = "pub";
       document.getElementById("qTitle").value = "";
       document.getElementById("qBroker").value = "";
@@ -195,6 +197,7 @@
       document.getElementById("qTo").value = "";
       document.getElementById("qRange").checked = false;
       document.getElementById("qHl").checked = false;
+      document.getElementById("qFav").checked = false;
       document.getElementById("qSort").value = "pub";
       setRange(false);
       renderList();
@@ -214,6 +217,7 @@
         rows = rows.filter((r) => cardDate(r) === FILTER.from);
       }
       if (FILTER.onlyHl) rows = rows.filter((r) => (r.highlight_count || 0) > 0);
+      if (FILTER.onlyFav) rows = rows.filter((r) => isBookmarked(r.id));
 
       const CMP = {
         pub: (a, b) => (cardDate(b) || "").localeCompare(cardDate(a) || "") ||
@@ -259,6 +263,7 @@
                 ${hl}
               </div>
               <div class="row2">
+                <button class="fav-btn${isBookmarked(r.id) ? " on" : ""}" data-id="${esc(r.id)}" title="${isBookmarked(r.id) ? "즐겨찾기 해제" : "즐겨찾기에 추가"}" aria-label="즐겨찾기">${isBookmarked(r.id) ? "★" : "☆"}</button>
                 <a class="mini read" href="viewer.html?id=${encodeURIComponent(r.id)}&mode=read">📖 읽기</a>
                 <a class="mini pdf" href="viewer.html?id=${encodeURIComponent(r.id)}">📄 PDF</a>
                 ${(r.highlight_count || 0) > 0 ? `<button class="tg-send${isTgSent(r.id) ? " sent" : ""}" data-id="${esc(r.id)}" title="${isTgSent(r.id) ? "이미 텔레그램으로 보냄 · 다시 보내기" : "하이라이트를 텔레그램으로 보내기"}" aria-label="텔레그램으로 보내기">${isTgSent(r.id) ? SENT_SVG : TG_SVG}</button>` : ""}
@@ -271,6 +276,18 @@
 
       list.querySelectorAll(".card").forEach((card) => {
         card.addEventListener("click", (e) => {
+          const favBtn = e.target.closest(".fav-btn");
+          if (favBtn) {                           // ⭐ 즐겨찾기 토글(낙관적)
+            e.stopPropagation();
+            if (delMode) return;
+            const on = toggleBookmark(favBtn.dataset.id);
+            favBtn.classList.toggle("on", on);
+            favBtn.textContent = on ? "★" : "☆";
+            favBtn.title = on ? "즐겨찾기 해제" : "즐겨찾기에 추가";
+            // 즐겨찾기만 보기 상태면, 해제한 카드는 목록에서 바로 빠지게 갱신
+            if (FILTER.onlyFav && !on) renderList();
+            return;
+          }
           const tgBtn = e.target.closest(".tg-send");
           if (tgBtn) {                            // 텔레그램 전송 버튼
             e.stopPropagation();
@@ -355,6 +372,7 @@
         renderSearchBar();
         renderList();                                   // 캐시 기준 즉시 표시
         fetchTgSentShared().then(() => renderList());   // vault 공유 전송이력 받아 X 표시 갱신
+        fetchBookmarksShared().then(() => renderList()); // vault 공유 즐겨찾기 받아 ★ 표시 갱신
       } catch (err) {
         handleError(err, load);
       }
@@ -442,6 +460,7 @@
     document.getElementById("qRange").addEventListener("change", (e) => {
       setRange(e.target.checked);              // 종료일 토글 → 종료일 칸 표시/숨김
     });
+    document.getElementById("qFav").addEventListener("change", applySearch);  // 즐겨찾기만 보기: 즉시 반영
 
     document.getElementById("refreshBtn").onclick = load;
     document.getElementById("logoutBtn").onclick = () => {

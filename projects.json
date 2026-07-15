@@ -32,6 +32,14 @@
     "url": "https://tryingpig.github.io/smart-consensus/"
   },
   {
+    "emoji": "🪙",
+    "name_en": "ADR Disparity Tracker",
+    "name_ko": "ADR 괴리 트래커 (SK하이닉스·TSMC)",
+    "desc": "미국 상장 ADR과 본주의 프리미엄/디스카운트(괴리율)를 한 페이지에서 비교 추적 — SK하이닉스(SKHY)·TSMC(TSM)",
+    "tag": "investing",
+    "url": "https://tryingpig.github.io/skhy-adr-disparity/"
+  },
+  {
     "emoji": "🎸",
     "name_en": "Festa Radar",
     "name_ko": "국내 뮤직 페스티벌 트래커",

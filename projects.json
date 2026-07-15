@@ -1,19 +1,11 @@
 [
   {
     "emoji": "📊",
-    "name_en": "US Sector ETF Disparity Tracker",
-    "name_ko": "미국 섹터 ETF 이격도 트래커",
-    "desc": "11개 SPDR 섹터 ETF의 50일 이격도를 매일 자동 추적하는 대시보드",
+    "name_en": "Stock Sector Disparity (US/KR)",
+    "name_ko": "섹터 ETF 이격도 트래커 (미국·한국)",
+    "desc": "미국 SPDR 11개 섹터 + 코스피·코스닥/한국 섹터 ETF의 100일 이격도를 한 페이지에서 US/KR 전환",
     "tag": "investing",
-    "url": "https://tryingpig.github.io/us-sector-disparity/"
-  },
-  {
-    "emoji": "🇰🇷",
-    "name_en": "Korea Sector ETF Disparity Tracker",
-    "name_ko": "한국 섹터 ETF 이격도 트래커",
-    "desc": "코스피·코스닥 + 한국 섹터 ETF(AI반도체 소부장)의 50일 이격도·상승장 판단 대시보드",
-    "tag": "investing",
-    "url": "https://tryingpig.github.io/ko-disparity/"
+    "url": "https://tryingpig.github.io/stock-disparity/?market=us"
   },
   {
     "emoji": "📈",

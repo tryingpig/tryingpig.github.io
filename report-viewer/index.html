@@ -3,10 +3,11 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#ffffff">
+  <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#15171c" media="(prefers-color-scheme: dark)">
   <link rel="manifest" href="manifest.json">
   <title>리포트 마커</title>
-  <link rel="stylesheet" href="style.css?v=17">
+  <link rel="stylesheet" href="style.css?v=18">
 </head>
 <body>
   <div class="topbar">
@@ -47,7 +48,7 @@
   <div id="thumbHover" style="display:none"><img alt="미리보기"></div>
   <div class="toast" id="toast"></div>
 
-  <script src="app.js?v=17"></script>
+  <script src="app.js?v=18"></script>
   <script>
     let ALL = [];
     /* 텔레그램 로고 (원+비행기 각각 칠함 → 전송 후 둘 다 회색으로 바뀌게. CSS .tg-disc/.tg-plane) */

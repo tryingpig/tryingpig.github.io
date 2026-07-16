@@ -3,9 +3,10 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#ffffff">
+  <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#15171c" media="(prefers-color-scheme: dark)">
   <title>리포트 뷰어</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css?v=18">
 </head>
 <body>
   <div class="topbar viewer-topbar" id="topbar">
@@ -23,7 +24,7 @@
   <div id="captureHint" style="display:none">드래그로 영역 선택 · 표/그림 캡처<button id="captureHintX">✕</button></div>
   <div class="toast" id="toast"></div>
 
-  <script src="app.js"></script>
+  <script src="app.js?v=18"></script>
   <script type="module">
     import * as pdfjsLib from "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.6.82/pdf.min.mjs";
     pdfjsLib.GlobalWorkerOptions.workerSrc =

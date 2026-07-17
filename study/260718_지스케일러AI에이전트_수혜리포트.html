@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>지스케일러(Zscaler) — AI Agent 시대 수혜 심층 리포트</title>
+<style>
+  :root{
+    --accent:#1d4ed8;      /* Zscaler blue */
+    --accent2:#0ea5e9;
+    --ink:#0f172a;
+    --muted:#475569;
+    --line:#e2e8f0;
+    --bg:#ffffff;
+    --soft:#f1f5f9;
+    --warn-bg:#fff7ed;
+    --warn-line:#fb923c;
+    --good:#16a34a;
+    --bad:#dc2626;
+    --mid:#d97706;
+  }
+  *{box-sizing:border-box}
+  body{
+    font-family:"Pretendard","Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif;
+    color:var(--ink); background:var(--bg); margin:0; line-height:1.75; font-size:16.5px;
+  }
+  .wrap{max-width:920px; margin:0 auto; padding:44px 22px 100px;}
+  header.hero{
+    background:linear-gradient(135deg,#0b1e46 0%,#1d4ed8 55%,#0ea5e9 100%);
+    color:#fff; border-radius:20px; padding:40px 34px; margin-bottom:30px;
+    box-shadow:0 18px 44px rgba(29,78,216,.28);
+  }
+  header.hero .kicker{font-size:13px; letter-spacing:.14em; text-transform:uppercase; opacity:.85; font-weight:700;}
+  header.hero h1{font-size:33px; line-height:1.28; margin:12px 0 10px; font-weight:800;}
+  header.hero p{margin:0; font-size:15.5px; opacity:.95;}
+  header.hero .meta{margin-top:18px; font-size:13px; opacity:.85; display:flex; gap:16px; flex-wrap:wrap;}
+  header.hero .meta span{background:rgba(255,255,255,.14); padding:5px 12px; border-radius:999px;}
+  h2{font-size:24px; margin:46px 0 14px; padding-bottom:9px; border-bottom:3px solid var(--accent); font-weight:800; display:flex; align-items:center; gap:10px;}
+  h2 .n{background:var(--accent); color:#fff; width:31px; height:31px; border-radius:9px; display:inline-flex; align-items:center; justify-content:center; font-size:16px;}
+  h3{font-size:19px; margin:30px 0 10px; color:#132a63; font-weight:750;}
+  h4{font-size:16.5px; margin:20px 0 6px; color:#1e3a8a;}
+  p{margin:11px 0;}
+  strong{color:#0b1e46;}
+  a{color:var(--accent); word-break:break-all;}
+  .lead{font-size:17.5px; color:#1e293b;}
+  .warn{background:var(--warn-bg); border:1px solid var(--warn-line); border-left:6px solid var(--warn-line);
+    border-radius:12px; padding:16px 20px; margin:22px 0; font-size:14.5px; color:#7c2d12;}
+  .warn b{color:#9a3412;}
+  .box{background:var(--soft); border:1px solid var(--line); border-radius:14px; padding:20px 22px; margin:20px 0;}
+  .box.accent{border-left:6px solid var(--accent); background:#eff5ff;}
+  .box.tip{border-left:6px solid var(--good); background:#f0fdf4;}
+  .grid2{display:grid; grid-template-columns:1fr 1fr; gap:16px;}
+  .card{border:1px solid var(--line); border-radius:14px; padding:18px 20px; background:#fff;}
+  .card h4{margin-top:0;}
+  table{border-collapse:collapse; width:100%; margin:18px 0; font-size:14px;}
+  th,td{border:1px solid var(--line); padding:10px 12px; text-align:left; vertical-align:top;}
+  th{background:#0b1e46; color:#fff; font-weight:700;}
+  tr:nth-child(even) td{background:#f8fafc;}
+  .tag{display:inline-block; padding:3px 10px; border-radius:999px; font-size:12px; font-weight:700;}
+  .t-good{background:#dcfce7; color:#166534;}
+  .t-mid{background:#fef3c7; color:#92400e;}
+  .t-bad{background:#fee2e2; color:#991b1b;}
+  figure{margin:24px 0; text-align:center;}
+  figure svg{max-width:100%; height:auto;}
+  figcaption{font-size:12.5px; color:var(--muted); margin-top:8px;}
+  .src{font-size:12px; color:#64748b;}
+  ul,ol{margin:11px 0; padding-left:22px;}
+  li{margin:6px 0;}
+  .kpi-row{display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin:20px 0;}
+  .kpi{background:linear-gradient(160deg,#eff5ff,#dbeafe); border:1px solid #bfdbfe; border-radius:14px; padding:16px; text-align:center;}
+  .kpi .v{font-size:24px; font-weight:800; color:var(--accent);}
+  .kpi .l{font-size:12.5px; color:#334155; margin-top:4px;}
+  .timeline{border-left:3px solid var(--accent); margin:20px 0; padding-left:22px;}
+  .timeline .ev{margin-bottom:18px; position:relative;}
+  .timeline .ev::before{content:''; position:absolute; left:-30px; top:5px; width:13px; height:13px; border-radius:50%; background:var(--accent); border:3px solid #fff; box-shadow:0 0 0 2px var(--accent);}
+  .timeline .d{font-weight:800; color:var(--accent); font-size:14px;}
+  .faq{border:1px solid var(--line); border-radius:12px; padding:6px 18px; margin:12px 0; background:#fff;}
+  .faq summary{font-weight:700; cursor:pointer; padding:12px 0; color:#132a63;}
+  .faq p{margin:4px 0 14px;}
+  .pill{display:inline-block; background:var(--accent); color:#fff; font-size:12px; font-weight:700; padding:4px 11px; border-radius:999px; margin:0 4px 4px 0;}
+  .footnote{font-size:13px; color:var(--muted); border-top:1px solid var(--line); margin-top:40px; padding-top:18px;}
+  .matrix td:first-child{font-weight:700;}
+  @media (max-width:680px){
+    .grid2,.kpi-row{grid-template-columns:1fr;}
+    header.hero h1{font-size:26px;}
+    .wrap{padding:24px 14px 70px;}
+  }
+  @media print{
+    header.hero{box-shadow:none;}
+    h2{page-break-after:avoid;}
+    figure,table,.box,.card{page-break-inside:avoid;}
+    .faq{page-break-inside:avoid;}
+    a{color:#1d4ed8;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="hero">
+  <div class="kicker">개인 투자 리서치 · 팩트 정리용</div>
+  <h1>지스케일러(Zscaler)는 AI Agent 시대에<br>어디서 매출을 일으키는가</h1>
+  <p>"AI 에이전트가 폭증하는 지금, Zscaler가 실제로 돈을 벌 수 있는 영역"을 제품·재무·시장 데이터로 뜯어본 심층 정리</p>
+  <div class="meta">
+    <span>티커: NASDAQ: ZS</span>
+    <span>작성일: 2026-07-18</span>
+    <span>분류: 수혜 리포트</span>
+    <span>액센트: Cybersecurity Blue</span>
+  </div>
+</header>
+
+<div class="warn">
+  <b>⚠️ 투자 유의 / 면책 고지.</b> 이 문서는 특정 종목의 매수·매도를 <b>추천하지 않습니다.</b> 공개된 회사 발표·언론 보도·시장 리서치를 <b>사실 기반으로 정리</b>한 개인 학습 자료일 뿐이며, 여기 담긴 수치·전망은 발표 시점 기준이고 실제와 다를 수 있습니다. 미래 실적·주가에 대한 어떤 보장도 하지 않습니다. <b>모든 투자 판단과 그 결과에 대한 책임은 전적으로 투자자 본인에게 있습니다.</b> 반드시 원문(회사 IR·SEC 공시)과 최신 데이터를 직접 확인하세요.
+</div>
+
+<p class="lead">질문은 명확합니다. <strong>"AI 에이전트가 활발한 지금, Zscaler가 수혜를 입는 영역이 있는가? 있다면 이 회사는 어떤 부분에서 AI Agent에 적용돼 매출을 일으킬 수 있는가?"</strong> 결론부터 말하면 — Zscaler의 사업 구조(사용자·트래픽 단위로 과금하는 클라우드 보안 프록시)는 AI 에이전트라는 "새로운 사용자 계층"이 등장할 때 <strong>과금 대상 자체가 늘어나는</strong> 구조에 가깝습니다. 회사는 2026년 들어 이 흐름에 맞춰 <strong>AI Broker · AI Access Graph · Endpoint AI Security · AI Protect/AI Guard</strong>라는 구체적 제품군을 내놨습니다. 아래에서 "무엇을 파는 회사인지 → 왜 AI 에이전트가 보안 문제인지 → Zscaler가 정확히 어디서 돈을 버는지 → 그게 실적으로 이어질 메커니즘"까지 순서대로 정리합니다.</p>
+
+<h2><span class="n">1</span>먼저, Zscaler는 무엇을 파는 회사인가</h2>
+
+<p>AI 에이전트 수혜를 이해하려면 이 회사의 <strong>과금 구조</strong>를 먼저 알아야 합니다. Zscaler는 방화벽 같은 "장비(박스)"를 파는 회사가 아니라, <strong>클라우드에서 돌아가는 보안 검문소</strong>를 구독형(SaaS)으로 파는 회사입니다. 이 검문소의 이름이 <strong>Zero Trust Exchange(제로 트러스트 익스체인지)</strong>입니다.</p>
+
+<h3>핵심 개념 — "제로 트러스트 프록시"</h3>
+<p>전통적 보안은 "회사 네트워크 안에 있으면 믿는다"는 성(城, castle-and-moat) 모델이었습니다. Zscaler의 제로 트러스트는 반대입니다. <strong>"아무도 기본적으로 믿지 않고, 요청 하나하나를 검사한 뒤에만 목적지로 연결"</strong>합니다. 사용자·기기의 모든 트래픽이 일단 Zscaler 클라우드를 거쳐(=프록시), 신원·정책·위협을 확인받고 나서야 인터넷·SaaS·사내 앱에 도달합니다.</p>
+
+<div class="box accent">
+<strong>왜 이게 중요한가:</strong> Zscaler의 클라우드는 하루 <strong>약 7,500억 건(750 billion)</strong>의 트랜잭션을 처리한다고 회사는 밝힙니다. 즉 회사는 이미 "누가·무엇이·어디에 접속하는가"라는 거대한 <strong>연결의 길목(choke point)</strong>을 쥐고 있습니다. AI 에이전트도 결국 "무언가에 접속해서 작업하는 주체"이므로, 이 길목을 지나갈 수밖에 없다는 게 수혜 논리의 출발점입니다.
+<div class="src">출처: Zscaler, "How Zscaler Secures the Agentic AI Era with Zero Trust" (product-insights blog) / Zenith Live 2026 발표.</div>
+</div>
+
+<h3>4대 제품 기둥</h3>
+<div class="grid2">
+  <div class="card">
+    <h4>ZIA — Internet Access</h4>
+    <p>사용자가 인터넷·SaaS로 나갈 때 트래픽을 검사·필터링. 웹 보안(SWG), DLP, 샌드박스 등. Zscaler의 원조 캐시카우.</p>
+  </div>
+  <div class="card">
+    <h4>ZPA — Private Access</h4>
+    <p>사내 앱에 <strong>VPN 없이</strong> 안전하게 접속. 앱을 인터넷에 노출하지 않고 사용자↔앱을 1:1로 연결(ZTNA).</p>
+  </div>
+  <div class="card">
+    <h4>ZDX — Digital Experience</h4>
+    <p>사용자 단말~네트워크~앱까지 성능·경험을 모니터링. IT 헬프데스크의 문제 진단용.</p>
+  </div>
+  <div class="card">
+    <h4>Data Protection / Cloud Protection</h4>
+    <p>데이터 유출 방지(DLP)·CASB, 클라우드 워크로드/서버/IoT 보호. AI 보안이 여기서 확장됨.</p>
+  </div>
+</div>
+<p class="src">출처: Zscaler 10-K(FY2021), CIO "The 4 pillars of the Zscaler Zero Trust Exchange".</p>
+
+<h3>과금 방식 — 여기가 핵심</h3>
+<p>Zscaler는 <strong>사용자당·연간(per-user, per-year)</strong> 구독을 기본으로, Business/Transformation/Unlimited 같은 번들 티어로 기능을 얹어 팝니다. 계약은 연/다년 단위의 <strong>반복 매출(recurring)</strong>. 즉 이 회사의 성장 공식은 두 가지입니다.</p>
+<ol>
+  <li><strong>고객·좌석(seat) 수 확대</strong> — 신규 기업 유치, 직원 수 증가.</li>
+  <li><strong>1인당 단가 상승(업셀)</strong> — 상위 번들·신규 모듈(AI 보안 등)을 추가 판매. 이를 보여주는 지표가 <strong>순매출유지율(NRR, Net Retention)</strong>.</li>
+</ol>
+
+<div class="box tip">
+<strong>AI 에이전트 수혜의 한 줄 요약:</strong> AI 에이전트는 (a) 새로운 "사용자/신원"을 <strong>수십~수백 배로 늘리고</strong>, (b) 그 에이전트들이 만드는 트래픽을 검사할 <strong>새 모듈(업셀)</strong>을 팔 명분을 줍니다. Zscaler의 두 성장 레버(좌석 수 × 1인당 단가) 양쪽을 동시에 밀 수 있는 테마라는 점이 핵심입니다.
+</div>
+
+<figure>
+<svg viewBox="0 0 820 340" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Zero Trust Exchange 구조">
+  <rect x="0" y="0" width="820" height="340" fill="#f8fafc" rx="14"/>
+  <text x="410" y="30" text-anchor="middle" font-size="17" font-weight="700" fill="#0b1e46">Zscaler Zero Trust Exchange — "모든 연결의 검문소"</text>
+  <!-- left users -->
+  <rect x="30" y="70" width="150" height="55" rx="10" fill="#dbeafe" stroke="#1d4ed8"/>
+  <text x="105" y="93" text-anchor="middle" font-size="13" fill="#0b1e46">사람 사용자</text>
+  <text x="105" y="111" text-anchor="middle" font-size="12" fill="#475569">직원·기기</text>
+  <rect x="30" y="150" width="150" height="55" rx="10" fill="#e0f2fe" stroke="#0ea5e9"/>
+  <text x="105" y="173" text-anchor="middle" font-size="13" fill="#0b1e46">AI 에이전트</text>
+  <text x="105" y="191" text-anchor="middle" font-size="12" fill="#475569">(새 신원 계층)</text>
+  <rect x="30" y="230" width="150" height="55" rx="10" fill="#dbeafe" stroke="#1d4ed8"/>
+  <text x="105" y="253" text-anchor="middle" font-size="13" fill="#0b1e46">워크로드/IoT</text>
+  <text x="105" y="271" text-anchor="middle" font-size="12" fill="#475569">서버·앱</text>
+  <!-- center exchange -->
+  <rect x="300" y="120" width="220" height="120" rx="16" fill="#1d4ed8"/>
+  <text x="410" y="165" text-anchor="middle" font-size="16" font-weight="700" fill="#fff">Zero Trust</text>
+  <text x="410" y="188" text-anchor="middle" font-size="16" font-weight="700" fill="#fff">Exchange</text>
+  <text x="410" y="212" text-anchor="middle" font-size="11.5" fill="#bfdbfe">신원·정책·위협·데이터 검사</text>
+  <text x="410" y="229" text-anchor="middle" font-size="11" fill="#93c5fd">≈ 7,500억 트랜잭션/일</text>
+  <!-- right destinations -->
+  <rect x="640" y="80" width="150" height="48" rx="10" fill="#fef9c3" stroke="#d97706"/>
+  <text x="715" y="109" text-anchor="middle" font-size="13" fill="#0b1e46">인터넷 / SaaS</text>
+  <rect x="640" y="146" width="150" height="48" rx="10" fill="#fef9c3" stroke="#d97706"/>
+  <text x="715" y="175" text-anchor="middle" font-size="13" fill="#0b1e46">사내 앱 (ZPA)</text>
+  <rect x="640" y="212" width="150" height="48" rx="10" fill="#fef9c3" stroke="#d97706"/>
+  <text x="715" y="241" text-anchor="middle" font-size="13" fill="#0b1e46">AI 모델 / MCP</text>
+  <!-- arrows -->
+  <g stroke="#94a3b8" stroke-width="2" marker-end="url(#ar)">
+    <line x1="180" y1="97" x2="298" y2="150"/>
+    <line x1="180" y1="177" x2="298" y2="180"/>
+    <line x1="180" y1="257" x2="298" y2="210"/>
+    <line x1="522" y1="160" x2="638" y2="104"/>
+    <line x1="522" y1="180" x2="638" y2="170"/>
+    <line x1="522" y1="200" x2="638" y2="236"/>
+  </g>
+  <defs><marker id="ar" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 Z" fill="#94a3b8"/></marker></defs>
+</svg>
+<figcaption>Zero Trust Exchange 개념도 — 사람뿐 아니라 "AI 에이전트"라는 새 신원 계층도 이 검문소를 지나야 한다는 것이 수혜 논리의 골격. (도식: 본 리포트 자체 작성, 개념·수치 출처 Zscaler 발표)</figcaption>
+</figure>
+
+<h2><span class="n">2</span>왜 "AI 에이전트"가 통째로 새 보안 시장인가</h2>
+
+<p>과거 GenAI 보안은 "직원이 ChatGPT에 회사 기밀을 붙여넣지 못하게 막는" 수준이었습니다(=사람이 챗봇을 쓰는 문제). 그런데 <strong>에이전트</strong>는 성격이 다릅니다. 에이전트는 사람의 승인 없이 <strong>스스로 판단해 도구를 호출하고, 다른 에이전트·시스템과 통신하며, 데이터에 접근</strong>합니다. 즉 "행동하는 소프트웨어 주체"가 폭증합니다.</p>
+
+<h3>세 가지 근본 변화</h3>
+<div class="grid2">
+  <div class="card">
+    <h4>① 비인간 신원(NHI)의 폭발</h4>
+    <p>에이전트 하나하나가 접근 권한을 가진 "계정(신원)"입니다. 사람 직원 수는 정체돼 있어도, 에이전트·서비스 계정 같은 <strong>비인간 신원(Non-Human Identity)</strong>은 기하급수로 늘어납니다. 이걸 발견·목록화·행동감시할 대상이 급증합니다.</p>
+  </div>
+  <div class="card">
+    <h4>② 에이전트 통신 프로토콜의 등장</h4>
+    <p><strong>MCP</strong>(Model Context Protocol, 2024.11~)와 <strong>A2A</strong>(Agent-to-Agent, 2025.4~)로 에이전트가 도구·다른 에이전트와 직접 대화합니다. 그런데 이 프로토콜들은 <strong>신원 바인딩·인증 검증이 취약</strong>해 도구 오염(tool poisoning), 권한 탈취, 릴레이 공격 같은 새 공격면을 만듭니다.</p>
+  </div>
+  <div class="card">
+    <h4>③ 섀도 AI</h4>
+    <p>직원·개발자가 IT 승인 없이 AI 도구·플러그인·로컬 모델·에이전트를 몰래 씁니다. SaaS·코드베이스·브라우저·엔드포인트 곳곳에 <strong>보이지 않는 AI</strong>가 박힙니다. "무엇이 어디서 도는지" 발견 자체가 첫 과제.</p>
+  </div>
+  <div class="card">
+    <h4>④ 데이터 노출 경로의 급증</h4>
+    <p>에이전트는 업무를 하려면 민감 데이터에 닿아야 합니다. 프롬프트로 소스코드·PII·PHI가 흘러나가거나, 에이전트가 과도한 권한으로 데이터를 긁어옵니다. <strong>실시간 검사·차단</strong> 수요가 커집니다.</p>
+  </div>
+</div>
+
+<div class="box">
+<strong>시장 규모(참고).</strong> 리서치사마다 정의·범위가 달라 수치 편차가 큽니다. MarketsandMarkets는 <strong>에이전틱 AI 보안 시장</strong>을 2026년 16.5억 달러 → 2032년 135.2억 달러, <strong>CAGR 약 42%</strong>로 봅니다. Mordor Intelligence는 "사이버보안 에이전틱 AI" 시장을 2025년 18.3억 → 2031년 96.3억 달러(CAGR 약 31.7%). 정의가 넓은 Grand View는 "사이버보안 내 에이전틱 AI"를 2024년 225.6억 → 2033년 3,223.9억 달러(CAGR 약 34.4%)로 제시. <strong>공통점은 방향(고속 성장)이지 특정 절대값이 아니라는 점</strong>에 유의.
+<div class="src">출처: MarketsandMarkets(Agentic AI Security, $13.52B by 2032), Mordor Intelligence, Grand View Research.</div>
+</div>
+
+<figure>
+<svg viewBox="0 0 820 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="비인간 신원 폭증 개념">
+  <rect x="0" y="0" width="820" height="300" fill="#f8fafc" rx="14"/>
+  <text x="410" y="32" text-anchor="middle" font-size="16" font-weight="700" fill="#0b1e46">"사람 사용자"는 정체, "에이전트/비인간 신원"은 폭증 (개념도)</text>
+  <!-- axes -->
+  <line x1="70" y1="250" x2="770" y2="250" stroke="#94a3b8" stroke-width="2"/>
+  <line x1="70" y1="60" x2="70" y2="250" stroke="#94a3b8" stroke-width="2"/>
+  <!-- human line flat -->
+  <polyline points="70,200 250,196 430,192 610,190 760,188" fill="none" stroke="#1d4ed8" stroke-width="3"/>
+  <text x="700" y="178" font-size="12" fill="#1d4ed8">사람 사용자</text>
+  <!-- agent curve steep -->
+  <polyline points="70,242 250,232 430,205 560,150 660,100 760,70" fill="none" stroke="#0ea5e9" stroke-width="3.5"/>
+  <text x="600" y="92" font-size="12" fill="#0ea5e9">AI 에이전트 / NHI</text>
+  <text x="410" y="278" text-anchor="middle" font-size="12" fill="#64748b">시간 →</text>
+  <text x="40" y="150" font-size="12" fill="#64748b" transform="rotate(-90 40 150)">신원(계정) 수 →</text>
+</svg>
+<figcaption>개념 도식 — 과금 대상이 "사람 좌석"에서 "사람 + 에이전트"로 넓어지는 구조. (본 리포트 자체 작성, 추세는 정성적 표현)</figcaption>
+</figure>
+
+<h2><span class="n">3</span>Zscaler가 AI Agent에서 돈을 버는 5개 영역</h2>
+
+<p>이 장이 질문의 핵심입니다. Zscaler는 2026년 6월 <strong>Zenith Live 2026</strong>(라스베이거스, 6/9~10)에서 스스로 "업계 최초의 <strong>에이전틱 AI를 위한 완전한 제로 트러스트 플랫폼</strong>"이라고 표현하며 신제품군을 공개했습니다. 여기에 이미 나와 있던 AI Protect(2026.1)와 데이터 보안 자산을 합치면, 매출을 일으킬 수 있는 영역이 크게 다섯 갈래입니다.</p>
+
+<h3>영역 ① AI Broker — 에이전트 통신의 검문소 (신규 과금원)</h3>
+<p><strong>무엇:</strong> AI 에이전트가 <strong>MCP·A2A로 주고받는 통신을 중개·검사</strong>하는 브로커. 여기에 <strong>Agent Registry(에이전트 등록소)</strong>가 붙어 "각 에이전트가 무엇에 접근할 수 있는지"를 파악하고, 기업 전반의 AI 에이전트에 <strong>세분화된 접근 통제(fine-grained access)</strong>를 겁니다.</p>
+<p><strong>왜 매출이 되나:</strong> Zscaler가 사람 트래픽에 대해 해온 "프록시로 검문하고 정책 걸기"를 <strong>에이전트 통신에 그대로 확장</strong>한 것입니다. 사람 좌석과 별개로 "에이전트 통신"이라는 <strong>새 트래픽·새 과금 단위</strong>가 생깁니다. 회사는 이를 "수백만 자율 에이전트(millions of autonomous agents)"를 겨냥한다고 표현했습니다.</p>
+<p class="src">출처: Zscaler press "Unveils New Product Innovations to Secure Agentic AI"(GlobeNewswire, 2026-06-09), Network World, StockTitan.</p>
+
+<figure>
+<svg viewBox="0 0 820 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="AI Broker 흐름">
+  <rect x="0" y="0" width="820" height="320" fill="#f8fafc" rx="14"/>
+  <text x="410" y="30" text-anchor="middle" font-size="16" font-weight="700" fill="#0b1e46">AI Broker + Agent Registry — 에이전트 통신 중개·통제</text>
+  <rect x="40" y="120" width="140" height="80" rx="12" fill="#e0f2fe" stroke="#0ea5e9"/>
+  <text x="110" y="155" text-anchor="middle" font-size="13" fill="#0b1e46">Agent A</text>
+  <text x="110" y="176" text-anchor="middle" font-size="11" fill="#475569">(요청자)</text>
+  <rect x="330" y="95" width="170" height="130" rx="14" fill="#1d4ed8"/>
+  <text x="415" y="135" text-anchor="middle" font-size="15" font-weight="700" fill="#fff">AI Broker</text>
+  <text x="415" y="158" text-anchor="middle" font-size="11" fill="#bfdbfe">MCP / A2A 검사</text>
+  <text x="415" y="178" text-anchor="middle" font-size="11" fill="#bfdbfe">신원·권한 검증</text>
+  <text x="415" y="198" text-anchor="middle" font-size="11" fill="#93c5fd">+ Agent Registry</text>
+  <rect x="640" y="70" width="140" height="60" rx="12" fill="#fef9c3" stroke="#d97706"/>
+  <text x="710" y="105" text-anchor="middle" font-size="13" fill="#0b1e46">Tool / MCP 서버</text>
+  <rect x="640" y="150" width="140" height="60" rx="12" fill="#fef9c3" stroke="#d97706"/>
+  <text x="710" y="185" text-anchor="middle" font-size="13" fill="#0b1e46">Agent B</text>
+  <rect x="640" y="230" width="140" height="60" rx="12" fill="#fef9c3" stroke="#d97706"/>
+  <text x="710" y="265" text-anchor="middle" font-size="13" fill="#0b1e46">데이터·앱</text>
+  <g stroke="#94a3b8" stroke-width="2.2" marker-end="url(#ar2)">
+    <line x1="180" y1="160" x2="328" y2="160"/>
+    <line x1="500" y1="140" x2="638" y2="100"/>
+    <line x1="500" y1="160" x2="638" y2="180"/>
+    <line x1="500" y1="185" x2="638" y2="255"/>
+  </g>
+  <defs><marker id="ar2" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0,0 L9,4.5 L0,9 Z" fill="#94a3b8"/></marker></defs>
+  <text x="415" y="255" text-anchor="middle" font-size="11.5" fill="#475569">"어떤 에이전트가 무엇에 접근 가능한가"를 등록·집행</text>
+</svg>
+<figcaption>AI Broker 개념 흐름 — 에이전트 간/에이전트–도구 통신을 가운데서 검문. (도식: 본 리포트 자체 작성, 기능 출처 Zscaler 발표)</figcaption>
+</figure>
+
+<h3>영역 ② AI Access Graph — 에이전트·데이터 지도 (Symmetry Systems 인수 기반)</h3>
+<p><strong>무엇:</strong> 신원·애플리케이션·데이터가 기업 전반에서 <strong>어떻게 연결돼 있는지 지도로 그려주는</strong> 가시성 계층. Zscaler가 <strong>2026년 5월 인수한 Symmetry Systems</strong> 기술이 뿌리입니다. Symmetry는 클라우드·온프렘·에어갭 환경의 데이터 자산을 자동 목록화하고 민감도로 태깅, 이상 접근을 감시합니다.</p>
+<p><strong>왜 매출이 되나:</strong> AI Broker·정책 집행이 제대로 돌려면 "무엇이 어디에 연결됐는지"를 먼저 알아야 합니다. AI Access Graph는 <strong>다른 통제들이 딛고 서는 가시성 토대</strong>이자, 데이터 계보(data lineage)를 실시간 추적하는 <strong>데이터 보안(DSPM) 업셀</strong>입니다. 인수를 통해 "AI 에이전트 데이터 거버넌스"를 Zero Trust Exchange에 직접 심는 전략.</p>
+<p class="src">출처: SiliconANGLE "Zscaler acquires Symmetry Systems…"(2026-05-21), SC Media, Zscaler press.</p>
+
+<h3>영역 ③ Endpoint AI Security — 단말 속 AI 위협 (엔드포인트 확장)</h3>
+<p><strong>무엇:</strong> 직원 <strong>기기</strong>에서 AI 관련 위협을 찾아 차단. <strong>브라우저·확장프로그램·플러그인·로컬 AI 도구</strong>에 숨은 위험까지 들여다봅니다. 전통 엔드포인트 보안이 놓치는 브라우저/확장/플러그인 계층에 침투한다는 점을 강조.</p>
+<p><strong>왜 매출이 되나:</strong> Zscaler는 그동안 "네트워크 경로"에 강했고 엔드포인트 자체는 약점으로 지적됐습니다. Endpoint AI Security는 <strong>엔드포인트라는 새 판매면</strong>을 AI 각도로 여는 시도이며, 섀도 AI 발견 수요에 직접 대응합니다.</p>
+<p class="src">출처: Zscaler press(2026-06-09), Futurum "Zscaler Bets on Agentic AI Security at Zenith Live 2026".</p>
+
+<h3>영역 ④ AI Protect / AI Guard — 프롬프트 방화벽·가드레일 (기존 트래픽 업셀)</h3>
+<p><strong>무엇:</strong> 2026년 1월 출시된 <strong>AI Protect</strong>를 확장. 프롬프트 내용을 <strong>가시화·분류·검열(prompt firewall)</strong>하고, 100+ DLP 사전(소스코드·PII·PCI·PHI 등)으로 프롬프트를 통한 민감 데이터 유출을 차단하며, GenAI 앱 접근을 사용자·그룹별로 허용/차단/코칭합니다. <strong>AI Guard</strong>는 GenAI 워크로드용 런타임 보호로, <strong>18종 이상의 특화 탐지기</strong>(프롬프트 인젝션·탈옥·악성 URL·비밀정보 노출·PII·독성·브랜드 리스크 등)를 다국어로 제공합니다. NVIDIA NeMo Guardrails 연동도 발표.</p>
+<p><strong>왜 매출이 되나:</strong> 이건 이미 Zscaler를 쓰는 고객의 <strong>기존 트래픽에 얹는 전형적 업셀</strong>입니다. 기업이 "AI를 쓰긴 써야 하는데 데이터가 새면 큰일"이라는 딜레마를 정확히 겨냥해, 상위 번들·추가 모듈로 <strong>1인당 단가(ARPU)를 끌어올리는</strong> 경로. 또 <strong>AI Asset Management</strong>가 SaaS·인터넷 트래픽 속 임베디드 AI, 공개 클라우드의 AI 에이전트·MCP 서버를 발견하고 코드베이스 위험까지 스캔합니다.</p>
+<p class="src">출처: Zscaler AI Guard 솔루션 브리프, "Gen AI Security at a Glance"(데이터시트), Zscaler AI Protect 확장 발표(2026-06).</p>
+
+<h3>영역 ⑤ 플랫폼 자체 확장 — "에이전트도 결국 트래픽"</h3>
+<p><strong>무엇:</strong> 위 4개는 개별 제품이지만, 그 밑을 관통하는 다섯 번째 논리가 이 회사의 <strong>구조적 수혜</strong>입니다. 에이전트가 인터넷·SaaS·사내 앱·AI 모델에 접속하는 <strong>모든 연결이 Zero Trust Exchange를 지나가면</strong>, 트랜잭션·정책 집행 규모가 커집니다. 회사가 "하루 7,500억 트랜잭션 위에 세운 배포 가능한 아키텍처"라고 강조하는 이유가 이것입니다.</p>
+<p><strong>왜 매출이 되나:</strong> 신제품이 아니라 <strong>기존 플랫폼의 사용량·중요도 상승</strong> 그 자체. 에이전트 시대에 "가장 붐비는 검문소"를 이미 갖고 있다는 게 진입장벽이자 과금 확대의 토대입니다.</p>
+
+<div class="box accent">
+<strong>다섯 영역을 한 문장으로.</strong> ① 에이전트 통신을 검문(AI Broker)하고 → ② 무엇이 어디 연결됐는지 지도로 보고(AI Access Graph) → ③ 단말 속 AI 위협을 잡고(Endpoint AI Security) → ④ 프롬프트·데이터 유출을 실시간 차단(AI Protect/AI Guard)하며 → ⑤ 이 모든 걸 기존 제로 트러스트 플랫폼의 사용량 증가로 흡수한다. <strong>"새 과금원 신설(①②③)" + "기존 고객 업셀(④)" + "플랫폼 사용량 확대(⑤)"</strong>의 3중 구조.
+</div>
+
+<h2><span class="n">4</span>그래서, 실제 매출로 어떻게 이어지나 (메커니즘)</h2>
+
+<p>수혜 스토리가 그럴듯해도 <strong>돈으로 연결되는 경로</strong>가 없으면 소용없습니다. Zscaler의 실적 지표에 대입해 봅니다.</p>
+
+<table>
+<thead><tr><th>레버</th><th>AI 에이전트가 미치는 영향</th><th>연결되는 지표</th></tr></thead>
+<tbody>
+<tr><td>과금 단위 확대</td><td>사람 좌석 외에 "에이전트/비인간 신원·에이전트 통신"이라는 새 과금 대상 등장</td><td>ARR, 신규 계약(billings)</td></tr>
+<tr><td>모듈 업셀</td><td>AI Protect·AI Guard·AI Broker·Access Graph를 상위 번들로 추가 판매</td><td>NRR(순매출유지율), 대형 고객당 단가</td></tr>
+<tr><td>대형 딜 확대</td><td>"에이전틱 AI 완전 플랫폼"으로 전사 표준 채택 유도 → 100만$+ ARR 고객 증가</td><td>>$1M ARR 고객 수</td></tr>
+<tr><td>플랫폼 락인</td><td>가시성 지도·레지스트리로 전환비용 상승 → 이탈 방지</td><td>총유지율, 매출총이익률</td></tr>
+</tbody>
+</table>
+
+<h3>현재 재무 체력 (참고 지표)</h3>
+<div class="kpi-row">
+  <div class="kpi"><div class="v">$3.0B+</div><div class="l">FY2025말 ARR (YoY +22%)</div></div>
+  <div class="kpi"><div class="v">$3.53B</div><div class="l">Q3 FY2026 ARR (YoY +25%)</div></div>
+  <div class="kpi"><div class="v">$850.5M</div><div class="l">Q3 FY2026 매출 (YoY +25%)</div></div>
+  <div class="kpi"><div class="v">~24%</div><div class="l">FY2026 ARR 가이던스(YoY)</div></div>
+</div>
+<p class="src">출처: Zscaler 8-K/보도자료 — FY2025 4분기(ARR $3,015M, 매출 $719.2M, 청구액 +32%), Q2 FY2026(매출 $815.8M, ARR $3,359M), Q3 FY2026(매출 $850.5M, ARR $3,525M). FY2026 매출 가이던스 약 $3.31~3.32B.</p>
+
+<div class="box">
+<strong>맥락 주의.</strong> Zscaler는 2026년 5월 Q3 실적 발표 뒤 "신중한(prudent) 가이던스"와 영업조직 개편 이슈로 <strong>하루 약 31% 급락(사상 최악의 하루)</strong>을 겪은 바 있습니다(CNBC). 즉 <strong>AI 수혜 서사와 별개로 단기 실적·밸류에이션 변동성은 큽니다.</strong> 성장률은 여전히 20%대지만, "AI 에이전트 제품이 실제 ARR로 얼마나 빨리 전환되는가"는 아직 <strong>검증 진행 중</strong>인 스토리입니다.
+<div class="src">출처: CNBC "Zscaler tanks 31% for worst day ever on 'prudent' guidance, sales shakeup"(2026-05-27).</div>
+</div>
+
+<h2><span class="n">5</span>경쟁 구도 — 이 자리를 Zscaler만 노리나</h2>
+
+<p>아닙니다. "AI/에이전트 보안"은 SASE·SSE·엔드포인트·CNAPP 진영이 전부 달려드는 격전지입니다. 다만 접근 각도가 다릅니다.</p>
+
+<table>
+<thead><tr><th>회사</th><th>강점 각도</th><th>AI 에이전트 관련 움직임</th><th>Zscaler 대비</th></tr></thead>
+<tbody>
+<tr><td><strong>Zscaler</strong></td><td>순수 제로 트러스트 프록시, 대기업 표준, 대규모 트랜잭션</td><td>AI Broker·Access Graph·Endpoint AI·AI Protect/Guard, Symmetry 인수</td><td><span class="tag t-good">기준점</span></td></tr>
+<tr><td>Palo Alto (Prisma)</td><td>하이브리드·심층 검사, 온프렘 방화벽 일관성</td><td>Prisma AIRS 등 AI 런타임 보안 확장</td><td><span class="tag t-mid">강력 경쟁</span></td></tr>
+<tr><td>Netskope</td><td>클라우드 우선, DLP·CASB 강점</td><td>SSE 기반 GenAI 데이터 보호</td><td><span class="tag t-mid">DLP서 경쟁</span></td></tr>
+<tr><td>Cloudflare</td><td>엣지 네이티브, 낮은 지연·저비용, 300+ PoP</td><td>Firewall for AI, AI Gateway</td><td><span class="tag t-mid">속도·가격</span></td></tr>
+<tr><td>CrowdStrike</td><td>엔드포인트 텔레메트리 최강</td><td>Falcon로 AI/신원 보안 확장, SSE는 초기</td><td><span class="tag t-good">보완적</span></td></tr>
+<tr><td>Cisco</td><td>네트워크·AI Defense(MCP/A2A)</td><td>AWS와 MCP·A2A 보안 협업</td><td><span class="tag t-mid">플랫폼 경쟁</span></td></tr>
+</tbody>
+</table>
+<p class="src">출처: TechnologyMatch/GuptaDeepak SASE·SSE 비교(2026), AWS 블로그(Cisco AI Defense + MCP/A2A), 각사 발표.</p>
+
+<div class="box tip">
+<strong>Zscaler의 차별점 요지:</strong> 이미 "모든 연결이 지나가는 인라인 프록시"를 대규모로 운영한다는 <strong>구조적 위치</strong>. 에이전트 트래픽도 이 인라인 경로에 자연스럽게 얹힌다는 점이 CNAPP(사후 스캔형)이나 순수 엔드포인트 업체와 다릅니다. 반대로 <strong>엔드포인트·저비용/저지연·특정 데이터보안 틈새</strong>에서는 경쟁사가 앞설 수 있어, "AI 보안 전부를 Zscaler가 독식"하는 그림은 아닙니다.
+</div>
+
+<h2><span class="n">6</span>촉매 캘린더 & 지켜볼 지표(KPI)</h2>
+<div class="grid2">
+  <div class="card">
+    <h4>단기 촉매</h4>
+    <ul>
+      <li>분기 실적의 <strong>ARR·NRR·청구액</strong> 추세 (AI 모듈 부착률)</li>
+      <li>Symmetry Systems <strong>통합 진척</strong>과 AI Access Graph GA</li>
+      <li>AI Broker·Endpoint AI Security의 <strong>정식 출시·초기 채택 사례</strong></li>
+      <li>영업조직 개편 후 <strong>대형 딜 회복</strong> 여부</li>
+    </ul>
+  </div>
+  <div class="card">
+    <h4>핵심 KPI 체크리스트</h4>
+    <ul>
+      <li><strong>ARR 성장률</strong> — 20%대 유지/재가속 여부</li>
+      <li><strong>&gt;$1M ARR 고객 수</strong> — 전사 표준 채택 신호</li>
+      <li><strong>NRR</strong> — AI 모듈 업셀이 실제로 단가를 올리는가</li>
+      <li><strong>매출총이익률·FCF</strong> — 성장의 질</li>
+      <li><strong>AI 제품 관련 정성 언급</strong> — 실적 콜에서의 파이프라인 코멘트</li>
+    </ul>
+  </div>
+</div>
+
+<h2><span class="n">7</span>리스크 매트릭스</h2>
+<table class="matrix">
+<thead><tr><th>리스크</th><th>내용</th><th>발생가능성</th><th>영향</th></tr></thead>
+<tbody>
+<tr><td>서사 vs 전환 시차</td><td>AI 제품 발표가 실제 ARR로 오는 데 시간이 걸림. 기대만 선반영</td><td><span class="tag t-mid">중</span></td><td><span class="tag t-bad">높음</span></td></tr>
+<tr><td>밸류에이션 변동성</td><td>고성장주 특성상 가이던스 실망 시 급락(2026.5 -31% 전례)</td><td><span class="tag t-mid">중</span></td><td><span class="tag t-bad">높음</span></td></tr>
+<tr><td>경쟁 심화</td><td>Palo Alto·Cloudflare·Cisco·CrowdStrike 등 전방위 진입, 가격압박</td><td><span class="tag t-bad">높음</span></td><td><span class="tag t-mid">중</span></td></tr>
+<tr><td>표준 미정</td><td>MCP·A2A 등 프로토콜·보안표준이 아직 유동적 → 제품 재설계 위험</td><td><span class="tag t-mid">중</span></td><td><span class="tag t-mid">중</span></td></tr>
+<tr><td>플랫폼 셀프 보안</td><td>모델·클라우드 제공사(OpenAI·Anthropic·MS·AWS)가 자체 에이전트 보안 내재화</td><td><span class="tag t-mid">중</span></td><td><span class="tag t-mid">중</span></td></tr>
+<tr><td>영업 실행</td><td>2026년 영업조직 개편의 잡음, 대형 딜 사이클 지연</td><td><span class="tag t-mid">중</span></td><td><span class="tag t-mid">중</span></td></tr>
+<tr><td>매크로</td><td>기업 IT 예산 축소 시 신규 모듈 도입 지연</td><td><span class="tag t-mid">중</span></td><td><span class="tag t-mid">중</span></td></tr>
+</tbody>
+</table>
+
+<h2><span class="n">8</span>시나리오 (낙관 / 중립 / 비관)</h2>
+<div class="grid2">
+  <div class="card" style="border-left:5px solid var(--good)">
+    <h4 style="color:var(--good)">🟢 낙관</h4>
+    <p>에이전트 도입이 폭발하며 "에이전트 통신·비인간 신원 보안"이 필수재로 자리. Zscaler의 인라인 위치가 사실상 표준이 되어 <strong>새 과금원(AI Broker/Access Graph)</strong>이 ARR을 재가속. NRR 반등, &gt;$1M 고객 급증. 플랫폼 락인 강화.</p>
+  </div>
+  <div class="card" style="border-left:5px solid var(--mid)">
+    <h4 style="color:var(--mid)">🟡 중립</h4>
+    <p>AI 보안은 주로 <strong>기존 고객 업셀(AI Protect)</strong> 형태로 완만히 기여. 20%대 성장 유지하되 폭발적 재가속은 제한. 경쟁으로 점유는 나누고 밸류에이션은 실적 따라 등락.</p>
+  </div>
+  <div class="card" style="border-left:5px solid var(--bad)">
+    <h4 style="color:var(--bad)">🔴 비관</h4>
+    <p>에이전트 보안 수요가 기대만큼 빨리 안 오거나, 모델·클라우드 제공사가 보안을 내재화해 <strong>서드파티 보안층 수요 잠식</strong>. 가격 경쟁·영업 실행 잡음이 겹쳐 성장 둔화, 멀티플 축소.</p>
+  </div>
+</div>
+
+<h2><span class="n">9</span>타임라인 — 제품·M&A로 본 AI 전환</h2>
+<div class="timeline">
+  <div class="ev"><div class="d">2024.03</div>Avalor 인수(약 $350M) — 보안 데이터 패브릭·AI 기반 분석 확보.</div>
+  <div class="ev"><div class="d">2024.04</div>Airgap Networks 인수 — 에이전트리스 세분화, SASE/제로 트러스트 세그멘테이션 강화.</div>
+  <div class="ev"><div class="d">2024.11</div>(업계) MCP 프로토콜 등장 — 에이전트–도구 표준화 시작.</div>
+  <div class="ev"><div class="d">2025.04</div>(업계) A2A 프로토콜 등장 — 에이전트 간 직접 통신.</div>
+  <div class="ev"><div class="d">2026.01</div>AI Protect 출시 — 프롬프트 방화벽·DLP·GenAI 앱 통제·AI 자산관리.</div>
+  <div class="ev"><div class="d">2026.05</div>Symmetry Systems 인수 — 데이터 자산 가시성·AI 에이전트 데이터 거버넌스.</div>
+  <div class="ev"><div class="d">2026.06</div>Zenith Live 2026 — AI Broker·AI Access Graph·Endpoint AI Security 공개, "에이전틱 AI 완전 플랫폼" 표방.</div>
+</div>
+<p class="src">출처: SDxCentral·SC Media·SiliconANGLE·Zscaler press·GlobeNewswire, arXiv(MCP/A2A 프로토콜 서베이).</p>
+
+<h2><span class="n">10</span>자주 묻는 질문 (FAQ)</h2>
+<details class="faq"><summary>Q. Zscaler는 AI 회사인가요?</summary><p>정확히는 <strong>클라우드 보안(제로 트러스트) 회사</strong>입니다. AI를 (1) 자사 보안 탐지에 활용하고, (2) "AI/에이전트 자체를 보호하는 제품"을 파는 두 방향으로 AI에 노출돼 있습니다. 이 리포트는 (2)에 초점을 둡니다.</p></details>
+<details class="faq"><summary>Q. "AI 에이전트가 늘면 Zscaler가 무조건 돈 번다"가 맞나요?</summary><p>구조적으로 <strong>유리한 위치</strong>인 건 맞지만 자동은 아닙니다. 발표된 제품이 실제 <strong>ARR·NRR 상승으로 전환</strong>되어야 하고, 경쟁·표준·매크로 변수가 얼마든지 결과를 바꿀 수 있습니다. "가능성"과 "확정"을 구분해야 합니다.</p></details>
+<details class="faq"><summary>Q. 매출 인식은 언제부터 눈에 보이나요?</summary><p>AI Protect(2026.1)는 이미 판매 중이라 기존 고객 업셀로 점진 반영됩니다. AI Broker·AI Access Graph 등 2026.6 발표 제품은 <strong>정식 출시·통합 이후</strong>부터 유의미해집니다. 분기 콜의 파이프라인·부착률 코멘트를 지켜보는 게 실무적입니다.</p></details>
+<details class="faq"><summary>Q. MCP·A2A가 뭔가요?</summary><p><strong>MCP</strong>는 LLM이 외부 도구를 호출하는 클라이언트–서버 표준(JSON-RPC 기반), <strong>A2A</strong>는 에이전트끼리 직접 통신하는 표준입니다. 둘 다 신원·인증 검증이 취약해 <strong>새 공격면</strong>을 만들고, 그래서 이걸 검문하는 AI Broker 같은 제품 수요가 생깁니다.</p></details>
+<details class="faq"><summary>Q. 가장 큰 리스크 하나만 꼽으면?</summary><p><strong>"발표–전환 시차 + 밸류에이션 변동성"</strong>입니다. 스토리는 좋아도 성장률이 시장 기대에 못 미치면 급락합니다(2026.5 -31% 전례). 성장주의 숙명적 변동성을 감안해야 합니다.</p></details>
+
+<h2><span class="n">11</span>용어 사전</h2>
+<div class="box">
+<p><span class="pill">Zero Trust</span> "기본적으로 아무도 안 믿고 매 요청을 검증"하는 보안 모델.</p>
+<p><span class="pill">Zero Trust Exchange</span> Zscaler의 클라우드 보안 프록시 플랫폼(모든 연결의 검문소).</p>
+<p><span class="pill">ZIA / ZPA / ZDX</span> 인터넷 접속 보안 / 사내 앱 접속(ZTNA) / 디지털 경험 모니터링.</p>
+<p><span class="pill">ARR</span> 연간 반복 매출. 구독 사업의 핵심 규모 지표.</p>
+<p><span class="pill">NRR</span> 순매출유지율. 기존 고객이 이탈·업셀 순효과로 매출을 얼마나 키우는지.</p>
+<p><span class="pill">NHI</span> 비인간 신원(에이전트·서비스 계정 등). 에이전트 시대에 폭증.</p>
+<p><span class="pill">MCP / A2A</span> 에이전트–도구 / 에이전트–에이전트 통신 표준.</p>
+<p><span class="pill">DLP</span> 데이터 유출 방지. 프롬프트로 새는 민감정보 차단 등.</p>
+<p><span class="pill">Prompt Injection</span> 악의적 입력으로 AI를 조종하는 공격. AI Guard 탐지 대상.</p>
+<p><span class="pill">SASE / SSE</span> 네트워크+보안을 클라우드로 통합 제공하는 프레임워크(경쟁 카테고리).</p>
+</div>
+
+<h2><span class="n">12</span>한 장 요약</h2>
+<div class="box accent">
+<ul>
+  <li><strong>수혜 논리:</strong> Zscaler는 "모든 연결의 인라인 검문소"를 이미 대규모로 운영 → AI 에이전트라는 새 신원·새 트래픽이 이 검문소를 지나면서 <strong>과금 대상이 넓어짐</strong>.</li>
+  <li><strong>돈 버는 5영역:</strong> ①AI Broker(에이전트 통신 검문) ②AI Access Graph(가시성 지도, Symmetry 인수) ③Endpoint AI Security(단말 속 AI) ④AI Protect/AI Guard(프롬프트·데이터 유출 차단, 업셀) ⑤플랫폼 사용량 확대.</li>
+  <li><strong>매출 메커니즘:</strong> 새 과금원 신설 + 기존 고객 업셀(NRR) + 대형 딜(&gt;$1M ARR) + 락인.</li>
+  <li><strong>현주소:</strong> ARR 20%대 성장, FY2025말 ARR 30억$ 돌파, 그러나 2026.5 가이던스 실망으로 급락한 <strong>변동성 큰 성장주</strong>.</li>
+  <li><strong>냉정하게:</strong> 구조적 유리함은 분명하나 "발표→ARR 전환"은 검증 중이며, 경쟁·표준·모델사 내재화가 결과를 바꿀 수 있음. <strong>가능성이지 확정이 아님.</strong></li>
+</ul>
+</div>
+
+<div class="warn">
+<b>다시 강조.</b> 이 리포트는 매수·매도 추천이 아니라 <b>사실 정리 자료</b>입니다. 수치는 발표 시점 기준이며 최신값·원문 공시를 반드시 직접 확인하세요. <b>투자 판단과 책임은 본인에게 있습니다.</b>
+</div>
+
+<h2><span class="n">13</span>출처</h2>
+<ul class="src">
+  <li>Zscaler, "How Zscaler Secures the Agentic AI Era with Zero Trust" (product-insights blog)</li>
+  <li>Zscaler press / IR, "Zscaler Unveils New Product Innovations to Secure Agentic AI" (GlobeNewswire, 2026-06-09)</li>
+  <li>Network World, "Zscaler launches zero trust platform for agentic AI"</li>
+  <li>StockTitan, "Zscaler targets 'millions of autonomous agents'…"</li>
+  <li>Futurum, "Zscaler Bets on Agentic AI Security at Zenith Live 2026"</li>
+  <li>SiliconANGLE, "Zscaler acquires Symmetry Systems to extend its AI agent security capabilities" (2026-05-21) / "Securing the AI workforce" (2026-06-10)</li>
+  <li>SC Media, "Zscaler acquires Symmetry Systems to enhance AI security"</li>
+  <li>Zscaler, AI Guard 솔루션 브리프 / "Gen AI Security at a Glance" 데이터시트 / AI Access·AI Security 제품 페이지</li>
+  <li>Zscaler 8-K 및 실적 보도자료 — FY2025 Q4, FY2026 Q2·Q3 (SEC EDGAR, ir.zscaler.com)</li>
+  <li>CNBC, "Zscaler tanks 31% for worst day ever on 'prudent' guidance, sales shakeup" (2026-05-27)</li>
+  <li>MarketsandMarkets(Agentic AI Security, $13.52B by 2032), Mordor Intelligence, Grand View Research — 시장 규모/CAGR</li>
+  <li>CIO, "The 4 pillars of the Zscaler Zero Trust Exchange"; Zscaler 10-K(FY2021)</li>
+  <li>arXiv, "A Survey of Agent Interoperability Protocols (MCP, ACP, A2A, ANP)"; AWS 블로그(Cisco AI Defense + MCP/A2A)</li>
+  <li>TechnologyMatch / GuptaDeepak — SASE·SSE·ZTNA 경쟁 비교(2026)</li>
+</ul>
+
+<p class="footnote">본 문서는 개인 투자 학습용 정리 자료입니다. 특정 종목 매매를 권유하지 않으며, 모든 데이터는 작성일(2026-07-18) 전후 공개 정보를 기반으로 하되 정확성·완전성을 보장하지 않습니다. 최종 판단과 책임은 투자자 본인에게 있습니다. · 개인 리서치 라이브러리</p>
+
+</div>
+</body>
+</html>

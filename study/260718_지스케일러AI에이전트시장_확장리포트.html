@@ -1,0 +1,610 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI 에이전트 시장 스택과 지스케일러의 자리 — 5개 수익 영역을 시장 지도 위에 올려보기</title>
+<style>
+  :root{
+    --accent:#4f46e5;      /* 인디고 — 이번 확장편 전용 액센트 */
+    --accent2:#7c3aed;
+    --ink:#1f2430;
+    --muted:#5c6472;
+    --line:#e6e8ef;
+    --bg:#ffffff;
+    --soft:#f6f7fb;
+    --warnbg:#fff7ed;
+    --warnln:#fb923c;
+    --okbg:#ecfdf5;
+    --okln:#10b981;
+    --badbg:#fef2f2;
+    --badln:#ef4444;
+  }
+  *{box-sizing:border-box;}
+  body{
+    font-family:"Segoe UI","Malgun Gothic","Apple SD Gothic Neo",system-ui,sans-serif;
+    color:var(--ink); background:var(--bg); margin:0;
+    line-height:1.75; font-size:16.5px; letter-spacing:-0.1px;
+  }
+  .wrap{max-width:920px; margin:0 auto; padding:40px 28px 90px;}
+  h1{font-size:30px; line-height:1.3; margin:8px 0 6px; letter-spacing:-0.6px;}
+  h2{font-size:23px; margin:52px 0 12px; padding-top:14px; border-top:3px solid var(--accent); letter-spacing:-0.4px;}
+  h3{font-size:19px; margin:32px 0 8px; color:#2b3242;}
+  h4{font-size:16.5px; margin:20px 0 6px; color:var(--accent);}
+  p{margin:10px 0;}
+  a{color:var(--accent); text-decoration:none;}
+  a:hover{text-decoration:underline;}
+  .sub{color:var(--muted); font-size:15px;}
+  .lead{font-size:17.5px; color:#333a49;}
+  .kicker{display:inline-block; font-size:13px; font-weight:700; letter-spacing:1.5px;
+    color:var(--accent); background:#eef0fe; padding:5px 12px; border-radius:999px;}
+  .warn{background:var(--warnbg); border:1px solid var(--warnln); border-left:6px solid var(--warnln);
+    border-radius:10px; padding:16px 18px; margin:22px 0; font-size:15px;}
+  .note{background:var(--soft); border:1px solid var(--line); border-radius:10px; padding:16px 18px; margin:18px 0;}
+  .callout{background:#eef0fe; border:1px solid #c9cdfa; border-left:6px solid var(--accent);
+    border-radius:10px; padding:16px 18px; margin:20px 0;}
+  .grid2{display:grid; grid-template-columns:1fr 1fr; gap:16px;}
+  .card{border:1px solid var(--line); border-radius:12px; padding:16px 18px; background:#fff;}
+  .card h4{margin-top:2px;}
+  table{width:100%; border-collapse:collapse; margin:18px 0; font-size:14.5px;}
+  th,td{border:1px solid var(--line); padding:9px 11px; text-align:left; vertical-align:top;}
+  th{background:var(--soft); font-weight:700;}
+  td.c,th.c{text-align:center;}
+  .tag{display:inline-block; font-size:12px; font-weight:700; padding:2px 8px; border-radius:6px;}
+  .t-new{background:#eef0fe; color:var(--accent);}
+  .t-up{background:#ecfdf5; color:#059669;}
+  .t-vol{background:#fff7ed; color:#c2410c;}
+  .good{color:#059669; font-weight:700;}
+  .bad{color:#dc2626; font-weight:700;}
+  .mid{color:#b45309; font-weight:700;}
+  figure{margin:24px 0; text-align:center;}
+  figcaption{font-size:13px; color:var(--muted); margin-top:8px;}
+  .svgbox{border:1px solid var(--line); border-radius:12px; padding:14px; background:#fff;}
+  ul,ol{margin:10px 0 10px 4px; padding-left:22px;}
+  li{margin:5px 0;}
+  .kpi{display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin:20px 0;}
+  .kpi .box{border:1px solid var(--line); border-radius:12px; padding:14px; text-align:center; background:var(--soft);}
+  .kpi .num{font-size:24px; font-weight:800; color:var(--accent); letter-spacing:-0.5px;}
+  .kpi .lab{font-size:12.5px; color:var(--muted); margin-top:3px;}
+  .toc{background:var(--soft); border:1px solid var(--line); border-radius:12px; padding:18px 22px; margin:26px 0;}
+  .toc ol{columns:2; column-gap:34px;}
+  .src{font-size:13px; color:var(--muted); word-break:break-all;}
+  .pill{display:inline-block; background:var(--soft); border:1px solid var(--line);
+    border-radius:999px; padding:3px 11px; font-size:12.5px; margin:2px 3px;}
+  hr{border:none; border-top:1px solid var(--line); margin:34px 0;}
+  .foot{color:var(--muted); font-size:13px; margin-top:40px;}
+  @media (max-width:680px){
+    .grid2,.kpi{grid-template-columns:1fr;} .toc ol{columns:1;} h1{font-size:25px;}
+  }
+  @media print{
+    body{font-size:11.5pt;} .wrap{max-width:100%; padding:0;}
+    h2{break-after:avoid; page-break-after:avoid;} figure,table,.card{break-inside:avoid;}
+    a{color:#000; text-decoration:none;} .warn,.callout,.note{break-inside:avoid;}
+    h2,h3{page-break-before:auto;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <span class="kicker">ZSCALER · 확장편 (시장 관점)</span>
+  <h1>AI 에이전트 시장 스택과 지스케일러의 자리<br>— 5개 수익 영역을 '시장 지도' 위에 올려보기</h1>
+  <p class="sub">작성일 2026-07-18 · 개인 리서치 노트 · 지스케일러(Zscaler, NASDAQ: ZS) 시리즈 5편</p>
+
+  <div class="warn">
+    <b>⚠️ 투자 권유가 아닙니다.</b> 이 문서는 공개 정보를 정리·해석한 <b>개인 학습 노트</b>입니다.
+    매수·매도 추천이 아니며, 뒤에 나오는 '시나리오' 수치는 미래 예측이 아니라
+    <b>가정을 바꿔 넣어 본 사고실험</b>일 뿐입니다. 모든 투자 판단과 그 결과에 대한 책임은 전적으로 본인에게 있습니다.
+  </div>
+
+  <div class="note">
+    <b>📚 이 리포트의 위치 — 지스케일러 시리즈 연속성</b><br>
+    이번 글은 <b>회사·제품 기초를 다시 설명하지 않습니다.</b> 제로트러스트 프록시 구조(ZIA/ZPA/ZDX),
+    4대 제품 기둥, 창업자·비즈니스 모델 기본은 아래 앞선 리포트에서 이미 다뤘습니다. 여기서는
+    <b>① 다가올 AI 에이전트 시장을 계층(스택)으로 분해하고 ② 지스케일러의 5개 수익 영역이 그 지도의 어디에 얹히는지,
+    어디가 '유리한 땅'이고 어디가 '남의 땅'인지 ③ 에이전트가 폭증하면 과금이 어떻게 반응하는지</b>에만 집중합니다.
+    <div style="margin-top:10px;">
+      • <a href="https://tryingpig.github.io/study/260718_지스케일러_1_입문가이드.html">지스케일러 입문 가이드</a><br>
+      • <a href="https://tryingpig.github.io/study/260718_지스케일러_2_투자안내서.html">지스케일러 투자 안내서</a><br>
+      • <a href="https://tryingpig.github.io/study/260718_지스케일러_3_밸류체인.html">지스케일러 밸류체인</a><br>
+      • <a href="https://tryingpig.github.io/study/260718_지스케일러AI에이전트_수혜리포트.html">지스케일러 AI 에이전트 수혜 리포트</a> ← <b>'5개 영역'의 원본. 이번 글은 그 확장편.</b>
+    </div>
+  </div>
+
+  <!-- ============ TL;DR ============ -->
+  <div class="callout">
+    <b>🧭 한 장 요약</b>
+    <ol style="margin-bottom:0;">
+      <li><b>시장의 근본 변화:</b> 통제 대상이 '사람(예측 가능한 소수)'에서 '에이전트(폭증하는 다수·기계 속도)'로 바뀐다.
+        가트너는 2028년이면 AI 에이전트가 특정 업무 영역에서 사람을 <b>10배</b> 규모로 넘어설 것으로 봤다.</li>
+      <li><b>지스케일러의 포지션:</b> "에이전트도 결국 트래픽"이라는 한 문장. 사람 트래픽의 검문소였던 자리를
+        <b>에이전트↔앱·데이터·에이전트 트래픽의 검문소</b>로 확장한다.</li>
+      <li><b>5개 영역 = 새 SKU 2개 + 업셀 2개 + 볼륨 레버 1개.</b> ①AI Broker·②AI Access Graph는 신규 과금원,
+        ③Endpoint AI·④AI Guard는 기존 자산 업셀, ⑤플랫폼은 볼륨.</li>
+      <li><b>다음 격전지는 NHI(비인간 신원).</b> 여기서 Okta·마이크로소프트(Entra Agent ID)·CrowdStrike·Palo Alto와
+        '누가 에이전트의 신원·권한·통신을 통제하느냐'를 두고 지형이 겹친다.</li>
+      <li><b>과금 관점:</b> 신규 SKU는 '위쪽 성장(TAM 확장)', 업셀은 '옆으로 성장(ARPU)', 볼륨은
+        '아래 받침(구조적 소비 증가)'. 에이전트가 10배가 돼도 <b>세 가지가 같은 배율로 늘지는 않는다</b>는 게 핵심.</li>
+    </ol>
+  </div>
+
+  <div class="toc">
+    <b>목차</b>
+    <ol>
+      <li>Part A — 다가올 AI 에이전트 시장 지도</li>
+      <li>시장 규모·성장률(여러 추정치)</li>
+      <li>에이전트 스택 6계층</li>
+      <li>Part A2 — 5개 영역을 스택 위에 매핑</li>
+      <li>유리한 땅 vs 남의 땅</li>
+      <li>Part B — NHI가 다음 격전지</li>
+      <li>AI Broker·Agent Registry 심화(MCP/A2A)</li>
+      <li>AI Access Graph(Symmetry) 심화</li>
+      <li>경쟁 지형·비교표</li>
+      <li>Part C — 과금 구조 시나리오</li>
+      <li>에이전트 10배 사고실험</li>
+      <li>재무 체력(Q3 FY26)</li>
+      <li>리스크 매트릭스 · 촉매 캘린더</li>
+      <li>KPI 대시보드 · FAQ · 용어사전 · 출처</li>
+    </ol>
+  </div>
+
+  <!-- ============ PART A ============ -->
+  <h2>Part A — 다가올 AI 에이전트 시장 지도</h2>
+  <p class="lead">
+    "AI 에이전트 수혜주"를 볼 때 흔한 실수는 <b>회사 하나만 확대해서 보는 것</b>이다. 그러면 "이 회사가 이런 제품을 냈다"까지는
+    알아도, 그 제품이 <b>전체 시장의 어느 층에 얹히는 물건인지, 그 층이 얼마나 크고 누가 같이 노리는지</b>는 안 보인다.
+    그래서 이번에는 순서를 뒤집는다. 먼저 시장을 층층이 쌓아 지도를 그리고, 그 위에 지스케일러 5개 영역을 핀으로 꽂는다.
+  </p>
+
+  <h3>왜 지금 '에이전트'가 시장의 변수인가</h3>
+  <p>
+    지난 세대 보안·인프라는 전제가 하나 있었다. <b>"통제 대상은 사람이고, 사람은 셀 수 있고, 행동이 대체로 예측 가능하다."</b>
+    로그인은 하루 몇 번, 접근 패턴은 근무시간에 몰리고, 신원(계정)은 사람 수만큼 존재한다. AI 에이전트는 이 전제를 전부 깬다.
+  </p>
+  <ul>
+    <li><b>수가 폭증한다.</b> 에이전트는 하위 에이전트(sub-agent)를 낳고, 작업 단위로 임시 신원을 만들고, 끝나면 사라진다.
+      사람은 1명당 계정 몇 개지만, 사람 1명이 굴리는 에이전트는 수십·수백 개가 될 수 있다.</li>
+    <li><b>기계 속도로 움직인다.</b> 사람이 하루에 하는 접근을 에이전트는 초 단위로 한다. '이상 징후'의 기준선이 완전히 달라진다.</li>
+    <li><b>비인간 신원(NHI)이 주류가 된다.</b> API 키, 서비스 계정, 토큰, 에이전트 ID… 관리 대상 신원의 다수가 사람이 아니게 된다.</li>
+    <li><b>새 통신 규약을 탄다.</b> 에이전트끼리, 또 에이전트와 도구가 주고받는 <b>MCP(Model Context Protocol)</b>,
+      <b>A2A(Agent-to-Agent)</b>, WebSocket 스트리밍 같은 프로토콜은 전통 방화벽이 내용을 뜯어보기 어렵다.</li>
+  </ul>
+  <p>
+    가트너는 2028년경 AI 에이전트가 일부 업무(예: 영업)에서 <b>사람 대비 약 10배</b> 규모로 늘어난다고 봤고, 동시에 이 폭증을
+    관리·감시하는 '가디언 에이전트(guardian agent)' 시장이 2030년까지 전체 에이전틱 AI 시장의 <b>10~15%</b>를 차지할 것으로 전망했다.
+    <b>"에이전트를 늘리는 시장"</b>과 <b>"에이전트를 통제하는 시장"</b>이 함께 커진다는 뜻이고, 지스케일러는 명백히 후자에 서 있다.
+    <span class="src">(출처: Gartner Newsroom, 2025-06-11 / 2026-04-07)</span>
+  </p>
+
+  <h3>시장 규모 — 추정치는 제각각, 방향은 하나</h3>
+  <p>
+    'AI 에이전트 시장' 규모 추정은 리서치사마다 정의가 달라 크게 벌어진다. 숫자 하나를 믿기보다 <b>범위와 기울기</b>를 보는 게 낫다.
+  </p>
+  <table>
+    <thead><tr><th>리서치사(정의)</th><th class="c">기준연도 규모</th><th class="c">목표연도 규모</th><th class="c">CAGR</th></tr></thead>
+    <tbody>
+      <tr><td>MarketsandMarkets (AI Agents)</td><td class="c">78.4억$ (2025)</td><td class="c">526억$ (2030)</td><td class="c">~46%</td></tr>
+      <tr><td>Grand View Research (AI Agents)</td><td class="c">109억$ (2026)</td><td class="c">1,829억$ (2033)</td><td class="c">~50%</td></tr>
+      <tr><td>Mark&amp;Tel (Agentic AI)</td><td class="c">67.3억$ (2024)</td><td class="c">332억$ (2030)</td><td class="c">~31%</td></tr>
+    </tbody>
+  </table>
+  <p class="sub">
+    ※ 정의가 '에이전트 소프트웨어 전체'냐 '에이전틱 AI 플랫폼'이냐에 따라 규모가 갈린다. 지스케일러가 노리는 것은 이 시장 <b>자체</b>가
+    아니라 <b>그 위에 얹히는 '보안·거버넌스' 층</b>이라는 점을 기억하자. TAM은 이 표들보다 작지만, 성장 기울기는 함께 간다.
+    <span class="src">(출처: MarketsandMarkets, Grand View Research, Mark&amp;Tel Advisors)</span>
+  </p>
+
+  <h3>에이전트 스택 6계층 — 시장을 세로로 자르면</h3>
+  <p>다가올 에이전트 시스템을 아래→위로 쌓으면 대략 여섯 층이다. 각 층에는 '무엇을 하나'와 '어떤 보안 공백이 생기나'가 붙는다.</p>
+
+  <figure>
+    <div class="svgbox">
+      <svg viewBox="0 0 860 430" width="100%" role="img" aria-label="AI 에이전트 스택 6계층 도식">
+        <defs>
+          <linearGradient id="g1" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0" stop-color="#eef0fe"/><stop offset="1" stop-color="#f3e8ff"/>
+          </linearGradient>
+        </defs>
+        <text x="16" y="26" font-size="15" font-weight="700" fill="#1f2430">AI 에이전트 스택 (아래=기반, 위=사용자 접점)</text>
+        <!-- layers -->
+        <g font-family="Segoe UI, sans-serif">
+          <rect x="16" y="42" width="620" height="54" rx="9" fill="url(#g1)" stroke="#c9cdfa"/>
+          <text x="30" y="66" font-size="14.5" font-weight="700">⑥ 실행·툴콜 (Action / Tool-calling)</text>
+          <text x="30" y="86" font-size="12.5" fill="#5c6472">에이전트가 실제로 앱·API·코드를 '행동'으로 실행 — 부작용이 여기서 발생</text>
+
+          <rect x="16" y="104" width="620" height="54" rx="9" fill="url(#g1)" stroke="#c9cdfa"/>
+          <text x="30" y="128" font-size="14.5" font-weight="700">⑤ 데이터 접근 (Data Access)</text>
+          <text x="30" y="148" font-size="12.5" fill="#5c6472">SaaS·DB·문서·클라우드 스토리지 — 어떤 에이전트가 어떤 데이터를 만지나</text>
+
+          <rect x="16" y="166" width="620" height="54" rx="9" fill="url(#g1)" stroke="#c9cdfa"/>
+          <text x="30" y="190" font-size="14.5" font-weight="700">④ 통신·네트워크 (Comms) — MCP · A2A · WebSocket</text>
+          <text x="30" y="210" font-size="12.5" fill="#5c6472">에이전트↔도구, 에이전트↔에이전트 트래픽 — 전통 방화벽이 내용을 못 봄</text>
+
+          <rect x="16" y="228" width="620" height="54" rx="9" fill="#e0e7ff" stroke="#a5b4fc"/>
+          <text x="30" y="252" font-size="14.5" font-weight="700">③ 신원·인증 (Identity / NHI) ★ 다음 격전지</text>
+          <text x="30" y="272" font-size="12.5" fill="#5c6472">비인간 신원 발급·권한·수명주기 — "이 에이전트는 누구고 뭘 해도 되나"</text>
+
+          <rect x="16" y="290" width="620" height="54" rx="9" fill="url(#g1)" stroke="#c9cdfa"/>
+          <text x="30" y="314" font-size="14.5" font-weight="700">② 오케스트레이션 / 프레임워크</text>
+          <text x="30" y="334" font-size="12.5" fill="#5c6472">LangChain·CrewAI·플랫폼 SDK — 에이전트를 엮고 흐름을 짜는 층</text>
+
+          <rect x="16" y="352" width="620" height="54" rx="9" fill="url(#g1)" stroke="#c9cdfa"/>
+          <text x="30" y="376" font-size="14.5" font-weight="700">① 모델 (Foundation Model)</text>
+          <text x="30" y="396" font-size="12.5" fill="#5c6472">추론 엔진 — OpenAI·Anthropic·구글 등, '남의 땅'</text>
+
+          <!-- Zscaler zone bracket -->
+          <rect x="648" y="104" width="196" height="240" rx="10" fill="none" stroke="#4f46e5" stroke-width="2" stroke-dasharray="6 5"/>
+          <text x="746" y="96" font-size="13.5" font-weight="800" fill="#4f46e5" text-anchor="middle">지스케일러</text>
+          <text x="746" y="128" font-size="12" fill="#4f46e5" text-anchor="middle">주력 사정권</text>
+          <text x="746" y="150" font-size="11.5" fill="#5c6472" text-anchor="middle">③④⑤ = 홈그라운드</text>
+          <text x="746" y="170" font-size="11.5" fill="#5c6472" text-anchor="middle">⑥ = 정책으로 통제</text>
+          <text x="746" y="200" font-size="11.5" fill="#9ca3af" text-anchor="middle">①② = 남의 땅</text>
+          <text x="746" y="220" font-size="11.5" fill="#9ca3af" text-anchor="middle">(모델·프레임워크</text>
+          <text x="746" y="236" font-size="11.5" fill="#9ca3af" text-anchor="middle">직접 안 함)</text>
+        </g>
+      </svg>
+    </div>
+    <figcaption>그림 1. 에이전트 스택 6계층과 지스케일러의 사정권 — ③신원·④통신·⑤데이터가 홈그라운드. (개인 정리 도식)</figcaption>
+  </figure>
+
+  <p>
+    핵심 통찰: <b>지스케일러는 ①모델·②프레임워크를 만들지 않는다.</b> 그건 남의 땅이고, 그래서 오히려 <b>중립적 검문소</b>가 될 수 있다.
+    어떤 모델을 쓰든, 어떤 프레임워크로 짜든, 에이전트가 <b>바깥과 통신하고(④) 데이터를 만지고(⑤) 행동하려면(⑥) 신원(③)이 필요하다.</b>
+    이 세 층이 지스케일러가 이미 사람 트래픽으로 장악해 둔 자리와 정확히 겹친다.
+  </p>
+
+  <!-- ============ PART A2 ============ -->
+  <h2>Part A2 — 5개 영역을 스택 위에 매핑</h2>
+  <p>이제 지도 위에 핀을 꽂는다. 원본(수혜 리포트)의 5개 영역을, 방금 그린 6계층 어디에 얹히는지로 다시 배치했다.</p>
+
+  <table>
+    <thead>
+      <tr><th>지스케일러 영역</th><th>얹히는 계층</th><th>과금 성격</th><th class="c">땅의 성격</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><b>① AI Broker</b><br><span class="sub">에이전트 통신 검문소 · Agent Registry</span></td>
+        <td>④ 통신 (+③ 신원)</td>
+        <td><span class="tag t-new">신규 SKU</span></td>
+        <td class="c good">홈그라운드</td>
+      </tr>
+      <tr>
+        <td><b>② AI Access Graph</b><br><span class="sub">에이전트·데이터 관계 지도 (Symmetry 기반)</span></td>
+        <td>⑤ 데이터 (+③ 신원)</td>
+        <td><span class="tag t-new">신규 SKU</span></td>
+        <td class="c good">홈그라운드</td>
+      </tr>
+      <tr>
+        <td><b>③ Endpoint AI Security</b><br><span class="sub">단말 속 AI/코파일럿·로컬 에이전트</span></td>
+        <td>⑥ 실행 (단말 접점)</td>
+        <td><span class="tag t-up">기존 업셀</span></td>
+        <td class="c mid">확장 영역</td>
+      </tr>
+      <tr>
+        <td><b>④ AI Protect / AI Guard</b><br><span class="sub">프롬프트 방화벽·가드레일</span></td>
+        <td>④ 통신 / ⑥ 실행 (인라인)</td>
+        <td><span class="tag t-up">기존 업셀</span></td>
+        <td class="c good">홈그라운드</td>
+      </tr>
+      <tr>
+        <td><b>⑤ 플랫폼 자체 확장</b><br><span class="sub">"에이전트도 결국 트래픽"</span></td>
+        <td>전 계층에 걸침(볼륨)</td>
+        <td><span class="tag t-vol">볼륨 레버</span></td>
+        <td class="c good">구조적</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout">
+    <b>💡 이 표에서 진짜 읽어야 할 것</b><br>
+    5개가 <b>서로 다른 성장 엔진</b>이라는 점이다. 흔히 "5개 다 AI 수혜"라고 뭉뚱그리지만, 성장 방식이 완전히 다르다.
+    <ul style="margin-bottom:0;">
+      <li>①② (신규 SKU) → <b>TAM을 위로 넓힌다.</b> 새 계약 항목이 생기는 것. 침투율 0%에서 시작.</li>
+      <li>③④ (업셀) → <b>기존 고객 ARPU를 옆으로 넓힌다.</b> 이미 인라인에 있는 트래픽에 검사를 얹으니 마진이 좋고 확산이 빠름.</li>
+      <li>⑤ (볼륨) → <b>아래에서 받친다.</b> 별도 SKU가 아니라, 에이전트가 늘수록 검사량·좌석·소비가 구조적으로 커지는 것.</li>
+    </ul>
+  </div>
+
+  <h3>유리한 땅 vs 남의 땅 — 냉정하게</h3>
+  <div class="grid2">
+    <div class="card">
+      <h4>🟢 유리한 땅 (해자가 겹침)</h4>
+      <ul>
+        <li><b>인라인 위치.</b> 이미 트래픽 경로 위에 있어, 에이전트 트래픽도 '지나가는 길목'을 그대로 물려받는다.</li>
+        <li><b>중립성.</b> 특정 모델·클라우드 편이 아니라, 멀티모델·멀티클라우드 사이의 검문소가 될 수 있다.</li>
+        <li><b>기존 고객 기반.</b> 대기업 CISO에게 "새 벤더 도입" 대신 "쓰던 플랫폼에 스위치 켜기"로 팔 수 있다.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4>🟠 남의 땅·경합 지대 (냉정하게)</h4>
+      <ul>
+        <li><b>①모델·②프레임워크는 안 함.</b> 여기 가치가 몰리면 지스케일러 몫은 상대적으로 얇아질 수 있다.</li>
+        <li><b>③신원(NHI)은 경합.</b> Okta·마이크로소프트·CrowdStrike가 정면으로 겹친다(Part B).</li>
+        <li><b>단말(③)은 원래 남의 강점.</b> Endpoint는 CrowdStrike·마이크로소프트의 홈. 지스케일러는 'AI 위협'이라는 좁은 각으로 진입.</li>
+      </ul>
+    </div>
+  </div>
+
+  <figure>
+    <div class="svgbox">
+      <svg viewBox="0 0 860 300" width="100%" role="img" aria-label="5개 영역의 성장 엔진 유형">
+        <text x="16" y="26" font-size="15" font-weight="700">5개 영역 = 세 가지 다른 성장 엔진</text>
+        <g font-family="Segoe UI, sans-serif">
+          <!-- new SKU -->
+          <rect x="16" y="48" width="270" height="220" rx="12" fill="#eef0fe" stroke="#c9cdfa"/>
+          <text x="151" y="78" font-size="14" font-weight="800" fill="#4f46e5" text-anchor="middle">신규 SKU (TAM ↑)</text>
+          <text x="151" y="104" font-size="12.5" fill="#5c6472" text-anchor="middle">침투율 0%→ 새 계약 항목</text>
+          <rect x="46" y="130" width="210" height="34" rx="7" fill="#fff" stroke="#a5b4fc"/>
+          <text x="151" y="152" font-size="13" font-weight="700" text-anchor="middle">① AI Broker</text>
+          <rect x="46" y="176" width="210" height="34" rx="7" fill="#fff" stroke="#a5b4fc"/>
+          <text x="151" y="198" font-size="13" font-weight="700" text-anchor="middle">② AI Access Graph</text>
+          <text x="151" y="244" font-size="11.5" fill="#7c3aed" text-anchor="middle">▲ 상승 잠재력 큼 · 침투 초기</text>
+
+          <!-- upsell -->
+          <rect x="298" y="48" width="270" height="220" rx="12" fill="#ecfdf5" stroke="#a7f3d0"/>
+          <text x="433" y="78" font-size="14" font-weight="800" fill="#059669" text-anchor="middle">업셀 (ARPU ↑)</text>
+          <text x="433" y="104" font-size="12.5" fill="#5c6472" text-anchor="middle">기존 인라인에 검사 얹기</text>
+          <rect x="328" y="130" width="210" height="34" rx="7" fill="#fff" stroke="#6ee7b7"/>
+          <text x="433" y="152" font-size="13" font-weight="700" text-anchor="middle">③ Endpoint AI</text>
+          <rect x="328" y="176" width="210" height="34" rx="7" fill="#fff" stroke="#6ee7b7"/>
+          <text x="433" y="198" font-size="13" font-weight="700" text-anchor="middle">④ AI Guard</text>
+          <text x="433" y="244" font-size="11.5" fill="#059669" text-anchor="middle">▲ 마진 좋고 확산 빠름</text>
+
+          <!-- volume -->
+          <rect x="580" y="48" width="264" height="220" rx="12" fill="#fff7ed" stroke="#fed7aa"/>
+          <text x="712" y="78" font-size="14" font-weight="800" fill="#c2410c" text-anchor="middle">볼륨 (소비 ↑)</text>
+          <text x="712" y="104" font-size="12.5" fill="#5c6472" text-anchor="middle">에이전트↑ → 검사량·좌석↑</text>
+          <rect x="610" y="150" width="204" height="44" rx="7" fill="#fff" stroke="#fdba74"/>
+          <text x="712" y="177" font-size="13" font-weight="700" text-anchor="middle">⑤ 플랫폼 확장</text>
+          <text x="712" y="244" font-size="11.5" fill="#c2410c" text-anchor="middle">▲ 구조적 받침 · 별도 영업 불필요</text>
+        </g>
+      </svg>
+    </div>
+    <figcaption>그림 2. 같은 'AI 수혜'라도 성장하는 방식이 다르다 — 이 구분이 Part C 시나리오의 뼈대. (개인 정리 도식)</figcaption>
+  </figure>
+
+  <!-- ============ PART B ============ -->
+  <h2>Part B — NHI(비인간 신원)가 다음 격전지</h2>
+  <p class="lead">
+    5개 영역 중 시장이 가장 크게 열리면서 동시에 <b>경쟁이 가장 치열한 층</b>이 ③ 신원(Identity)이다.
+    사람 신원은 이미 성숙 시장(Okta·마이크로소프트가 장악)이지만, <b>비인간 신원(NHI, Non-Human Identity)</b>은
+    이제 막 규칙이 정해지는 신대륙이다. 여기서 지스케일러의 ①AI Broker·②AI Access Graph가 정면으로 활약한다.
+  </p>
+
+  <h3>NHI란 무엇이고 왜 폭증하나</h3>
+  <p>
+    NHI는 사람이 아닌 주체의 신원이다. API 키, OAuth 토큰, 서비스 계정, 인증서, 그리고 이제 <b>AI 에이전트 ID</b>.
+    문제는 이것들이 <b>수명이 짧고, 스스로 새끼를 치고(sub-agent), 권한을 위임하고, 끝나면 사라진다</b>는 점이다.
+    사람 계정처럼 "입사 때 만들고 퇴사 때 지우는" 관리로는 통제가 안 된다.
+  </p>
+  <div class="note">
+    <b>비유:</b> 사람 신원 관리가 '직원 출입증'이라면, NHI 관리는 <b>수만 마리의 드론에 실시간으로 통행증을 발급·회수</b>하는 일이다.
+    드론은 스스로 다른 드론을 부르고, 각 드론이 어느 창고(데이터)에 들어갈 수 있는지가 매초 바뀐다. 출입증 시스템이 완전히 달라야 한다.
+  </div>
+
+  <h3>① AI Broker + Agent Registry — 에이전트 통신의 검문소</h3>
+  <p>
+    지스케일러 AI Broker는 에이전트가 새로 쓰는 통신 규약 <b>MCP(Model Context Protocol)</b>와 <b>A2A(Agent-to-Agent)</b> 위에
+    <b>인라인으로</b> 앉는다. 회사 자체 블로그가 지적하듯, 전통 방화벽은 "연결과 도메인은 보지만 <b>여러 턴에 걸친 프롬프트·응답,
+    에이전트의 행동, 조각난 스트리밍 페이로드는 검사하지 못한다.</b>" 여기가 AI Broker가 파고드는 공백이다.
+    <span class="src">(출처: Zscaler Blog — "MCP, A2A, and WebSockets: Why Firewalls Fail on AI Traffic")</span>
+  </p>
+  <ul>
+    <li><b>Agent Registry(에이전트 등록부):</b> "각 에이전트가 무엇에 접근해도 되는지"를 등록·통제하는 장부. 실시간으로 세밀한 접근 제어를 건다.</li>
+    <li><b>fine-grained access:</b> 에이전트 단위, 행동 단위로 허용/차단. 사람 계정 하나에 권한 몰아주던 방식과 다르다.</li>
+    <li><b>AI 레드팀·프롬프트 하드닝:</b> MCP 서버 대상 레드팀, 독립형 프롬프트 하드닝 서비스, 컴플라이언스 히트맵까지 붙였다.
+      프롬프트 추출 통제는 <b>2,900개+ GenAI 앱</b>을 커버한다고 밝혔다.
+      <span class="src">(출처: Zscaler IR — "Zscaler Unveils New Product Innovations to Secure Agentic AI", 2026-06)</span></li>
+  </ul>
+
+  <h3>② AI Access Graph — Symmetry Systems 인수의 진짜 의미</h3>
+  <p>
+    2026년 5월 지스케일러는 데이터 보안 기업 <b>Symmetry Systems</b> 인수 의사를 밝히고 'Project AI-Guardian'을 함께 발표했다.
+    Symmetry의 핵심 기술은 <b>접근 로그를 먹어서 '액세스 그래프'로 상관관계를 만드는 것</b> — 즉 "어떤 신원(사람이든 AI든)이
+    어떤 데이터를 어떻게 만지는가"를 그래프로 잇는다. SaaS·퍼블릭 클라우드·데이터 스토어·AI 시스템에 걸친 데이터 계보(data lineage)를
+    실시간으로 추적한다. <span class="src">(출처: SiliconANGLE 2026-05-21, StockTitan, Forgepoint Capital)</span>
+  </p>
+  <div class="callout">
+    <b>왜 '그래프'가 무기인가:</b> 에이전트 보안의 진짜 난제는 "차단"이 아니라 <b>"보이지 않음(shadow AI)"</b>이다.
+    어떤 에이전트가 언제 생겨서 어떤 데이터에 손을 댔는지 지도가 없으면 통제 자체가 불가능하다. AI Access Graph는
+    <b>과잉권한(over-privilege) 탐지, 데이터 계보 추적, "누가 이 에이전트에게 권한을 줬는가"의 역추적</b>을 판다.
+    ①AI Broker(통신 길목)와 ②Access Graph(데이터 지도)가 합쳐지면 <b>"길목 통제 + 지도"</b> 세트가 된다.
+  </div>
+  <p>
+    Project AI-Guardian은 Cognizant·EY·HCLTech·Infosys·TCS·Wipro 같은 글로벌 SI들과의 협업으로 출범했다. 이는
+    <b>대기업에 실제 배포되려면 SI의 손이 필요하다</b>는 현실 인식이자, 유통 채널을 미리 깔아두는 포석이다.
+    <span class="src">(출처: CyberRiskLeaders, Zscaler Press)</span>
+  </p>
+
+  <h3>경쟁 지형 — 누가 같은 땅을 노리나</h3>
+  <p>
+    NHI/에이전트 신원은 지금 '표준 전쟁' 중이다. 지스케일러가 <b>인라인 통신·데이터 그래프</b> 쪽에서 접근한다면,
+    다른 진영은 <b>신원 발급 그 자체(IdP)</b>나 <b>단말</b>에서 밀고 들어온다. 재미있는 건 이들이 서로 <b>경쟁이면서 동시에 통합(파트너)</b>이라는 점이다.
+    예를 들어 NHI 거버넌스 스타트업 <b>Oasis Security</b>는 지스케일러와 통합해 "NHI·에이전트 신원의 단일 통제면"을 제공한다고 발표했다.
+    <span class="src">(출처: PRNewswire — Oasis Security × Zscaler 통합, 2026)</span>
+  </p>
+  <table>
+    <thead>
+      <tr><th>진영</th><th>진입 각도</th><th>에이전트/NHI 카드</th><th class="c">지스케일러와 관계</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><b>Zscaler</b></td><td>인라인 통신·데이터 그래프</td><td>AI Broker · Access Graph · AI Guard</td><td class="c">—</td></tr>
+      <tr><td><b>Microsoft</b></td><td>신원(Entra) + 단말 + 모델</td><td>Entra Agent ID, Copilot 보안</td><td class="c bad">정면 경합</td></tr>
+      <tr><td><b>Okta</b></td><td>신원 발급(IdP) 정통</td><td>사람 IdP → NHI/에이전트 확장 중</td><td class="c mid">경합/보완</td></tr>
+      <tr><td><b>CrowdStrike</b></td><td>단말(EDR) 강자</td><td>단말 AI 위협·NHI 탐지</td><td class="c bad">Endpoint서 경합</td></tr>
+      <tr><td><b>Palo Alto</b></td><td>플랫폼 보안 통합</td><td>AI 액세스 보안·SASE</td><td class="c bad">플랫폼 경합</td></tr>
+      <tr><td><b>Oasis Security</b></td><td>NHI 거버넌스 전문</td><td>NHI 수명주기 관리</td><td class="c good">통합(파트너)</td></tr>
+    </tbody>
+  </table>
+  <p class="sub">
+    ※ 표의 '관계'는 시점·제품라인에 따라 바뀐다. 보안 업계는 인수·통합·경쟁이 동시에 진행되므로 '적/아군' 이분법은 위험하다.
+    포인트는 <b>③신원 층이 가장 붐빈다</b>는 것 — 그래서 지스케일러는 신원 발급(IdP) 정면 승부보다 <b>인라인 통제와 데이터 그래프</b>라는
+    자기 강점 쪽으로 우회한다.
+  </p>
+
+  <!-- ============ PART C ============ -->
+  <h2>Part C — 과금 구조 시나리오 (사고실험)</h2>
+  <div class="warn">
+    <b>⚠️ 아래는 예측이 아니라 '가정 대입 사고실험'입니다.</b> 실제 매출은 침투율·경쟁·가격·계약구조에 따라 전혀 다르게 나옵니다.
+    숫자를 결론으로 읽지 말고, <b>"어떤 레버가 어떻게 반응하는가"의 구조</b>만 가져가세요.
+  </div>
+
+  <h3>먼저, 5개 영역을 '무엇으로 과금되나'로 재분류</h3>
+  <table>
+    <thead><tr><th>영역</th><th>과금 축</th><th>에이전트 폭증 시 반응</th><th class="c">탄력성</th></tr></thead>
+    <tbody>
+      <tr><td>① AI Broker</td><td>브로커링되는 에이전트·트래픽량</td><td>에이전트 수에 <b>거의 비례</b>해 증가</td><td class="c good">높음</td></tr>
+      <tr><td>② Access Graph</td><td>모니터링되는 데이터·신원 관계 수</td><td>관계 수 = 에이전트×데이터, <b>초비례</b> 가능</td><td class="c good">매우 높음</td></tr>
+      <tr><td>③ Endpoint AI</td><td>단말 좌석(seat)</td><td>단말 수는 완만 — <b>사람 수에 묶임</b></td><td class="c mid">낮음</td></tr>
+      <tr><td>④ AI Guard</td><td>인라인 트래픽·기능 구독</td><td>프롬프트 트래픽 증가로 <b>완만~중간</b></td><td class="c mid">중간</td></tr>
+      <tr><td>⑤ 플랫폼</td><td>전체 소비·업셀 종합</td><td>①②④의 합으로 <b>레버리지</b></td><td class="c good">높음</td></tr>
+    </tbody>
+  </table>
+  <p>
+    여기서 가장 중요한 발견: <b>"에이전트가 10배 되면 매출도 10배"가 아니다.</b> ③Endpoint는 단말(≈사람) 수에 묶여 거의 안 늘고,
+    ④는 완만하다. 반면 ①②는 에이전트 수와 그 관계 수에 붙어서 <b>가장 탄력적</b>이다. 즉 <b>에이전트 폭증의 수혜는 ①②에 집중</b>되고,
+    ③④는 '따라오는' 성격이다.
+  </p>
+
+  <h3>에이전트 10배 사고실험 — 세 개의 세계</h3>
+  <p>"관리 대상 에이전트가 오늘의 10배가 됐다"고 가정하고, 세 가지 침투/과금 시나리오를 그려본다. (금액 아님, <b>기여도 방향</b>만)</p>
+  <table>
+    <thead><tr><th></th><th class="c">낙관 (검문소 표준화)</th><th class="c">중립 (부분 채택)</th><th class="c">비관 (모델·IdP가 흡수)</th></tr></thead>
+    <tbody>
+      <tr><td><b>①② 신규 SKU</b></td><td class="c good">폭발적 (핵심 성장원)</td><td class="c mid">견조하게 증가</td><td class="c bad">얇아짐(경쟁 잠식)</td></tr>
+      <tr><td><b>③④ 업셀</b></td><td class="c good">빠른 확산</td><td class="c mid">완만 증가</td><td class="c mid">기존 유지 수준</td></tr>
+      <tr><td><b>⑤ 볼륨</b></td><td class="c good">구조적 상승</td><td class="c mid">소폭 상승</td><td class="c bad">정체</td></tr>
+      <tr><td><b>전제 조건</b></td><td class="c">MCP/A2A 검문소가<br>사실상 표준이 됨</td><td class="c">일부 대기업만<br>선도 채택</td><td class="c">가치가 모델·IdP<br>층으로 이동</td></tr>
+    </tbody>
+  </table>
+  <div class="callout">
+    <b>이 표의 쓸모:</b> 앞으로 뉴스·실적을 볼 때 <b>"어느 세계로 가고 있나"의 신호</b>를 골라내는 체크리스트가 된다.
+    ① AI Broker/Access Graph의 <b>신규 계약·순증 ARR 기여</b>가 잡히기 시작하면 낙관 쪽, ③④ 업셀만 늘고 ①②가 안 잡히면 중립,
+    Okta·마이크로소프트가 인라인 통제까지 삼키면 비관 신호다.
+  </div>
+
+  <h3>재무 체력 — 사고실험을 견딜 몸집인가 (참고)</h3>
+  <p>시나리오가 굴러가려면 신제품에 투자할 현금과 성장 관성이 있어야 한다. FY2026 3분기(2026-05 발표) 참고 지표.</p>
+  <div class="kpi">
+    <div class="box"><div class="num">$850.5M</div><div class="lab">Q3 매출 (YoY +25%)</div></div>
+    <div class="box"><div class="num">$3.525B</div><div class="lab">ARR (YoY +25%)</div></div>
+    <div class="box"><div class="num">$166M</div><div class="lab">분기 순증 ARR</div></div>
+    <div class="box"><div class="num">23%</div><div class="lab">Non-GAAP 영업이익률(사상최고)</div></div>
+    <div class="box"><div class="num">$136M</div><div class="lab">잉여현금흐름(FCF)</div></div>
+    <div class="box"><div class="num">$1.08</div><div class="lab">Non-GAAP EPS</div></div>
+    <div class="box"><div class="num">~$3.75B</div><div class="lab">FY26 ARR 가이던스</div></div>
+    <div class="box"><div class="num">16~17%</div><div class="lab">FY27 ARR 성장 가이던스</div></div>
+  </div>
+  <p class="sub">
+    ※ Q3 ARR·순증에는 Red Canary 인수 기여($127M ARR)가 포함됨. 이를 빼면 ARR는 +21%, 순증은 +14%. FY27 가이던스가 16~17%로
+    제시된 건 <b>성장 둔화 국면</b>을 시장이 이미 보고 있다는 뜻 — AI 에이전트 신규 SKU(①②)가 이 둔화를 얼마나 상쇄하느냐가 관전 포인트.
+    <span class="src">(출처: Zscaler IR / GlobeNewswire, FY2026 Q3, 2026-05-26)</span>
+  </p>
+
+  <!-- ============ RISK ============ -->
+  <h2>리스크 매트릭스</h2>
+  <table>
+    <thead><tr><th>리스크</th><th class="c">발생 가능성</th><th class="c">영향</th><th>메모</th></tr></thead>
+    <tbody>
+      <tr><td>③신원 층을 IdP(Okta)·MS가 흡수</td><td class="c mid">중</td><td class="c bad">큼</td><td>가장 붐비는 층. 지스케일러는 인라인 우회로 대응 중.</td></tr>
+      <tr><td>MCP/A2A 표준·검문소가 자리 못 잡음</td><td class="c mid">중</td><td class="c bad">큼</td><td>①의 전제. 표준화 실패 시 신규 SKU 성장 지연.</td></tr>
+      <tr><td>Endpoint서 CrowdStrike·MS에 밀림</td><td class="c bad">중상</td><td class="c mid">중</td><td>③는 원래 남의 강점. 'AI 위협' 좁은 각으로만 유효.</td></tr>
+      <tr><td>인수 통합(Symmetry·Red Canary) 지연</td><td class="c mid">중</td><td class="c mid">중</td><td>기술은 좋아도 제품 통합·GTM에 시간 필요.</td></tr>
+      <tr><td>전반적 성장 둔화(FY27 16~17%)</td><td class="c bad">현실</td><td class="c mid">중</td><td>이미 가이던스에 반영. 신규 SKU가 상쇄 관건.</td></tr>
+      <tr><td>밸류에이션 부담(고성장 SaaS 프리미엄)</td><td class="c bad">상시</td><td class="c bad">큼</td><td>성장 기대가 주가에 선반영. 실적 미스에 민감.</td></tr>
+    </tbody>
+  </table>
+
+  <!-- ============ CATALYST ============ -->
+  <h2>촉매 캘린더 — 무엇을 지켜볼까</h2>
+  <table>
+    <thead><tr><th>시점/이벤트</th><th>확인할 것</th></tr></thead>
+    <tbody>
+      <tr><td>분기 실적 (매 분기)</td><td>순증 ARR, AI 제품(①②) 기여 언급, DBNRR, FY27 가이던스 궤적</td></tr>
+      <tr><td>Symmetry 인수 클로징·통합</td><td>AI Access Graph의 정식 GA(일반출시)·고객 레퍼런스</td></tr>
+      <tr><td>AI Broker 채택 지표</td><td>브로커링되는 에이전트/앱 수, MCP/A2A 커버리지 확대</td></tr>
+      <tr><td>Zenith Live 등 컨퍼런스</td><td>Project AI-Guardian 파트너 확장·신규 SKU 로드맵</td></tr>
+      <tr><td>경쟁사 동향</td><td>MS Entra Agent ID, Okta NHI, CrowdStrike/Palo Alto AI 보안 발표</td></tr>
+    </tbody>
+  </table>
+
+  <!-- ============ KPI DASH ============ -->
+  <h2>KPI 대시보드 — 시나리오 판별 신호</h2>
+  <div class="grid2">
+    <div class="card">
+      <h4>🟢 '낙관 세계' 신호</h4>
+      <ul>
+        <li>실적 콜에서 <b>AI Broker/Access Graph의 신규 ARR 기여</b>가 별도 언급되기 시작</li>
+        <li>MCP/A2A 검문소가 업계 참조 아키텍처로 인용됨</li>
+        <li>대형 SI(AI-Guardian) 통해 대기업 레퍼런스 확대</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4>🔴 '비관 세계' 신호</h4>
+      <ul>
+        <li>MS·Okta가 <b>인라인 에이전트 통제</b>까지 흡수하는 발표</li>
+        <li>③④ 업셀만 늘고 ①② 신규 SKU 트랙션이 안 잡힘</li>
+        <li>FY27 성장률이 가이던스 하단마저 하회</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ============ FAQ ============ -->
+  <h2>FAQ</h2>
+  <h4>Q. 결국 지스케일러가 'AI 에이전트 회사'인가?</h4>
+  <p>아니다. 에이전트를 <b>만드는</b> 회사가 아니라, 에이전트가 통신·데이터·행동을 할 때 <b>지나가는 길목을 통제·과금</b>하는 회사다.
+  모델·프레임워크(①②층)는 남의 땅이고, 그래서 오히려 중립적 검문소가 될 수 있다는 게 논지다.</p>
+  <h4>Q. 5개 영역 중 '진짜 새 돈'은 어디인가?</h4>
+  <p>과금 탄력성 기준으로는 <b>① AI Broker, ② AI Access Graph</b>(신규 SKU)다. ③④는 기존 자산 업셀이라 성장은 완만하지만 마진·확산이 좋고,
+  ⑤는 별도 영업 없이 받쳐주는 볼륨 레버다. "새 돈"은 ①②, "빠른 돈"은 ③④, "받침 돈"은 ⑤로 나눠 보면 깔끔하다.</p>
+  <h4>Q. NHI가 왜 그렇게 중요하다고 강조하나?</h4>
+  <p>에이전트 폭증의 병목이 '신원·권한'이기 때문이다. 수만 개의 임시 신원을 실시간 발급·회수·감시하는 문제가 안 풀리면
+  에이전트 도입 자체가 리스크가 된다. 그래서 ③신원 층이 가장 크게 열리고 가장 붐빈다.</p>
+  <h4>Q. 이 리포트로 사도 되나?</h4>
+  <p>이 문서는 <b>판단 재료</b>이지 판단 자체가 아니다. 매수·매도 의견을 담지 않았다. 위 KPI 신호로 '어느 세계로 가는지'를
+  스스로 추적하는 용도로 쓰길 권한다.</p>
+
+  <!-- ============ GLOSSARY ============ -->
+  <h2>용어 사전</h2>
+  <table>
+    <tbody>
+      <tr><td><b>NHI</b></td><td>Non-Human Identity. 사람이 아닌 주체(API 키·서비스 계정·토큰·AI 에이전트)의 신원.</td></tr>
+      <tr><td><b>MCP</b></td><td>Model Context Protocol. 에이전트가 외부 도구·데이터에 붙는 표준 통신 규약.</td></tr>
+      <tr><td><b>A2A</b></td><td>Agent-to-Agent. 에이전트끼리 직접 주고받는 통신.</td></tr>
+      <tr><td><b>AI Broker</b></td><td>MCP/A2A 통신 위에 인라인으로 앉아 에이전트 접근을 인증·인가·검사하는 지스케일러 신규 제품.</td></tr>
+      <tr><td><b>Agent Registry</b></td><td>각 에이전트가 무엇에 접근 가능한지 등록·통제하는 장부.</td></tr>
+      <tr><td><b>AI Access Graph</b></td><td>신원↔데이터↔앱의 관계를 그래프로 잇는 지도(Symmetry Systems 기반).</td></tr>
+      <tr><td><b>Shadow AI</b></td><td>조직이 인지·통제하지 못하는 채 돌아가는 AI/에이전트.</td></tr>
+      <tr><td><b>SKU</b></td><td>Stock Keeping Unit. 여기선 '별도로 파는 제품·과금 항목'을 뜻함.</td></tr>
+      <tr><td><b>ARR</b></td><td>Annual Recurring Revenue. 연간 반복 매출.</td></tr>
+      <tr><td><b>DBNRR</b></td><td>Dollar-Based Net Retention Rate. 기존 고객이 얼마나 더 쓰는지(업셀 지표).</td></tr>
+      <tr><td><b>Guardian Agent</b></td><td>다른 에이전트를 감시·통제하는 에이전트. 가트너가 2030년 시장의 10~15%로 전망.</td></tr>
+    </tbody>
+  </table>
+
+  <!-- ============ SOURCES ============ -->
+  <h2>출처</h2>
+  <p class="src">
+    • Zscaler IR, "Zscaler Unveils New Product Innovations to Secure Agentic AI" — https://ir.zscaler.com/news-releases/news-release-details/zscaler-unveils-new-product-innovations-secure-agentic-ai<br>
+    • Zscaler Blog, "How Zscaler Secures the Agentic AI Era with Zero Trust" — https://www.zscaler.com/blogs/product-insights/how-zscaler-secures-the-agentic-ai-era<br>
+    • Zscaler Blog, "MCP, A2A, and WebSockets: Why Firewalls Fail on AI Traffic" — https://www.zscaler.com/blogs/product-insights/ai-traffic-security-mcp-a2a-websockets<br>
+    • SiliconANGLE, "Zscaler acquires Symmetry Systems to extend its AI agent security capabilities" (2026-05-21) — https://siliconangle.com/2026/05/21/zscaler-acquires-symmetry-systems-extend-ai-agent-security-capabilities/<br>
+    • StockTitan, "Zscaler to acquire Symmetry Systems…" — https://www.stocktitan.net/news/ZS/zscaler-to-acquire-symmetry-systems-combining-zero-trust-and-access-0e8062ay4d94.html<br>
+    • CyberRiskLeaders, "Zscaler to acquire Symmetry Systems, launches Project AI-Guardian" — https://cyberriskleaders.com/zscaler-to-acquire-symmetry-systems-launches-project-ai-guardian-with-system-integrators/<br>
+    • PRNewswire, "Oasis Security Announces Integration with Zscaler…" — https://www.prnewswire.com/news-releases/oasis-security-announces-integration-with-zscaler-to-extend-zero-trust-to-non-human-and-agentic-identities-302796207.html<br>
+    • Gartner Newsroom, "Guardian Agents will Capture 10-15% of the Agentic AI Market by 2030" (2025-06-11) — https://www.gartner.com/en/newsroom/press-releases/2025-06-11-gartner-predicts-that-guardian-agents-will-capture-10-15-percent-of-the-agentic-ai-market-by-2030<br>
+    • MarketsandMarkets, "AI Agents Market worth $52.62 billion by 2030" — https://www.marketsandmarkets.com/PressReleases/ai-agents.asp<br>
+    • Grand View Research, "AI Agents Market Size, Share And Trends Report" — https://www.grandviewresearch.com/industry-analysis/ai-agents-market-report<br>
+    • Zscaler IR / GlobeNewswire, "Zscaler Announces Strong Third-Quarter Fiscal 2026 Results" (2026-05-26) — https://www.globenewswire.com/news-release/2026/05/26/3301454/0/en/zscaler-announces-strong-third-quarter-fiscal-2026-results.html<br>
+    • SiliconANGLE, "Securing the AI workforce: Zscaler's zero-trust play for agentic AI" (2026-06-10) — https://siliconangle.com/2026/06/10/securing-ai-workforce-zscalers-zero-trust-play-agentic-ai/
+  </p>
+
+  <div class="foot">
+    <hr>
+    본 문서는 개인 학습·정리 목적의 비상업 노트입니다. 수치·인용은 작성일(2026-07-18) 기준 공개 자료를 바탕으로 하며 오류가 있을 수 있습니다.
+    투자에 대한 최종 판단과 책임은 전적으로 독자 본인에게 있습니다. © 2026 개인 리서치 라이브러리.
+  </div>
+
+</div>
+</body>
+</html>

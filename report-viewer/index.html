@@ -3,44 +3,49 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
-  <meta name="theme-color" content="#15171c" media="(prefers-color-scheme: dark)">
+  <meta name="theme-color" content="#fbfaf7" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#101216" media="(prefers-color-scheme: dark)">
   <link rel="manifest" href="manifest.json">
   <title>리포트 마커</title>
-  <link rel="stylesheet" href="style.css?v=18">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <link rel="stylesheet" href="style.css?v=19">
 </head>
 <body>
   <div class="topbar">
-    <h1>📑 리포트 마커</h1>
+    <div class="brand"><i data-lucide="bookmark"></i><span>리포트 마커</span><span class="count num" id="count"></span></div>
     <div class="spacer"></div>
-    <a class="btn-link" id="uploadLink" href="upload.html" title="PDF 등록">➕</a>
-    <button id="delBtn">삭제</button>
-    <button id="cancelBtn" style="display:none">취소</button>
-    <button id="refreshBtn">새로고침</button>
-    <button id="logoutBtn" title="토큰 삭제">⎋</button>
+    <a class="btn btn-ink" id="uploadLink" href="upload.html" title="PDF 등록"><i data-lucide="plus"></i><span class="btn-txt">등록</span></a>
+    <button class="btn" id="delBtn"><span class="btn-txt">삭제</span></button>
+    <button class="btn" id="cancelBtn" style="display:none"><span class="btn-txt">취소</span></button>
+    <button class="btn icon-only" id="refreshBtn" title="새로고침" aria-label="새로고침"><i data-lucide="refresh-cw"></i></button>
+    <button class="btn icon-only" id="logoutBtn" title="토큰 삭제" aria-label="토큰 삭제"><i data-lucide="log-out"></i></button>
   </div>
 
   <div class="wrap">
     <div class="searchbar collapsed" id="searchbar">
-      <input type="text" id="qTitle" class="s-input" placeholder="제목 검색">
-      <button id="filterToggle" class="s-reset filter-toggle" type="button">🔎 필터</button>
-      <select id="qBroker" class="s-input"><option value="">증권사 전체</option></select>
-      <select id="qSector" class="s-input"><option value="">섹터 전체</option></select>
+      <div class="s-search-wrap">
+        <i data-lucide="search"></i>
+        <input type="text" id="qTitle" class="s-input" placeholder="제목 검색">
+      </div>
+      <button id="filterToggle" class="chip filter-toggle" type="button"><i data-lucide="sliders-horizontal"></i>필터</button>
+      <select id="qBroker" class="s-input chip-select"><option value="">증권사 전체</option></select>
+      <select id="qSector" class="s-input chip-select"><option value="">섹터 전체</option></select>
       <input type="date" id="qFrom" class="s-input s-date" title="발행일">
       <label class="s-chk"><input type="checkbox" id="qRange"> 종료일</label>
       <span class="s-tilde" id="qTilde" hidden>~</span>
       <input type="date" id="qTo" class="s-input s-date" title="발행일 종료" hidden>
-      <label class="s-chk"><input type="checkbox" id="qHl"> ✏️ 하이라이트</label>
-      <label class="s-chk"><input type="checkbox" id="qFav"> ⭐ 즐겨찾기</label>
+      <label class="chip chip-toggle" id="qHlChip"><input type="checkbox" id="qHl"><i data-lucide="highlighter"></i>하이라이트</label>
+      <label class="chip chip-toggle" id="qFavChip"><input type="checkbox" id="qFav"><i data-lucide="star"></i>즐겨찾기</label>
+      <button id="resetBtn" class="reset">초기화</button>
       <div class="spacer"></div>
-      <select id="qSort" class="s-input" title="정렬 기준">
-        <option value="pub">📅 발행일순</option>
-        <option value="up">📥 수집순</option>
-        <option value="hl">✏️ 하이라이트순</option>
-        <option value="title">🔤 제목순</option>
-      </select>
-      <button id="resetBtn" class="s-reset">초기화</button>
-      <button id="searchBtn" class="s-search">🔍 검색</button>
+      <button id="searchBtn" class="btn btn-ink s-search"><i data-lucide="search"></i><span class="btn-txt">검색</span></button>
+      <div class="seg" id="sortSeg">
+        <button data-sort="pub" class="on">발행일</button>
+        <button data-sort="up">수집순</button>
+        <button data-sort="hl">하이라이트</button>
+        <button data-sort="title">제목</button>
+      </div>
     </div>
     <div id="list"><div class="loading">불러오는 중…</div></div>
   </div>
@@ -199,7 +204,7 @@
       document.getElementById("qRange").checked = false;
       document.getElementById("qHl").checked = false;
       document.getElementById("qFav").checked = false;
-      document.getElementById("qSort").value = "pub";
+      document.querySelectorAll("#sortSeg button").forEach((x) => x.classList.toggle("on", x.dataset.sort === "pub"));
       setRange(false);
       renderList();
     }
@@ -235,57 +240,67 @@
         list.innerHTML = `<div class="empty">표시할 리포트가 없습니다.</div>`;
         return;
       }
-      list.innerHTML = rows.map((r) => {
-        const sector = r.sector ? `<span class="badge sector">${esc(r.sector)}</span>` : "";
-        const scan = r.has_text_layer === false ? `<span class="badge scan">스캔본</span>` : "";
-        const pend = r.pending_deletion ? `<span class="badge del">🗑 삭제예정 ~${esc((r.delete_after || "").slice(5))}</span>` : "";
-        const hl = (r.highlight_count || 0) > 0 ? `<span class="hl">✏️ ${r.highlight_count}</span>` : "";
-        // 휴리스틱 품질 낮으면 'AI 추출 추천' 배지(이미 LLM으로 뽑은 건 제외)
+      const dayLabel = (d) => (d || "").replace(/-/g, ". ");   // 2026-07-17 → 2026. 07. 17
+      const cardHtml = (r) => {
+        const marked = (r.highlight_count || 0) > 0;
+        const sector = r.sector ? `<span class="tag">${esc(r.sector)}</span>` : "";
+        const scan = r.has_text_layer === false ? `<span class="tag warn">스캔본</span>` : "";
+        const pend = r.pending_deletion ? `<span class="tag warn">🗑 삭제예정 ~${esc((r.delete_after || "").slice(5))}</span>` : "";
+        const hlChip = marked ? `<span class="tag tag-hl"><i data-lucide="highlighter"></i><span class="num">${r.highlight_count}</span></span>` : "";
+        const pages = r.pages ? `<span class="pages num">${r.pages}p</span>` : "";
+        // 휴리스틱 품질 낮으면 'AI 추출 추천'(이미 LLM으로 뽑은 건 제외)
         const llmSug = (r.llm_suggested && r.text_engine !== "llm")
-          ? ` <span class="llm-sug" title="휴리스틱 본문 추출 품질이 낮아 보임 → AI(LLM) 재추출 추천${(r.heur_flags && r.heur_flags.length) ? " · " + r.heur_flags.map(esc).join(", ") : ""}">(🤖 추천)</span>`
+          ? ` <span class="llm-sug" title="휴리스틱 본문 추출 품질이 낮아 보임 → AI(LLM) 재추출 추천${(r.heur_flags && r.heur_flags.length) ? " · " + r.heur_flags.map(esc).join(", ") : ""}">🤖 추천</span>`
           : "";
-        const dateStr = cardDate(r);
         const thumb = localStorage.getItem("rv_thumb_" + r.id);
-        const thumbHtml = thumb ? `<img src="${thumb}" alt="">` : `📄`;
+        const thumbHtml = thumb ? `<img src="${thumb}" alt="">` : `<i data-lucide="file-text"></i>`;
+        const fav = isBookmarked(r.id);
+        const readUrl = `viewer.html?id=${encodeURIComponent(r.id)}&mode=read`;
         const chk = delMode ? `<input type="checkbox" class="card-chk"${SELECTED.has(r.id) ? " checked" : ""}>` : "";
+        const tg = marked ? `<button class="act tg-send${isTgSent(r.id) ? " sent" : ""}" data-id="${esc(r.id)}" title="${isTgSent(r.id) ? "이미 텔레그램으로 보냄 · 다시 보내기" : "하이라이트를 텔레그램으로 보내기"}" aria-label="텔레그램으로 보내기">${isTgSent(r.id) ? SENT_SVG : TG_SVG}</button>` : "";
         return `
-          <div class="card${delMode ? " selectable" : ""}${SELECTED.has(r.id) ? " sel" : ""}" data-id="${esc(r.id)}">
+          <article class="card${marked ? " marked" : ""}${delMode ? " selectable" : ""}${SELECTED.has(r.id) ? " sel" : ""}" data-id="${esc(r.id)}" data-read="${readUrl}">
             ${chk}
-            ${delMode ? "" : `<button class="card-del" title="삭제">×</button>`}
             <div class="card-thumb" data-thumb="${esc(r.id)}">${thumbHtml}</div>
-            <div class="card-body">
-              <div class="title">${esc(r.title)}</div>
-              <div class="meta">
-                <span class="badge">${esc(r.broker || "미분류")}</span>
-                ${sector}${scan}${pend}
-                <span>${esc(dateStr)}</span>
-                <span>· ${r.size_mb ?? "?"}MB</span>
-                <span class="engine" title="본문 추출: ${r.text_engine === "llm" ? "AI(LLM)" : "휴리스틱"}">${r.text_engine === "llm" ? "🤖" : "🧑"}</span>${llmSug}
-                ${hl}
+            <div class="body">
+              <div class="row1">
+                <h3 class="title">${esc(r.title)}</h3>
+                <button class="star${fav ? " on" : ""}" data-id="${esc(r.id)}" title="${fav ? "즐겨찾기 해제" : "즐겨찾기에 추가"}" aria-label="즐겨찾기"><i data-lucide="star"></i></button>
               </div>
-              <div class="row2">
-                <button class="fav-btn${isBookmarked(r.id) ? " on" : ""}" data-id="${esc(r.id)}" title="${isBookmarked(r.id) ? "즐겨찾기 해제" : "즐겨찾기에 추가"}" aria-label="즐겨찾기">${isBookmarked(r.id) ? "★" : "☆"}</button>
-                <a class="mini read" href="viewer.html?id=${encodeURIComponent(r.id)}&mode=read">📖 읽기</a>
-                <a class="mini pdf" href="viewer.html?id=${encodeURIComponent(r.id)}">📄 PDF</a>
-                ${(r.highlight_count || 0) > 0 ? `<button class="tg-send${isTgSent(r.id) ? " sent" : ""}" data-id="${esc(r.id)}" title="${isTgSent(r.id) ? "이미 텔레그램으로 보냄 · 다시 보내기" : "하이라이트를 텔레그램으로 보내기"}" aria-label="텔레그램으로 보내기">${isTgSent(r.id) ? SENT_SVG : TG_SVG}</button>` : ""}
-                <a class="mini" href="highlights.html?id=${encodeURIComponent(r.id)}">모아보기</a>
-                <a class="mini" href="edit.html?id=${encodeURIComponent(r.id)}">⚙️ 수정</a>
+              <p class="meta">${esc(r.broker || "미분류")}<span>·</span>${esc(cardDate(r))}<span>·</span>${r.size_mb ?? "?"}MB${llmSug}</p>
+              <div class="tags">
+                ${sector}${scan}${pend}${hlChip}${pages}
+                <div class="acts">
+                  <a class="act" href="viewer.html?id=${encodeURIComponent(r.id)}" title="PDF로 보기" aria-label="PDF"><i data-lucide="file"></i></a>
+                  <a class="act" href="highlights.html?id=${encodeURIComponent(r.id)}" title="하이라이트 모아보기" aria-label="모아보기"><i data-lucide="list"></i></a>
+                  ${tg}
+                  <a class="act" href="edit.html?id=${encodeURIComponent(r.id)}" title="수정" aria-label="수정"><i data-lucide="settings-2"></i></a>
+                  ${delMode ? "" : `<button class="act card-del" title="삭제" aria-label="삭제"><i data-lucide="trash-2"></i></button>`}
+                </div>
               </div>
             </div>
-          </div>`;
-      }).join("");
+          </article>`;
+      };
+      let html = "", lastDay = null;
+      for (const r of rows) {
+        if (SORT === "pub") {
+          const d = cardDate(r);
+          if (d !== lastDay) { lastDay = d; html += `<div class="day num">${esc(dayLabel(d))}</div>`; }
+        }
+        html += cardHtml(r);
+      }
+      list.innerHTML = html;
+      if (window.lucide) lucide.createIcons();
 
       list.querySelectorAll(".card").forEach((card) => {
         card.addEventListener("click", (e) => {
-          const favBtn = e.target.closest(".fav-btn");
-          if (favBtn) {                           // ⭐ 즐겨찾기 토글(낙관적)
+          const star = e.target.closest(".star");
+          if (star) {                             // ⭐ 즐겨찾기 토글(낙관적)
             e.stopPropagation();
             if (delMode) return;
-            const on = toggleBookmark(favBtn.dataset.id);
-            favBtn.classList.toggle("on", on);
-            favBtn.textContent = on ? "★" : "☆";
-            favBtn.title = on ? "즐겨찾기 해제" : "즐겨찾기에 추가";
-            // 즐겨찾기만 보기 상태면, 해제한 카드는 목록에서 바로 빠지게 갱신
+            const on = toggleBookmark(star.dataset.id);
+            star.classList.toggle("on", on);
+            star.title = on ? "즐겨찾기 해제" : "즐겨찾기에 추가";
             if (FILTER.onlyFav && !on) renderList();
             return;
           }
@@ -296,7 +311,7 @@
             sendCardToTelegram(tgBtn.dataset.id, tgBtn);
             return;
           }
-          if (e.target.closest(".card-del")) {   // 카드 우상단 X → 바로 삭제
+          if (e.target.closest(".card-del")) {   // 삭제
             e.stopPropagation();
             const id = card.dataset.id;
             const r = ALL.find((x) => x.id === id);
@@ -313,7 +328,9 @@
             updateDelBar();
             return;
           }
-          // 일반 모드: 카드 본문 클릭은 이동/선택 없음(이동은 버튼으로만, 시각 피드백은 CSS 호버)
+          if (e.target.closest("a, .card-thumb")) return;   // 링크·썸네일은 각자 동작
+          // 카드 본문 클릭 → 읽기 모드로 이동
+          if (card.dataset.read) location.href = card.dataset.read;
         });
       });
 
@@ -370,6 +387,7 @@
       try {
         const doc = await loadReports();
         ALL = doc.reports || [];
+        const cEl = document.getElementById("count"); if (cEl) cEl.textContent = ALL.length;
         renderSearchBar();
         renderList();                                   // 캐시 기준 즉시 표시
         fetchTgSentShared().then(() => renderList());   // vault 공유 전송이력 받아 X 표시 갱신
@@ -450,10 +468,15 @@
     document.getElementById("filterToggle").onclick = () => {
       const sb = document.getElementById("searchbar");
       const open = sb.classList.toggle("collapsed") === false;
-      document.getElementById("filterToggle").textContent = open ? "🔎 필터 ▴" : "🔎 필터";
+      document.getElementById("filterToggle").classList.toggle("on", open);
     };
-    document.getElementById("qSort").addEventListener("change", (e) => {
-      SORT = e.target.value; renderList();     // 정렬은 선택 즉시 반영
+    // 정렬 세그먼트: 클릭 즉시 반영
+    document.querySelectorAll("#sortSeg button").forEach((b) => {
+      b.addEventListener("click", () => {
+        SORT = b.dataset.sort;
+        document.querySelectorAll("#sortSeg button").forEach((x) => x.classList.toggle("on", x === b));
+        renderList();
+      });
     });
     document.getElementById("qTitle").addEventListener("keydown", (e) => {
       if (e.key === "Enter") applySearch();
@@ -461,6 +484,7 @@
     document.getElementById("qRange").addEventListener("change", (e) => {
       setRange(e.target.checked);              // 종료일 토글 → 종료일 칸 표시/숨김
     });
+    document.getElementById("qHl").addEventListener("change", applySearch);   // 하이라이트만 보기: 즉시 반영
     document.getElementById("qFav").addEventListener("change", applySearch);  // 즐겨찾기만 보기: 즉시 반영
 
     document.getElementById("refreshBtn").onclick = load;
@@ -472,6 +496,7 @@
     document.addEventListener("click", (e) => { if (!e.target.closest(".card-thumb")) hideThumbHover(); });
     window.addEventListener("scroll", hideThumbHover, { passive: true });
 
+    if (window.lucide) lucide.createIcons();   // 상단바·필터 아이콘 즉시 렌더
     requirePat(load);
   </script>
 </body>

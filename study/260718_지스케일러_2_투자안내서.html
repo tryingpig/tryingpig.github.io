@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>지스케일러(ZS) 투자 안내서 — 성장·수익성·밸류에이션 점검</title>
+<style>
+  :root{
+    --accent:#1668e3; --accent-dark:#0a3f91; --light:#e9f1fd; --light2:#f4f8fe;
+    --gray:#595959; --line:#cfe0f7; --ink:#1d2733; --warn:#c0392b; --warnbg:#fdecea;
+    --good:#16a34a; --bad:#c0392b; --mid:#d99a0a;
+  }
+  *{box-sizing:border-box;}
+  html{-webkit-print-color-adjust:exact; print-color-adjust:exact;}
+  body{font-family:"Malgun Gothic","맑은 고딕",-apple-system,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;
+    color:var(--ink); line-height:1.7; margin:0; background:#f5f6f8; font-size:16px;}
+  .page{max-width:820px; margin:24px auto; background:#fff; padding:56px 60px; box-shadow:0 1px 8px rgba(0,0,0,.08);}
+  h1{color:var(--accent-dark); font-size:1.5rem; border-bottom:3px solid var(--accent); padding-bottom:8px; margin:2.3em 0 .7em;}
+  h1:first-of-type{margin-top:.3em;}
+  h2{color:var(--accent); font-size:1.16rem; margin:1.5em 0 .45em;}
+  h3{color:var(--accent-dark); font-size:1.02rem; margin:1.2em 0 .3em;}
+  p{margin:.5em 0;} ul{margin:.4em 0 .9em; padding-left:1.3em;} li{margin:.3em 0;}
+  .em{color:var(--accent-dark); font-weight:700;}
+  .muted{color:var(--gray); font-size:.9rem;}
+  .callout{background:var(--light); border:1px solid var(--accent); border-left:6px solid var(--accent); border-radius:4px; padding:14px 18px; margin:1.1em 0;}
+  .callout .ct{font-weight:700; color:var(--accent-dark); margin-bottom:6px;}
+  .callout p{margin:.35em 0; font-size:.96rem;}
+  .warn{background:var(--warnbg); border:1px solid var(--warn); border-left:6px solid var(--warn); border-radius:4px; padding:14px 18px; margin:1.2em 0;}
+  .warn .ct{font-weight:700; color:var(--warn); margin-bottom:6px;}
+  .warn p{margin:.35em 0; font-size:.93rem;}
+  table{border-collapse:collapse; width:100%; margin:1em 0; font-size:.85rem;}
+  th{background:var(--accent); color:#fff; font-weight:700; padding:9px 10px; text-align:center; border:1px solid var(--line);}
+  td{padding:8px 10px; border:1px solid var(--line); text-align:center; vertical-align:top;}
+  td:first-child{text-align:left; font-weight:700; background:var(--light2);}
+  tbody tr:nth-child(even) td{background:var(--light2);}
+  tbody tr:nth-child(even) td:first-child{background:var(--light);}
+  .cover{text-align:center; padding:115px 0 85px;}
+  .cover .big{font-size:2.4rem; font-weight:800; color:var(--accent-dark); letter-spacing:-1px;}
+  .cover .sub{font-size:1.22rem; color:var(--accent); margin-top:12px;}
+  .cover .sub2{font-size:1rem; color:var(--gray); margin-top:24px;}
+  .cover .tag{font-size:.95rem; color:var(--gray); font-style:italic; margin-top:64px;}
+  .cover .date{font-size:.88rem; color:var(--gray); margin-top:8px;}
+  .toc{background:var(--light2); border:1px solid var(--line); border-radius:6px; padding:18px 24px;}
+  .toc ol{margin:0; padding-left:1.4em;} .toc li{margin:.3em 0;}
+  a{color:var(--accent-dark); word-break:break-all;}
+  .src{font-size:.83rem;} .src li{margin:.4em 0;}
+  figure{margin:1.4em 0; text-align:center;}
+  figure svg{width:100%; max-width:720px; height:auto; display:block; margin:0 auto;}
+  figcaption{font-size:.85rem; color:var(--gray); margin-top:8px;}
+  .g{color:var(--good); font-weight:700;} .b{color:var(--bad); font-weight:700;} .m{color:var(--mid); font-weight:700;}
+  .kpi{display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin:1.2em 0;}
+  .kpi .box{background:var(--light2); border:1px solid var(--line); border-radius:8px; padding:14px 10px; text-align:center;}
+  .kpi .num{font-size:1.4rem; font-weight:800; color:var(--accent-dark);}
+  .kpi .lab{font-size:.76rem; color:var(--gray); margin-top:4px;}
+  .scen{display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; margin:1.2em 0;}
+  .scen .col{border:1px solid var(--line); border-radius:8px; padding:14px; font-size:.86rem;}
+  .scen .col h4{margin:.1em 0 .5em; font-size:.98rem;}
+  .scen .opt{border-top:4px solid var(--good);} .scen .base{border-top:4px solid var(--accent);} .scen .bear{border-top:4px solid var(--bad);}
+  @media print{
+    body{background:#fff; font-size:11pt;}
+    .page{box-shadow:none; margin:0; max-width:none; padding:0;}
+    .pb{page-break-before:always;}
+    h1,h2{page-break-after:avoid;} table,.callout,figure,.warn,.scen{page-break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="cover">
+    <div class="big">지스케일러 투자 안내서</div>
+    <div class="sub">Zscaler (ZS) · 성장 · 수익성 · 밸류에이션 점검</div>
+    <div class="sub2">숫자로 읽는 제로 트러스트 선도기업</div>
+    <div class="tag">‘성장은 여전한가, 수익성은 따라오는가, 값은 정당한가’</div>
+    <div class="date">2026년 7월 · FY2026 3분기 기준</div>
+  </div>
+
+  <div class="pb"></div>
+  <div class="warn">
+    <div class="ct">⚠ 투자 유의 — 반드시 먼저 읽어주세요</div>
+    <p>이 문서는 <strong>정보 정리·학습용</strong>이며 특정 종목의 매수·매도를 <strong>추천하지 않습니다</strong>. 지스케일러는 고밸류 성장주로 변동성이 큽니다. 본문 수치는 작성 시점(2026년 7월)의 공개 자료를 정리한 것으로, 최신 실적·환율·주가에 따라 달라집니다. <strong>모든 투자 판단과 책임은 본인에게</strong> 있습니다.</p>
+  </div>
+
+  <h1>목차</h1>
+  <div class="toc">
+    <ol>
+      <li>투자 논지 요약 (Bull vs Bear)</li>
+      <li>시장 규모와 성장(TAM·CAGR)</li>
+      <li>실적 추이 — 매출·ARR·수익성</li>
+      <li>핵심 SaaS 지표 해부</li>
+      <li>성장 동력 — 플랫폼 확장·AI 보안·인수</li>
+      <li>밸류에이션 — 어떻게 값을 매기나</li>
+      <li>리스크 매트릭스</li>
+      <li>시나리오 — 낙관·중립·비관</li>
+      <li>촉매 캘린더 · 체크리스트</li>
+      <li>FAQ · 출처</li>
+    </ol>
+  </div>
+
+  <!-- 1 -->
+  <div class="pb"></div>
+  <h1>1장. 투자 논지 요약 (Bull vs Bear)</h1>
+  <p>지스케일러 투자 논쟁의 핵심은 세 가지입니다. <strong>①성장은 지속되는가 ②수익성은 개선되는가 ③이미 높은 밸류에이션이 정당한가.</strong> 강세론과 약세론을 나란히 봅니다.</p>
+  <table>
+    <thead><tr><th>쟁점</th><th>강세론(Bull)</th><th>약세론(Bear)</th></tr></thead>
+    <tbody>
+      <tr><td>성장</td><td>ARR 여전히 25% 성장, 대기업 침투 초입</td><td>FY27 성장률 16~17%로 감속 안내</td></tr>
+      <tr><td>수익성</td><td>비GAAP 영업이익률 사상 최고(23%)</td><td>CapEx 증가로 FCF 마진 하향 조정</td></tr>
+      <tr><td>확장</td><td>AI 보안 ARR 4억$ 조기 달성, 신제품 다수</td><td>인수(Red Canary) 통합·희석 부담</td></tr>
+      <tr><td>밸류</td><td>SASE/SSE 표준 지위 프리미엄 정당</td><td>40배+ 선행이익, 실망 시 급락</td></tr>
+      <tr><td>경쟁</td><td>순수 클라우드 아키텍처 우위</td><td>MS 번들·팔로알토·클플 협공</td></tr>
+    </tbody>
+  </table>
+  <div class="callout">
+    <div class="ct">한 줄 정리</div>
+    <p>지스케일러는 <strong>‘성장+수익성’을 동시에 보여주는 우량 SaaS</strong>이지만, <strong>성장 둔화 속도와 높은 밸류에이션</strong>이 최대 논쟁거리입니다. 투자 판단은 ‘감속하는 성장에 얼마를 지불할 것인가’로 귀결됩니다.</p>
+  </div>
+
+  <!-- 2 -->
+  <div class="pb"></div>
+  <h1>2장. 시장 규모와 성장 (TAM·CAGR)</h1>
+  <p>지스케일러는 회사가 겨냥하는 전체 시장(TAM)을 <strong>960억 달러 이상</strong>으로 제시해 왔습니다. 제로 트러스트·SSE·SASE·데이터 보호·보안운영(SOC)·AI 보안까지 영역을 넓히며 TAM을 확장하는 전략입니다.</p>
+  <table>
+    <thead><tr><th>세부 시장</th><th>지스케일러 제품</th><th>성장 성격</th></tr></thead>
+    <tbody>
+      <tr><td>보안 웹 게이트웨이(SWG)</td><td>ZIA</td><td>성숙·안정 성장</td></tr>
+      <tr><td>제로 트러스트 접근(ZTNA)</td><td>ZPA</td><td>VPN 대체로 고성장</td></tr>
+      <tr><td>디지털 경험(DEM)</td><td>ZDX</td><td>신규 카테고리 확장</td></tr>
+      <tr><td>데이터 보호(DLP/CASB)</td><td>Data Protection</td><td>업셀 핵심</td></tr>
+      <tr><td>보안운영(SOC/MDR)</td><td>Red Canary 결합</td><td>신규 진입</td></tr>
+      <tr><td>AI 보안</td><td>AI/GenAI 보호</td><td>초고성장 신축</td></tr>
+    </tbody>
+  </table>
+  <p>제로 트러스트/SSE 시장 자체가 연 <strong>두 자릿수 중반(CAGR)</strong>으로 성장하는 것으로 분석됩니다. 시장 성장률 이상으로 지스케일러가 점유율을 늘리면 ‘시장성장 × 점유율확대’의 이중 성장이 가능합니다.</p>
+
+  <figure>
+    <svg viewBox="0 0 720 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="지스케일러 ARR 성장 막대 그래프">
+      <rect x="0" y="0" width="720" height="300" fill="#f4f8fe"/>
+      <text x="360" y="30" font-size="15" font-weight="700" fill="#0a3f91" text-anchor="middle">연간 반복 매출(ARR) 성장 추이 (억 달러, 개략)</text>
+      <line x1="70" y1="250" x2="690" y2="250" stroke="#9bb8e0"/>
+      <!-- bars -->
+      <rect x="110" y="185" width="70" height="65" fill="#9cc0f0"/><text x="145" y="175" font-size="12" fill="#0a3f91" text-anchor="middle">~18</text><text x="145" y="270" font-size="11" fill="#595959" text-anchor="middle">FY23</text>
+      <rect x="230" y="155" width="70" height="95" fill="#6ba4ec"/><text x="265" y="145" font-size="12" fill="#0a3f91" text-anchor="middle">~24</text><text x="265" y="270" font-size="11" fill="#595959" text-anchor="middle">FY24</text>
+      <rect x="350" y="115" width="70" height="135" fill="#3d84e6"/><text x="385" y="105" font-size="12" fill="#0a3f91" text-anchor="middle">~30</text><text x="385" y="270" font-size="11" fill="#595959" text-anchor="middle">FY25</text>
+      <rect x="470" y="90" width="70" height="160" fill="#1668e3"/><text x="505" y="80" font-size="12" fill="#0a3f91" text-anchor="middle">~35</text><text x="505" y="270" font-size="11" fill="#595959" text-anchor="middle">FY26(3Q)</text>
+      <rect x="590" y="70" width="70" height="180" fill="#0a3f91"/><text x="625" y="60" font-size="12" fill="#0a3f91" text-anchor="middle">40+?</text><text x="625" y="270" font-size="11" fill="#595959" text-anchor="middle">FY27(E)</text>
+    </svg>
+    <figcaption>ARR은 꾸준히 우상향하나 증가율(성장 기울기)은 완만해지는 추세. (개략 도식 / 출처 수치: <a href="https://ir.zscaler.com">Zscaler IR</a> 발표 기반, FY27은 추정)</figcaption>
+  </figure>
+
+  <!-- 3 -->
+  <div class="pb"></div>
+  <h1>3장. 실적 추이 — 매출·ARR·수익성</h1>
+  <div class="kpi">
+    <div class="box"><div class="num">$26.7억</div><div class="lab">FY2025 매출(+23%)</div></div>
+    <div class="box"><div class="num">$35억</div><div class="lab">ARR(FY26 3Q, +25%)</div></div>
+    <div class="box"><div class="num">23%</div><div class="lab">비GAAP 영업이익률(최고)</div></div>
+    <div class="box"><div class="num">~115%</div><div class="lab">순매출유지율(NRR)</div></div>
+  </div>
+  <p>최근 흐름을 요약하면 이렇습니다.</p>
+  <ul>
+    <li><strong>매출:</strong> FY2025 26.7억 달러(+23%). FY2026은 분기마다 25~26% 성장세 유지.</li>
+    <li><strong>ARR:</strong> 2025년 30억 달러 돌파 → FY2026 3분기 약 35억 달러(+25%). Red Canary 인수 기여분 제외 시 유기적 성장은 21% 수준.</li>
+    <li><strong>수익성:</strong> 비GAAP 영업이익률이 23%로 사상 최고. 성장하면서 수익성도 개선되는 전형적 우량 SaaS 궤적.</li>
+    <li><strong>현금흐름:</strong> FY2026 잉여현금흐름(FCF) 마진 가이던스를 CapEx 증가로 26.5~27%에서 <strong>22.8~23.3%로 하향 조정</strong>. 데이터센터 투자 확대가 배경.</li>
+  </ul>
+  <table>
+    <thead><tr><th>구분</th><th>FY2024</th><th>FY2025</th><th>FY2026(진행)</th></tr></thead>
+    <tbody>
+      <tr><td>매출</td><td>~$21.7억</td><td>$26.7억</td><td>분기 +25~26%</td></tr>
+      <tr><td>매출 성장률</td><td>~34%</td><td>+23%</td><td>~25%</td></tr>
+      <tr><td>ARR</td><td>~$24억</td><td>$30억+ 돌파</td><td>~$35억</td></tr>
+      <tr><td>비GAAP 영업이익률</td><td>~21%</td><td>~22%</td><td>23%(최고)</td></tr>
+      <tr><td>NRR</td><td>~115%</td><td>~115%</td><td>~115%</td></tr>
+    </tbody>
+  </table>
+  <p class="muted">※ 수치는 회사 발표·집계 기반 개략치로 반올림·추정이 포함됩니다. 정확한 값은 원문 공시를 확인하세요.</p>
+
+  <!-- 4 -->
+  <div class="pb"></div>
+  <h1>4장. 핵심 SaaS 지표 해부</h1>
+  <h2>순매출유지율(NRR) — 왜 115%인가</h2>
+  <p>NRR 115%는 <strong>작년 100원 쓰던 고객군이 올해 115원을 쓴다</strong>는 뜻입니다. 신규 고객 없이도 매출이 15% 늘어난다는 의미로, 제품 추가 판매(업셀)가 잘 된다는 신호입니다. 다만 초고성장기(과거 125%+)보다는 낮아졌고, 안정화 국면입니다.</p>
+  <h2>청구액(Billings)·RPO — 미래 매출의 창</h2>
+  <p>구독 회사는 계약을 선(先)결제 받으므로, <strong>청구액과 잔여계약(RPO)</strong>이 미래 매출을 미리 보여줍니다. FY2025 4분기 계산청구액은 12억 달러대로 전년비 32% 증가했습니다. 청구액 성장률이 매출 성장률보다 높으면 ‘앞으로 더 빨라진다’는 긍정 신호로 읽힙니다.</p>
+  <h2>대형 고객 확대</h2>
+  <p>연 100만 달러 이상(ARR $1M+) 및 10만 달러 이상 고객 수가 꾸준히 증가하고 있습니다. 이는 지스케일러가 <strong>대기업의 표준 보안 플랫폼</strong>으로 자리잡아 가는 핵심 근거입니다.</p>
+  <div class="callout">
+    <div class="ct">지표를 함께 보는 법</div>
+    <p>ARR(규모) · NRR(확장) · 청구액/RPO(선행) · 영업이익률(수익성) · FCF(현금)을 <strong>세트로</strong> 봐야 그림이 정확합니다. 하나만 좋고 나머지가 나쁘면 함정일 수 있습니다.</p>
+  </div>
+
+  <!-- 5 -->
+  <div class="pb"></div>
+  <h1>5장. 성장 동력 — 플랫폼 확장·AI 보안·인수</h1>
+  <h2>① 플랫폼 확장(랜드 앤 익스팬드)</h2>
+  <p>고객이 ZIA로 들어와 → ZPA → ZDX → 데이터 보호 → 보안운영으로 <strong>제품을 넓혀가는 구조</strong>가 성장의 뼈대입니다. ‘Zero Trust Everywhere’라는 슬로건으로 사용자뿐 아니라 <strong>지점·IoT/OT·클라우드 워크로드·B2B</strong>까지 제로 트러스트를 확장 중입니다.</p>
+  <h2>② AI 보안 — 새 성장축</h2>
+  <p>직원들의 생성형 AI 사용이 늘며 <strong>데이터 유출·프롬프트 인젝션</strong> 위험이 커졌습니다. 지스케일러는 하루 수천억 트랜잭션에서 나오는 방대한 데이터로 AI 위협을 탐지·통제합니다. <strong>AI 보안 ARR이 4억 달러를 예정보다 빨리 돌파</strong>하며 신규 동력으로 부상했습니다.</p>
+  <h2>③ 인수 — 보안운영(SOC)으로 확장</h2>
+  <p>2025년 <strong>Red Canary(MDR 선도기업)</strong>를 약 6.75억 달러+ 규모로 인수해, 위협 탐지·대응을 자동화하는 <strong>‘에이전틱 SOC’</strong>로 나아가고 있습니다. 앞서 인수한 Avalor의 데이터 패브릭 기술은 리스크 관리(Risk360)에 결합됐습니다. 인수는 TAM을 넓히지만 <strong>통합·수익화 리스크</strong>도 동반합니다.</p>
+
+  <!-- 6 -->
+  <div class="pb"></div>
+  <h1>6장. 밸류에이션 — 어떻게 값을 매기나</h1>
+  <p>지스케일러 같은 고성장 SaaS는 이익(PER)만으로 보기 어려워, 다음 지표를 함께 씁니다.</p>
+  <table>
+    <thead><tr><th>지표</th><th>의미</th><th>해석 포인트</th></tr></thead>
+    <tbody>
+      <tr><td>P/S (주가매출배수)</td><td>시가총액 ÷ 매출</td><td>성장률 높을수록 높게 용인</td></tr>
+      <tr><td>EV/Sales, EV/ARR</td><td>기업가치 ÷ 매출/ARR</td><td>현금·부채 반영한 배수</td></tr>
+      <tr><td>선행 P/E</td><td>주가 ÷ 예상 EPS</td><td>비GAAP 기준 40배+ 수준</td></tr>
+      <tr><td>P/FCF</td><td>주가 ÷ 잉여현금흐름</td><td>현금창출 대비 가격</td></tr>
+      <tr><td>Rule of 40/60</td><td>성장률+이익률</td><td>질(質) 확인</td></tr>
+    </tbody>
+  </table>
+  <div class="callout">
+    <div class="ct">핵심 논점 — ‘성장 감속 vs 프리미엄’</div>
+    <p>지스케일러는 선행이익 40배 이상, 매출배수도 동종 대비 높은 편입니다. 이 프리미엄은 <strong>‘SSE 표준 지위 + 높은 유지율 + 흑자 전환’</strong>에 대한 대가입니다. 하지만 FY27 성장률이 16~17%로 낮아지면, 시장이 요구하는 배수도 낮아질 수 있어 <strong>‘밸류에이션 리레이팅(재평가)’ 위험</strong>이 상존합니다.</p>
+  </div>
+  <div class="warn">
+    <div class="ct">주의</div>
+    <p>구체적 목표주가·적정주가는 이 문서의 범위가 아닙니다. 밸류에이션은 <strong>성장 가정·할인율·비교대상</strong>에 따라 크게 달라지며, 애널리스트 목표주가도 편차가 큽니다. 스스로 가정을 세워 검증하시고 <strong>판단·책임은 본인</strong>에게 있습니다.</p>
+  </div>
+
+  <!-- 7 -->
+  <div class="pb"></div>
+  <h1>7장. 리스크 매트릭스</h1>
+  <table>
+    <thead><tr><th>리스크</th><th>발생가능성</th><th>영향</th><th>내용</th></tr></thead>
+    <tbody>
+      <tr><td>성장 둔화</td><td class="m">중~높음</td><td class="b">높음</td><td>FY27 16~17% 안내, 대수의 법칙</td></tr>
+      <tr><td>밸류 리레이팅</td><td class="m">중</td><td class="b">높음</td><td>고배수 → 실망 시 급락</td></tr>
+      <tr><td>경쟁 심화</td><td class="m">중</td><td class="m">중</td><td>MS 번들·팔로알토·클플</td></tr>
+      <tr><td>인수 통합 실패</td><td class="g">낮~중</td><td class="m">중</td><td>Red Canary 시너지·희석</td></tr>
+      <tr><td>CapEx 증가</td><td class="m">중</td><td class="m">중</td><td>FCF 마진 하향 요인</td></tr>
+      <tr><td>거시·IT예산 축소</td><td class="g">낮~중</td><td class="m">중</td><td>경기침체 시 지출 지연</td></tr>
+      <tr><td>주식보상(SBC) 희석</td><td class="m">중</td><td class="g">낮~중</td><td>GAAP 이익·주식수 부담</td></tr>
+      <tr><td>보안 사고</td><td class="g">낮음</td><td class="b">높음</td><td>보안회사 특성상 신뢰 직결</td></tr>
+    </tbody>
+  </table>
+  <p class="muted">색상: <span class="g">낮음</span> / <span class="m">중간</span> / <span class="b">높음</span> — 상대적 인식 수준의 개략 표기.</p>
+
+  <!-- 8 -->
+  <div class="pb"></div>
+  <h1>8장. 시나리오 — 낙관·중립·비관</h1>
+  <p>미래는 알 수 없으므로, <strong>가정을 바꿔가며</strong> 그림을 그려봅니다. (수치는 예시적 프레임이며 예측이 아닙니다.)</p>
+  <div class="scen">
+    <div class="col opt">
+      <h4 class="g">낙관(Bull)</h4>
+      <p><strong>가정:</strong> AI 보안·플랫폼 확장 성공, 성장률 20%+ 재가속, 이익률 상승.</p>
+      <p><strong>그림:</strong> ARR 지속 확대, 프리미엄 유지·확대. Rule of 60 지속.</p>
+    </div>
+    <div class="col base">
+      <h4 class="em">중립(Base)</h4>
+      <p><strong>가정:</strong> 성장률 16~20%로 완만 감속, 이익률·FCF 꾸준.</p>
+      <p><strong>그림:</strong> ‘좋은 회사, 비싼 주가’ 균형. 실적은 견조하나 배수 부담.</p>
+    </div>
+    <div class="col bear">
+      <h4 class="b">비관(Bear)</h4>
+      <p><strong>가정:</strong> 성장 15% 아래로 둔화·경쟁 잠식, 인수 실망.</p>
+      <p><strong>그림:</strong> 성장주 프리미엄 축소(리레이팅), 주가 변동성 확대.</p>
+    </div>
+  </div>
+  <div class="callout">
+    <div class="ct">시나리오 활용법</div>
+    <p>중요한 건 정답 예측이 아니라 <strong>‘어떤 지표가 어느 시나리오를 가리키는지’</strong>를 미리 정해두는 것입니다. 예: NRR 하락·청구액 둔화가 이어지면 비관 쪽, AI ARR 가속·대형고객 급증이면 낙관 쪽으로 해석.</p>
+  </div>
+
+  <!-- 9 -->
+  <div class="pb"></div>
+  <h1>9장. 촉매 캘린더 · 체크리스트</h1>
+  <h2>정기 촉매</h2>
+  <table>
+    <thead><tr><th>시점</th><th>이벤트</th><th>볼 포인트</th></tr></thead>
+    <tbody>
+      <tr><td>분기마다</td><td>실적 발표(2·5·8·11월경)</td><td>ARR·청구액·NRR·가이던스</td></tr>
+      <tr><td>연례</td><td>Zenith Live(사용자 콘퍼런스)</td><td>신제품·AI 로드맵</td></tr>
+      <tr><td>수시</td><td>가트너 MQ/SSE 평가</td><td>경쟁 포지션 변화</td></tr>
+      <tr><td>수시</td><td>인수·파트너십 발표</td><td>TAM 확장·희석</td></tr>
+    </tbody>
+  </table>
+  <h2>분기 실적 체크리스트</h2>
+  <ul>
+    <li>ARR 성장률이 전분기 대비 유지/둔화되는가</li>
+    <li>계산청구액(Billings) 성장률 &gt; 매출 성장률인가</li>
+    <li>NRR이 110% 이상 방어되는가</li>
+    <li>비GAAP 영업이익률·FCF 마진 방향</li>
+    <li>$1M+ 고객 순증가 추세</li>
+    <li>가이던스 상향/유지/하향 및 그 이유</li>
+    <li>AI 보안 ARR·신제품 채택 진척</li>
+  </ul>
+
+  <!-- 10 -->
+  <div class="pb"></div>
+  <h1>10장. FAQ</h1>
+  <h3>Q. 흑자 기업인가요?</h3>
+  <p>비GAAP(조정) 기준으로는 견조한 흑자·높은 영업이익률입니다. 다만 <strong>GAAP 기준</strong>은 주식보상비용(SBC) 등으로 흑자 폭이 작거나 변동합니다. 두 기준을 구분해서 보세요.</p>
+  <h3>Q. 배당이 있나요?</h3>
+  <p>없습니다. 성장 재투자와 인수에 현금을 씁니다. 배당·자사주보다 성장에 집중하는 단계입니다.</p>
+  <h3>Q. 가장 큰 변수 하나만 꼽으면?</h3>
+  <p><strong>성장 둔화 속도</strong>입니다. 높은 밸류에이션이 정당화되려면 성장률이 시장 기대만큼 방어돼야 합니다. 그래서 매 분기 ARR·청구액 성장률이 핵심 관전 포인트입니다.</p>
+
+  <!-- 출처 -->
+  <div class="pb"></div>
+  <h1>부록. 출처 및 참고자료</h1>
+  <ul class="src">
+    <li>Zscaler IR — FY2026 3분기 실적: <a href="https://ir.zscaler.com/news-releases/news-release-details/zscaler-announces-strong-third-quarter-fiscal-2026-results">ir.zscaler.com</a></li>
+    <li>Zscaler 8-K (SEC) FY2025: <a href="https://www.sec.gov/Archives/edgar/data/1713683/000171368325000138/zs-07312025_991.htm">sec.gov EDGAR</a> / FY2026 1분기: <a href="https://www.sec.gov/Archives/edgar/data/1713683/000171368325000203/zs-10312025_991.htm">EDGAR</a></li>
+    <li>Q1 FY2026 실적 분석: <a href="https://sergeycyw.substack.com/p/zscaler-q1-2026-earnings-analysis">Sergey (Substack)</a></li>
+    <li>Q1/Q3 FY2026 컨퍼런스콜: <a href="https://www.fool.com/earnings/call-transcripts/2025/11/25/zscaler-zs-q1-2026-earnings-call-transcript/">Motley Fool</a></li>
+    <li>밸류에이션·통계: <a href="https://stockanalysis.com/stocks/zs/statistics/">stockanalysis.com</a>, <a href="https://www.gurufocus.com/term/price-to-free-cash-flow/ZS">GuruFocus</a></li>
+    <li>기업 개요·시장 위치: <a href="https://www.useluminix.com/reports/company-overviews/zscaler-company-overview-zero-trust-security-platform-financials-and-market-position-2026">Luminix 2026</a></li>
+    <li>Red Canary 인수: <a href="https://ir.zscaler.com/news-releases/news-release-details/zscaler-accelerate-innovation-ai-powered-security-operations">Zscaler IR</a></li>
+  </ul>
+
+  <div class="warn">
+    <div class="ct">⚠ 마지막 당부</div>
+    <p>본 자료는 학습용 정보 정리로 <strong>매수·매도 추천이 아닙니다.</strong> 수치는 시점에 따라 변하며 추정·반올림이 포함됩니다. 투자 전 최신 공시(IR·SEC)를 직접 확인하고, <strong>모든 판단과 책임은 본인</strong>에게 있습니다.</p>
+  </div>
+
+  <p class="muted" style="text-align:center; margin-top:40px;">— 지스케일러 3부작 중 ②투자안내서 —<br>①입문가이드, ③밸류체인 문서를 함께 참고하세요.</p>
+
+</div>
+</body>
+</html>

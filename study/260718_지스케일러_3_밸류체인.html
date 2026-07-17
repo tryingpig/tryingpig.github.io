@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>지스케일러(ZS) 밸류체인 — 클라우드 보안 생태계 속 위치</title>
+<style>
+  :root{
+    --accent:#1668e3; --accent-dark:#0a3f91; --light:#e9f1fd; --light2:#f4f8fe;
+    --gray:#595959; --line:#cfe0f7; --ink:#1d2733; --warn:#c0392b; --warnbg:#fdecea;
+  }
+  *{box-sizing:border-box;}
+  html{-webkit-print-color-adjust:exact; print-color-adjust:exact;}
+  body{font-family:"Malgun Gothic","맑은 고딕",-apple-system,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;
+    color:var(--ink); line-height:1.7; margin:0; background:#f5f6f8; font-size:16px;}
+  .page{max-width:820px; margin:24px auto; background:#fff; padding:56px 60px; box-shadow:0 1px 8px rgba(0,0,0,.08);}
+  h1{color:var(--accent-dark); font-size:1.5rem; border-bottom:3px solid var(--accent); padding-bottom:8px; margin:2.3em 0 .7em;}
+  h1:first-of-type{margin-top:.3em;}
+  h2{color:var(--accent); font-size:1.16rem; margin:1.5em 0 .45em;}
+  h3{color:var(--accent-dark); font-size:1.02rem; margin:1.2em 0 .3em;}
+  p{margin:.5em 0;} ul{margin:.4em 0 .9em; padding-left:1.3em;} li{margin:.3em 0;}
+  .em{color:var(--accent-dark); font-weight:700;}
+  .muted{color:var(--gray); font-size:.9rem;}
+  .callout{background:var(--light); border:1px solid var(--accent); border-left:6px solid var(--accent); border-radius:4px; padding:14px 18px; margin:1.1em 0;}
+  .callout .ct{font-weight:700; color:var(--accent-dark); margin-bottom:6px;}
+  .callout p{margin:.35em 0; font-size:.96rem;}
+  .warn{background:var(--warnbg); border:1px solid var(--warn); border-left:6px solid var(--warn); border-radius:4px; padding:14px 18px; margin:1.2em 0;}
+  .warn .ct{font-weight:700; color:var(--warn); margin-bottom:6px;}
+  .warn p{margin:.35em 0; font-size:.93rem;}
+  table{border-collapse:collapse; width:100%; margin:1em 0; font-size:.84rem;}
+  th{background:var(--accent); color:#fff; font-weight:700; padding:9px 10px; text-align:center; border:1px solid var(--line);}
+  td{padding:8px 10px; border:1px solid var(--line); text-align:center; vertical-align:top;}
+  td:first-child{text-align:left; font-weight:700; background:var(--light2);}
+  tbody tr:nth-child(even) td{background:var(--light2);}
+  tbody tr:nth-child(even) td:first-child{background:var(--light);}
+  .cover{text-align:center; padding:115px 0 85px;}
+  .cover .big{font-size:2.4rem; font-weight:800; color:var(--accent-dark); letter-spacing:-1px;}
+  .cover .sub{font-size:1.22rem; color:var(--accent); margin-top:12px;}
+  .cover .sub2{font-size:1rem; color:var(--gray); margin-top:24px;}
+  .cover .tag{font-size:.95rem; color:var(--gray); font-style:italic; margin-top:64px;}
+  .cover .date{font-size:.88rem; color:var(--gray); margin-top:8px;}
+  .toc{background:var(--light2); border:1px solid var(--line); border-radius:6px; padding:18px 24px;}
+  .toc ol{margin:0; padding-left:1.4em;} .toc li{margin:.3em 0;}
+  a{color:var(--accent-dark); word-break:break-all;}
+  .src{font-size:.83rem;} .src li{margin:.4em 0;}
+  figure{margin:1.4em 0; text-align:center;}
+  figure svg{width:100%; max-width:740px; height:auto; display:block; margin:0 auto;}
+  figcaption{font-size:.85rem; color:var(--gray); margin-top:8px;}
+  @media print{
+    body{background:#fff; font-size:11pt;}
+    .page{box-shadow:none; margin:0; max-width:none; padding:0;}
+    .pb{page-break-before:always;}
+    h1,h2{page-break-after:avoid;} table,.callout,figure,.warn{page-break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="cover">
+    <div class="big">지스케일러 밸류체인</div>
+    <div class="sub">Zscaler (ZS) · 클라우드 보안 생태계 지도</div>
+    <div class="sub2">지스케일러는 어디에 서 있고, 누구와 경쟁하며, 무엇에 기대는가</div>
+    <div class="tag">‘칩–클라우드–보안–고객’으로 이어지는 사슬 속 위치 찾기</div>
+    <div class="date">2026년 7월 기준</div>
+  </div>
+
+  <div class="pb"></div>
+  <div class="warn">
+    <div class="ct">⚠ 투자 유의 — 반드시 먼저 읽어주세요</div>
+    <p>이 문서는 <strong>정보 정리·학습용</strong>이며 특정 종목의 매수·매도를 <strong>추천하지 않습니다</strong>. 밸류체인 구성·비중은 시장 변화에 따라 달라집니다. <strong>모든 투자 판단과 책임은 본인에게</strong> 있습니다.</p>
+  </div>
+
+  <h1>목차</h1>
+  <div class="toc">
+    <ol>
+      <li>밸류체인 한눈에 보기</li>
+      <li>업스트림 — 지스케일러가 기대는 것들</li>
+      <li>미드스트림 — 지스케일러의 자리(SSE/SASE)</li>
+      <li>다운스트림 — 고객과 채널</li>
+      <li>경쟁 지형도 — 5대 진영</li>
+      <li>대체·인접 위협 — MS 번들, 방화벽, CDN</li>
+      <li>제로 트러스트 스택 해부(CASB·DLP·ZTNA·SWG)</li>
+      <li>AI가 바꾸는 밸류체인</li>
+      <li>한국 투자자 관점 — 연관 기업</li>
+      <li>요약 · 용어 · 출처</li>
+    </ol>
+  </div>
+
+  <!-- 1 -->
+  <div class="pb"></div>
+  <h1>1장. 밸류체인 한눈에 보기</h1>
+  <p>클라우드 보안 밸류체인은 <strong>‘반도체·인프라(업스트림) → 클라우드 보안 플랫폼(미드스트림) → 기업 고객·채널(다운스트림)’</strong>으로 이어집니다. 지스케일러는 <strong>가운데(미드스트림)의 SSE/SASE 플랫폼</strong>에 위치하며, 여기서 가장 큰 부가가치와 이익률이 발생합니다.</p>
+
+  <figure>
+    <svg viewBox="0 0 740 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="클라우드 보안 밸류체인 지도">
+      <rect x="0" y="0" width="740" height="320" fill="#f4f8fe"/>
+      <text x="370" y="28" font-size="15" font-weight="700" fill="#0a3f91" text-anchor="middle">클라우드 보안 밸류체인</text>
+      <!-- 업스트림 -->
+      <rect x="20" y="55" width="200" height="210" rx="10" fill="#eef4fd" stroke="#9cc0f0"/>
+      <text x="120" y="80" font-size="13" font-weight="700" fill="#0a3f91" text-anchor="middle">① 업스트림</text>
+      <text x="120" y="98" font-size="10" fill="#595959" text-anchor="middle">인프라·부품</text>
+      <rect x="40" y="112" width="160" height="30" rx="5" fill="#fff" stroke="#cfe0f7"/><text x="120" y="132" font-size="11" text-anchor="middle">서버·네트워크 칩</text>
+      <rect x="40" y="150" width="160" height="30" rx="5" fill="#fff" stroke="#cfe0f7"/><text x="120" y="170" font-size="11" text-anchor="middle">데이터센터·리츠</text>
+      <rect x="40" y="188" width="160" height="30" rx="5" fill="#fff" stroke="#cfe0f7"/><text x="120" y="208" font-size="11" text-anchor="middle">회선·피어링</text>
+      <rect x="40" y="226" width="160" height="30" rx="5" fill="#fff" stroke="#cfe0f7"/><text x="120" y="246" font-size="11" text-anchor="middle">클라우드(IaaS)</text>
+      <!-- 미드스트림 -->
+      <rect x="270" y="55" width="200" height="210" rx="10" fill="#e9f1fd" stroke="#1668e3" stroke-width="3"/>
+      <text x="370" y="80" font-size="13" font-weight="800" fill="#0a3f91" text-anchor="middle">② 미드스트림 ★</text>
+      <text x="370" y="98" font-size="10" fill="#595959" text-anchor="middle">SSE / SASE 플랫폼</text>
+      <rect x="290" y="112" width="160" height="46" rx="6" fill="#1668e3"/><text x="370" y="132" font-size="13" fill="#fff" text-anchor="middle" font-weight="700">Zscaler</text><text x="370" y="150" font-size="10" fill="#dce9fb" text-anchor="middle">Zero Trust Exchange</text>
+      <rect x="290" y="166" width="160" height="26" rx="5" fill="#fff" stroke="#cfe0f7"/><text x="370" y="184" font-size="10" text-anchor="middle">ZIA·ZPA·ZDX·DLP</text>
+      <rect x="290" y="198" width="160" height="26" rx="5" fill="#fff" stroke="#cfe0f7"/><text x="370" y="216" font-size="10" text-anchor="middle">위협 인텔·AI 보안</text>
+      <rect x="290" y="230" width="160" height="26" rx="5" fill="#fff" stroke="#cfe0f7"/><text x="370" y="248" font-size="10" text-anchor="middle">보안운영(SOC/MDR)</text>
+      <!-- 다운스트림 -->
+      <rect x="520" y="55" width="200" height="210" rx="10" fill="#eef4fd" stroke="#9cc0f0"/>
+      <text x="620" y="80" font-size="13" font-weight="700" fill="#0a3f91" text-anchor="middle">③ 다운스트림</text>
+      <text x="620" y="98" font-size="10" fill="#595959" text-anchor="middle">고객·채널</text>
+      <rect x="540" y="112" width="160" height="30" rx="5" fill="#fff" stroke="#cfe0f7"/><text x="620" y="132" font-size="11" text-anchor="middle">대기업(F500 40%)</text>
+      <rect x="540" y="150" width="160" height="30" rx="5" fill="#fff" stroke="#cfe0f7"/><text x="620" y="170" font-size="11" text-anchor="middle">정부·공공</text>
+      <rect x="540" y="188" width="160" height="30" rx="5" fill="#fff" stroke="#cfe0f7"/><text x="620" y="208" font-size="11" text-anchor="middle">파트너·MSP·리셀러</text>
+      <rect x="540" y="226" width="160" height="30" rx="5" fill="#fff" stroke="#cfe0f7"/><text x="620" y="246" font-size="11" text-anchor="middle">SI·컨설팅</text>
+      <!-- arrows -->
+      <path d="M222 160 L268 160" stroke="#1668e3" stroke-width="3" marker-end="url(#z)"/>
+      <path d="M472 160 L518 160" stroke="#1668e3" stroke-width="3" marker-end="url(#z)"/>
+      <defs><marker id="z" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#1668e3"/></marker></defs>
+    </svg>
+    <figcaption>지스케일러는 밸류체인의 ‘허리(미드스트림)’에서 부가가치를 집약한다. (도식: 자체 제작)</figcaption>
+  </figure>
+
+  <!-- 2 -->
+  <div class="pb"></div>
+  <h1>2장. 업스트림 — 지스케일러가 기대는 것들</h1>
+  <p>지스케일러는 소프트웨어 회사지만, 세계 150여 곳의 데이터센터에서 거대한 클라우드를 돌립니다. 따라서 아래 인프라에 의존합니다.</p>
+  <table>
+    <thead><tr><th>업스트림 요소</th><th>역할</th><th>대표 기업(예시)</th></tr></thead>
+    <tbody>
+      <tr><td>서버·네트워크 칩</td><td>트래픽 처리·검사 연산</td><td>인텔·AMD·엔비디아·브로드컴</td></tr>
+      <tr><td>데이터센터·상면</td><td>전 세계 검문소 인프라</td><td>Equinix·Digital Realty 등</td></tr>
+      <tr><td>회선·피어링</td><td>저지연 글로벌 연결</td><td>통신사·IX·CDN</td></tr>
+      <tr><td>퍼블릭 클라우드</td><td>일부 워크로드·확장</td><td>AWS·Azure·GCP</td></tr>
+    </tbody>
+  </table>
+  <div class="callout">
+    <div class="ct">투자 포인트</div>
+    <p>지스케일러는 <strong>자체 클라우드 인프라 투자(CapEx)</strong>가 늘면서 잉여현금흐름 마진이 하향 조정됐습니다(2장 참고). ‘성능·저지연’을 지키기 위한 인프라 확충은 경쟁 우위이자 비용 부담이라는 <strong>양면성</strong>을 갖습니다.</p>
+  </div>
+
+  <!-- 3 -->
+  <div class="pb"></div>
+  <h1>3장. 미드스트림 — 지스케일러의 자리(SSE/SASE)</h1>
+  <p>밸류체인의 핵심은 <span class="em">SSE(보안 서비스 엣지)</span>와 그 상위 개념인 <span class="em">SASE(사세)</span>입니다. SASE = <strong>네트워크(SD-WAN) + 보안(SSE)</strong>를 클라우드에서 통합한 개념입니다. 지스케일러는 이 중 <strong>보안(SSE) 축의 순수 강자</strong>입니다.</p>
+  <table>
+    <thead><tr><th>계층</th><th>구성</th><th>지스케일러 해당</th></tr></thead>
+    <tbody>
+      <tr><td>SASE</td><td>네트워크+보안 통합</td><td>보안 측(SSE) 담당, 네트워크는 파트너</td></tr>
+      <tr><td>SSE</td><td>ZTNA+SWG+CASB+DLP</td><td>핵심 사업 영역 ★</td></tr>
+      <tr><td>ZTNA</td><td>제로 트러스트 앱 접근</td><td>ZPA</td></tr>
+      <tr><td>SWG</td><td>웹 트래픽 보안</td><td>ZIA</td></tr>
+      <tr><td>CASB/DLP</td><td>클라우드앱·데이터 보호</td><td>Data Protection</td></tr>
+      <tr><td>DEM</td><td>디지털 경험 모니터링</td><td>ZDX</td></tr>
+    </tbody>
+  </table>
+  <p>지스케일러가 ‘순수(pure-play) 클라우드’라는 점이 핵심 차별점입니다. 방화벽 장비에서 출발한 경쟁사와 달리, 처음부터 클라우드 프록시로 설계돼 <strong>확장성·SSL 검사 성능</strong>에서 우위로 평가받습니다.</p>
+
+  <!-- 4 -->
+  <div class="pb"></div>
+  <h1>4장. 다운스트림 — 고객과 채널</h1>
+  <p>지스케일러의 고객은 대부분 <strong>대기업·정부</strong>입니다. 포춘 500의 약 40%가 고객이며, 이들이 여러 제품으로 계약을 확대(업셀)하는 구조가 매출의 뼈대입니다.</p>
+  <ul>
+    <li><strong>대기업:</strong> 글로벌 제조·금융·헬스케어·리테일 등. 계약 규모가 크고 유지율이 높음.</li>
+    <li><strong>정부·공공:</strong> 미국 연방(FedRAMP 등 인증) 시장은 진입장벽이자 해자.</li>
+    <li><strong>채널 파트너:</strong> 리셀러·MSP(관리형 서비스)·글로벌 SI가 판매·구축을 확산.</li>
+    <li><strong>기술 파트너:</strong> 마이크로소프트·크라우드스트라이크·오카타(Okta) 등과 아이덴티티·엔드포인트 연계.</li>
+  </ul>
+  <div class="callout">
+    <div class="ct">해자(Moat) 관점</div>
+    <p>한 번 도입하면 <strong>전환 비용이 큽니다.</strong> 전 직원·전 지점의 트래픽 정책을 지스케일러 기준으로 짜놓기 때문입니다. 여기에 <strong>규모(데이터)·인증(정부)·플랫폼 통합</strong>이 더해져 진입장벽을 형성합니다.</p>
+  </div>
+
+  <!-- 5 -->
+  <div class="pb"></div>
+  <h1>5장. 경쟁 지형도 — 5대 진영</h1>
+  <p>제로 트러스트/SSE 시장은 상위 소수가 점유율의 상당 부분을 차지하는 과점 구도입니다. 크게 다섯 진영으로 나뉩니다.</p>
+  <table>
+    <thead><tr><th>진영</th><th>대표</th><th>출발점</th><th>강점</th><th>약점</th></tr></thead>
+    <tbody>
+      <tr><td>순수 클라우드 보안</td><td>Zscaler</td><td>클라우드 프록시</td><td>순수 제로트러스트·규모</td><td>고밸류·네트워크 미보유</td></tr>
+      <tr><td>차세대 방화벽</td><td>Palo Alto</td><td>방화벽 장비</td><td>통합 보안·하이브리드</td><td>클라우드 순수성 논쟁</td></tr>
+      <tr><td>데이터 중심</td><td>Netskope</td><td>CASB/DLP</td><td>데이터 보호 특화</td><td>규모·수익성</td></tr>
+      <tr><td>거대 글로벌망</td><td>Cloudflare</td><td>CDN/네트워크</td><td>저지연·배포 용이</td><td>대기업 심층보안 성숙도</td></tr>
+      <tr><td>플랫폼 번들</td><td>Microsoft</td><td>OS·아이덴티티</td><td>오피스365 기본탑재</td><td>전문성·순수성</td></tr>
+    </tbody>
+  </table>
+  <p class="muted">2025년 가트너 SSE 매직 쿼드런트에서 지스케일러·넷스코프·팔로알토가 ‘리더’, 클라우드플레어는 ‘챌린저’로 평가됐습니다.</p>
+
+  <figure>
+    <svg viewBox="0 0 720 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="SSE 경쟁 포지셔닝 사분면">
+      <rect x="0" y="0" width="720" height="360" fill="#f4f8fe"/>
+      <line x1="360" y1="40" x2="360" y2="320" stroke="#9bb8e0"/>
+      <line x1="80" y1="180" x2="660" y2="180" stroke="#9bb8e0"/>
+      <text x="360" y="30" font-size="12" fill="#595959" text-anchor="middle">비전 완성도 →</text>
+      <text x="30" y="180" font-size="12" fill="#595959" text-anchor="middle" transform="rotate(-90 30 180)">실행력 →</text>
+      <!-- 리더 사분면 -->
+      <text x="640" y="55" font-size="11" fill="#9bb8e0" text-anchor="end">리더</text>
+      <circle cx="560" cy="95" r="30" fill="#1668e3" opacity="0.85"/><text x="560" y="99" font-size="12" fill="#fff" text-anchor="middle" font-weight="700">Zscaler</text>
+      <circle cx="500" cy="130" r="26" fill="#6ba4ec" opacity="0.85"/><text x="500" y="134" font-size="10" fill="#fff" text-anchor="middle">Palo Alto</text>
+      <circle cx="470" cy="90" r="24" fill="#6ba4ec" opacity="0.85"/><text x="470" y="94" font-size="10" fill="#fff" text-anchor="middle">Netskope</text>
+      <!-- 챌린저 -->
+      <circle cx="260" cy="120" r="22" fill="#f39c12" opacity="0.85"/><text x="260" y="124" font-size="9" fill="#fff" text-anchor="middle">Cloudflare</text>
+      <circle cx="240" cy="230" r="20" fill="#9b59b6" opacity="0.8"/><text x="240" y="234" font-size="9" fill="#fff" text-anchor="middle">Microsoft</text>
+    </svg>
+    <figcaption>SSE 경쟁 포지션 개략도(정성적 재구성 — 실제 가트너 좌표 아님). 리더 사분면에 지스케일러·팔로알토·넷스코프가 몰려 있다.</figcaption>
+  </figure>
+
+  <!-- 6 -->
+  <div class="pb"></div>
+  <h1>6장. 대체·인접 위협 — MS 번들, 방화벽, CDN</h1>
+  <p>지스케일러의 밸류체인 위협은 ‘정면 경쟁’만이 아닙니다. <strong>인접 영역이 보안으로 밀고 들어오는 것</strong>이 더 큰 구조적 변수입니다.</p>
+  <ul>
+    <li><strong>마이크로소프트 번들:</strong> 오피스365·Entra에 보안을 끼워 팔면, ‘충분히 괜찮은’ 무료·저가 옵션이 하위 시장을 잠식할 수 있습니다. 지스케일러의 대응은 ‘전문성·성능·순수 제로트러스트’입니다.</li>
+    <li><strong>방화벽 진영의 클라우드화:</strong> 팔로알토·포티넷이 SASE로 확장하며 기존 방화벽 고객을 묶습니다.</li>
+    <li><strong>CDN·네트워크 진영:</strong> 클라우드플레어가 거대 글로벌망을 무기로 저지연·간편 배포를 앞세웁니다.</li>
+  </ul>
+  <div class="callout">
+    <div class="ct">핵심 방어 논리</div>
+    <p>지스케일러는 ‘규모의 데이터 → 더 나은 위협 탐지 → 더 많은 고객’의 <strong>데이터 선순환</strong>과, 대기업·정부에서의 <strong>높은 전환비용</strong>으로 방어합니다. 다만 하위·중소 시장에서는 번들 압력이 실질적 위협입니다.</p>
+  </div>
+
+  <!-- 7 -->
+  <div class="pb"></div>
+  <h1>7장. 제로 트러스트 스택 해부 (CASB·DLP·ZTNA·SWG)</h1>
+  <p>지스케일러 플랫폼을 밸류체인 관점에서 ‘부품’으로 뜯어보면 이렇게 구성됩니다.</p>
+  <table>
+    <thead><tr><th>구성요소</th><th>기능</th><th>비유</th></tr></thead>
+    <tbody>
+      <tr><td>SWG (ZIA)</td><td>웹·인터넷 트래픽 검사·차단</td><td>공항 보안검색대</td></tr>
+      <tr><td>ZTNA (ZPA)</td><td>앱 단위 최소 접근</td><td>호텔 카드키</td></tr>
+      <tr><td>CASB</td><td>클라우드 앱 사용 통제·가시성</td><td>클라우드 앱 관제탑</td></tr>
+      <tr><td>DLP</td><td>민감 데이터 유출 방지</td><td>기밀서류 반출 검사</td></tr>
+      <tr><td>FWaaS</td><td>클라우드형 방화벽</td><td>클라우드 성벽</td></tr>
+      <tr><td>DEM (ZDX)</td><td>사용자 경험 진단</td><td>네트워크 건강검진</td></tr>
+      <tr><td>SOC/MDR</td><td>위협 탐지·대응 운영</td><td>24시간 관제실</td></tr>
+    </tbody>
+  </table>
+  <p>이 요소들을 <strong>하나의 통합 플랫폼</strong>으로 파는 것이 지스케일러의 전략입니다. 고객은 여러 벤더의 장비를 짜맞추는 대신 지스케일러 하나로 대체하려 하고, 이것이 업셀·크로스셀의 토대가 됩니다.</p>
+
+  <!-- 8 -->
+  <div class="pb"></div>
+  <h1>8장. AI가 바꾸는 밸류체인</h1>
+  <p>AI는 지스케일러 밸류체인의 <strong>양쪽 끝을 동시에</strong> 흔듭니다.</p>
+  <ul>
+    <li><strong>수요 측(기회):</strong> 직원들이 생성형 AI를 쓰면서 데이터 유출·프롬프트 인젝션 위험이 커졌습니다. 이를 검사·통제하는 <strong>‘AI 보안’ 수요가 신규 시장</strong>으로 열렸고, 지스케일러의 AI 보안 ARR은 4억 달러를 조기 돌파했습니다.</li>
+    <li><strong>운영 측(효율):</strong> Red Canary 인수로 <strong>AI 기반 보안운영(에이전틱 SOC)</strong>을 구축, 위협 탐지·대응을 자동화합니다.</li>
+    <li><strong>데이터 우위:</strong> 하루 2,500억+ 트랜잭션, 연 1조 건에 달하는 AI/ML 트랜잭션에서 나오는 데이터가 <strong>AI 위협 탐지 모델의 연료</strong>가 됩니다.</li>
+  </ul>
+  <div class="callout">
+    <div class="ct">밸류체인 재편 요약</div>
+    <p>과거 밸류체인이 ‘네트워크 보안’에 머물렀다면, AI 시대엔 <strong>‘데이터 보호 + AI 트래픽 통제 + 자동화된 보안운영’</strong>으로 사슬이 길어집니다. 지스케일러는 이 확장된 사슬 전체를 플랫폼으로 덮으려 합니다.</p>
+  </div>
+
+  <!-- 9 -->
+  <div class="pb"></div>
+  <h1>9장. 한국 투자자 관점 — 연관 기업</h1>
+  <p>지스케일러 자체는 미국 나스닥 상장 종목(ZS)입니다. 밸류체인을 한국·글로벌 관점으로 넓히면 아래와 같은 연관 축이 있습니다. (아래는 <strong>관계 설명이며 추천이 아닙니다.</strong>)</p>
+  <table>
+    <thead><tr><th>축</th><th>연관 기업(예시)</th><th>관계</th></tr></thead>
+    <tbody>
+      <tr><td>직접 경쟁</td><td>Palo Alto, CrowdStrike, Fortinet, Cloudflare, Netskope(비상장), Microsoft</td><td>SSE/보안 경쟁·부분 협력</td></tr>
+      <tr><td>인프라 수혜</td><td>Equinix, Digital Realty(데이터센터)</td><td>보안 클라우드 확장 수혜</td></tr>
+      <tr><td>아이덴티티 연계</td><td>Okta, Microsoft Entra</td><td>제로 트러스트 신원 파트너</td></tr>
+      <tr><td>국내 보안</td><td>안랩, 시큐아이, 파이오링크 등</td><td>국내 제로트러스트/보안 시장 참여</td></tr>
+      <tr><td>ETF</td><td>사이버보안 테마 ETF(예: CIBR, BUG, HACK)</td><td>지스케일러 편입 분산 노출</td></tr>
+    </tbody>
+  </table>
+  <div class="warn">
+    <div class="ct">주의</div>
+    <p>위 기업들은 사업 구조·밸류에이션·리스크가 제각각입니다. ‘밸류체인에 있다’는 사실이 <strong>동반 상승을 보장하지 않습니다.</strong> 각 기업은 개별적으로 검증해야 하며, <strong>판단·책임은 본인</strong>에게 있습니다.</p>
+  </div>
+
+  <!-- 10 -->
+  <div class="pb"></div>
+  <h1>10장. 요약</h1>
+  <ul>
+    <li>지스케일러는 밸류체인의 <strong>‘허리(SSE/SASE 플랫폼)’</strong>에서 부가가치를 집약하는 순수 클라우드 보안 강자다.</li>
+    <li>업스트림(데이터센터·칩)에 의존하고, 다운스트림(대기업·정부·채널)에서 높은 유지율로 확장한다.</li>
+    <li>경쟁은 팔로알토·넷스코프·클라우드플레어·마이크로소프트 등 5대 진영과의 다면전이다.</li>
+    <li>가장 큰 구조적 변수는 <strong>MS 번들의 하위시장 잠식</strong>과 <strong>성장 둔화</strong>다.</li>
+    <li>AI는 ‘AI 보안 수요 + 자동화 SOC’로 밸류체인을 넓히는 새 기회다.</li>
+  </ul>
+
+  <h1>부록 A. 용어 사전</h1>
+  <table>
+    <thead><tr><th>용어</th><th>뜻</th></tr></thead>
+    <tbody>
+      <tr><td>업/미드/다운스트림</td><td>공급사슬의 상류(부품)·중류(가공)·하류(고객)</td></tr>
+      <tr><td>SASE</td><td>네트워크+보안 클라우드 통합</td></tr>
+      <tr><td>SSE</td><td>SASE의 보안 축(ZTNA·SWG·CASB·DLP)</td></tr>
+      <tr><td>FWaaS</td><td>서비스형 방화벽</td></tr>
+      <tr><td>DEM</td><td>디지털 경험 모니터링(ZDX)</td></tr>
+      <tr><td>MDR</td><td>관리형 위협 탐지·대응</td></tr>
+      <tr><td>FedRAMP</td><td>미국 연방 클라우드 보안 인증</td></tr>
+      <tr><td>전환비용</td><td>다른 제품으로 바꿀 때 드는 비용·부담</td></tr>
+    </tbody>
+  </table>
+
+  <h1>부록 B. 출처 및 참고자료</h1>
+  <ul class="src">
+    <li>Zscaler 공식 — Zero Trust Exchange: <a href="https://www.zscaler.com/products-and-solutions/zero-trust-exchange-zte">zscaler.com</a></li>
+    <li>SASE/SSE 경쟁 비교: <a href="https://technologymatch.com/blog/zscaler-vs-netskope-vs-palo-alto-vs-cato-the-sase-selection-guide-2026">TechnologyMatch 2026</a>, <a href="https://www.decryptiondigest.com/blog/ztna-platform-comparison-2026-zscaler-cloudflare-netskope-palo-alto">Decryption Digest</a></li>
+    <li>ZTNA 시장 상위기업: <a href="https://www.marketsandmarkets.com/ResearchInsight/zero-trust-network-access-ztna-market.asp">MarketsandMarkets</a></li>
+    <li>가트너 SSE 비교(팔로알토 vs 지스케일러): <a href="https://www.gartner.com/reviews/market/security-service-edge/compare/palo-alto-networks-vs-zscaler">Gartner Peer Insights</a></li>
+    <li>기업 개요·시장 위치: <a href="https://www.useluminix.com/reports/company-overviews/zscaler-company-overview-zero-trust-security-platform-financials-and-market-position-2026">Luminix 2026</a></li>
+    <li>Red Canary 인수: <a href="https://www.globenewswire.com/news-release/2025/05/27/3089019/0/en/Zscaler-to-Accelerate-Innovation-in-AI-Powered-Security-Operations-with-Acquisition-of-Red-Canary.html">GlobeNewswire</a></li>
+  </ul>
+
+  <div class="warn">
+    <div class="ct">⚠ 마지막 당부</div>
+    <p>본 자료는 학습용 정보 정리로 <strong>매수·매도 추천이 아닙니다.</strong> 밸류체인 구성·경쟁 구도는 변합니다. 투자 전 최신 공시·자료를 직접 확인하고, <strong>모든 판단과 책임은 본인</strong>에게 있습니다.</p>
+  </div>
+
+  <p class="muted" style="text-align:center; margin-top:40px;">— 지스케일러 3부작 중 ③밸류체인 —<br>①입문가이드, ②투자안내서와 함께 보시면 좋습니다.</p>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>지스케일러(Zscaler) 완전 정복 — 비전공자 입문 가이드</title>
+<style>
+  :root{
+    --accent:#1668e3; --accent-dark:#0a3f91; --light:#e9f1fd; --light2:#f4f8fe;
+    --gray:#595959; --line:#cfe0f7; --ink:#1d2733; --warn:#c0392b; --warnbg:#fdecea;
+  }
+  *{box-sizing:border-box;}
+  html{-webkit-print-color-adjust:exact; print-color-adjust:exact;}
+  body{font-family:"Malgun Gothic","맑은 고딕",-apple-system,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;
+    color:var(--ink); line-height:1.7; margin:0; background:#f5f6f8; font-size:16px;}
+  .page{max-width:820px; margin:24px auto; background:#fff; padding:56px 60px; box-shadow:0 1px 8px rgba(0,0,0,.08);}
+  h1{color:var(--accent-dark); font-size:1.5rem; border-bottom:3px solid var(--accent); padding-bottom:8px; margin:2.3em 0 .7em;}
+  h1:first-of-type{margin-top:.3em;}
+  h2{color:var(--accent); font-size:1.16rem; margin:1.5em 0 .45em;}
+  h3{color:var(--accent-dark); font-size:1.02rem; margin:1.2em 0 .3em;}
+  p{margin:.5em 0;} ul{margin:.4em 0 .9em; padding-left:1.3em;} li{margin:.3em 0;}
+  .em{color:var(--accent-dark); font-weight:700;}
+  .muted{color:var(--gray); font-size:.9rem;}
+  .callout{background:var(--light); border:1px solid var(--accent); border-left:6px solid var(--accent); border-radius:4px; padding:14px 18px; margin:1.1em 0;}
+  .callout .ct{font-weight:700; color:var(--accent-dark); margin-bottom:6px;}
+  .callout p{margin:.35em 0; font-size:.96rem;}
+  .warn{background:var(--warnbg); border:1px solid var(--warn); border-left:6px solid var(--warn); border-radius:4px; padding:14px 18px; margin:1.2em 0;}
+  .warn .ct{font-weight:700; color:var(--warn); margin-bottom:6px;}
+  .warn p{margin:.35em 0; font-size:.93rem;}
+  table{border-collapse:collapse; width:100%; margin:1em 0; font-size:.85rem;}
+  th{background:var(--accent); color:#fff; font-weight:700; padding:9px 10px; text-align:center; border:1px solid var(--line);}
+  td{padding:8px 10px; border:1px solid var(--line); text-align:center; vertical-align:top;}
+  td:first-child{text-align:left; font-weight:700; background:var(--light2);}
+  tbody tr:nth-child(even) td{background:var(--light2);}
+  tbody tr:nth-child(even) td:first-child{background:var(--light);}
+  .cover{text-align:center; padding:115px 0 85px;}
+  .cover .big{font-size:2.5rem; font-weight:800; color:var(--accent-dark); letter-spacing:-1px;}
+  .cover .sub{font-size:1.25rem; color:var(--accent); margin-top:12px;}
+  .cover .sub2{font-size:1rem; color:var(--gray); margin-top:24px;}
+  .cover .tag{font-size:.95rem; color:var(--gray); font-style:italic; margin-top:64px;}
+  .cover .date{font-size:.88rem; color:var(--gray); margin-top:8px;}
+  .toc{background:var(--light2); border:1px solid var(--line); border-radius:6px; padding:18px 24px;}
+  .toc ol{margin:0; padding-left:1.4em;} .toc li{margin:.3em 0;}
+  a{color:var(--accent-dark); word-break:break-all;}
+  .src{font-size:.83rem;} .src li{margin:.4em 0;}
+  figure{margin:1.4em 0; text-align:center;}
+  figure svg{width:100%; max-width:720px; height:auto; display:block; margin:0 auto;}
+  figcaption{font-size:.85rem; color:var(--gray); margin-top:8px;}
+  .kpi{display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin:1.2em 0;}
+  .kpi .box{background:var(--light2); border:1px solid var(--line); border-radius:8px; padding:14px 10px; text-align:center;}
+  .kpi .num{font-size:1.5rem; font-weight:800; color:var(--accent-dark);}
+  .kpi .lab{font-size:.78rem; color:var(--gray); margin-top:4px;}
+  @media print{
+    body{background:#fff; font-size:11pt;}
+    .page{box-shadow:none; margin:0; max-width:none; padding:0;}
+    .pb{page-break-before:always;}
+    h1,h2{page-break-after:avoid;} table,.callout,figure,.warn{page-break-inside:avoid;}
+    .kpi{grid-template-columns:repeat(4,1fr);}
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="cover">
+    <div class="big">지스케일러 완전 정복</div>
+    <div class="sub">Zscaler (ZS) · 클라우드 보안 · 제로 트러스트의 대명사</div>
+    <div class="sub2">비전공자를 위한 기초부터 투자 관점까지 입문 가이드</div>
+    <div class="tag">‘성(城)의 성벽’에서 ‘개인 경호원’으로 — 보안 패러다임의 전환</div>
+    <div class="date">2026년 7월 · 최신 동향 반영 (FY2026 3분기 기준)</div>
+  </div>
+
+  <!-- 면책 -->
+  <div class="pb"></div>
+  <div class="warn">
+    <div class="ct">⚠ 투자 유의 — 반드시 먼저 읽어주세요</div>
+    <p>이 문서는 <strong>정보 정리·학습용</strong>입니다. 특정 종목의 매수·매도를 <strong>추천하지 않습니다</strong>. 지스케일러는 고성장·고밸류에이션(고평가) 성장주로 주가 변동성이 매우 큽니다. 실적 발표 하루 만에 두 자릿수 급락·급등이 흔합니다.</p>
+    <p>수치는 작성 시점(2026년 7월)의 공개 자료를 정리한 것으로, 최신 실적·환율·주가에 따라 달라집니다. <strong>모든 투자 판단과 그 책임은 전적으로 본인에게 있습니다.</strong></p>
+  </div>
+
+  <!-- TOC -->
+  <h1>목차</h1>
+  <div class="toc">
+    <ol>
+      <li>한눈에 보기 (3분 요약)</li>
+      <li>지스케일러는 무슨 회사인가</li>
+      <li>왜 등장했나 — ‘성벽 보안’의 붕괴</li>
+      <li>제로 트러스트란 무엇인가 — 핵심 개념</li>
+      <li>핵심 제품 3형제 — ZIA · ZPA · ZDX</li>
+      <li>돈은 어떻게 버나 — 구독(SaaS) 사업 모델</li>
+      <li>이렇게 생겼어요 — 서비스 화면과 개념도</li>
+      <li>창업자와 역사 — 제이 차우드리 이야기</li>
+      <li>강점과 한계 · 경쟁 구도</li>
+      <li>투자자가 보는 핵심 지표(KPI)</li>
+      <li>자주 묻는 질문(FAQ) · 용어 사전 · 출처</li>
+    </ol>
+  </div>
+
+  <!-- 0 요약 -->
+  <div class="pb"></div>
+  <h1>한눈에 보기 (3분 요약)</h1>
+  <p><span class="em">지스케일러(Zscaler, 종목코드 ZS)</span>는 미국 나스닥에 상장된 <strong>클라우드 기반 사이버 보안</strong> 회사입니다. 한마디로 <strong>“회사의 인터넷 통행을 지스케일러 클라우드로 한 번 통과시켜, 나쁜 것은 걸러내고 좋은 것만 통과시키는 거대한 검문소”</strong>를 운영합니다. 이 검문소를 통과하는 트래픽이 <strong>하루 2,500억 건 이상</strong>, 이용자가 <strong>4,000만 명 이상</strong>입니다.</p>
+  <div class="callout">
+    <div class="ct">핵심을 한 문장으로</div>
+    <p><span class="em">지스케일러 = ‘성벽(방화벽·VPN)’을 걷어내고, 사용자·앱마다 개인 경호원을 붙이는 클라우드 보안.</span> 회사가 장비(하드웨어)를 사서 깔 필요 없이, 구독료만 내면 전 세계 어디서든 같은 보안이 적용됩니다.</p>
+  </div>
+
+  <div class="kpi">
+    <div class="box"><div class="num">2007년</div><div class="lab">설립</div></div>
+    <div class="box"><div class="num">2018년</div><div class="lab">나스닥 상장(IPO)</div></div>
+    <div class="box"><div class="num">$26.7억</div><div class="lab">FY2025 매출</div></div>
+    <div class="box"><div class="num">4,000만+</div><div class="lab">보호 이용자</div></div>
+  </div>
+
+  <table>
+    <thead><tr><th></th><th>과거: 방화벽·VPN 방식</th><th>지스케일러: 제로 트러스트</th></tr></thead>
+    <tbody>
+      <tr><td>보안 철학</td><td>성벽 안은 안전하다고 ‘신뢰’</td><td>아무도 신뢰 안 함(검증 후 최소 허용)</td></tr>
+      <tr><td>장비</td><td>회사마다 하드웨어 구매·설치</td><td>클라우드 구독(장비 없음)</td></tr>
+      <tr><td>재택·모바일</td><td>VPN으로 본사에 접속</td><td>어디서든 앱에 직접·안전 연결</td></tr>
+      <tr><td>확장성</td><td>장비 용량 한계</td><td>클라우드라 무한 확장</td></tr>
+      <tr><td>수익 방식</td><td>장비 판매(1회성)</td><td>연간 구독(반복 매출)</td></tr>
+    </tbody>
+  </table>
+  <p class="muted">‘제로 트러스트(Zero Trust)’는 “아무도, 아무것도 기본적으로 믿지 않는다”는 보안 원칙입니다. 뒤에서 자세히 설명합니다.</p>
+
+  <!-- 1 -->
+  <div class="pb"></div>
+  <h1>1장. 지스케일러는 무슨 회사인가</h1>
+  <p>지스케일러는 2007년 설립돼 2018년 미국 나스닥에 상장한 <span class="em">클라우드 보안 전문 기업</span>입니다. 본사는 미국 캘리포니아 산호세에 있습니다. 회사 이름은 <strong>“Zenith(정점) of Scalability(확장성)”</strong> — 즉 ‘확장성의 정점’을 줄인 것으로 알려져 있습니다.</p>
+  <p>이 회사가 파는 것은 물건이 아니라 <strong>‘보안 서비스’</strong>입니다. 넷플릭스가 영화를 스트리밍하듯, 지스케일러는 <strong>보안을 클라우드에서 스트리밍</strong>합니다. 기업이 방화벽·VPN 같은 값비싼 장비를 직접 사서 관리하는 대신, 지스케일러에 연간 구독료를 내면 전 세계 150곳 이상의 데이터센터에서 보안이 자동으로 제공됩니다.</p>
+  <div class="callout">
+    <div class="ct">비유: 정수기 대신 ‘상수도’</div>
+    <p>예전엔 집집마다 정수기(방화벽 장비)를 사서 필터를 갈았습니다. 지스케일러는 아예 <strong>깨끗한 물이 나오는 상수도(클라우드 보안)</strong>를 깔아버린 셈입니다. 수도꼭지만 열면(구독만 하면) 어디서든 깨끗한 물(안전한 인터넷)이 나옵니다.</p>
+  </div>
+  <p>지스케일러가 다루는 시장은 크게 <strong>SSE(Security Service Edge, 보안 서비스 엣지)</strong>와 <strong>SASE(Secure Access Service Edge, 사세)</strong>라는 이름으로 불립니다. 어려워 보이지만, 요점은 <strong>“네트워크 접속과 보안을 클라우드에서 한 번에 처리한다”</strong>는 뜻입니다. 지스케일러는 이 분야에서 글로벌 <strong>선도 기업(리더)</strong>으로 꼽히며, 포춘 500대 기업의 약 40%가 고객입니다.</p>
+
+  <!-- 2 -->
+  <div class="pb"></div>
+  <h1>2장. 왜 등장했나 — ‘성벽 보안’의 붕괴</h1>
+  <p>지스케일러를 이해하려면 <strong>옛날 방식이 왜 무너졌는지</strong>부터 봐야 합니다.</p>
+  <h2>옛날 방식 = ‘성(城)과 해자’</h2>
+  <p>과거 기업 보안은 <span class="em">‘성과 해자(Castle-and-Moat)’</span> 모델이었습니다. 회사 건물(사내망) 둘레에 높은 성벽(방화벽)을 쌓고, 다리(VPN) 하나로만 드나들게 했습니다. 일단 성 안에 들어온 사람은 ‘우리 편’이라 믿고 자유롭게 다니게 했죠.</p>
+  <p>이 방식은 세 가지 이유로 무너졌습니다.</p>
+  <ul>
+    <li><strong>클라우드 이동:</strong> 데이터와 앱이 성 안이 아니라 아마존·MS·구글 클라우드(성 밖)로 옮겨갔습니다. 지킬 ‘성’ 자체가 사라진 겁니다.</li>
+    <li><strong>재택·모바일 근무:</strong> 직원이 카페·집·해외에서 일합니다. 모두를 VPN으로 본사에 끌어오는 건 느리고 위험합니다.</li>
+    <li><strong>내부 이동(측면 이동) 공격:</strong> 해커가 성벽을 한 번만 뚫으면, 성 안을 활보하며 모든 걸 털어갑니다. ‘안은 안전’이라는 가정이 치명적 약점이 됐습니다.</li>
+  </ul>
+  <div class="callout">
+    <div class="ct">핵심 통찰</div>
+    <p>데이터·직원·앱이 모두 ‘성 밖’으로 나가버린 시대에는, <strong>성벽을 지키는 게 무의미</strong>합니다. 대신 <strong>‘누가·어떤 기기로·어떤 앱에 접근하는지’를 매번 검증</strong>하는 방식이 필요해졌습니다. 이것이 제로 트러스트이고, 지스케일러의 존재 이유입니다.</p>
+  </div>
+
+  <figure>
+    <svg viewBox="0 0 720 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="성벽 보안 대 제로 트러스트 비교 도식">
+      <rect x="0" y="0" width="720" height="300" fill="#f4f8fe"/>
+      <!-- 왼쪽: 성벽 -->
+      <text x="170" y="30" font-size="15" font-weight="700" fill="#0a3f91" text-anchor="middle">과거 · 성벽 모델</text>
+      <rect x="60" y="55" width="220" height="180" fill="none" stroke="#c0392b" stroke-width="4"/>
+      <circle cx="120" cy="120" r="14" fill="#1668e3"/><circle cx="170" cy="150" r="14" fill="#1668e3"/><circle cx="220" cy="115" r="14" fill="#1668e3"/>
+      <text x="170" y="215" font-size="11" fill="#595959" text-anchor="middle">성벽 안 = 무조건 신뢰</text>
+      <path d="M20 145 L60 145" stroke="#c0392b" stroke-width="3" marker-end="url(#a)"/>
+      <text x="20" y="135" font-size="10" fill="#c0392b">뚫리면 끝</text>
+      <!-- 오른쪽: 제로트러스트 -->
+      <text x="540" y="30" font-size="15" font-weight="700" fill="#0a3f91" text-anchor="middle">지금 · 제로 트러스트</text>
+      <circle cx="470" cy="110" r="16" fill="#1668e3"/><circle cx="470" cy="110" r="26" fill="none" stroke="#16a34a" stroke-width="2" stroke-dasharray="4 3"/>
+      <circle cx="560" cy="160" r="16" fill="#1668e3"/><circle cx="560" cy="160" r="26" fill="none" stroke="#16a34a" stroke-width="2" stroke-dasharray="4 3"/>
+      <circle cx="620" cy="105" r="16" fill="#1668e3"/><circle cx="620" cy="105" r="26" fill="none" stroke="#16a34a" stroke-width="2" stroke-dasharray="4 3"/>
+      <text x="540" y="215" font-size="11" fill="#595959" text-anchor="middle">개인마다 검증·최소 허용</text>
+      <defs><marker id="a" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#c0392b"/></marker></defs>
+    </svg>
+    <figcaption>성벽 안을 통째로 신뢰하는 과거 방식(좌) vs. 사용자·앱마다 검증하는 제로 트러스트(우). (도식: 자체 제작)</figcaption>
+  </figure>
+
+  <!-- 3 -->
+  <div class="pb"></div>
+  <h1>3장. 제로 트러스트란 무엇인가 — 핵심 개념</h1>
+  <p><span class="em">제로 트러스트(Zero Trust)</span>의 원칙은 딱 한 줄입니다. <strong>“절대 신뢰하지 말고, 항상 검증하라(Never trust, always verify).”</strong></p>
+  <p>성 안에 있든 밖에 있든, 누구든 어떤 기기든 <strong>기본적으로 믿지 않습니다.</strong> 접근할 때마다 매번 ‘너 누구야? 그 기기 안전해? 이 앱 써도 되는 사람이야?’를 확인하고, <strong>딱 필요한 그 앱 하나에만</strong> 접근을 허용합니다. 네트워크 전체가 아니라 앱 단위로요.</p>
+  <h2>기존 VPN과의 결정적 차이</h2>
+  <ul>
+    <li><strong>VPN:</strong> 사용자를 <em>네트워크</em>에 연결합니다. 일단 연결되면 그 네트워크 안의 다른 것도 넘볼 수 있습니다(측면 이동 위험).</li>
+    <li><strong>지스케일러(ZPA):</strong> 사용자를 <em>딱 그 앱 하나</em>에만 연결합니다. 나머지는 아예 ‘보이지도 않게(다크)’ 숨깁니다. 해커가 스캔해도 공격할 표적을 찾을 수 없습니다.</li>
+  </ul>
+  <div class="callout">
+    <div class="ct">비유: 호텔 카드키</div>
+    <p>제로 트러스트는 <strong>호텔 카드키</strong>와 같습니다. 마스터키(성벽 통과)가 아니라, <strong>내가 묵는 방 하나만 열리는 카드키</strong>입니다. 게다가 매번 프런트에서 신원을 확인하고, 수상하면 카드를 즉시 정지시킵니다. 다른 방(다른 앱)은 존재조차 안 보입니다.</p>
+  </div>
+  <p>지스케일러는 이 검증 과정을 자사 클라우드인 <span class="em">‘제로 트러스트 익스체인지(Zero Trust Exchange)’</span>에서 처리합니다. 사용자와 앱 사이에 지스케일러가 ‘중개 검문소’로 앉아, 연결을 이어주기 전에 모든 조건을 확인하는 구조입니다.</p>
+
+  <!-- 4 -->
+  <div class="pb"></div>
+  <h1>4장. 핵심 제품 3형제 — ZIA · ZPA · ZDX</h1>
+  <p>지스케일러의 제품 이름은 알파벳 약자라 처음엔 헷갈립니다. 하지만 <strong>‘어디로 가는 트래픽을 지키느냐’</strong>로 나누면 아주 간단합니다.</p>
+
+  <table>
+    <thead><tr><th>제품</th><th>보호 대상</th><th>한 줄 설명</th><th>과거 대체품</th></tr></thead>
+    <tbody>
+      <tr><td>ZIA</td><td>인터넷·SaaS로 나가는 트래픽</td><td>직원이 웹·클라우드 쓸 때 위협 차단·검사</td><td>보안 웹 게이트웨이(SWG)</td></tr>
+      <tr><td>ZPA</td><td>사내 private 앱으로 가는 트래픽</td><td>VPN 없이 앱에 안전 연결</td><td>VPN</td></tr>
+      <tr><td>ZDX</td><td>사용자 경험(성능)</td><td>느림·끊김 원인을 실시간 진단</td><td>없음(신개념)</td></tr>
+    </tbody>
+  </table>
+
+  <h2>① ZIA (Zscaler Internet Access) — 인터넷 방향의 문지기</h2>
+  <p>직원이 구글·챗GPT·세일즈포스 같은 <strong>인터넷·클라우드 앱</strong>에 접속할 때, 그 통행을 지스케일러 클라우드로 통과시켜 <span class="em">악성코드·피싱·정보 유출</span>을 실시간으로 걸러냅니다. 암호화된(SSL) 트래픽까지 열어서 검사하는 게 강점입니다. 과거의 ‘보안 웹 게이트웨이(SWG)’ 장비를 대체합니다.</p>
+
+  <h2>② ZPA (Zscaler Private Access) — 사내 앱으로의 안전한 통로</h2>
+  <p>회사 내부 시스템(급여, ERP, 내부 웹 등 <strong>private 앱</strong>)에 접속할 때, VPN 없이 <strong>딱 그 앱에만</strong> 연결해 줍니다. 앞서 말한 ‘호텔 카드키’가 바로 이것입니다. 앱을 인터넷에 노출하지 않고 숨기므로, 랜섬웨어·측면 이동 공격을 원천 차단합니다. VPN을 대체하는 핵심 제품입니다.</p>
+
+  <h2>③ ZDX (Zscaler Digital Experience) — 성능 진단 도구</h2>
+  <p>재택 직원이 “회사 앱이 느려요”라고 할 때, 원인이 <strong>집 와이파이인지, 통신사인지, 앱 서버인지</strong>를 한눈에 짚어줍니다. 보안 트래픽이 지스케일러를 다 통과하므로, 그 데이터를 활용해 <strong>사용자 경험을 진단</strong>하는 신개념 서비스입니다. 헬프데스크 업무를 크게 줄여줍니다.</p>
+
+  <figure>
+    <svg viewBox="0 0 720 260" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="제로 트러스트 익스체인지 개념도">
+      <rect x="0" y="0" width="720" height="260" fill="#f4f8fe"/>
+      <!-- 사용자 -->
+      <circle cx="70" cy="130" r="22" fill="#1668e3"/>
+      <text x="70" y="175" font-size="12" fill="#1d2733" text-anchor="middle" font-weight="700">사용자</text>
+      <text x="70" y="192" font-size="10" fill="#595959" text-anchor="middle">(어디서든)</text>
+      <!-- 중앙 클라우드 -->
+      <ellipse cx="360" cy="130" rx="130" ry="70" fill="#e9f1fd" stroke="#1668e3" stroke-width="3"/>
+      <text x="360" y="120" font-size="14" font-weight="800" fill="#0a3f91" text-anchor="middle">Zero Trust Exchange</text>
+      <text x="360" y="142" font-size="11" fill="#595959" text-anchor="middle">검증 · 검사 · 정책 적용</text>
+      <text x="360" y="160" font-size="10" fill="#595959" text-anchor="middle">하루 2,500억+ 트랜잭션</text>
+      <!-- 오른쪽 목적지 -->
+      <rect x="600" y="55" width="100" height="40" rx="6" fill="#fff" stroke="#16a34a" stroke-width="2"/>
+      <text x="650" y="80" font-size="11" fill="#16a34a" text-anchor="middle" font-weight="700">인터넷/SaaS</text>
+      <rect x="600" y="115" width="100" height="40" rx="6" fill="#fff" stroke="#16a34a" stroke-width="2"/>
+      <text x="650" y="140" font-size="11" fill="#16a34a" text-anchor="middle" font-weight="700">사내 앱</text>
+      <rect x="600" y="175" width="100" height="40" rx="6" fill="#fff" stroke="#16a34a" stroke-width="2"/>
+      <text x="650" y="200" font-size="11" fill="#16a34a" text-anchor="middle" font-weight="700">클라우드</text>
+      <!-- 화살표 -->
+      <path d="M94 130 L230 130" stroke="#1668e3" stroke-width="3" marker-end="url(#b)"/>
+      <path d="M490 120 L600 75" stroke="#16a34a" stroke-width="2.5" marker-end="url(#c)"/>
+      <path d="M490 130 L600 135" stroke="#16a34a" stroke-width="2.5" marker-end="url(#c)"/>
+      <path d="M490 140 L600 195" stroke="#16a34a" stroke-width="2.5" marker-end="url(#c)"/>
+      <defs>
+        <marker id="b" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#1668e3"/></marker>
+        <marker id="c" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#16a34a"/></marker>
+      </defs>
+    </svg>
+    <figcaption>모든 트래픽이 지스케일러 클라우드(중앙)를 통과해 검증받은 뒤 목적지로 연결된다. (도식: 자체 제작 / 개념 출처: <a href="https://www.zscaler.com/products-and-solutions/zero-trust-exchange-zte">Zscaler</a>)</figcaption>
+  </figure>
+
+  <h2>제품 묶음(플랫폼)으로 파는 이유</h2>
+  <p>지스케일러는 이 제품들을 따로가 아니라 <strong>하나의 플랫폼</strong>으로 묶어 팝니다. 고객이 ZIA만 쓰다가 ZPA·ZDX·데이터 보호(DLP)까지 추가하면 계약금액이 커집니다. 이 <strong>‘업셀·크로스셀(추가 판매)’</strong>이 지스케일러 성장의 핵심 엔진입니다.</p>
+
+  <!-- 5 -->
+  <div class="pb"></div>
+  <h1>5장. 돈은 어떻게 버나 — 구독(SaaS) 사업 모델</h1>
+  <p>지스케일러는 전형적인 <span class="em">구독형 소프트웨어(SaaS)</span> 회사입니다. 매출의 거의 전부가 <strong>연간 구독 계약</strong>에서 나옵니다. 이 모델의 특징을 알면 실적 발표를 읽을 수 있습니다.</p>
+  <ul>
+    <li><strong>반복 매출(Recurring):</strong> 한 번 팔면 매년 갱신됩니다. 예측 가능성이 높습니다.</li>
+    <li><strong>선(先)결제 구조:</strong> 고객이 1~3년치를 미리 계약합니다. 그래서 ‘청구액(Billings)’·‘잔여 계약(RPO)’ 같은 지표를 봅니다.</li>
+    <li><strong>순매출유지율(NRR):</strong> 기존 고객이 <em>작년보다 얼마나 더 썼는지</em>를 나타냅니다. 100%가 넘으면 해지보다 추가 구매가 많다는 뜻으로, 좋은 SaaS의 상징입니다. 지스케일러는 최근 <strong>115% 안팎</strong>입니다.</li>
+  </ul>
+  <div class="callout">
+    <div class="ct">‘연간 반복 매출(ARR)’이 왜 중요한가</div>
+    <p>ARR(Annual Recurring Revenue)은 <strong>지금 계약을 1년으로 환산한 매출</strong>입니다. 지스케일러의 ARR은 2025년 30억 달러를 돌파했고, 2026년 3분기 기준 약 <strong>35억 달러</strong>로 전년 대비 25% 성장했습니다. 이 숫자가 꾸준히 커지는지가 회사 건강의 핵심 척도입니다.</p>
+  </div>
+  <p>또 하나 눈여겨볼 것은 <strong>‘큰 고객’의 증가</strong>입니다. 연간 100만 달러 이상(ARR $1M+) 쓰는 대형 고객 수가 늘수록, 지스케일러가 대기업 표준으로 자리잡고 있다는 신호입니다. 자세한 지표는 2번 문서(투자안내서)에서 다룹니다.</p>
+
+  <!-- 6 -->
+  <div class="pb"></div>
+  <h1>6장. 이렇게 생겼어요 — 서비스 화면과 개념도</h1>
+  <p>지스케일러는 만질 수 있는 ‘물건’이 없는 소프트웨어 회사입니다. 그래서 ‘제품 사진’ 대신 <strong>관리 화면과 개념도</strong>로 이해하는 게 정확합니다.</p>
+
+  <figure>
+    <svg viewBox="0 0 720 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="지스케일러 관리 대시보드 예시 도식">
+      <rect x="0" y="0" width="720" height="300" fill="#fff" stroke="#cfe0f7"/>
+      <rect x="0" y="0" width="720" height="40" fill="#0a3f91"/>
+      <text x="20" y="26" font-size="15" fill="#fff" font-weight="700">Zscaler 관리 콘솔 (예시 이미지)</text>
+      <circle cx="690" cy="20" r="6" fill="#fff" opacity="0.7"/>
+      <!-- 카드들 -->
+      <rect x="20" y="60" width="150" height="90" rx="8" fill="#e9f1fd" stroke="#1668e3"/>
+      <text x="95" y="90" font-size="12" fill="#595959" text-anchor="middle">차단된 위협</text>
+      <text x="95" y="120" font-size="24" fill="#0a3f91" text-anchor="middle" font-weight="800">8.9M</text>
+      <rect x="190" y="60" width="150" height="90" rx="8" fill="#e9f1fd" stroke="#1668e3"/>
+      <text x="265" y="90" font-size="12" fill="#595959" text-anchor="middle">활성 사용자</text>
+      <text x="265" y="120" font-size="24" fill="#0a3f91" text-anchor="middle" font-weight="800">42,180</text>
+      <rect x="360" y="60" width="150" height="90" rx="8" fill="#e9f1fd" stroke="#1668e3"/>
+      <text x="435" y="90" font-size="12" fill="#595959" text-anchor="middle">SSL 검사율</text>
+      <text x="435" y="120" font-size="24" fill="#0a3f91" text-anchor="middle" font-weight="800">96%</text>
+      <rect x="530" y="60" width="170" height="90" rx="8" fill="#e9f1fd" stroke="#16a34a"/>
+      <text x="615" y="90" font-size="12" fill="#595959" text-anchor="middle">사용자 경험 점수</text>
+      <text x="615" y="120" font-size="24" fill="#16a34a" text-anchor="middle" font-weight="800">양호</text>
+      <!-- 하단 그래프 -->
+      <rect x="20" y="170" width="680" height="110" rx="8" fill="#f4f8fe" stroke="#cfe0f7"/>
+      <text x="35" y="192" font-size="12" fill="#595959">최근 트래픽 검사 추이</text>
+      <polyline points="40,255 130,240 220,248 310,215 400,225 490,190 580,205 670,170" fill="none" stroke="#1668e3" stroke-width="3"/>
+      <circle cx="670" cy="170" r="4" fill="#1668e3"/>
+    </svg>
+    <figcaption>지스케일러 관리 콘솔은 위협 차단·사용자 경험·검사율을 한 화면에서 보여준다. (설명용 재구성 도식 — 실제 UI 아님)</figcaption>
+  </figure>
+
+  <p>실제 화면에서는 어느 나라·어느 앱에서 위협이 많은지, 어떤 직원이 어떤 클라우드를 얼마나 쓰는지를 지도·그래프로 봅니다. IT 관리자는 이 콘솔에서 <strong>‘누가 무엇에 접근 가능한지’ 정책</strong>을 마우스 클릭으로 설정합니다.</p>
+  <div class="callout">
+    <div class="ct">참고 — 실제 이미지·데모 보는 법</div>
+    <p>지스케일러 공식 사이트(<a href="https://www.zscaler.com">zscaler.com</a>)의 제품 페이지와 유튜브 ‘Zscaler’ 채널에 실제 콘솔 데모와 화이트보드 설명 영상이 많습니다. ‘How Zscaler Works’로 검색하면 ZIA·ZPA·ZDX 흐름을 그림으로 볼 수 있습니다.</p>
+  </div>
+
+  <!-- 7 -->
+  <div class="pb"></div>
+  <h1>7장. 창업자와 역사 — 제이 차우드리 이야기</h1>
+  <p>지스케일러를 이해하는 데 창업자 <span class="em">제이 차우드리(Jay Chaudhry)</span> 이야기는 빼놓을 수 없습니다. 그는 <strong>인도 히말라야 산기슭, 수도·전기도 없던 마을</strong>에서 태어나, 장학금으로 공학을 공부하고 미국으로 건너간 입지전적 인물입니다.</p>
+  <p>차우드리는 지스케일러 이전에 이미 <strong>SecureIT, CoreHarbor, CipherTrust, AirDefense</strong> 등 여러 보안 회사를 세워 매각한 <strong>연쇄 창업가</strong>였습니다. 이렇게 번 돈을 대부분 초기 자본으로 넣어 2007년 지스케일러를 창업했습니다. 그래서 지금도 <strong>지분·의결권의 상당 부분(약 38% 의결권)</strong>을 직접 보유한 ‘오너 경영자’입니다.</p>
+  <div class="callout">
+    <div class="ct">투자자 관점에서 의미</div>
+    <p>창업자가 큰 지분을 들고 장기 경영하는 회사는 <strong>단기 실적보다 장기 비전에 집중</strong>하는 경향이 있습니다. 다만 오너의 방향성에 회사가 크게 좌우된다는 점은 양날의 검입니다. 이런 <strong>지배구조 특성</strong>도 투자 판단 요소입니다.</p>
+  </div>
+  <h2>주요 연혁</h2>
+  <table>
+    <thead><tr><th>연도</th><th>사건</th></tr></thead>
+    <tbody>
+      <tr><td>2007</td><td>제이 차우드리·K. 카일라시 공동 창업</td></tr>
+      <tr><td>2008~</td><td>클라우드 프록시 기반 보안 서비스 출시</td></tr>
+      <tr><td>2018.03</td><td>나스닥 상장(IPO). 상장 첫날 100%+ 급등, 약 20억 달러 밸류</td></tr>
+      <tr><td>2020~21</td><td>코로나 재택근무 확산으로 제로 트러스트 수요 폭발</td></tr>
+      <tr><td>2024</td><td>데이터 패브릭 기술 Avalor 인수(Risk360 강화)</td></tr>
+      <tr><td>2025</td><td>MDR 선도기업 Red Canary 인수 → 보안운영(SOC) 확장</td></tr>
+      <tr><td>2025~26</td><td>ARR 30억→35억 달러 돌파, AI 보안 ARR 4억 달러 조기 달성</td></tr>
+    </tbody>
+  </table>
+
+  <!-- 8 -->
+  <div class="pb"></div>
+  <h1>8장. 강점과 한계 · 경쟁 구도</h1>
+  <h2>강점</h2>
+  <ul>
+    <li><strong>규모의 해자:</strong> 하루 2,500억+ 트랜잭션을 처리하는 세계 최대급 보안 클라우드. 데이터가 많을수록 위협 탐지가 정교해지는 <strong>선순환</strong>.</li>
+    <li><strong>순수 클라우드 설계:</strong> 처음부터 클라우드로 만들어, 장비 기반 경쟁사보다 확장성·성능이 앞섭니다.</li>
+    <li><strong>대기업 표준화:</strong> 포춘 500의 약 40%가 고객. ‘남들이 다 쓰니 안심’이라는 표준 지위.</li>
+    <li><strong>높은 갱신·확장:</strong> 순매출유지율 115% 안팎, 큰 고객 지속 증가.</li>
+  </ul>
+  <h2>한계·리스크</h2>
+  <ul>
+    <li><strong>고밸류에이션:</strong> 성장 기대가 주가에 이미 많이 반영돼, 기대에 못 미치면 급락 위험.</li>
+    <li><strong>성장 둔화 우려:</strong> 회사 스스로 FY2027 성장률을 16~17%로 안내(과거 대비 감속).</li>
+    <li><strong>강한 경쟁:</strong> 팔로알토(Prisma), 넷스코프, 클라우드플레어, 마이크로소프트 등과 경쟁 심화.</li>
+    <li><strong>인수 통합 리스크:</strong> Red Canary 등 인수로 사업 확장 중 — 통합·수익화 성공 여부가 변수.</li>
+  </ul>
+  <h2>주요 경쟁사 한눈에</h2>
+  <table>
+    <thead><tr><th>회사</th><th>대표 제품</th><th>포지셔닝</th></tr></thead>
+    <tbody>
+      <tr><td>지스케일러(ZS)</td><td>Zero Trust Exchange</td><td>대기업용 순수 제로 트러스트 표준</td></tr>
+      <tr><td>팔로알토 네트웍스</td><td>Prisma SASE</td><td>방화벽 강자, 하이브리드 환경 강점</td></tr>
+      <tr><td>넷스코프</td><td>Netskope ONE</td><td>데이터 보호(DLP)·CASB 특화</td></tr>
+      <tr><td>클라우드플레어</td><td>Cloudflare One</td><td>거대 글로벌망, 배포 쉬움·저지연</td></tr>
+      <tr><td>마이크로소프트</td><td>Entra / Global Secure Access</td><td>오피스365 번들, 기본 탑재 강점</td></tr>
+    </tbody>
+  </table>
+  <p class="muted">2025년 가트너 SSE 매직 쿼드런트에서 지스케일러·넷스코프·팔로알토가 ‘리더’로 평가받았습니다. 자세한 비교는 3번 문서(밸류체인)에서 다룹니다.</p>
+
+  <!-- 9 -->
+  <div class="pb"></div>
+  <h1>9장. 투자자가 보는 핵심 지표(KPI)</h1>
+  <p>지스케일러 실적을 볼 때 자주 등장하는 숫자들입니다. 뜻만 알아두면 뉴스가 쉽게 읽힙니다.</p>
+  <table>
+    <thead><tr><th>지표</th><th>뜻</th><th>왜 보나</th></tr></thead>
+    <tbody>
+      <tr><td>ARR</td><td>연간 반복 매출</td><td>구독 규모·성장 핵심</td></tr>
+      <tr><td>매출 성장률</td><td>전년 대비 매출 증가율</td><td>성장 둔화 여부</td></tr>
+      <tr><td>청구액(Billings)</td><td>기간 중 청구한 계약액</td><td>미래 매출 선행지표</td></tr>
+      <tr><td>NRR</td><td>순매출유지율(기존고객 확장)</td><td>100%↑면 건강</td></tr>
+      <tr><td>영업이익률(비GAAP)</td><td>본업 수익성</td><td>흑자 개선 추세</td></tr>
+      <tr><td>잉여현금흐름(FCF)</td><td>실제 남는 현금</td><td>성장+현금창출 동시 확인</td></tr>
+      <tr><td>$1M+ 고객 수</td><td>연 100만$ 이상 대형고객</td><td>대기업 침투도</td></tr>
+    </tbody>
+  </table>
+  <div class="callout">
+    <div class="ct">‘Rule of 40’ 개념</div>
+    <p>SaaS 기업 건강 척도로 <strong>매출성장률 + 이익률 ≥ 40%</strong>이면 우량으로 봅니다. 지스케일러는 이 기준을 넉넉히 넘겨(최근 ‘Rule of 60’ 언급도) 성장과 수익성을 동시에 보여주고 있습니다. 다만 성장률이 둔화하면 이 점수도 낮아집니다.</p>
+  </div>
+
+  <!-- 10 -->
+  <div class="pb"></div>
+  <h1>10장. 자주 묻는 질문(FAQ)</h1>
+  <h3>Q1. 지스케일러는 백신(안랩·V3) 같은 건가요?</h3>
+  <p>아닙니다. 백신은 <strong>기기 안</strong>의 악성코드를 잡는다면, 지스케일러는 <strong>인터넷 통행 자체</strong>를 클라우드에서 검사·통제합니다. 개인용이 아니라 <strong>기업용</strong>이며, 접근 통제(제로 트러스트)가 핵심입니다.</p>
+  <h3>Q2. 왜 ‘물건’이 없는데 이렇게 큰가요?</h3>
+  <p>소프트웨어·구독 사업은 한 번 만든 서비스를 수많은 고객에게 복제 판매합니다. 그래서 <strong>매출총이익률이 매우 높고(80% 안팎)</strong>, 규모가 커질수록 이익이 급증하는 구조입니다.</p>
+  <h3>Q3. AI 시대에 수혜인가요, 위협인가요?</h3>
+  <p>양쪽 다입니다. 직원들이 챗GPT 등 생성형 AI를 쓰면서 <strong>정보 유출 위험</strong>이 커졌는데, 지스케일러는 이 트래픽을 검사·통제하는 ‘AI 보안’으로 대응합니다. AI 보안 ARR이 4억 달러를 조기 돌파하며 새 성장축이 됐습니다.</p>
+  <h3>Q4. 지금 주가는 싼가요 비싼가요?</h3>
+  <p>이 문서는 답을 드리지 않습니다. 지스케일러는 성장 기대가 큰 만큼 밸류에이션도 높아, ‘싸다/비싸다’는 각자의 성장 가정에 달렸습니다. <strong>판단과 책임은 투자자 본인 몫</strong>입니다. 밸류에이션 프레임은 2번 문서를 참고하세요.</p>
+
+  <!-- 용어 -->
+  <div class="pb"></div>
+  <h1>부록 A. 용어 사전</h1>
+  <table>
+    <thead><tr><th>용어</th><th>뜻</th></tr></thead>
+    <tbody>
+      <tr><td>제로 트러스트</td><td>“아무도 믿지 말고 항상 검증” 보안 원칙</td></tr>
+      <tr><td>SSE</td><td>보안 서비스 엣지 — 클라우드 보안 묶음(ZTNA·SWG·CASB·DLP)</td></tr>
+      <tr><td>SASE</td><td>네트워크+보안을 클라우드로 통합한 개념(사세)</td></tr>
+      <tr><td>ZTNA</td><td>제로 트러스트 기반 앱 접근(VPN 대체) — ZPA가 해당</td></tr>
+      <tr><td>SWG</td><td>보안 웹 게이트웨이 — 인터넷 트래픽 검사(ZIA가 해당)</td></tr>
+      <tr><td>CASB</td><td>클라우드 앱 사용 통제·가시성</td></tr>
+      <tr><td>DLP</td><td>데이터 유출 방지</td></tr>
+      <tr><td>MDR</td><td>관리형 위협 탐지·대응(Red Canary 영역)</td></tr>
+      <tr><td>ARR</td><td>연간 반복 매출</td></tr>
+      <tr><td>NRR/DBNRR</td><td>순매출유지율(기존고객 확장 정도)</td></tr>
+      <tr><td>RPO</td><td>잔여 이행 의무(계약된 미래 매출)</td></tr>
+      <tr><td>FCF</td><td>잉여현금흐름</td></tr>
+    </tbody>
+  </table>
+
+  <!-- 출처 -->
+  <h1>부록 B. 출처 및 참고자료</h1>
+  <ul class="src">
+    <li>Zscaler 공식 — Zero Trust Exchange 소개: <a href="https://www.zscaler.com/products-and-solutions/zero-trust-exchange-zte">zscaler.com/products-and-solutions/zero-trust-exchange-zte</a></li>
+    <li>Zscaler IR — FY2026 3분기 실적 발표: <a href="https://ir.zscaler.com/news-releases/news-release-details/zscaler-announces-strong-third-quarter-fiscal-2026-results">ir.zscaler.com</a></li>
+    <li>Zscaler 8-K (SEC) FY2025 실적: <a href="https://www.sec.gov/Archives/edgar/data/1713683/000171368325000138/zs-07312025_991.htm">sec.gov EDGAR</a></li>
+    <li>Zscaler — Red Canary 인수 발표: <a href="https://www.globenewswire.com/news-release/2025/05/27/3089019/0/en/Zscaler-to-Accelerate-Innovation-in-AI-Powered-Security-Operations-with-Acquisition-of-Red-Canary.html">GlobeNewswire</a></li>
+    <li>제품 개념(ZIA/ZPA/ZDX) 정리: <a href="https://www.webasha.com/blog/zscaler-zero-trust-exchange-in-2025-how-it-secures-remote-work-cloud-applications-and-user-access-with-zero-trust-architecture">Web Asha Technologies</a>, <a href="https://www.netbuds.cloud/post/ddd1b354">Netbuds</a></li>
+    <li>창업자 제이 차우드리 배경: <a href="https://www.businessofbusiness.com/articles/zscaler-founder-jay-chaudhry-grew-up-in-a-village-with-no-running-water-software-startups-made-him-a-billionaire/">Business of Business</a>, <a href="https://www.globalindian.com/profiles/jay-chaudhry/">Global Indian</a></li>
+    <li>주가·통계: <a href="https://stockanalysis.com/stocks/zs/">stockanalysis.com/stocks/zs</a></li>
+  </ul>
+
+  <div class="warn">
+    <div class="ct">⚠ 마지막 당부</div>
+    <p>본 자료는 학습용 정보 정리입니다. <strong>매수·매도 추천이 아니며</strong>, 수치는 시점에 따라 변합니다. 투자 전 최신 공시(IR·SEC)를 직접 확인하시고, <strong>모든 판단과 책임은 본인에게</strong> 있습니다.</p>
+  </div>
+
+  <p class="muted" style="text-align:center; margin-top:40px;">— 지스케일러 입문 가이드 · 3부작 중 ①입문가이드 —<br>이어서 ②투자안내서, ③밸류체인 문서를 참고하세요.</p>
+
+</div>
+</body>
+</html>

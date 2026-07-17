@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI 에이전트, 쉽게 이해하기 — 챗봇과 뭐가 다른가 (투자자용 번외편)</title>
+<style>
+  :root{
+    --accent:#0d9488;      /* 틸 — 번외편 전용 액센트 */
+    --accent2:#0891b2;
+    --ink:#1c2430;
+    --muted:#5b6472;
+    --line:#e4e8ec;
+    --bg:#ffffff;
+    --soft:#f4f8f8;
+    --warnbg:#fff7ed;
+    --warnln:#fb923c;
+  }
+  *{box-sizing:border-box;}
+  body{
+    font-family:"Segoe UI","Malgun Gothic","Apple SD Gothic Neo",system-ui,sans-serif;
+    color:var(--ink); background:var(--bg); margin:0;
+    line-height:1.78; font-size:16.5px; letter-spacing:-0.1px;
+  }
+  .wrap{max-width:900px; margin:0 auto; padding:40px 28px 90px;}
+  h1{font-size:29px; line-height:1.32; margin:8px 0 6px; letter-spacing:-0.6px;}
+  h2{font-size:22px; margin:50px 0 12px; padding-top:14px; border-top:3px solid var(--accent); letter-spacing:-0.4px;}
+  h3{font-size:18.5px; margin:30px 0 8px; color:#243040;}
+  h4{font-size:16px; margin:18px 0 6px; color:var(--accent);}
+  p{margin:10px 0;}
+  a{color:var(--accent); text-decoration:none;}
+  a:hover{text-decoration:underline;}
+  .sub{color:var(--muted); font-size:15px;}
+  .lead{font-size:17.5px; color:#2f3949;}
+  .kicker{display:inline-block; font-size:13px; font-weight:700; letter-spacing:1.5px;
+    color:var(--accent); background:#e6f5f3; padding:5px 12px; border-radius:999px;}
+  .warn{background:var(--warnbg); border:1px solid var(--warnln); border-left:6px solid var(--warnln);
+    border-radius:10px; padding:16px 18px; margin:22px 0; font-size:15px;}
+  .note{background:var(--soft); border:1px solid var(--line); border-radius:10px; padding:16px 18px; margin:18px 0;}
+  .callout{background:#e6f5f3; border:1px solid #a7ddd6; border-left:6px solid var(--accent);
+    border-radius:10px; padding:16px 18px; margin:20px 0;}
+  .big{font-size:20px; font-weight:800; color:var(--accent); line-height:1.5;}
+  .grid2{display:grid; grid-template-columns:1fr 1fr; gap:16px;}
+  .card{border:1px solid var(--line); border-radius:12px; padding:16px 18px; background:#fff;}
+  .card h4{margin-top:2px;}
+  table{width:100%; border-collapse:collapse; margin:18px 0; font-size:14.5px;}
+  th,td{border:1px solid var(--line); padding:9px 11px; text-align:left; vertical-align:top;}
+  th{background:var(--soft); font-weight:700;}
+  td.c,th.c{text-align:center;}
+  figure{margin:24px 0; text-align:center;}
+  figcaption{font-size:13px; color:var(--muted); margin-top:8px;}
+  .svgbox{border:1px solid var(--line); border-radius:12px; padding:14px; background:#fff;}
+  ul,ol{margin:10px 0 10px 4px; padding-left:22px;}
+  li{margin:6px 0;}
+  .toc{background:var(--soft); border:1px solid var(--line); border-radius:12px; padding:18px 22px; margin:26px 0;}
+  .toc ol{columns:2; column-gap:34px;}
+  .step{border-left:3px solid var(--accent); padding:2px 0 2px 16px; margin:14px 0;}
+  .step b{color:var(--accent);}
+  .src{font-size:13px; color:var(--muted); word-break:break-all;}
+  hr{border:none; border-top:1px solid var(--line); margin:34px 0;}
+  .foot{color:var(--muted); font-size:13px; margin-top:40px;}
+  @media (max-width:680px){ .grid2{grid-template-columns:1fr;} .toc ol{columns:1;} h1{font-size:24px;} }
+  @media print{
+    body{font-size:11.5pt;} .wrap{max-width:100%; padding:0;}
+    h2{break-after:avoid;} figure,table,.card{break-inside:avoid;}
+    a{color:#000; text-decoration:none;} .warn,.callout,.note{break-inside:avoid;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <span class="kicker">번외편 · 3분이면 이해하는 그림 설명</span>
+  <h1>AI 에이전트, 쉽게 이해하기<br>— 챗봇과 뭐가 다른가</h1>
+  <p class="sub">작성일 2026-07-18 · 개인 리서치 노트 · 투자자용 쉬운 설명편 · 지스케일러 시리즈 번외</p>
+
+  <div class="warn">
+    <b>⚠️ 투자 권유가 아닙니다.</b> 이 글은 'AI 에이전트가 무엇인가'를 쉽게 이해하기 위한 <b>개인 학습 노트</b>입니다.
+    특정 종목의 매수·매도 추천이 아니며, 모든 투자 판단과 책임은 본인에게 있습니다.
+  </div>
+
+  <div class="note">
+    <b>📚 이 글의 위치</b><br>
+    앞선 지스케일러 시리즈(입문·투자안내서·밸류체인·AI에이전트 수혜·시장확장편)는 "투자·시장" 관점이라
+    <b>AI 에이전트를 어느 정도 안다는 전제</b>로 썼습니다. 이 번외편은 그 전제를 걷어내고
+    <b>"AI 에이전트가 대체 뭔데?"를 처음 듣는 사람도 이해</b>하도록 비유와 그림 중심으로 풀어씁니다.
+    기술을 잘 몰라도 되지만, 마지막엔 <b>"그래서 왜 돈이 되고 왜 보안이 중요한가"</b>로 착지해 시리즈와 이어집니다.
+  </div>
+
+  <div class="callout">
+    <span class="big">한 문장 정의</span><br>
+    <b>AI 에이전트 = "목표만 던져주면, 스스로 계획을 세우고, 필요한 도구를 직접 써서, 끝까지 해내는 AI."</b><br>
+    <span class="sub">챗봇이 "방법을 알려주는 비서"라면, 에이전트는 "그 일을 대신 해주는 직원"이다.</span>
+  </div>
+
+  <div class="toc">
+    <b>목차</b>
+    <ol>
+      <li>챗봇 vs 에이전트 — 결정적 차이</li>
+      <li>비유: 새로 온 인턴 직원</li>
+      <li>에이전트를 이루는 4가지 부품</li>
+      <li>실제로 한 번 굴러가는 장면</li>
+      <li>자율성 레벨 (자율주행에 빗대어)</li>
+      <li>일상 속 사례 4가지</li>
+      <li>왜 하필 지금 뜨나</li>
+      <li>한계와 위험 — 그리고 보안 연결</li>
+      <li>FAQ · 용어사전</li>
+    </ol>
+  </div>
+
+  <!-- 1 -->
+  <h2>1. 챗봇 vs 에이전트 — 결정적 차이</h2>
+  <p class="lead">
+    가장 흔한 오해가 "AI 에이전트 = 좀 더 똑똑한 챗봇"이라는 것이다. 아니다. 둘은 <b>하는 일의 종류</b>가 다르다.
+    챗봇은 <b>말</b>을 돌려주고, 에이전트는 <b>행동</b>을 돌려준다.
+  </p>
+
+  <table>
+    <thead><tr><th></th><th>챗봇 (예: 일반 질문답변)</th><th>AI 에이전트</th></tr></thead>
+    <tbody>
+      <tr><td><b>내가 주는 것</b></td><td>질문 ("항공권 어떻게 사?")</td><td>목표 ("제주 3일 여행 예약해줘")</td></tr>
+      <tr><td><b>돌려받는 것</b></td><td>설명·답변(글)</td><td>완료된 결과(실제 예약)</td></tr>
+      <tr><td><b>스스로 하는 일</b></td><td>없음 — 내가 시키는 한 턴만</td><td>계획 세우고 여러 단계를 알아서 실행</td></tr>
+      <tr><td><b>도구 사용</b></td><td>거의 없음</td><td>검색·앱·API·코드를 직접 씀</td></tr>
+      <tr><td><b>비유</b></td><td>방법을 알려주는 <b>비서</b></td><td>일을 대신 하는 <b>직원</b></td></tr>
+    </tbody>
+  </table>
+
+  <figure>
+    <div class="svgbox">
+      <svg viewBox="0 0 840 250" width="100%" role="img" aria-label="챗봇과 에이전트 비교">
+        <g font-family="Segoe UI, sans-serif">
+          <!-- chatbot -->
+          <text x="16" y="28" font-size="15" font-weight="800" fill="#5b6472">챗봇 — "말"을 돌려준다</text>
+          <rect x="16" y="42" width="120" height="44" rx="8" fill="#f4f8f8" stroke="#cbd5d3"/>
+          <text x="76" y="69" font-size="12.5" text-anchor="middle">나 (질문)</text>
+          <line x1="140" y1="64" x2="240" y2="64" stroke="#94a3b8" stroke-width="2" marker-end="url(#a1)"/>
+          <rect x="244" y="42" width="120" height="44" rx="8" fill="#e6f5f3" stroke="#a7ddd6"/>
+          <text x="304" y="69" font-size="12.5" text-anchor="middle">챗봇</text>
+          <line x1="244" y1="78" x2="140" y2="78" stroke="#94a3b8" stroke-width="2" marker-end="url(#a1)"/>
+          <text x="392" y="69" font-size="12.5" fill="#5b6472">→ 답변(글)로 끝. 실행은 내 몫.</text>
+
+          <!-- agent -->
+          <text x="16" y="132" font-size="15" font-weight="800" fill="#0d9488">에이전트 — "행동"을 돌려준다</text>
+          <rect x="16" y="146" width="120" height="44" rx="8" fill="#f4f8f8" stroke="#cbd5d3"/>
+          <text x="76" y="173" font-size="12.5" text-anchor="middle">나 (목표)</text>
+          <line x1="140" y1="168" x2="230" y2="168" stroke="#0d9488" stroke-width="2" marker-end="url(#a2)"/>
+          <rect x="234" y="146" width="120" height="44" rx="8" fill="#0d9488"/>
+          <text x="294" y="173" font-size="12.5" text-anchor="middle" fill="#fff">에이전트</text>
+          <!-- loop of tools -->
+          <rect x="392" y="120" width="120" height="34" rx="7" fill="#fff" stroke="#0d9488"/>
+          <text x="452" y="142" font-size="11.5" text-anchor="middle">① 계획</text>
+          <rect x="392" y="160" width="120" height="34" rx="7" fill="#fff" stroke="#0d9488"/>
+          <text x="452" y="182" font-size="11.5" text-anchor="middle">② 도구 실행</text>
+          <rect x="392" y="200" width="120" height="34" rx="7" fill="#fff" stroke="#0d9488"/>
+          <text x="452" y="222" font-size="11.5" text-anchor="middle">③ 점검·반복</text>
+          <line x1="354" y1="168" x2="388" y2="140" stroke="#0d9488" stroke-width="2" marker-end="url(#a2)"/>
+          <line x1="354" y1="172" x2="388" y2="177" stroke="#0d9488" stroke-width="2" marker-end="url(#a2)"/>
+          <line x1="354" y1="176" x2="388" y2="214" stroke="#0d9488" stroke-width="2" marker-end="url(#a2)"/>
+          <rect x="540" y="160" width="120" height="44" rx="8" fill="#e6f5f3" stroke="#a7ddd6"/>
+          <text x="600" y="187" font-size="12.5" text-anchor="middle">완료된 결과</text>
+          <line x1="512" y1="177" x2="536" y2="182" stroke="#0d9488" stroke-width="2" marker-end="url(#a2)"/>
+          <defs>
+            <marker id="a1" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#94a3b8"/></marker>
+            <marker id="a2" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#0d9488"/></marker>
+          </defs>
+        </g>
+      </svg>
+    </div>
+    <figcaption>그림 1. 챗봇은 한 번 말하고 끝, 에이전트는 스스로 계획·실행·점검을 '반복'해 결과를 만든다. (개인 정리 도식)</figcaption>
+  </figure>
+
+  <!-- 2 -->
+  <h2>2. 비유: 새로 온 인턴 직원</h2>
+  <p>
+    가장 직관적인 비유는 <b>"새로 입사한 똑똑한 인턴"</b>이다. 상사(=나)가 "이번 주 경쟁사 3곳 가격을 조사해서 표로 정리해 메일 보내줘"라고 하면,
+    인턴은 이렇게 움직인다:
+  </p>
+  <div class="step"><b>지시 받기</b> — "경쟁사 가격 조사 → 표 → 메일"이라는 목표를 이해한다.</div>
+  <div class="step"><b>스스로 쪼개기</b> — '어디서 찾지 → 뭘 정리하지 → 어떻게 보내지'로 할 일을 나눈다.</div>
+  <div class="step"><b>도구 쓰기</b> — 웹 검색을 하고, 스프레드시트를 열고, 메일 앱을 연다.</div>
+  <div class="step"><b>막히면 되묻거나 다시 시도</b> — 정보가 없으면 다른 출처를 찾고, 표가 이상하면 고친다.</div>
+  <div class="step"><b>보고</b> — "완료했습니다, 여기 결과입니다"라고 돌려준다.</div>
+  <p>
+    챗봇은 이 중 <b>"이렇게 하시면 됩니다"라고 방법만 알려주는 선배</b>다. 에이전트는 <b>그 일을 실제로 끝까지 해오는 인턴</b>이다.
+    이 차이가 왜 산업적으로 중요하냐면 — <b>사람의 '노동'을 일부 대신</b>하기 때문이다. 그래서 시장이 크고, 그래서 통제(보안)가 필요하다.
+  </p>
+
+  <!-- 3 -->
+  <h2>3. 에이전트를 이루는 4가지 부품</h2>
+  <p>인턴이 일을 해내려면 머리·판단·손·기억이 필요하듯, AI 에이전트도 네 부품으로 이뤄진다.</p>
+
+  <figure>
+    <div class="svgbox">
+      <svg viewBox="0 0 840 260" width="100%" role="img" aria-label="에이전트 4가지 부품">
+        <g font-family="Segoe UI, sans-serif">
+          <circle cx="420" cy="130" r="58" fill="#0d9488"/>
+          <text x="420" y="125" font-size="15" font-weight="800" fill="#fff" text-anchor="middle">두뇌</text>
+          <text x="420" y="147" font-size="12" fill="#e6f5f3" text-anchor="middle">(LLM)</text>
+
+          <rect x="90" y="30" width="200" height="66" rx="12" fill="#e6f5f3" stroke="#a7ddd6"/>
+          <text x="190" y="58" font-size="14" font-weight="700" text-anchor="middle">① 계획 (Planning)</text>
+          <text x="190" y="80" font-size="11.5" fill="#5b6472" text-anchor="middle">목표를 단계로 쪼갬</text>
+
+          <rect x="550" y="30" width="200" height="66" rx="12" fill="#e6f5f3" stroke="#a7ddd6"/>
+          <text x="650" y="58" font-size="14" font-weight="700" text-anchor="middle">② 도구 (Tools)</text>
+          <text x="650" y="80" font-size="11.5" fill="#5b6472" text-anchor="middle">검색·앱·API·코드 실행</text>
+
+          <rect x="90" y="168" width="200" height="66" rx="12" fill="#e6f5f3" stroke="#a7ddd6"/>
+          <text x="190" y="196" font-size="14" font-weight="700" text-anchor="middle">③ 기억 (Memory)</text>
+          <text x="190" y="218" font-size="11.5" fill="#5b6472" text-anchor="middle">앞 단계·맥락을 기억</text>
+
+          <rect x="550" y="168" width="200" height="66" rx="12" fill="#e6f5f3" stroke="#a7ddd6"/>
+          <text x="650" y="196" font-size="14" font-weight="700" text-anchor="middle">④ 두뇌가 지휘</text>
+          <text x="650" y="218" font-size="11.5" fill="#5b6472" text-anchor="middle">판단·다음 행동 결정</text>
+
+          <line x1="290" y1="63" x2="368" y2="108" stroke="#0d9488" stroke-width="2"/>
+          <line x1="550" y1="63" x2="472" y2="108" stroke="#0d9488" stroke-width="2"/>
+          <line x1="290" y1="201" x2="368" y2="152" stroke="#0d9488" stroke-width="2"/>
+          <line x1="550" y1="201" x2="472" y2="152" stroke="#0d9488" stroke-width="2"/>
+        </g>
+      </svg>
+    </div>
+    <figcaption>그림 2. 두뇌(LLM)가 가운데서 지휘하고, 계획·도구·기억이 붙어 하나의 에이전트가 된다. (개인 정리 도식)</figcaption>
+  </figure>
+
+  <div class="grid2">
+    <div class="card">
+      <h4>① 두뇌 (LLM)</h4>
+      <p>GPT·Claude 같은 대규모 언어모델. "무엇을 할지" 판단하는 추론 엔진. 인턴의 '머리'.</p>
+    </div>
+    <div class="card">
+      <h4>② 계획 (Planning)</h4>
+      <p>큰 목표를 실행 가능한 단계로 쪼갠다. "예약 = 검색 → 비교 → 결제 → 확인" 처럼.</p>
+    </div>
+    <div class="card">
+      <h4>③ 도구 (Tools)</h4>
+      <p>실제로 '손'을 쓰는 부분. 웹 검색, 앱 조작, 코드 실행, 외부 API 호출. <b>여기서 진짜 '행동'이 나온다.</b></p>
+    </div>
+    <div class="card">
+      <h4>④ 기억 (Memory)</h4>
+      <p>앞 단계에서 뭘 했는지, 사용자가 뭘 원했는지 기억한다. 이게 없으면 매 단계 초기화돼 일을 못 이어간다.</p>
+    </div>
+  </div>
+  <div class="callout">
+    <b>투자자 관점 힌트:</b> 이 4부품을 보면 <b>"돈이 어디서 벌리는지"</b>가 보인다. 두뇌(①)는 모델 회사(OpenAI·Anthropic),
+    도구·연결(③)은 인프라·SaaS, 그리고 <b>도구를 쓸 때 지나가는 '통신·데이터 길목'은 보안 회사</b>(예: 지스케일러)의 몫이다.
+    에이전트가 손(③)을 쓸수록 그 손이 지나가는 길목이 붐빈다 — 이게 앞 시리즈의 핵심이었다.
+  </div>
+
+  <!-- 4 -->
+  <h2>4. 실제로 한 번 굴러가는 장면</h2>
+  <p>추상적이니 딱 한 번, "제주 여행 3일 예약해줘"라는 목표로 에이전트가 어떻게 도는지 스토리보드로 보자.</p>
+  <table>
+    <thead><tr><th class="c">단계</th><th>에이전트가 하는 일</th><th>쓰는 부품</th></tr></thead>
+    <tbody>
+      <tr><td class="c">1</td><td>목표 해석: "제주, 3일, 예약(항공+숙소)"로 이해</td><td>두뇌</td></tr>
+      <tr><td class="c">2</td><td>계획 수립: 항공 검색 → 숙소 검색 → 일정 조합 → 예약 → 확인 메일</td><td>계획</td></tr>
+      <tr><td class="c">3</td><td>항공 검색 도구 호출 → 가격·시간 비교</td><td>도구</td></tr>
+      <tr><td class="c">4</td><td>숙소 검색 → 위치·가격 필터</td><td>도구+기억</td></tr>
+      <tr><td class="c">5</td><td>충돌 발견(항공 도착이 늦음) → 계획 수정</td><td>두뇌+계획</td></tr>
+      <tr><td class="c">6</td><td>결제·예약 실행 → 확인번호 저장</td><td>도구+기억</td></tr>
+      <tr><td class="c">7</td><td>"완료: 일정·확인번호" 요약 보고</td><td>두뇌</td></tr>
+    </tbody>
+  </table>
+  <p class="sub">
+    ※ 핵심은 5번 <b>"막히면 스스로 계획을 고쳐 다시 시도"</b>하는 반복 루프다. 챗봇에는 없는 이 <b>자기수정 루프</b>가 에이전트의 본질이다.
+  </p>
+
+  <!-- 5 -->
+  <h2>5. 자율성 레벨 — 자율주행에 빗대어</h2>
+  <p>
+    "에이전트"라고 다 같은 게 아니다. 자동차 자율주행이 L0~L5로 나뉘듯, 에이전트도 <b>사람이 얼마나 개입하느냐</b>로 단계가 있다.
+    투자·뉴스에서 "에이전트 도입"이라고 할 때 실제로 몇 단계인지 구분해서 봐야 과장에 안 속는다.
+  </p>
+  <table>
+    <thead><tr><th class="c">레벨</th><th>설명</th><th>비유(운전)</th></tr></thead>
+    <tbody>
+      <tr><td class="c">L1</td><td>사람이 다 하고 AI는 <b>제안</b>만 (자동완성)</td><td>차선이탈 경고</td></tr>
+      <tr><td class="c">L2</td><td>단일 작업을 대신하되 <b>매번 사람이 확인</b></td><td>어댑티브 크루즈</td></tr>
+      <tr><td class="c">L3</td><td>여러 단계를 스스로, <b>중요한 순간만 사람에게 물음</b></td><td>조건부 자율주행</td></tr>
+      <tr><td class="c">L4</td><td>정해진 범위 안에선 <b>거의 완전 자율</b></td><td>지정구역 무인택시</td></tr>
+      <tr><td class="c">L5</td><td>어떤 목표든 <b>완전 자율</b> (아직 미래)</td><td>완전 자율주행</td></tr>
+    </tbody>
+  </table>
+  <div class="note">
+    <b>2026년 현재의 현실:</b> 대부분의 상용 '에이전트'는 <b>L2~L3</b>에 있다. 즉 사람이 최종 확인·승인을 하는 '반자율'이 표준이다.
+    "완전 자율 에이전트가 사람을 대체한다"는 말은 아직 마케팅에 가깝다. <b>투자할 땐 이 눈금으로 과장을 걸러내자.</b>
+  </div>
+
+  <!-- 6 -->
+  <h2>6. 일상 속 사례 4가지</h2>
+  <div class="grid2">
+    <div class="card"><h4>💻 코딩</h4><p>"이 버그 고쳐줘" → 코드 읽고, 수정하고, 테스트 돌리고, 안 되면 다시 고침. (개발 보조 에이전트)</p></div>
+    <div class="card"><h4>📞 고객 상담</h4><p>단순 안내를 넘어, 주문 조회·환불 처리·배송 변경까지 시스템을 직접 조작.</p></div>
+    <div class="card"><h4>🔎 리서치</h4><p>"경쟁사 5곳 비교표 만들어줘" → 검색·수집·요약·표 작성을 한 번에.</p></div>
+    <div class="card"><h4>🗓️ 개인 비서</h4><p>일정 조율, 예약, 메일 초안·발송 등 여러 앱을 넘나들며 처리.</p></div>
+  </div>
+  <p class="sub">
+    공통점: 전부 <b>"여러 단계 + 도구 사용 + 자기수정"</b>이 들어간다. 한 번의 질문답변으로 끝나지 않는다는 게 에이전트의 표식이다.
+  </p>
+
+  <!-- 7 -->
+  <h2>7. 왜 하필 지금 뜨나</h2>
+  <p>에이전트 개념 자체는 오래됐다. 그런데 <b>2024~2026년에 갑자기 현실</b>이 된 데는 세 가지가 겹쳤다.</p>
+  <ol>
+    <li><b>두뇌가 똑똑해졌다.</b> 모델의 추론·계획 능력이 '여러 단계를 스스로 이어갈' 수준으로 올라왔다.</li>
+    <li><b>손을 연결하는 표준이 생겼다.</b> <b>MCP(Model Context Protocol)</b> 같은 규약으로 AI가 외부 도구·데이터에
+      쉽게 붙게 됐다. (인턴에게 회사 시스템 접근 권한을 준 셈)</li>
+    <li><b>비용이 떨어졌다.</b> 같은 작업을 훨씬 싸게 반복 실행할 수 있게 됐다. 자동화의 경제성이 생겼다.</li>
+  </ol>
+  <div class="callout">
+    <b>투자 관점 연결:</b> 2번 "도구 연결 표준(MCP·A2A)"이 열렸다는 건, 그 <b>연결 통로를 검사·통제하는 시장</b>도 함께 열렸다는 뜻이다.
+    에이전트가 회사 데이터·앱에 손을 뻗을수록, 그 손을 <b>누가 통제하느냐</b>가 새 사업이 된다. → 지스케일러 시리즈로 연결.
+  </div>
+
+  <!-- 8 -->
+  <h2>8. 한계와 위험 — 그리고 보안 연결</h2>
+  <p>에이전트는 만능이 아니다. '스스로 행동'하기 때문에 오히려 <b>새로운 위험</b>이 생긴다. 이게 곧 투자 기회의 뒷면이다.</p>
+  <table>
+    <thead><tr><th>위험</th><th>무슨 일이 생기나</th></tr></thead>
+    <tbody>
+      <tr><td><b>환각(Hallucination)</b></td><td>틀린 정보를 사실처럼 확신 → 잘못된 '행동'으로 이어지면 챗봇보다 피해가 큼</td></tr>
+      <tr><td><b>폭주·오작동</b></td><td>잘못된 계획으로 엉뚱한 작업을 대량 실행 (예: 잘못된 대량 메일)</td></tr>
+      <tr><td><b>권한·보안</b></td><td>에이전트가 회사 데이터·시스템에 접근 → 유출·오남용 통로가 됨</td></tr>
+      <tr><td><b>비용·통제</b></td><td>자동 반복 실행이 통제 안 되면 비용 폭증, 감사(누가 뭘 했나) 어려움</td></tr>
+    </tbody>
+  </table>
+  <div class="callout">
+    <b>🔗 여기서 시리즈로 착지:</b> 위 4가지 위험 중 <b>'권한·보안'</b>이 바로 지스케일러가 파는 시장이다.
+    수만 개의 에이전트가 각자 임시 신원(NHI)으로 데이터·앱에 손을 뻗을 때, <b>"이 에이전트는 누구고, 무엇에 접근해도 되며,
+    지금 무슨 통신을 하나"</b>를 검문하는 자리 — 그게 앞 리포트에서 다룬 5개 수익 영역의 뿌리다.
+    <div style="margin-top:10px;">
+      더 깊게: <a href="https://tryingpig.github.io/study/260718_지스케일러AI에이전트시장_확장리포트.html">AI 에이전트 시장 스택과 지스케일러의 자리 (확장편)</a> ·
+      <a href="https://tryingpig.github.io/study/260718_지스케일러AI에이전트_수혜리포트.html">지스케일러 AI 에이전트 수혜 리포트</a> ·
+      <a href="https://tryingpig.github.io/study/260718_지스케일러_1_입문가이드.html">지스케일러 입문 가이드</a>
+    </div>
+  </div>
+
+  <!-- 9 -->
+  <h2>9. FAQ</h2>
+  <h4>Q. 에이전트랑 ChatGPT는 다른 건가요?</h4>
+  <p>ChatGPT '앱' 자체는 챗봇이지만, 여기에 도구·계획·기억을 붙여 여러 단계를 스스로 실행하게 만들면 '에이전트'가 됩니다.
+  즉 같은 모델(두뇌)이라도, <b>혼자 행동하게 엮으면 에이전트</b>가 됩니다.</p>
+  <h4>Q. 지금 에이전트가 사람 일자리를 다 대체하나요?</h4>
+  <p>아직 대부분 L2~L3(반자율)입니다. 사람의 <b>일부 반복 작업</b>을 덜어주는 단계이지, 판단·책임까지 완전히 넘긴 단계는 아닙니다.</p>
+  <h4>Q. 투자자로서 뭘 봐야 하나요?</h4>
+  <p>①두뇌(모델), ②도구·인프라, ③연결 통로의 보안 — 세 층으로 나눠서 "이 회사가 어느 층에 있나"를 구분하세요.
+  가치가 어느 층으로 몰리는지가 관건입니다. (이 시리즈는 ③보안 층을 파고들었습니다.)</p>
+
+  <!-- glossary -->
+  <h2>용어 사전</h2>
+  <table>
+    <tbody>
+      <tr><td><b>AI 에이전트</b></td><td>목표를 주면 스스로 계획·도구사용·자기수정을 반복해 결과를 만드는 AI.</td></tr>
+      <tr><td><b>LLM</b></td><td>Large Language Model. 에이전트의 '두뇌' 역할을 하는 대규모 언어모델(GPT·Claude 등).</td></tr>
+      <tr><td><b>도구(Tools)</b></td><td>에이전트가 실제 행동에 쓰는 외부 기능 — 검색·앱·API·코드 실행.</td></tr>
+      <tr><td><b>MCP</b></td><td>Model Context Protocol. AI가 외부 도구·데이터에 붙는 표준 통신 규약.</td></tr>
+      <tr><td><b>A2A</b></td><td>Agent-to-Agent. 에이전트끼리 직접 주고받는 통신.</td></tr>
+      <tr><td><b>NHI</b></td><td>Non-Human Identity. 사람이 아닌 주체(에이전트·API 키 등)의 신원.</td></tr>
+      <tr><td><b>자기수정 루프</b></td><td>결과를 점검하고 막히면 계획을 고쳐 다시 시도하는 반복 과정. 에이전트의 본질.</td></tr>
+      <tr><td><b>자율성 레벨</b></td><td>사람 개입 정도(L1~L5). 2026년 상용은 대체로 L2~L3.</td></tr>
+    </tbody>
+  </table>
+
+  <div class="foot">
+    <hr>
+    본 문서는 개인 학습·정리 목적의 비상업 노트입니다. 쉬운 이해를 위해 일부 개념을 단순화했으며, 투자에 대한 최종 판단과 책임은
+    전적으로 독자 본인에게 있습니다. © 2026 개인 리서치 라이브러리.
+  </div>
+
+</div>
+</body>
+</html>

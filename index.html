@@ -151,16 +151,32 @@
     ul.posts { list-style: none; padding: 0; margin: 0; }
     ul.posts li { border-bottom: 1px solid var(--line-soft); }
     ul.posts li a {
-      display: flex; align-items: baseline; gap: 16px; padding: 15px 6px;
+      display: flex; align-items: center; gap: 14px; padding: 12px 6px;
       transition: background .12s, padding-left .12s;
     }
     ul.posts li a:hover { background: var(--bg-2); padding-left: 12px; }
-    ul.posts .p-date { font-family: var(--mono); font-size: 12px; color: var(--muted); flex: none; width: 116px; }
-    ul.posts .p-title { font-size: 15px; color: var(--ink); }
+    /* 픽셀 썸네일 — assets/px/*.svg (pixel-icon 스킬로 생성) */
+    ul.posts .p-thumb {
+      flex: none; width: 62px; height: 62px; border-radius: 10px;
+      border: 1px solid var(--line); background: var(--bg-2);
+      image-rendering: pixelated; display: block;
+    }
+    ul.posts .p-body { min-width: 0; display: flex; flex-direction: column; gap: 6px; }
+    ul.posts .p-title {
+      font-size: 15px; color: var(--ink); line-height: 1.4;
+      display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+    }
+    ul.posts .p-meta { display: flex; align-items: center; gap: 8px; }
+    ul.posts .p-date { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+    ul.posts .p-seq {
+      font-family: var(--mono); font-size: 11px; color: var(--ink-soft);
+      border: 1px solid var(--line); border-radius: 5px; padding: 0 5px; line-height: 16px;
+    }
     ul.posts li a:hover .p-title { text-decoration: underline; }
     @media (max-width: 560px) {
-      ul.posts li a { flex-direction: column; gap: 3px; }
-      ul.posts .p-date { width: auto; }
+      ul.posts li a { gap: 11px; }
+      ul.posts .p-thumb { width: 50px; height: 50px; }
+      ul.posts .p-title { font-size: 14px; }
     }
 
     /* ── Pagination ── */
@@ -292,8 +308,14 @@
       }
       listEl.innerHTML = slice.map(p => `
         <li><a href="${p.file}" target="_blank" rel="noopener">
-          <span class="p-date">${p.date}</span>
-          <span class="p-title">${p.title}</span>
+          <img class="p-thumb" src="assets/px/${p.icon}.svg" alt="" width="62" height="62" loading="lazy" />
+          <span class="p-body">
+            <span class="p-title">${p.title}</span>
+            <span class="p-meta">
+              <span class="p-date">${p.date}</span>
+              ${p.seq ? `<span class="p-seq">${p.seq}</span>` : ''}
+            </span>
+          </span>
         </a></li>`).join('');
 
       // 페이지가 1개뿐이면 페이저 숨김
@@ -326,10 +348,48 @@
       render();
     }
 
+    /* ── 주제별 픽셀 아이콘 매핑 ──
+       파일명으로 주제를 찾는다. 위에서부터 먼저 걸리는 규칙이 이김.
+       새 주제를 추가하려면 assets/px/icons.json에 아이콘을 그려 pixel-icon 스킬로 뽑고
+       여기에 한 줄 추가하면 된다. 못 찾으면 note(기본 문서 아이콘). */
+    const TOPIC_ICONS = [
+      [/보툴리눔톡신/, 'toxin'],
+      [/휴젤/, 'hugel'],
+      [/인텍플러스/, 'intekplus'],
+      [/전력공조냉각/, 'cooling'],
+      [/FCBGA/i, 'fcbga'],
+      [/유리기판/, 'glass'],
+      [/MLCC/i, 'mlcc'],
+      [/삼성전기/, 'samsungsem'],
+      [/SKT|데이터센터/i, 'datacenter'],
+      [/효성중공업|SST/i, 'transformer'],
+      [/메가프로젝트/, 'mega'],
+      [/리밸런싱/, 'rebalance'],
+      [/800VDC/i, 'vdc800'],
+      [/_hbs_/i, 'hbs'],
+      [/_hbf_/i, 'hbf'],
+      [/_cpo_/i, 'cpo'],
+    ];
+
+    /* 3부작 시리즈 순번 — 파일명의 _1_/_2_/_3_ 또는 글 성격 키워드로 판별 */
+    const SEQ_RULES = [
+      [/_1_|입문가이드|완전정복/, '①'],
+      [/_2_|투자안내서|국내수혜/, '②'],
+      [/_3_|밸류체인/, '③'],
+    ];
+
+    function decorate(post) {
+      const f = post.file;
+      post.icon = (TOPIC_ICONS.find(([re]) => re.test(f)) || [null, 'note'])[1];
+      const seq = SEQ_RULES.find(([re]) => re.test(f));
+      post.seq = seq ? seq[1] : '';
+    }
+
     (async function loadPosts() {
       const listEl = document.getElementById('posts');
       try {
         const posts = await fetch('posts.json?t=' + Date.now()).then(r => r.json());
+        posts.forEach(decorate);
         // 각 글의 <title>을 병렬로 읽어옴 (기존 동작 유지, 단 병렬화로 빠르게)
         await Promise.all(posts.map(async (post) => {
           try {

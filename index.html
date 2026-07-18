@@ -166,12 +166,7 @@
       font-size: 15px; color: var(--ink); line-height: 1.4;
       display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
     }
-    ul.posts .p-meta { display: flex; align-items: center; gap: 8px; }
     ul.posts .p-date { font-family: var(--mono); font-size: 12px; color: var(--muted); }
-    ul.posts .p-seq {
-      font-family: var(--mono); font-size: 11px; color: var(--ink-soft);
-      border: 1px solid var(--line); border-radius: 5px; padding: 0 5px; line-height: 16px;
-    }
     ul.posts li a:hover .p-title { text-decoration: underline; }
     @media (max-width: 560px) {
       ul.posts li a { gap: 11px; }
@@ -308,13 +303,10 @@
       }
       listEl.innerHTML = slice.map(p => `
         <li><a href="${p.file}" target="_blank" rel="noopener">
-          <img class="p-thumb" src="assets/px/${p.icon}.svg" alt="" width="62" height="62" loading="lazy" />
+          <img class="p-thumb" src="${p.icon}" alt="" width="62" height="62" loading="lazy" />
           <span class="p-body">
             <span class="p-title">${p.title}</span>
-            <span class="p-meta">
-              <span class="p-date">${p.date}</span>
-              ${p.seq ? `<span class="p-seq">${p.seq}</span>` : ''}
-            </span>
+            <span class="p-date">${p.date}</span>
           </span>
         </a></li>`).join('');
 
@@ -369,20 +361,41 @@
       [/_hbs_/i, 'hbs'],
       [/_hbf_/i, 'hbf'],
       [/_cpo_/i, 'cpo'],
+      [/지스케일러|zscaler/i, 'zscaler'],
+      [/AI에이전트/, 'aiagent'],
     ];
 
-    /* 3부작 시리즈 순번 — 파일명의 _1_/_2_/_3_ 또는 글 성격 키워드로 판별 */
-    const SEQ_RULES = [
-      [/_1_|입문가이드|완전정복/, '①'],
-      [/_2_|투자안내서|국내수혜/, '②'],
-      [/_3_|밸류체인/, '③'],
-    ];
+    /* 매칭되는 주제가 없을 때 — 파일명 해시로 색과 무늬가 정해지는 픽셀 타일을 즉석 생성.
+       좌우 대칭이라 아이덴티콘처럼 보이고, 글마다 색이 달라 회색 문서가 줄줄이 서지 않는다. */
+    function autoIcon(seed) {
+      let h = 2166136261;
+      for (let i = 0; i < seed.length; i++) { h = Math.imul(h ^ seed.charCodeAt(i), 16777619); }
+      let r = h >>> 0;
+      const rnd = () => (r = Math.imul(r ^ (r >>> 15), 2246822507) >>> 0) / 4294967296;
+      const hue = (h >>> 0) % 360;
+      const fg = `hsl(${(hue + 8) % 360},70%,70%)`;
+
+      let cells = '';
+      for (let y = 3; y <= 12; y++) {
+        for (let x = 3; x <= 7; x++) {
+          if (rnd() > 0.45) {
+            cells += `<rect x="${x}" y="${y}" width="1" height="1"/>`
+                  +  `<rect x="${15 - x}" y="${y}" width="1" height="1"/>`;
+          }
+        }
+      }
+      const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" shape-rendering="crispEdges">`
+        + `<defs><linearGradient id="b" x1="0" y1="0" x2="1" y2="1">`
+        + `<stop offset="0" stop-color="hsl(${hue},42%,13%)"/>`
+        + `<stop offset="1" stop-color="hsl(${(hue + 28) % 360},46%,26%)"/></linearGradient></defs>`
+        + `<rect width="16" height="16" fill="url(#b)"/><g fill="${fg}">${cells}</g></svg>`;
+      return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
+    }
 
     function decorate(post) {
       const f = post.file;
-      post.icon = (TOPIC_ICONS.find(([re]) => re.test(f)) || [null, 'note'])[1];
-      const seq = SEQ_RULES.find(([re]) => re.test(f));
-      post.seq = seq ? seq[1] : '';
+      const hit = TOPIC_ICONS.find(([re]) => re.test(f));
+      post.icon = hit ? `assets/px/${hit[1]}.svg` : autoIcon(f);
     }
 
     (async function loadPosts() {

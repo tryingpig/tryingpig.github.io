@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>국산 AI반도체 밸류체인 — DSP는 진짜 수혜주인가</title>
+<style>
+  :root{
+    --accent:#7c3aed; --accent2:#a855f7;
+    --ink:#1f2430; --muted:#5c6472; --line:#e8e4ee; --bg:#fff; --soft:#faf8fd;
+    --warnbg:#fff7ed; --warnln:#fb923c;
+  }
+  *{box-sizing:border-box;}
+  body{font-family:"Segoe UI","Malgun Gothic","Apple SD Gothic Neo",system-ui,sans-serif;
+    color:var(--ink); background:var(--bg); margin:0; line-height:1.78; font-size:16.5px; letter-spacing:-0.1px;}
+  .wrap{max-width:920px; margin:0 auto; padding:40px 28px 90px;}
+  h1{font-size:29px; line-height:1.32; margin:8px 0 6px; letter-spacing:-0.6px;}
+  h2{font-size:22px; margin:50px 0 12px; padding-top:14px; border-top:3px solid var(--accent); letter-spacing:-0.4px;}
+  h3{font-size:18.5px; margin:30px 0 8px; color:#2b3242;}
+  h4{font-size:16px; margin:18px 0 6px; color:var(--accent);}
+  p{margin:10px 0;} a{color:var(--accent); text-decoration:none;} a:hover{text-decoration:underline;}
+  .sub{color:var(--muted); font-size:15px;} .lead{font-size:17.5px; color:#333a49;}
+  .kicker{display:inline-block; font-size:13px; font-weight:700; letter-spacing:1.5px;
+    color:var(--accent); background:#f3ebff; padding:5px 12px; border-radius:999px;}
+  .warn{background:var(--warnbg); border:1px solid var(--warnln); border-left:6px solid var(--warnln);
+    border-radius:10px; padding:16px 18px; margin:22px 0; font-size:15px;}
+  .note{background:var(--soft); border:1px solid var(--line); border-radius:10px; padding:16px 18px; margin:18px 0;}
+  .callout{background:#f3ebff; border:1px solid #d8b4fe; border-left:6px solid var(--accent);
+    border-radius:10px; padding:16px 18px; margin:20px 0;}
+  .bust{background:#fef2f2; border:1px solid #fca5a5; border-left:6px solid #dc2626;
+    border-radius:10px; padding:16px 18px; margin:20px 0;}
+  .big{font-size:19px; font-weight:800; color:var(--accent); line-height:1.5;}
+  .grid2{display:grid; grid-template-columns:1fr 1fr; gap:16px;}
+  .card{border:1px solid var(--line); border-radius:12px; padding:16px 18px; background:#fff;}
+  table{width:100%; border-collapse:collapse; margin:18px 0; font-size:14.5px;}
+  th,td{border:1px solid var(--line); padding:9px 11px; text-align:left; vertical-align:top;}
+  th{background:var(--soft); font-weight:700;} td.c,th.c{text-align:center;}
+  figure{margin:24px 0; text-align:center;} figcaption{font-size:13px; color:var(--muted); margin-top:8px;}
+  .svgbox{border:1px solid var(--line); border-radius:12px; padding:14px; background:#fff;}
+  ul,ol{margin:10px 0 10px 4px; padding-left:22px;} li{margin:6px 0;}
+  .kpi{display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin:20px 0;}
+  .kpi .box{border:1px solid var(--line); border-radius:12px; padding:14px; text-align:center; background:var(--soft);}
+  .kpi .num{font-size:21px; font-weight:800; color:var(--accent); letter-spacing:-0.5px;}
+  .kpi .lab{font-size:12.5px; color:var(--muted); margin-top:3px;}
+  .toc{background:var(--soft); border:1px solid var(--line); border-radius:12px; padding:18px 22px; margin:26px 0;}
+  .toc ol{columns:2; column-gap:34px;}
+  .src{font-size:13px; color:var(--muted); word-break:break-all;}
+  .good{color:#059669; font-weight:700;} .bad{color:#dc2626; font-weight:700;} .mid{color:#b45309; font-weight:700;}
+  .tag{display:inline-block; font-size:12px; font-weight:700; padding:2px 8px; border-radius:6px;}
+  .t-s{background:#eff6ff; color:#2563eb;} .t-t{background:#fef2f2; color:#dc2626;}
+  hr{border:none; border-top:1px solid var(--line); margin:34px 0;}
+  .foot{color:var(--muted); font-size:13px; margin-top:40px;}
+  @media (max-width:680px){.grid2,.kpi{grid-template-columns:1fr;} .toc ol{columns:1;} h1{font-size:24px;}}
+  @media print{body{font-size:11.5pt;} .wrap{max-width:100%; padding:0;} h2{break-after:avoid;}
+    figure,table,.card{break-inside:avoid;} a{color:#000;} .warn,.callout,.note,.bust{break-inside:avoid;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <span class="kicker">국산 AI반도체 · 가설 검증 리포트</span>
+  <h1>국산 AI반도체 밸류체인<br>— DSP는 진짜 수혜주인가</h1>
+  <p class="sub">작성일 2026-07-20 · 개인 리서치 노트 · 삼성SDS 국산 NPU 클라우드 출시 기사에서 출발</p>
+
+  <div class="warn">
+    <b>⚠️ 투자 권유가 아닙니다.</b> 이 문서는 공개 정보와 <b>증권사·언론 추정치</b>를 정리해 하나의 투자 가설을 검증해 본
+    <b>개인 학습 노트</b>이며, 특정 종목의 매수·매도 추천이 아닙니다. 언급된 기업명은 밸류체인 구조 설명을 위한 것이지
+    투자 대상 추천이 아닙니다. 실적 전망치는 추정이며 실제와 다를 수 있습니다.
+    모든 투자 판단과 그 책임은 전적으로 본인에게 있습니다.
+  </div>
+
+  <!-- 출발점 -->
+  <div class="note">
+    <b>📰 이 리포트의 출발점</b><br>
+    2026년 7월 20일자 기사 — <b>"삼성SDS, 국산 NPU 기반 삼성클라우드 서비스 출시"</b>.
+    삼성SDS가 퓨리오사AI의 2세대 NPU <b>'레니게이드(RNGD)'</b>를 기반으로 NPUaaS를 삼성 클라우드 플랫폼(SCP)에 탑재했다는 내용.<br><br>
+    <b>여기서 출발한 투자 가설:</b> <i>"국산 AI칩 생태계가 계속 커지면 → 국내 DSP(디자인하우스) 업체가 수혜를 보고 →
+    삼성 파운드리에도 수혜가 있지 않을까?"</i><br><br>
+    이 리포트는 그 가설을 <b>연결고리 하나씩 끊어서 검증</b>한다. 결론부터 말하면 <b>가설의 방향은 맞지만,
+    이 기사와 직접 이어지는 고리는 끊어져 있다.</b>
+  </div>
+
+  <div class="callout">
+    <span class="big">🧭 결론 먼저 (5줄 요약)</span>
+    <ol style="margin-bottom:0;">
+      <li><b>퓨리오사 RNGD는 TSMC 5nm에서 만든다.</b> 이 기사 건으로 삼성 파운드리·삼성 DSP에 흘러가는 매출은 사실상 없다.</li>
+      <li><b>삼성 경로는 퓨리오사가 아니라 리벨리온이다.</b> 리벨리온은 삼성 4nm + 삼성 HBM3E + 2nm CPU 칩렛으로 삼성 진영에 있다.</li>
+      <li><b>DSP 실적 개선은 실제다. 그러나 동력이 국산 NPU가 아니다.</b> 미국·일본·유럽 고객 수주가 주 엔진이다.</li>
+      <li><b>삼성 파운드리 회복의 주역도 국산 NPU가 아니다.</b> 테슬라 AI6 약 23조 원 수주와 가동률 80% 회복이 본질이다.</li>
+      <li>따라서 <b>"국산 NPU 뉴스 = DSP·삼성 수혜"라는 반사적 연결은 종목별로 검증이 필요하다.</b> 진짜 관전 포인트는 따로 있다(9~11장).</li>
+    </ol>
+  </div>
+
+  <div class="toc">
+    <b>목차</b>
+    <ol>
+      <li>가설 해부 — 연결고리 끊어보기</li>
+      <li>결정적 사실: 퓨리오사는 TSMC</li>
+      <li>국산 AI칩 2강 지도 (퓨리오사 vs 리벨리온)</li>
+      <li>DSP란 무엇이고 어떻게 버나</li>
+      <li>국내 DSP 4사 해부</li>
+      <li>ADT의 진영 이동 — TSMC를 버린 회사</li>
+      <li>진짜 수혜 동력은 해외 수주다</li>
+      <li>삼성 파운드리 수혜의 정량 감각</li>
+      <li>정책 순풍 — 2026 AI 예산 9.9조</li>
+      <li>GUC 벤치마크 — 상한선 점검</li>
+      <li>수혜 강도 매트릭스</li>
+      <li>KPI · 시나리오 · 리스크 · 촉매</li>
+      <li>FAQ · 용어사전 · 출처</li>
+    </ol>
+  </div>
+
+  <!-- 1 -->
+  <h2>1. 가설 해부 — 연결고리 끊어보기</h2>
+  <p class="lead">
+    "국산 NPU가 뜨면 DSP와 삼성 파운드리가 좋아진다"는 명제는 <b>네 개의 고리</b>로 이뤄져 있다.
+    각 고리가 실제로 연결되는지 하나씩 확인해야 가설이 성립한다.
+  </p>
+
+  <figure>
+    <div class="svgbox">
+      <svg viewBox="0 0 860 300" width="100%" role="img" aria-label="가설의 연결고리 검증">
+        <g font-family="Segoe UI, sans-serif">
+          <text x="16" y="26" font-size="15" font-weight="800">가설의 4개 고리 — 어디가 이어지고 어디가 끊겼나</text>
+
+          <!-- chain -->
+          <rect x="20" y="52" width="180" height="62" rx="10" fill="#f3ebff" stroke="#d8b4fe"/>
+          <text x="110" y="76" font-size="12.5" font-weight="700" text-anchor="middle">① 국산 NPU 수요↑</text>
+          <text x="110" y="96" font-size="11" fill="#5c6472" text-anchor="middle">삼성SDS 클라우드 탑재</text>
+          <text x="110" y="130" font-size="12" fill="#059669" font-weight="700" text-anchor="middle">✅ 사실</text>
+
+          <rect x="228" y="52" width="180" height="62" rx="10" fill="#fef2f2" stroke="#fca5a5"/>
+          <text x="318" y="76" font-size="12.5" font-weight="700" text-anchor="middle">② 국내 DSP 설계 수주↑</text>
+          <text x="318" y="96" font-size="11" fill="#5c6472" text-anchor="middle">퓨리오사가 국내 DSP 쓰나?</text>
+          <text x="318" y="130" font-size="12" fill="#dc2626" font-weight="700" text-anchor="middle">⚠️ 약함</text>
+
+          <rect x="436" y="52" width="180" height="62" rx="10" fill="#fef2f2" stroke="#fca5a5"/>
+          <text x="526" y="76" font-size="12.5" font-weight="700" text-anchor="middle">③ 삼성 파운드리 물량↑</text>
+          <text x="526" y="96" font-size="11" fill="#5c6472" text-anchor="middle">RNGD = TSMC 5nm</text>
+          <text x="526" y="130" font-size="12" fill="#dc2626" font-weight="700" text-anchor="middle">❌ 끊김</text>
+
+          <rect x="644" y="52" width="176" height="62" rx="10" fill="#fef9c3" stroke="#fde047"/>
+          <text x="732" y="76" font-size="12.5" font-weight="700" text-anchor="middle">④ 생태계 파급</text>
+          <text x="732" y="96" font-size="11" fill="#5c6472" text-anchor="middle">장기 간접 효과</text>
+          <text x="732" y="130" font-size="12" fill="#b45309" font-weight="700" text-anchor="middle">🕰️ 느림</text>
+
+          <g stroke="#94a3b8" stroke-width="2" fill="none">
+            <path d="M202,83 L224,83" marker-end="url(#a)"/>
+            <path d="M410,83 L432,83" marker-end="url(#a)"/>
+            <path d="M618,83 L640,83" marker-end="url(#a)"/>
+          </g>
+          <defs><marker id="a" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+            <path d="M0,0 L6,3 L0,6 Z" fill="#94a3b8"/></marker></defs>
+
+          <!-- alternative path -->
+          <rect x="20" y="180" width="800" height="96" rx="12" fill="#eff6ff" stroke="#93c5fd"/>
+          <text x="40" y="206" font-size="13.5" font-weight="800" fill="#1d4ed8">✅ 실제로 이어지는 경로는 이쪽이다</text>
+          <rect x="44" y="218" width="170" height="44" rx="8" fill="#fff" stroke="#93c5fd"/>
+          <text x="129" y="236" font-size="11.5" font-weight="700" text-anchor="middle">리벨리온</text>
+          <text x="129" y="252" font-size="10.5" fill="#5c6472" text-anchor="middle">(삼성 4nm)</text>
+          <rect x="234" y="218" width="170" height="44" rx="8" fill="#fff" stroke="#93c5fd"/>
+          <text x="319" y="236" font-size="11.5" font-weight="700" text-anchor="middle">에이디테크놀로지</text>
+          <text x="319" y="252" font-size="10.5" fill="#5c6472" text-anchor="middle">(AI CPU 칩렛 협력)</text>
+          <rect x="424" y="218" width="170" height="44" rx="8" fill="#fff" stroke="#93c5fd"/>
+          <text x="509" y="236" font-size="11.5" font-weight="700" text-anchor="middle">삼성 파운드리</text>
+          <text x="509" y="252" font-size="10.5" fill="#5c6472" text-anchor="middle">(4nm·2nm)</text>
+          <rect x="614" y="218" width="180" height="44" rx="8" fill="#fff" stroke="#93c5fd"/>
+          <text x="704" y="236" font-size="11.5" font-weight="700" text-anchor="middle">삼성 HBM3E</text>
+          <text x="704" y="252" font-size="10.5" fill="#5c6472" text-anchor="middle">(메모리 동반 수혜)</text>
+          <g stroke="#3b82f6" stroke-width="2" fill="none">
+            <path d="M216,240 L230,240" marker-end="url(#b)"/>
+            <path d="M406,240 L420,240" marker-end="url(#b)"/>
+            <path d="M596,240 L610,240" marker-end="url(#b)"/>
+          </g>
+          <defs><marker id="b" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+            <path d="M0,0 L6,3 L0,6 Z" fill="#3b82f6"/></marker></defs>
+        </g>
+      </svg>
+    </div>
+    <figcaption>그림 1. 기사에서 출발한 가설의 고리는 ③에서 끊긴다. 실제 삼성 경로는 리벨리온 축이다. (개인 정리 도식)</figcaption>
+  </figure>
+
+  <!-- 2 -->
+  <h2>2. 결정적 사실 — 퓨리오사는 TSMC다</h2>
+  <div class="bust">
+    <b>🔴 가설을 깨는 팩트</b><br>
+    <b>퓨리오사AI 레니게이드(RNGD)는 TSMC 5nm 공정에서 생산된다.</b> 삼성 파운드리가 아니다.
+    <ul style="margin-bottom:0;">
+      <li>TSMC 5nm 공정, 1.0GHz 동작</li>
+      <li>추론용 AI반도체 <b>최초로 HBM3 탑재</b> — HBM3 모듈 2개, 총 <b>1.5TB/s</b> 대역폭</li>
+      <li>성능: BF16 256 TFLOPS / FP8 512 TFLOPS / INT8 512 TOPS / INT4 1024 TOPS</li>
+      <li>2026년 1월 TSMC 5나노로 <b>4,000장 양산 성공</b> → 연내 총 2만장 생산 계획</li>
+      <li>차세대 '레니게이드+ 맥스': HBM3 → <b>HBM3E</b> 전환, 48GB → 72GB(1.5배)</li>
+    </ul>
+  </div>
+  <p>
+    또 하나 짚어야 할 구분이 있다. <b>삼성SDS ≠ 삼성전자 파운드리</b>다.
+    삼성SDS는 IT 서비스·클라우드 회사이고, 파운드리는 삼성전자 DS부문의 사업부다. 별개 법인·별개 손익이다.
+    이번 건은 <b>"삼성SDS가 클라우드 상품을 하나 늘린 것"</b>이지, 삼성전자 파운드리의 수주가 아니다.
+  </p>
+  <div class="note">
+    <b>그럼 이 기사는 의미가 없나?</b> 그렇지 않다. 다만 <b>의미의 종류가 다르다.</b>
+    이 건의 진짜 의미는 매출이 아니라 <b>"국산 NPU가 실제 상용 클라우드에 올라간 레퍼런스"</b>라는 점이다.
+    소버린 AI·공공 수요가 국산 칩으로 열릴 수 있다는 신호이며, 이는 <b>정책 흐름(9장)</b>과 함께 읽어야 한다.
+    다만 <b>레퍼런스와 실적은 다른 것</b>이고, 투자 판단에서는 이 둘을 섞으면 안 된다.
+  </div>
+
+  <!-- 3 -->
+  <h2>3. 국산 AI칩 2강 지도 — 퓨리오사 vs 리벨리온</h2>
+  <p>국산 AI반도체 팹리스는 크게 두 축이다. 그런데 <b>둘의 파운드리 진영이 정반대</b>라는 점이 투자 관점에서 핵심이다.</p>
+  <table>
+    <thead><tr><th>구분</th><th>퓨리오사AI</th><th>리벨리온</th></tr></thead>
+    <tbody>
+      <tr><td><b>대표 제품</b></td><td>레니게이드(RNGD)</td><td>REBEL / REBEL-Quad</td></tr>
+      <tr><td><b>파운드리</b></td><td><span class="tag t-t">TSMC 5nm</span></td><td><span class="tag t-s">삼성 4nm</span></td></tr>
+      <tr><td><b>메모리</b></td><td>HBM3 → HBM3E (48→72GB)</td><td><b>삼성 HBM3E 12단 36GB</b> / Quad는 144GB·4.8TB/s</td></tr>
+      <tr><td><b>차세대</b></td><td>레니게이드+ 맥스</td><td>REBEL-Quad (칩렛, 블랙웰급 성능 지향)</td></tr>
+      <tr><td><b>삼성 협력</b></td><td>삼성SDS 클라우드 탑재(서비스)</td><td><b>Arm·삼성파운드리·에이디테크놀로지와 AI CPU 칩렛 플랫폼 공동개발</b>, 2nm CPU 칩렛</td></tr>
+      <tr><td><b>지배구조</b></td><td>독립 (최대 5억 달러 투자유치 추진)</td><td><b>SK그룹 최대주주</b> (사피온과 합병)</td></tr>
+      <tr><td><b>상장 여부</b></td><td>비상장</td><td>비상장 (누적투자 약 1.3조)</td></tr>
+      <tr><td><b>삼성 밸류체인 기여</b></td><td class="c bad">거의 없음</td><td class="c good">파운드리+메모리+DSP 동시</td></tr>
+    </tbody>
+  </table>
+  <div class="callout">
+    <b>💡 투자 관점 정리</b><br>
+    두 회사 모두 <b>비상장</b>이라 직접 투자는 불가능하다. 따라서 국산 AI칩 테마에 노출되려면 <b>간접 경로</b>를 타야 하는데,
+    그 간접 경로가 <b>어느 팹리스에 붙어 있느냐에 따라 완전히 갈린다.</b>
+    <ul style="margin-bottom:0;">
+      <li><b>리벨리온 축</b> → 삼성 파운드리, 삼성 HBM, 삼성 진영 DSP(에이디테크놀로지 등)</li>
+      <li><b>퓨리오사 축</b> → TSMC, TSMC 진영 파트너(국내에서는 에이직랜드가 TSMC 유일 파트너), 삼성SDS(서비스 측면)</li>
+    </ul>
+    "국산 NPU 수혜주"를 한 바구니로 묶으면 <b>정반대 진영을 섞는 실수</b>가 된다.
+  </div>
+
+  <!-- 4 -->
+  <h2>4. DSP란 무엇이고 어떻게 버나</h2>
+  <p class="lead">
+    DSP(Design Solution Partner) 또는 디자인하우스는 <b>팹리스(설계)와 파운드리(생산) 사이의 통역·중개자</b>다.
+    팹리스가 그린 회로도를 <b>특정 파운드리 공정에 맞게 물리적으로 구현</b>해 주고, 양산까지 다리를 놓는다.
+  </p>
+
+  <figure>
+    <div class="svgbox">
+      <svg viewBox="0 0 860 240" width="100%" role="img" aria-label="DSP 위치와 수익 단계">
+        <g font-family="Segoe UI, sans-serif">
+          <text x="16" y="26" font-size="15" font-weight="800">DSP의 위치와 수익 3단계</text>
+          <rect x="30" y="48" width="180" height="56" rx="10" fill="#f1f5f9" stroke="#cbd5e1"/>
+          <text x="120" y="72" font-size="13" font-weight="700" text-anchor="middle">팹리스</text>
+          <text x="120" y="92" font-size="11" fill="#5c6472" text-anchor="middle">퓨리오사·리벨리온 등</text>
+
+          <rect x="330" y="42" width="200" height="68" rx="10" fill="#7c3aed"/>
+          <text x="430" y="70" font-size="13.5" font-weight="800" fill="#fff" text-anchor="middle">DSP / 디자인하우스</text>
+          <text x="430" y="92" font-size="11" fill="#e9d5ff" text-anchor="middle">설계 → 공정 최적화 → 양산 연결</text>
+
+          <rect x="650" y="48" width="180" height="56" rx="10" fill="#f1f5f9" stroke="#cbd5e1"/>
+          <text x="740" y="72" font-size="13" font-weight="700" text-anchor="middle">파운드리</text>
+          <text x="740" y="92" font-size="11" fill="#5c6472" text-anchor="middle">삼성 / TSMC</text>
+
+          <g stroke="#7c3aed" stroke-width="2.5" fill="none">
+            <path d="M212,76 L324,76" marker-end="url(#c)"/>
+            <path d="M532,76 L644,76" marker-end="url(#c)"/>
+          </g>
+          <defs><marker id="c" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto">
+            <path d="M0,0 L6,3 L0,6 Z" fill="#7c3aed"/></marker></defs>
+
+          <!-- revenue stages -->
+          <rect x="30" y="140" width="250" height="70" rx="10" fill="#fef2f2" stroke="#fca5a5"/>
+          <text x="155" y="164" font-size="13" font-weight="700" text-anchor="middle">① NRE (설계 용역)</text>
+          <text x="155" y="184" font-size="11" fill="#5c6472" text-anchor="middle">일회성 개발비 · <b>저마진</b></text>
+          <text x="155" y="200" font-size="10.5" fill="#5c6472" text-anchor="middle">사람 갈아넣는 구조</text>
+
+          <rect x="300" y="140" width="250" height="70" rx="10" fill="#fef9c3" stroke="#fde047"/>
+          <text x="425" y="164" font-size="13" font-weight="700" text-anchor="middle">② 턴키 (일괄 수행)</text>
+          <text x="425" y="184" font-size="11" fill="#5c6472" text-anchor="middle">설계~생산 일괄 · <b>고마진</b></text>
+          <text x="425" y="200" font-size="10.5" fill="#5c6472" text-anchor="middle">범위가 넓을수록 이익</text>
+
+          <rect x="570" y="140" width="260" height="70" rx="10" fill="#ecfdf5" stroke="#6ee7b7"/>
+          <text x="700" y="164" font-size="13" font-weight="700" text-anchor="middle">③ 양산 (물량 연동)</text>
+          <text x="700" y="184" font-size="11" fill="#5c6472" text-anchor="middle">칩이 팔릴수록 매출 · <b>지속성</b></text>
+          <text x="700" y="200" font-size="10.5" fill="#5c6472" text-anchor="middle">← 진짜 레버리지는 여기</text>
+        </g>
+      </svg>
+    </div>
+    <figcaption>그림 2. DSP 수익은 NRE → 턴키 → 양산으로 갈수록 마진과 지속성이 좋아진다. (개인 정리 도식)</figcaption>
+  </figure>
+
+  <div class="callout">
+    <b>🔑 DSP를 볼 때 가장 중요한 한 가지</b><br>
+    <b>매출액이 아니라 "매출의 질"을 봐야 한다.</b> NRE만 늘면 매출은 커져도 이익이 안 남는다(인력 투입형).
+    <b>턴키 비중</b>과 <b>양산 단계 진입 여부</b>가 올라가야 이익률이 개선된다.
+    실제로 국내 DSP들의 2026년 이익 급증 전망은 <b>바로 이 믹스 변화</b>에서 나온다(5장 표 참조).
+  </div>
+
+  <!-- 5 -->
+  <h2>5. 국내 DSP 4사 해부</h2>
+  <h3>실적 — 2026년은 확실히 좋아진다</h3>
+  <table>
+    <thead><tr><th>기업</th><th class="c">진영</th><th class="c">2026E 매출</th><th class="c">2026E 영업이익</th><th>비고</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><b>에이디테크놀로지</b><br><span class="sub">코스닥 200710</span></td>
+        <td class="c"><span class="tag t-s">삼성</span></td>
+        <td class="c">2,557억<br><span class="good">+55.4%</span></td>
+        <td class="c">231억<br><span class="good">+711.6%</span> (OPM 9.1%)</td>
+        <td>2025 별도 매출 1,244억(+75%), 영업이익 88억으로 <b>흑자전환</b>(직전 2년 적자 81억·158억)</td>
+      </tr>
+      <tr>
+        <td><b>가온칩스</b><br><span class="sub">코스닥 399720</span></td>
+        <td class="c"><span class="tag t-s">삼성</span></td>
+        <td class="c">1,078억<br><span class="good">+78.2%</span></td>
+        <td class="c">87억<br><span class="good">흑자전환</span></td>
+        <td>일본 AI 기업 <b>2nm 프로젝트</b> 하반기 양산 효과 기대</td>
+      </tr>
+      <tr>
+        <td><b>세미파이브</b><br><span class="sub">코스닥 490470</span></td>
+        <td class="c"><span class="tag t-s">삼성</span></td>
+        <td class="c">—</td>
+        <td class="c"><span class="good">흑자전환 전망</span></td>
+        <td>2025.12.29 <b>코스닥 신규상장</b>(공모 1,134억 조달), 전년 수주 1,200억+</td>
+      </tr>
+      <tr>
+        <td><b>코아시아</b><br><span class="sub">코스닥 045970</span></td>
+        <td class="c"><span class="tag t-s">삼성</span></td>
+        <td class="c">—</td>
+        <td class="c"><span class="mid">흑자 기조</span></td>
+        <td>시스템반도체 + 카메라모듈 병행 구조</td>
+      </tr>
+      <tr>
+        <td>에이직랜드<br><span class="sub">(참고 · 반대 진영)</span></td>
+        <td class="c"><span class="tag t-t">TSMC</span></td>
+        <td class="c">—</td>
+        <td class="c">—</td>
+        <td><b>TSMC의 국내 유일 파트너</b>. 퓨리오사 축과 가까운 진영</td>
+      </tr>
+    </tbody>
+  </table>
+  <p class="sub">
+    ※ 2026년 수치는 <b>증권사·언론 추정치</b>이며 실제와 다를 수 있다. 세미파이브·코아시아는 공개된 통합 추정치가 제한적이라 공란.
+    <span class="src">(출처: 전자신문 2026.01.15, 데일리인베스트, 씽크풀, 아시아경제, KIPOST)</span>
+  </p>
+
+  <h3>체질 변화 — 에이디테크놀로지 사례</h3>
+  <p>DSP의 "매출의 질"이 실제로 어떻게 변하는지 보여주는 가장 좋은 예다.</p>
+  <table>
+    <thead><tr><th>지표</th><th class="c">2024</th><th class="c">2025</th><th class="c">2026(계획)</th></tr></thead>
+    <tbody>
+      <tr><td><b>고부가 프로젝트 비중</b><br><span class="sub">AI·HPC·오토모티브</span></td><td class="c">26%</td><td class="c">73%</td><td class="c good">83%</td></tr>
+      <tr><td><b>턴키 프로젝트 비중</b></td><td class="c">—</td><td class="c">60%</td><td class="c good">81%</td></tr>
+      <tr><td><b>5nm 미만 선단공정 비중</b></td><td class="c">—</td><td class="c">70%</td><td class="c good">80%</td></tr>
+    </tbody>
+  </table>
+  <div class="note">
+    <b>이 표가 말하는 것:</b> 매출이 55% 느는데 영업이익이 <b>712%</b> 느는 이유가 여기 있다.
+    저마진 NRE·범용 프로젝트에서 <b>고마진 턴키·선단공정·AI 프로젝트</b>로 갈아탄 결과다.
+    다만 선단공정 투자는 <b>비용이 먼저 나가고 회수가 늦다</b>는 점에서 "하이리스크 하이리턴"이라는 평가도 함께 존재한다.
+  </div>
+
+  <!-- 6 -->
+  <h2>6. ADT의 진영 이동 — TSMC를 버린 회사</h2>
+  <p class="lead">
+    이번 조사에서 가장 흥미로웠던 사실. <b>에이디테크놀로지는 원래 TSMC 진영이었다.</b>
+  </p>
+  <table>
+    <thead><tr><th class="c">시기</th><th>내용</th></tr></thead>
+    <tbody>
+      <tr><td class="c">2002</td><td>회사 설립</td></tr>
+      <tr><td class="c">~2019</td><td><b>약 15년간 TSMC의 VCA(Value Chain Aggregator) 파트너</b>로 활동</td></tr>
+      <tr><td class="c">2019~2020</td><td><b>TSMC VCA 자격을 포기하고 삼성전자 DSP로 전환</b> → 삼성의 최대 협력사로</td></tr>
+      <tr><td class="c">현재</td><td>설계 최적화 대행 → <b>ASIC 중심</b>으로 전환, 선단공정 IP 결합 플랫폼으로 글로벌 고객 확보 추진</td></tr>
+    </tbody>
+  </table>
+  <div class="callout">
+    <b>전환 이유가 중요하다.</b> 박준규 대표는 <i>"TSMC는 에이디테크놀로지를 국내에 국한하려 했고, 이에 따라 회사 성장에 한계가
+    올 수밖에 없다고 생각했다"</i>고 밝혔다. 반대로 <b>삼성 파운드리는 해외 시장 공략 필요성이 컸고, DSP의 미국·유럽 영업이
+    삼성의 해외 고객 유치에 도움</b>이 되는 구조였다.<br><br>
+    <b>투자 시사점 두 가지:</b>
+    <ol style="margin-bottom:0;">
+      <li><b>ADT는 삼성 파운드리와 사실상 운명공동체다.</b> 삼성 수율·수주가 잘 되면 같이 가고, 흔들리면 같이 흔들린다.
+        분산이 아니라 <b>집중된 베팅</b>이라는 뜻이다.</li>
+      <li><b>삼성 진영 DSP의 존재 이유가 '해외 영업'이다.</b> 즉 이들의 성장 논리는 처음부터 국내 내수가 아니라
+        <b>해외 고객 유치</b>였다. 7장의 데이터가 이를 그대로 확인해 준다.</li>
+    </ol>
+  </div>
+
+  <!-- 7 -->
+  <h2>7. 진짜 수혜 동력은 해외 수주다</h2>
+  <p>
+    DSP 실적이 좋아지는 건 사실이다. 그런데 <b>그 돈이 어디서 오는가</b>를 보면 가설이 다시 흔들린다.
+  </p>
+  <table>
+    <thead><tr><th>기업</th><th>2025~2026 주요 수주</th><th class="c">고객 국적</th></tr></thead>
+    <tbody>
+      <tr><td><b>에이디테크놀로지</b></td><td>AI 팹리스와 약 <b>400억 원 턴키</b> — 삼성 4nm 데이터센터용 HPC SoC 칩렛 개발</td><td class="c">🇺🇸 미국</td></tr>
+      <tr><td><b>가온칩스</b></td><td>AI 기업 <b>2nm 프로젝트</b> — 하반기 양산 효과 기대</td><td class="c">🇯🇵 일본</td></tr>
+      <tr><td><b>세미파이브</b></td><td>비전 AI 기업 <b>3D-IC 기반 엣지 AI 반도체 턴키</b>. 전년 수주 1,200억+</td><td class="c">🇪🇺 유럽<br><span class="sub">+ 미·일·중·인도</span></td></tr>
+    </tbody>
+  </table>
+
+  <figure>
+    <div class="svgbox">
+      <svg viewBox="0 0 840 220" width="100%" role="img" aria-label="DSP 성장 동력 구성">
+        <g font-family="Segoe UI, sans-serif">
+          <text x="16" y="26" font-size="15" font-weight="800">DSP 성장 동력 — 개념적 구성</text>
+          <rect x="40" y="56" width="560" height="52" rx="8" fill="#7c3aed"/>
+          <text x="320" y="87" font-size="14" font-weight="800" fill="#fff" text-anchor="middle">해외 고객 수주 (미국·일본·유럽) — 주 엔진</text>
+          <rect x="600" y="56" width="130" height="52" rx="8" fill="#c4b5fd"/>
+          <text x="665" y="87" font-size="12" font-weight="700" text-anchor="middle" fill="#4c1d95">국산 NPU</text>
+          <rect x="730" y="56" width="70" height="52" rx="8" fill="#e9d5ff"/>
+          <text x="765" y="87" font-size="11" text-anchor="middle" fill="#6b21a8">기타</text>
+
+          <text x="320" y="136" font-size="12" fill="#5c6472" text-anchor="middle">
+            ← 뉴스는 여기(국산 NPU)에 반응하는데, 실적은 여기(해외)서 나온다 →</text>
+          <rect x="40" y="152" width="760" height="48" rx="10" fill="#fef9c3" stroke="#fde047"/>
+          <text x="420" y="172" font-size="12.5" font-weight="700" fill="#92400e" text-anchor="middle">
+            ⚠️ 뉴스 트리거와 실적 드라이버의 불일치 — 테마 급등 후 실적으로 확인 안 되는 구간이 생길 수 있음</text>
+          <text x="420" y="191" font-size="11" fill="#92400e" text-anchor="middle">
+            ※ 막대 비율은 개념적 표현이며 실제 매출 구성비가 아님 (개인 정리 도식)</text>
+        </g>
+      </svg>
+    </div>
+    <figcaption>그림 3. DSP의 뉴스 트리거(국산 NPU)와 실적 드라이버(해외 수주)가 다르다. (개념 도식)</figcaption>
+  </figure>
+
+  <div class="bust">
+    <b>🔴 이 리포트에서 가장 실용적인 경고</b><br>
+    국산 NPU 관련 뉴스가 나오면 DSP 주가가 반응하는 경우가 많다. 그러나 <b>DSP의 실적을 실제로 만드는 것은
+    미국·일본·유럽 고객의 프로젝트</b>다. 이 <b>불일치</b>는 두 가지를 뜻한다.
+    <ul style="margin-bottom:0;">
+      <li>국산 NPU 뉴스만으로 실적을 기대하면 <b>실망할 수 있다</b>.</li>
+      <li>반대로, 국산 NPU가 부진해도 <b>해외 수주가 좋으면 실적은 좋을 수 있다</b>.</li>
+    </ul>
+    추적해야 할 것은 뉴스가 아니라 <b>해외 턴키 수주 공시와 양산 전환</b>이다.
+  </div>
+
+  <!-- 8 -->
+  <h2>8. 삼성 파운드리 수혜의 정량 감각</h2>
+  <p>
+    삼성 파운드리는 실제로 턴어라운드 중이다. 그런데 <b>그 원인이 국산 NPU가 아니라는 것</b>을 숫자로 확인해 보자.
+  </p>
+  <div class="kpi">
+    <div class="box"><div class="num">80%↑</div><div class="lab">가동률 (2025년 한때 50% 미만)</div></div>
+    <div class="box"><div class="num">60%대</div><div class="lab">2nm(SF2) 수율</div></div>
+    <div class="box"><div class="num">약 23조원</div><div class="lab">테슬라 AI6 수주 (165억 달러)</div></div>
+    <div class="box"><div class="num">10~15%</div><div class="lab">테슬라 건이 차지하는 파운드리 연매출 비중</div></div>
+    <div class="box"><div class="num">2.1만 wpm</div><div class="lab">2026년 말 2nm 캐파 목표</div></div>
+    <div class="box"><div class="num">2027 하반기</div><div class="lab">테슬라 AI6 양산 시작</div></div>
+    <div class="box"><div class="num">내년 초</div><div class="lab">텍사스 테일러 팹 가동</div></div>
+    <div class="box"><div class="num">2026</div><div class="lab">파운드리 흑자 전환 목표</div></div>
+  </div>
+  <p>
+    퀄컴·AMD·구글 같은 빅테크도 협상 테이블에 앉기 시작했다. <b>이 그림 어디에도 국산 NPU가 주역으로 등장하지 않는다.</b>
+    리벨리온이 삼성 4nm를 쓰는 것은 사실이지만, <b>테슬라 한 건 23조 원</b>과 비교하면 물량 기여도의 스케일이 다르다.
+    <span class="src">(출처: 글로벌이코노믹 2026.02·2026.05, 파이낸셜뉴스 2026.07.13, 카운터포인트)</span>
+  </p>
+  <div class="callout">
+    <b>📐 스케일 감각 잡기</b><br>
+    삼성 파운드리 투자 논리에서 국산 NPU는 <b>"덤"</b>에 가깝다. 삼성전자를 볼 때 핵심 변수는
+    <b>①2nm 수율 ②테슬라·빅테크 수주 이행 ③테일러 팹 가동 ④메모리(HBM) 사이클</b>이다.
+    국산 NPU는 <b>상징적·생태계적 의미</b>는 크지만 <b>손익 기여는 작다</b>고 보는 편이 안전하다.
+  </div>
+
+  <!-- 9 -->
+  <h2>9. 정책 순풍 — 2026 AI 예산 9.9조</h2>
+  <p>다만 정책이라는 <b>실재하는 순풍</b>은 분명히 존재한다. 이것이 국산 NPU 스토리의 진짜 배경이다.</p>
+  <table>
+    <thead><tr><th>항목</th><th>내용</th></tr></thead>
+    <tbody>
+      <tr><td><b>2026 정부 AI 예산</b></td><td><b>9.9조 원</b> (전년 대비 약 3배), 41개 부처 741개 사업</td></tr>
+      <tr><td><b>부처별</b></td><td>과기정통부 5.1조(51%) · 산업부 1.7조(17%) · 중기부 0.9조(9%)</td></tr>
+      <tr><td><b>핵심 신규사업</b></td><td>'AI 컴퓨팅 자원 활용 기반 강화' <b>2.1조</b>, 딥테크·AI 스타트업 펀드 0.3조</td></tr>
+      <tr><td><b>국산 NPU 지원</b></td><td>정부가 국산 NPU를 <b>GPU 대안</b>으로 지목, <b>초기시장 창출</b> 명시적 지원</td></tr>
+      <tr><td><b>시간 인식</b></td><td>향후 <b>1~2년을 'AI 3대 강국' 골든타임</b>으로 규정</td></tr>
+      <tr><td><b>장기 목표</b></td><td><b>2030년 국산 AI반도체 50%</b>·인프라 자립화</td></tr>
+      <tr><td><b>R&amp;D</b></td><td>과기정통부 향후 5년간 반도체 R&amp;D·인프라·인재에 <b>2조1,168억 원</b></td></tr>
+    </tbody>
+  </table>
+  <p class="sub">
+    ※ 삼성SDS의 이번 NPUaaS 출시는 이 정책 흐름의 <b>초기 레퍼런스 케이스</b>로 읽을 수 있다.
+    공공·금융 등 <b>소버린 AI</b> 수요가 국산 칩으로 열리는 문이 하나 생긴 것.
+    <span class="src">(출처: 오마이뉴스, 뉴스핌 2026.05.27, 국가AI전략위, 디지털데일리)</span>
+  </p>
+
+  <!-- 10 -->
+  <h2>10. GUC 벤치마크 — 상한선 점검</h2>
+  <p>
+    국내 DSP가 얼마나 커질 수 있는지 가늠하려면 <b>대만 GUC(글로벌유니칩)</b>를 봐야 한다. TSMC 진영의 1위 디자인하우스다.
+  </p>
+  <table>
+    <thead><tr><th></th><th class="c">GUC (대만)</th><th class="c">국내 최대 2곳 합산</th></tr></thead>
+    <tbody>
+      <tr><td><b>연 매출</b></td><td class="c">약 250억 대만달러<br><b>≈ 1조 1,156억 원</b> (2024년)</td><td class="c">3,000억 원대<br><span class="sub">(에이디테크놀로지·코아시아)</span></td></tr>
+      <tr><td><b>격차</b></td><td class="c" colspan="2"><b>국내 업체들이 "아득한 격차"라는 평가를 받는 수준</b></td></tr>
+    </tbody>
+  </table>
+  <div class="note">
+    <b>양면 해석이 가능하다.</b>
+    <ul style="margin-bottom:0;">
+      <li><b>비관:</b> 규모·인력·IP 축적에서 격차가 크다. 대만은 인건비 투자를 50% 늘리는 등 공격적이었고,
+        국내 DSP는 인력 확보가 고질적 과제로 지적돼 왔다.</li>
+      <li><b>낙관:</b> 격차가 크다는 건 <b>성장 여지가 크다</b>는 뜻이기도 하다. 국내 DSP 매출이 아직 1,000~2,500억 원대라
+        큰 프로젝트 한두 건이 실적을 크게 바꾼다(에이디테크놀로지 400억 턴키 = 연매출의 상당 비중).</li>
+    </ul>
+    다만 후자는 <b>변동성이 크다</b>는 뜻이기도 하다. 수주 하나에 실적이 출렁이는 구조다.
+  </div>
+
+  <!-- 11 -->
+  <h2>11. 수혜 강도 매트릭스</h2>
+  <p>지금까지의 검증을 종합해, "이번 기사가 상징하는 국산 AI칩 확산"이 각 주체에 얼마나 연결되는지 정리했다.</p>
+  <table>
+    <thead><tr><th>주체</th><th class="c">국산 NPU 직접 연결</th><th class="c">실제 실적 동력</th><th>메모</th></tr></thead>
+    <tbody>
+      <tr><td><b>삼성SDS</b></td><td class="c good">직접 (서비스 매출)</td><td class="c mid">클라우드 사업 전반</td><td>이번 건의 실제 당사자. 다만 NPUaaS 매출 규모는 미공개</td></tr>
+      <tr><td><b>에이디테크놀로지</b></td><td class="c mid">간접 (리벨리온 협력)</td><td class="c good">미국 AI 팹리스 턴키</td><td>삼성 전속형. 리벨리온 AI CPU 칩렛 협력 참여</td></tr>
+      <tr><td><b>가온칩스</b></td><td class="c bad">약함</td><td class="c good">일본 AI 2nm</td><td>국산 NPU와 직접 연결 근거는 확인 못 함</td></tr>
+      <tr><td><b>세미파이브</b></td><td class="c bad">약함</td><td class="c good">유럽·미국 턴키</td><td>2025.12 신규상장. 글로벌 고객 다변화</td></tr>
+      <tr><td><b>코아시아</b></td><td class="c bad">약함</td><td class="c mid">시스템반도체+모듈</td><td>사업 구조가 혼합형</td></tr>
+      <tr><td><b>삼성전자(파운드리)</b></td><td class="c bad">매우 약함</td><td class="c good">테슬라·빅테크 수주</td><td>리벨리온 물량은 있으나 스케일이 작음</td></tr>
+      <tr><td><b>삼성전자(메모리)</b></td><td class="c mid">간접 (HBM3E)</td><td class="c good">HBM 사이클 전반</td><td>리벨리온에 HBM3E 12단 공급</td></tr>
+      <tr><td>에이직랜드</td><td class="c mid">간접 (TSMC 진영)</td><td class="c mid">TSMC 프로젝트</td><td>퓨리오사와 같은 진영이나 직접 계약 관계는 미확인</td></tr>
+    </tbody>
+  </table>
+  <p class="sub">
+    ※ '국산 NPU 직접 연결'은 이번 기사가 상징하는 흐름과의 <b>직접적 매출 연결성</b>을 뜻하며,
+    해당 기업의 투자 매력도나 우열을 평가한 것이 아니다. 개별 기업의 실제 계약 관계는 공시로 확인이 필요하다.
+  </p>
+
+  <!-- 12 -->
+  <h2>12. KPI 대시보드 — 무엇을 추적할까</h2>
+  <table>
+    <thead><tr><th class="c">순위</th><th>KPI</th><th>왜 중요한가</th></tr></thead>
+    <tbody>
+      <tr><td class="c">1</td><td><b>DSP의 턴키·양산 비중</b></td><td>매출의 질. 이익률을 결정하는 진짜 변수</td></tr>
+      <tr><td class="c">2</td><td><b>해외 대형 턴키 수주 공시</b></td><td>DSP 실적의 실제 엔진. 뉴스보다 공시를 봐야 함</td></tr>
+      <tr><td class="c">3</td><td><b>수주 → 양산 전환율</b></td><td>NRE·턴키가 양산으로 이어져야 지속 매출이 됨</td></tr>
+      <tr><td class="c">4</td><td><b>삼성 2nm 수율·가동률</b></td><td>삼성 진영 DSP 전체의 운명이 여기 걸림</td></tr>
+      <tr><td class="c">5</td><td><b>리벨리온 양산 물량</b></td><td>국산 NPU → 삼성 밸류체인 연결의 실질 크기</td></tr>
+      <tr><td class="c">6</td><td><b>퓨리오사의 파운드리 선택 변화</b></td><td>삼성으로 이원화하면 판이 바뀜 (현재는 TSMC)</td></tr>
+      <tr><td class="c">7</td><td><b>정부 NPU 초기시장 사업 집행</b></td><td>공공 발주가 실제 매출로 나오는지</td></tr>
+      <tr><td class="c">8</td><td><b>DSP 인력 확보</b></td><td>수주를 받아도 인력이 없으면 못 함 — 고질적 병목</td></tr>
+    </tbody>
+  </table>
+
+  <!-- 13 -->
+  <h2>13. 시나리오 (가정 대입 · 예측 아님)</h2>
+  <div class="warn">
+    아래는 <b>"어떤 변수가 어떻게 움직이면 그림이 어떻게 달라지는가"</b>를 보기 위한 사고실험이며, 특정 결과를 전망하거나
+    권유하는 것이 아닙니다.
+  </div>
+  <table>
+    <thead><tr><th></th><th class="c">🟢 낙관</th><th class="c">🟡 중립</th><th class="c">🔴 비관</th></tr></thead>
+    <tbody>
+      <tr><td><b>해외 턴키 수주</b></td><td class="c">추가 대형 수주 이어짐</td><td class="c">기존 프로젝트 소화</td><td class="c">수주 공백 발생</td></tr>
+      <tr><td><b>양산 전환</b></td><td class="c">턴키→양산 안착, 반복매출화</td><td class="c">일부만 양산 진입</td><td class="c">양산 지연·취소</td></tr>
+      <tr><td><b>삼성 2nm</b></td><td class="c">수율 안정·빅테크 수주 확대</td><td class="c">완만한 개선</td><td class="c">수율 정체, 고객 이탈</td></tr>
+      <tr><td><b>국산 NPU</b></td><td class="c">공공·민간 확산, 리벨리온 물량↑</td><td class="c">레퍼런스 수준에 그침</td><td class="c">GPU 대비 경쟁력 확보 실패</td></tr>
+      <tr><td><b>DSP 이익</b></td><td class="c good">믹스 개선 지속, 레벨업</td><td class="c mid">전망치 부근</td><td class="c bad">선단공정 투자비 부담 부각</td></tr>
+    </tbody>
+  </table>
+
+  <!-- 14 -->
+  <h2>14. 리스크</h2>
+  <table>
+    <thead><tr><th>리스크</th><th class="c">가능성</th><th class="c">영향</th><th>설명</th></tr></thead>
+    <tbody>
+      <tr><td><b>테마-실적 괴리</b></td><td class="c bad">높음</td><td class="c bad">큼</td><td>국산 NPU 뉴스로 주가가 움직이나 실적은 해외 수주가 만듦</td></tr>
+      <tr><td><b>수주산업 변동성</b></td><td class="c bad">상시</td><td class="c bad">큼</td><td>프로젝트 단위. 매출 규모가 작아 한 건에 실적이 출렁임</td></tr>
+      <tr><td><b>삼성 파운드리 의존</b></td><td class="c mid">중</td><td class="c bad">큼</td><td>ADT 등은 삼성 전속형. 삼성이 흔들리면 동반 타격</td></tr>
+      <tr><td><b>선단공정 투자 부담</b></td><td class="c mid">중</td><td class="c mid">중</td><td>2nm 투자는 "하이리스크 하이리턴" 평가. 비용 선행</td></tr>
+      <tr><td><b>인력 병목</b></td><td class="c bad">높음</td><td class="c mid">중</td><td>설계 인력 확보가 업계 고질적 과제</td></tr>
+      <tr><td><b>글로벌 격차</b></td><td class="c bad">현실</td><td class="c mid">중</td><td>GUC 대비 규모·IP 열위. 대형 프로젝트 경쟁에서 밀릴 수 있음</td></tr>
+      <tr><td><b>국산 NPU 경쟁력</b></td><td class="c mid">중</td><td class="c mid">중</td><td>엔비디아 GPU 생태계(CUDA) 대비 소프트웨어 열위 극복 과제</td></tr>
+      <tr><td><b>선반영</b></td><td class="c bad">높음</td><td class="c bad">큼</td><td>2026년 흑자전환·이익 급증 전망이 이미 널리 알려진 정보</td></tr>
+    </tbody>
+  </table>
+
+  <!-- 15 -->
+  <h2>15. 촉매 캘린더</h2>
+  <table>
+    <thead><tr><th>시점/이벤트</th><th>확인할 것</th></tr></thead>
+    <tbody>
+      <tr><td>2026 하반기</td><td>가온칩스 일본 2nm <b>양산 효과</b> 실제 반영 여부</td></tr>
+      <tr><td>매 분기 실적</td><td>DSP 4사의 <b>턴키 비중·영업이익률</b> 변화</td></tr>
+      <tr><td>수시 공시</td><td>해외 대형 <b>턴키 수주</b> — DSP의 진짜 트리거</td></tr>
+      <tr><td>2026년 내</td><td>삼성 파운드리 <b>흑자 전환</b> 달성 여부</td></tr>
+      <tr><td>2027년 초</td><td>텍사스 <b>테일러 팹 가동</b></td></tr>
+      <tr><td>2027 하반기</td><td>테슬라 <b>AI6 양산</b> 시작</td></tr>
+      <tr><td>연중</td><td>정부 <b>국산 NPU 초기시장</b> 사업 발주·집행</td></tr>
+      <tr><td>연중</td><td>리벨리온 <b>REBEL-Quad</b> 양산 일정, 퓨리오사 파운드리 전략 변화</td></tr>
+    </tbody>
+  </table>
+
+  <!-- FAQ -->
+  <h2>FAQ</h2>
+  <h4>Q. 그럼 이번 삼성SDS 기사는 투자에 의미가 없나요?</h4>
+  <p>매출 측면에서는 직접적 의미가 작습니다. 다만 <b>국산 NPU가 상용 클라우드에 실제로 올라간 첫 레퍼런스</b>라는 점,
+  그리고 <b>정부의 소버린 AI 정책이 실물로 구현되기 시작했다</b>는 신호로서는 의미가 있습니다.
+  다만 레퍼런스와 실적은 구분해서 봐야 합니다.</p>
+  <h4>Q. DSP가 수혜주라는 말은 결국 틀린 건가요?</h4>
+  <p>틀리지 않았습니다. <b>DSP는 실제로 실적이 크게 좋아지고 있습니다.</b> 다만 그 이유가 "국산 NPU"가 아니라
+  <b>"AI 시대에 맞춤형 칩(ASIC) 수요가 전 세계적으로 폭증하고, 그 설계를 국내 DSP가 수주하고 있기 때문"</b>입니다.
+  수혜의 <b>이유를 정확히 아는 것</b>이 추적할 지표를 고르는 데 결정적입니다.</p>
+  <h4>Q. 삼성 파운드리에 투자하면 국산 NPU 수혜를 받나요?</h4>
+  <p>비중이 매우 작습니다. 삼성 파운드리 투자 논리는 <b>2nm 수율, 테슬라·빅테크 수주, 테일러 팹, 가동률</b>이
+  압도적으로 중요합니다. 국산 NPU는 부차적 요소로 보는 것이 스케일에 맞습니다.</p>
+  <h4>Q. 퓨리오사와 리벨리온에 직접 투자할 수 있나요?</h4>
+  <p>둘 다 <b>비상장</b>입니다. 따라서 간접 노출만 가능하며, 앞서 본 것처럼 <b>파운드리 진영이 반대</b>라
+  어느 쪽에 노출되는지를 구분해야 합니다.</p>
+  <h4>Q. 이 리포트에서 가장 실용적인 결론 하나는?</h4>
+  <p><b>"뉴스가 아니라 공시를 보라"</b>입니다. 국산 NPU 뉴스는 테마를 만들지만, DSP의 실적은
+  <b>해외 턴키 수주 공시와 양산 전환</b>에서 나옵니다. 이 둘을 구분하는 것만으로도 판단의 정확도가 올라갑니다.</p>
+
+  <!-- glossary -->
+  <h2>용어 사전</h2>
+  <table>
+    <tbody>
+      <tr><td><b>DSP</b></td><td>Design Solution Partner. 파운드리가 인증한 디자인하우스. 팹리스와 파운드리를 잇는 설계 파트너.</td></tr>
+      <tr><td><b>VCA</b></td><td>Value Chain Aggregator. TSMC의 디자인 파트너 제도. 삼성의 DSP에 해당.</td></tr>
+      <tr><td><b>NRE</b></td><td>Non-Recurring Engineering. 일회성 설계 개발비. DSP의 기본 매출이나 마진이 낮음.</td></tr>
+      <tr><td><b>턴키(Turnkey)</b></td><td>설계부터 생산 연결까지 일괄 수행하는 계약. NRE보다 수익성이 높음.</td></tr>
+      <tr><td><b>NPU</b></td><td>Neural Processing Unit. AI 연산 전용 칩. GPU 대비 전력효율·가성비를 앞세움.</td></tr>
+      <tr><td><b>NPUaaS</b></td><td>NPU as a Service. NPU 연산 자원을 클라우드로 구독 제공하는 서비스.</td></tr>
+      <tr><td><b>추론(Inference)</b></td><td>학습된 AI 모델을 실제 서비스에 적용해 답을 내는 단계. 레니게이드가 특화한 영역.</td></tr>
+      <tr><td><b>칩렛(Chiplet)</b></td><td>큰 칩을 여러 작은 조각으로 나눠 붙이는 설계 방식. 수율·유연성에 유리.</td></tr>
+      <tr><td><b>ASIC</b></td><td>Application-Specific Integrated Circuit. 특정 용도 맞춤형 반도체.</td></tr>
+      <tr><td><b>소버린 AI</b></td><td>자국 인프라·칩·모델로 AI 주권을 확보하려는 흐름.</td></tr>
+      <tr><td><b>HBM</b></td><td>High Bandwidth Memory. 고대역폭 메모리. AI 칩 성능의 핵심 부품.</td></tr>
+      <tr><td><b>wpm</b></td><td>wafers per month. 월간 웨이퍼 생산량(캐파 단위).</td></tr>
+    </tbody>
+  </table>
+
+  <!-- sources -->
+  <h2>출처</h2>
+  <p class="src">
+    • 비즈워치, "삼성SDS, 국산 NPU 기반 삼성클라우드 서비스 출시" (2026.07.20) — https://news.bizwatch.co.kr/article/mobile/2026/07/20/0003<br>
+    • FuriosaAI Developer Center, RNGD 사양 — https://developer.furiosa.ai/latest/en/overview/rngd.html<br>
+    • 디일렉, "퓨리오사AI, 레니게이드 대량 양산…7월 삼성SDS 클라우드 탑재" — https://www.thelec.kr/news/articleView.html?idxno=54520<br>
+    • 시사저널e, "퓨리오사AI, 연내 HBM3E 4개 들어간 '레니게이드+ 맥스' 양산" — https://www.sisajournal-e.com/news/articleView.html?idxno=419519<br>
+    • 디지털데일리, "리벨리온, Arm·삼성 파운드리·ADT와 AI CPU 칩렛 플랫폼 개발 협력" — https://m.ddaily.co.kr/page/view/2024101609230555787<br>
+    • 유니콘팩토리, "리벨리온, 삼성과 협력한 차세대 반도체 '리벨쿼드' 美서 공개" — https://www.unicornfactory.co.kr/article/2025082711102240083<br>
+    • ZDNet Korea, "'AI 추론칩' 강자 리벨리온, 글로벌 실전 테스트 돌입" — https://zdnet.co.kr/view/?no=20260219145114<br>
+    • 전자신문, "'삼성 파운드리' 디자인하우스, 올해 실적 턴어라운드" (2026.01.15) — https://www.etnews.com/20260115000268<br>
+    • 데일리인베스트, "에이디테크놀로지, 대형 프로젝트 수주로 용역 매출 대폭 성장?" — http://www.dailyinvest.kr/news/articleView.html?idxno=70744<br>
+    • 데일리안, "[인터뷰] TSMC 떠나 삼성 지원군으로...에이디테크놀로지" — https://www.dailian.co.kr/news/view/1266049<br>
+    • 더벨, "[반도체 디자인하우스 리포트] TSMC 노하우 축적 에이디테크놀로지, 삼성전자와 새 성장 그림" — https://www.thebell.co.kr/free/content/ArticleView.asp?key=202302171848117680105581<br>
+    • 블로터, "[디자인하우스 특수] 에이디테크, 2나노 투자 '하이리스크 하이리턴'" — https://www.bloter.net/news/articleView.html?idxno=662795<br>
+    • KIPOST, "디자인하우스들 지난 1년간 실적 보니...GUC와는 아득한 격차" — https://www.kipost.net/news/articleView.html?idxno=308818<br>
+    • 디일렉, "인건비 투자 50% 늘린 대만 GUC…디자인하우스 경쟁력도 한국 압도" — https://www.thelec.kr/news/articleView.html?idxno=17926<br>
+    • 아시아경제, "[특징주]세미파이브, 코스닥 상장 첫날 50%대 강세" (2025.12.29) — https://www.asiae.co.kr/article/2025122909325079692<br>
+    • 글로벌이코노믹, "삼성 파운드리 가동률 80% 돌파·2나노 수율 60%대 진입" (2026.02) — https://www.g-enews.com/article/Global-Biz/2026/02/202602232003292282fbbec65dfb_1<br>
+    • 파이낸셜뉴스, "삼성전자 테슬라 차세대 칩 AI5 양산 준비 완료" (2026.07.13) — https://www.fnnews.com/news/202607131333287774<br>
+    • 카운터포인트리서치, "삼성전자, 2nm 'SF2' 공정기반 차세대 파운드리 경쟁력 강화" — https://korea.counterpointresearch.com/sf2-the-key-process-of-samsung-foundrys-future/<br>
+    • 뉴스핌, "AI 예산 소규모 사업 줄인다...기획처, 국산 NPU 초기시장 지원" (2026.05.27) — https://www.newspim.com/news/view/20260527000721<br>
+    • 오마이뉴스, "향후 1~2년 '골든타임'... 정부, 국산 AI반도체 생태계에 재정 집중" — https://www.ohmynews.com/NWS_Web/View/at_pg.aspx?CNTN_CD=A0003237917<br>
+    • 디지털데일리, "정부, 2030 국산 AI반도체 50%·인프라 자립화" — https://m.ddaily.co.kr/page/view/2025061810424261459
+  </p>
+
+  <div class="foot">
+    <hr>
+    본 문서는 개인 학습·정리 목적의 비상업 노트입니다. 기업명은 밸류체인 구조 설명을 위해 언급된 것이며 투자 추천이 아닙니다.
+    실적 전망치는 증권사·언론의 추정이며 본 문서의 의견이 아닙니다. 일부 기업 간 계약 관계는 공개 보도에 기반한 것으로
+    실제와 다를 수 있으므로 공시 확인이 필요합니다. 투자에 대한 최종 판단과 책임은 전적으로 독자 본인에게 있습니다.
+    © 2026 개인 리서치 라이브러리.
+  </div>
+
+</div>
+</body>
+</html>

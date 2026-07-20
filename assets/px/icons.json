@@ -478,28 +478,30 @@
     },
     "zscaler": {
       "bg": [
-        "#0c1c30",
-        "#143a5c"
+        "#0f1e33",
+        "#173d63"
       ],
       "palette": {
-        "s": "#4a9de0",
-        "K": "#eaf6ff"
+        "k": "#c3d4e8",
+        "h": "#7fb4ea",
+        "b": "#3f86d4",
+        "d": "#12263f"
       },
       "grid": [
         "................",
         "................",
-        "....ssssssss....",
-        "...ssssssssss...",
-        "..ssssssssssss..",
-        "..sssssKKsssss..",
-        "..sssssKKsssss..",
-        "..sssssKKsssss..",
-        "..sssssKKsssss..",
-        "...ssssssssss...",
-        "....ssssssss....",
-        ".....ssssss.....",
-        "......ssss......",
-        ".......ss.......",
+        "....kkkkkkkk....",
+        "....kk....kk....",
+        "....kk....kk....",
+        "....kk....kk....",
+        "....kk....kk....",
+        "..hhhhhhhhhhhh..",
+        "..bbbbbbbbbbbb..",
+        "..bbbbbddbbbbb..",
+        "..bbbbbddbbbbb..",
+        "..bbbbbddbbbbb..",
+        "..bbbbbbbbbbbb..",
+        "..bbbbbbbbbbbb..",
         "................",
         "................"
       ]

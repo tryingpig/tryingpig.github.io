@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>동국제약 투자 안내서 — '1조 클럽'과 밸류에이션 정체성 문제</title>
+<style>
+  :root{
+    --accent:#be185d; --accent2:#db2777;
+    --ink:#1f2430; --muted:#5c6472; --line:#eee4e9; --bg:#fff; --soft:#fdf6f9;
+    --warnbg:#fff7ed; --warnln:#fb923c;
+  }
+  *{box-sizing:border-box;}
+  body{font-family:"Segoe UI","Malgun Gothic","Apple SD Gothic Neo",system-ui,sans-serif;
+    color:var(--ink); background:var(--bg); margin:0; line-height:1.78; font-size:16.5px; letter-spacing:-0.1px;}
+  .wrap{max-width:920px; margin:0 auto; padding:40px 28px 90px;}
+  h1{font-size:29px; line-height:1.32; margin:8px 0 6px; letter-spacing:-0.6px;}
+  h2{font-size:22px; margin:50px 0 12px; padding-top:14px; border-top:3px solid var(--accent); letter-spacing:-0.4px;}
+  h3{font-size:18.5px; margin:30px 0 8px; color:#2b3242;}
+  h4{font-size:16px; margin:18px 0 6px; color:var(--accent);}
+  p{margin:10px 0;} a{color:var(--accent); text-decoration:none;} a:hover{text-decoration:underline;}
+  .sub{color:var(--muted); font-size:15px;} .lead{font-size:17.5px; color:#333a49;}
+  .kicker{display:inline-block; font-size:13px; font-weight:700; letter-spacing:1.5px;
+    color:var(--accent); background:#fce7f0; padding:5px 12px; border-radius:999px;}
+  .warn{background:var(--warnbg); border:1px solid var(--warnln); border-left:6px solid var(--warnln);
+    border-radius:10px; padding:16px 18px; margin:22px 0; font-size:15px;}
+  .note{background:var(--soft); border:1px solid var(--line); border-radius:10px; padding:16px 18px; margin:18px 0;}
+  .callout{background:#fce7f0; border:1px solid #f9a8d4; border-left:6px solid var(--accent);
+    border-radius:10px; padding:16px 18px; margin:20px 0;}
+  .bust{background:#fef2f2; border:1px solid #fca5a5; border-left:6px solid #dc2626;
+    border-radius:10px; padding:16px 18px; margin:20px 0;}
+  .big{font-size:19px; font-weight:800; color:var(--accent); line-height:1.5;}
+  .grid2{display:grid; grid-template-columns:1fr 1fr; gap:16px;}
+  .card{border:1px solid var(--line); border-radius:12px; padding:16px 18px; background:#fff;}
+  table{width:100%; border-collapse:collapse; margin:18px 0; font-size:14.5px;}
+  th,td{border:1px solid var(--line); padding:9px 11px; text-align:left; vertical-align:top;}
+  th{background:var(--soft); font-weight:700;} td.c,th.c{text-align:center;}
+  figure{margin:24px 0; text-align:center;} figcaption{font-size:13px; color:var(--muted); margin-top:8px;}
+  .svgbox{border:1px solid var(--line); border-radius:12px; padding:14px; background:#fff;}
+  ul,ol{margin:10px 0 10px 4px; padding-left:22px;} li{margin:6px 0;}
+  .kpi{display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin:20px 0;}
+  .kpi .box{border:1px solid var(--line); border-radius:12px; padding:14px; text-align:center; background:var(--soft);}
+  .kpi .num{font-size:21px; font-weight:800; color:var(--accent); letter-spacing:-0.5px;}
+  .kpi .lab{font-size:12.5px; color:var(--muted); margin-top:3px;}
+  .toc{background:var(--soft); border:1px solid var(--line); border-radius:12px; padding:18px 22px; margin:26px 0;}
+  .toc ol{columns:2; column-gap:34px;}
+  .src{font-size:13px; color:var(--muted); word-break:break-all;}
+  .seriesnav{background:#fce7f0; border:1px solid #f9a8d4; border-radius:10px; padding:14px 18px; margin:20px 0; font-size:14.5px;}
+  .good{color:#059669; font-weight:700;} .bad{color:#dc2626; font-weight:700;} .mid{color:#b45309; font-weight:700;}
+  hr{border:none; border-top:1px solid var(--line); margin:34px 0;}
+  .foot{color:var(--muted); font-size:13px; margin-top:40px;}
+  @media (max-width:680px){.grid2,.kpi{grid-template-columns:1fr;} .toc ol{columns:1;} h1{font-size:24px;}}
+  @media print{body{font-size:11.5pt;} .wrap{max-width:100%; padding:0;} h2{break-after:avoid;}
+    figure,table,.card{break-inside:avoid;} a{color:#000;} .warn,.callout,.note,.bust{break-inside:avoid;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <span class="kicker">동국제약 · ② 투자 안내서</span>
+  <h1>동국제약 투자 안내서<br>— '1조 클럽'과 밸류에이션 정체성 문제</h1>
+  <p class="sub">작성일 2026-07-20 · KOSDAQ 086450 · 개인 리서치 노트 · 입문세트 2/3</p>
+
+  <div class="warn">
+    <b>⚠️ 투자 권유가 아닙니다.</b> 이 문서는 공개 정보와 <b>증권사 추정치</b>를 정리한 개인 학습 노트이며,
+    매수·매도 추천이 아닙니다. '저평가'라는 표현이 인용되더라도 이는 <b>해당 기관의 견해</b>이지
+    본 문서의 판단이 아닙니다. 시나리오는 예측이 아니라 <b>가정 대입</b>입니다.
+    모든 투자 판단과 책임은 전적으로 본인에게 있습니다.
+  </div>
+
+  <div class="seriesnav">
+    <b>💄 입문세트 구성</b> — <a href="https://tryingpig.github.io/study/260720_동국제약_1_입문가이드.html">① 입문가이드</a> ·
+    ② <b>투자안내서(현재 글)</b> ·
+    <a href="https://tryingpig.github.io/study/260720_동국제약_3_밸류체인.html">③ 밸류체인</a><br>
+    <span class="sub">회사·제품 기초(마데카솔→마데카크림, 3대 사업부문, DDS가 뭔지)는 ①에서 다뤘습니다. 여기서는 <b>숫자와 쟁점</b>에 집중합니다.</span>
+  </div>
+
+  <div class="callout">
+    <b>🧭 이 글의 논지 한 장 요약</b>
+    <ol style="margin-bottom:0;">
+      <li><b>사실:</b> 실적은 꾸준히 좋다. 2025년 매출 9,269억·영업이익 966억, 2026년 <b>매출 1조 원 돌파</b> 전망.</li>
+      <li><b>동력:</b> 화장품(센텔리안24), 특히 <b>수출</b>이 성장을 끌고 있다. 수출 163억→300억→1,000억+(전망).</li>
+      <li><b>쟁점 1 — 정체성:</b> 제약주인가 화장품주인가? <b>이 답에 따라 적정 PER이 2~3배 차이</b>가 난다.</li>
+      <li><b>쟁점 2 — 마진:</b> 1Q26에 매출은 +12.2%인데 영업이익은 +8.0%. <b>성장에 비용이 따라붙는 구간</b>인지 확인 필요.</li>
+      <li><b>따라서 핵심 질문:</b> "성장하는가?"가 아니라 <b>"성장의 질이 유지되는가, 그리고 시장이 이 회사를 어떻게 분류할 것인가?"</b></li>
+    </ol>
+  </div>
+
+  <div class="toc">
+    <b>목차</b>
+    <ol>
+      <li>실적 추이 — 무슨 일이 있었나</li>
+      <li>1Q26 해부 — 매출과 이익의 온도차</li>
+      <li>성장의 엔진: 화장품 수출</li>
+      <li>사업부문별 구조와 기여도</li>
+      <li>쟁점 ① 정체성 — 제약주인가 화장품주인가</li>
+      <li>쟁점 ② 마진 — 성장의 질</li>
+      <li>DDS — 다음 성장 카드의 값어치</li>
+      <li>KPI 대시보드</li>
+      <li>시나리오 3종</li>
+      <li>리스크 매트릭스</li>
+      <li>촉매 캘린더</li>
+      <li>밸류에이션 참고 · 체크리스트 · FAQ</li>
+    </ol>
+  </div>
+
+  <!-- 1 -->
+  <h2>1. 실적 추이 — 무슨 일이 있었나</h2>
+  <table>
+    <thead><tr><th class="c">구분</th><th class="c">매출</th><th class="c">영업이익</th><th>메모</th></tr></thead>
+    <tbody>
+      <tr><td class="c">2025년</td><td class="c">9,269억</td><td class="c">966억</td><td>외형·수익성 모두 개선. 헬스케어(센텔리안24)가 견인</td></tr>
+      <tr><td class="c">2025 3Q 누계</td><td class="c good">+13.8% YoY</td><td class="c good">+15.1% YoY</td><td>영업이익 723억. 순이익은 -0.8%로 소폭 감소</td></tr>
+      <tr><td class="c">2026 1Q</td><td class="c">2,510억<br><span class="good">+12.2%</span></td><td class="c">273억<br><span class="mid">+8.0%</span></td><td>순이익(지배) 249억으로 <b>+51.7%</b> 급증</td></tr>
+      <tr><td class="c">2026(E)</td><td class="c good"><b>1조 333억~1조 360억</b><br>(+11.5%)</td><td class="c good">1,115억~1,159억<br>(+20.0%)</td><td>영업이익률 11.2% 전망(+0.8%p 개선)</td></tr>
+    </tbody>
+  </table>
+
+  <figure>
+    <div class="svgbox">
+      <svg viewBox="0 0 840 290" width="100%" role="img" aria-label="매출 영업이익 추이">
+        <g font-family="Segoe UI, sans-serif">
+          <text x="16" y="24" font-size="14.5" font-weight="800">연간 매출·영업이익 추이 (단위: 억 원)</text>
+          <line x1="70" y1="230" x2="800" y2="230" stroke="#e5d5dd" stroke-width="1.5"/>
+          <line x1="70" y1="50" x2="70" y2="230" stroke="#e5d5dd" stroke-width="1.5"/>
+
+          <!-- 2025 -->
+          <rect x="220" y="98" width="90" height="132" fill="#f9a8d4"/>
+          <text x="265" y="248" font-size="12" text-anchor="middle">2025</text>
+          <text x="265" y="90" font-size="11.5" text-anchor="middle">9,269</text>
+
+          <!-- 2026E -->
+          <rect x="480" y="82" width="90" height="148" fill="#be185d"/>
+          <text x="525" y="248" font-size="12" text-anchor="middle">2026(E)</text>
+          <text x="525" y="74" font-size="11.5" text-anchor="middle" font-weight="700">≈10,300</text>
+
+          <!-- 1조 line -->
+          <line x1="70" y1="88" x2="800" y2="88" stroke="#dc2626" stroke-width="1.5" stroke-dasharray="6 4"/>
+          <text x="700" y="82" font-size="11.5" fill="#dc2626" font-weight="700">1조 원 라인</text>
+
+          <!-- OP -->
+          <circle cx="265" cy="196" r="6" fill="#059669"/>
+          <circle cx="525" cy="186" r="6" fill="#059669"/>
+          <polyline points="265,196 525,186" fill="none" stroke="#059669" stroke-width="2.5"/>
+          <text x="265" y="186" font-size="10.5" fill="#059669" text-anchor="middle">966</text>
+          <text x="525" y="176" font-size="10.5" fill="#059669" text-anchor="middle">≈1,140</text>
+
+          <rect x="620" y="52" width="14" height="14" fill="#be185d"/><text x="642" y="64" font-size="11.5">매출</text>
+          <line x1="620" y1="80" x2="636" y2="80" stroke="#059669" stroke-width="3"/><text x="642" y="84" font-size="11.5">영업이익</text>
+          <text x="80" y="274" font-size="11" fill="#5c6472">※ 2026년은 증권사 추정치(범위 중앙값 기준). 개인 정리 도식.</text>
+        </g>
+      </svg>
+    </div>
+    <figcaption>그림 1. 2026년 '1조 원' 문턱을 넘어설 것으로 전망된다. 영업이익 증가율(+20%)이 매출(+11.5%)보다 높은 게 포인트. (개인 정리 도식)</figcaption>
+  </figure>
+
+  <p class="sub">
+    ※ 2026년 수치는 <b>증권사 추정치</b>이며 기관마다 편차가 있다.
+    <span class="src">(출처: 약사공론, 알파스퀘어 게재 증권사 리포트(2026.05.18·2026.03.30), 데일리팜, 씽크풀)</span>
+  </p>
+
+  <!-- 2 -->
+  <h2>2. 1Q26 해부 — 매출과 이익의 온도차</h2>
+  <p class="lead">
+    2026년 1분기 숫자를 자세히 보면 <b>세 지표가 서로 다른 속도로 움직였다.</b> 이걸 읽는 게 이 회사를 이해하는 열쇠다.
+  </p>
+  <div class="kpi">
+    <div class="box"><div class="num">+12.2%</div><div class="lab">매출 (2,510억)</div></div>
+    <div class="box"><div class="num" style="color:#b45309;">+8.0%</div><div class="lab">영업이익 (273억)</div></div>
+    <div class="box"><div class="num" style="color:#059669;">+51.7%</div><div class="lab">순이익 지배주주 (249억)</div></div>
+    <div class="box"><div class="num">10.9%</div><div class="lab">영업이익률(개략)</div></div>
+  </div>
+  <div class="note">
+    <b>이 온도차를 어떻게 읽을까</b>
+    <ul style="margin-bottom:0;">
+      <li><b>영업이익(+8.0%) &lt; 매출(+12.2%)</b> → 본업에서 <b>비용이 매출보다 빠르게 늘었다</b>는 뜻.
+        화장품 성장에는 <b>마케팅비·광고비·채널 수수료·해외 진출 비용</b>이 따라붙는다.
+        (실제로 회사는 해외 사업 인력 확충과 일본 입점 확대를 진행 중)</li>
+      <li><b>순이익(+51.7%)이 급증</b> → 영업 외 요인(금융손익·평가손익·일회성 등)이 크게 작용했을 가능성.
+        <b>영업이익과 순이익이 크게 벌어질 때는 그 원인이 지속 가능한지 확인</b>이 필요하다.</li>
+    </ul>
+  </div>
+  <div class="bust">
+    <b>🔴 투자자가 흔히 하는 실수</b><br>
+    "순이익 +51.7%"만 보고 실적이 폭발했다고 판단하는 것. <b>본업의 수익성을 보여주는 건 영업이익</b>이고,
+    그건 +8.0%였다. 성장주로 볼 때는 <b>영업이익률의 방향</b>이 더 중요하다.
+    2026년 연간으로는 영업이익률 11.2%(+0.8%p 개선)가 전망되고 있으니, <b>연간으로 개선되는지</b>를 분기마다 확인하는 게 맞다.
+  </div>
+
+  <!-- 3 -->
+  <h2>3. 성장의 엔진 — 화장품 수출</h2>
+  <p>이 회사 성장 스토리의 90%는 이 표 하나로 설명된다.</p>
+  <table>
+    <thead><tr><th class="c">연도</th><th class="c">화장품 매출</th><th class="c">화장품 수출액</th><th class="c">수출 비중(개략)</th></tr></thead>
+    <tbody>
+      <tr><td class="c">2023</td><td class="c">1,549억</td><td class="c">—</td><td class="c">—</td></tr>
+      <tr><td class="c">2024</td><td class="c">1,815억</td><td class="c">163억</td><td class="c">약 9%</td></tr>
+      <tr><td class="c">2025</td><td class="c">2,227억</td><td class="c">300억</td><td class="c">약 13%</td></tr>
+      <tr><td class="c">2026(E)</td><td class="c">약 2,600~2,930억</td><td class="c good"><b>1,000억 이상</b></td><td class="c good"><b>약 34~38%</b></td></tr>
+    </tbody>
+  </table>
+
+  <figure>
+    <div class="svgbox">
+      <svg viewBox="0 0 840 250" width="100%" role="img" aria-label="화장품 수출 급증">
+        <g font-family="Segoe UI, sans-serif">
+          <text x="16" y="24" font-size="14.5" font-weight="800">화장품 수출액 추이 (억 원) — 성장 스토리의 핵심</text>
+          <line x1="70" y1="200" x2="790" y2="200" stroke="#e5d5dd" stroke-width="1.5"/>
+
+          <rect x="140" y="184" width="100" height="16" fill="#fbcfe8"/>
+          <text x="190" y="220" font-size="12" text-anchor="middle">2024</text>
+          <text x="190" y="177" font-size="11.5" text-anchor="middle">163</text>
+
+          <rect x="330" y="170" width="100" height="30" fill="#f472b6"/>
+          <text x="380" y="220" font-size="12" text-anchor="middle">2025</text>
+          <text x="380" y="163" font-size="11.5" text-anchor="middle">300</text>
+
+          <rect x="520" y="100" width="100" height="100" fill="#be185d"/>
+          <text x="570" y="220" font-size="12" text-anchor="middle">2026(E)</text>
+          <text x="570" y="92" font-size="12.5" text-anchor="middle" font-weight="800">1,000+</text>
+
+          <path d="M245,180 C300,175 300,170 325,172" fill="none" stroke="#be185d" stroke-width="2" marker-end="url(#z)"/>
+          <path d="M435,168 C480,150 480,120 515,112" fill="none" stroke="#be185d" stroke-width="2.5" marker-end="url(#z)"/>
+          <defs><marker id="z" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+            <path d="M0,0 L6,3 L0,6 Z" fill="#be185d"/></marker></defs>
+          <text x="680" y="130" font-size="12" fill="#be185d" font-weight="700">약 3배 이상</text>
+          <text x="680" y="150" font-size="12" fill="#be185d" font-weight="700">점프 전망</text>
+          <text x="80" y="242" font-size="11" fill="#5c6472">※ 2026년은 증권사·언론 전망치. 실제와 다를 수 있음. 개인 정리 도식.</text>
+        </g>
+      </svg>
+    </div>
+    <figcaption>그림 2. 수출이 계획대로 나오는지가 이 종목의 성장 스토리 진위를 결정한다. (개인 정리 도식)</figcaption>
+  </figure>
+
+  <h3>수출이 늘어나는 실제 근거</h3>
+  <table>
+    <thead><tr><th>지역</th><th>진출 현황</th><th class="c">성격</th></tr></thead>
+    <tbody>
+      <tr><td><b>🇯🇵 일본</b></td><td>마츠모토키요시 <b>85개점</b>, 로프트 <b>100개점</b>, 돈키호테 <b>500개점</b> 입점</td><td class="c good">오프라인 대량 입점<br>(가시적·검증 가능)</td></tr>
+      <tr><td><b>🇺🇸 북미</b></td><td>아마존·틱톡샵 등 이커머스에서 <b>바이럴 기반 수요</b> 형성</td><td class="c mid">온라인 바이럴<br>(변동성 큼)</td></tr>
+      <tr><td><b>🇰🇷 국내(외국인)</b></td><td>올리브영 명동타운 등. 올리브영 외국인 매출 비중 <b>25%</b> 첫 돌파</td><td class="c mid">내수로 계상<br>(관광 경기 연동)</td></tr>
+    </tbody>
+  </table>
+  <div class="callout">
+    <b>💡 이 표에서 읽어야 할 것</b><br>
+    일본은 <b>대형 드럭스토어 체인 입점</b>이라 매장 수로 검증이 되고 매출도 비교적 예측 가능하다.
+    반면 북미는 <b>아마존·틱톡 바이럴</b> 기반이라 성장 속도는 빠를 수 있어도 <b>지속성이 불확실</b>하다.
+    <b>"어느 시장이 얼마나 기여하는가"</b>를 구분해 보는 것이 수출 1,000억 전망을 검증하는 방법이다.
+  </div>
+
+  <!-- 4 -->
+  <h2>4. 사업부문별 구조와 기여도</h2>
+  <table>
+    <thead><tr><th>부문</th><th class="c">2026E 매출</th><th class="c">성장률</th><th>성격</th></tr></thead>
+    <tbody>
+      <tr><td><b>헬스케어</b><br><span class="sub">화장품·건기식·디바이스</span></td><td class="c">3,813억</td><td class="c good">+20.5%</td><td>성장 엔진. 센텔리안24 해외 수출이 핵심</td></tr>
+      <tr><td><b>전문의약품(ETC)</b></td><td class="c">—</td><td class="c mid">안정</td><td>로렐린데포·포폴 등. 허가 장벽으로 안정적</td></tr>
+      <tr><td><b>일반의약품(OTC)</b></td><td class="c">—</td><td class="c mid">완만</td><td>마데카솔·인사돌 등 스테디셀러. 캐시카우</td></tr>
+    </tbody>
+  </table>
+  <p class="sub">
+    ※ 부문별 상세 추정치는 기관별 공개 범위가 제한적이라 헬스케어 외에는 공란. 다만 회사는
+    <b>세 부문이 모두 성장</b>하며 매년 매출 신기록을 경신해 왔다는 평가를 받는다.
+    회사 전체 매출에서 <b>센텔리안24 브랜드 비중이 26%</b>까지 올라온 것으로 보도됐다.
+  </p>
+
+  <!-- 5 -->
+  <h2>5. 쟁점 ① 정체성 — 제약주인가 화장품주인가</h2>
+  <p class="lead">
+    이 종목의 밸류에이션 논쟁은 사실상 <b>"어느 업종 배수를 적용할 것인가"</b> 하나로 수렴한다.
+    같은 실적이라도 제약주로 보느냐 화장품주로 보느냐에 따라 적정 주가 계산이 크게 달라진다.
+  </p>
+
+  <figure>
+    <div class="svgbox">
+      <svg viewBox="0 0 840 250" width="100%" role="img" aria-label="정체성에 따른 밸류에이션 차이">
+        <g font-family="Segoe UI, sans-serif">
+          <text x="16" y="24" font-size="14.5" font-weight="800">같은 회사, 다른 렌즈</text>
+
+          <rect x="30" y="50" width="360" height="160" rx="12" fill="#e0f2fe" stroke="#7dd3fc"/>
+          <text x="210" y="78" font-size="14" font-weight="800" fill="#075985" text-anchor="middle">🏥 제약주로 본다면</text>
+          <text x="210" y="104" font-size="12" fill="#0c4a6e" text-anchor="middle">• 안정적·저성장 업종 배수</text>
+          <text x="210" y="126" font-size="12" fill="#0c4a6e" text-anchor="middle">• 규제·약가 리스크 반영</text>
+          <text x="210" y="148" font-size="12" fill="#0c4a6e" text-anchor="middle">• 상대적으로 <b>낮은 PER</b></text>
+          <text x="210" y="178" font-size="12.5" fill="#075985" text-anchor="middle" font-weight="700">→ 현재 주가가 적정하다는 해석</text>
+
+          <rect x="440" y="50" width="370" height="160" rx="12" fill="#fce7f0" stroke="#f9a8d4"/>
+          <text x="625" y="78" font-size="14" font-weight="800" fill="#9d174d" text-anchor="middle">💄 화장품(K뷰티)주로 본다면</text>
+          <text x="625" y="104" font-size="12" fill="#831843" text-anchor="middle">• 고성장·수출 모멘텀 배수</text>
+          <text x="625" y="126" font-size="12" fill="#831843" text-anchor="middle">• 브랜드 가치 프리미엄</text>
+          <text x="625" y="148" font-size="12" fill="#831843" text-anchor="middle">• 상대적으로 <b>높은 PER</b></text>
+          <text x="625" y="178" font-size="12.5" fill="#9d174d" text-anchor="middle" font-weight="700">→ '저평가'라는 해석의 근거</text>
+
+          <text x="420" y="238" font-size="12.5" fill="#5c6472" text-anchor="middle">
+            ※ 어느 쪽이 옳다고 단정하지 않는다. 다만 <b>본인이 어느 렌즈를 쓰는지 자각</b>하는 것이 중요하다.</text>
+        </g>
+      </svg>
+    </div>
+    <figcaption>그림 3. 밸류에이션 논쟁의 본질은 '업종 분류'다. (개인 정리 도식)</figcaption>
+  </figure>
+
+  <div class="note">
+    <b>실제 시장의 시선</b><br>
+    증권가에서는 <b>"2026년 PER 9.6배"</b>를 제시하며, 2025~2028년 EPS 성장률과 과거 10년 평균 밸류에이션 밴드를 감안할 때
+    <b>저평가 상태</b>라는 진단이 나왔다. "역대급 실적에도 저평가" 같은 표현도 등장한다.<br><br>
+    다만 이런 진단은 <b>"이 회사를 성장주로 분류한다"는 전제</b>가 깔려 있다. 만약 시장이 계속
+    <b>중견 제약사</b>로 분류한다면, 낮은 배수가 '저평가'가 아니라 '정상'일 수 있다.
+    <b>밸류에이션 갭이 좁혀지려면 시장의 인식 자체가 바뀌어야 한다</b>는 점이 이 종목의 특수성이다.
+    <span class="src">(출처: 의약뉴스, 팜뉴스, 증권사 리포트 요약)</span>
+  </div>
+
+  <!-- 6 -->
+  <h2>6. 쟁점 ② 마진 — 성장의 질</h2>
+  <p>화장품 사업은 성장이 빠른 대신 <b>비용 구조가 제약과 다르다</b>. 이 차이가 마진을 좌우한다.</p>
+  <table>
+    <thead><tr><th>비용 항목</th><th>제약(OTC/ETC)</th><th>화장품(헬스케어)</th></tr></thead>
+    <tbody>
+      <tr><td><b>주요 비용</b></td><td>R&amp;D, 임상, 영업(의원·약국)</td><td><b>마케팅·광고, 채널 수수료, 인플루언서</b></td></tr>
+      <tr><td><b>진입장벽</b></td><td>허가·임상 (높음)</td><td>브랜드·마케팅 (상대적으로 낮음)</td></tr>
+      <tr><td><b>수명주기</b></td><td>길다 (수십 년 브랜드)</td><td><b>짧다</b> (트렌드 변화 빠름)</td></tr>
+      <tr><td><b>마진 변동</b></td><td>안정적</td><td><b>채널 믹스에 따라 크게 변동</b></td></tr>
+    </tbody>
+  </table>
+  <div class="callout">
+    <b>🔑 채널 믹스가 마진을 결정한다</b><br>
+    <b>홈쇼핑</b> → 매출은 빠르게 키우지만 <b>수수료 부담이 크다</b><br>
+    <b>올리브영·드럭스토어</b> → 유통 마진 배분 필요<br>
+    <b>자사몰(DK SHOP)·해외 직수출</b> → <b>마진이 가장 좋다</b><br><br>
+    따라서 "화장품 매출이 늘었다"보다 <b>"어느 채널에서 늘었는가"</b>가 이익률의 진짜 변수다.
+    수출 비중이 올라가는 것은 이 관점에서 <b>긍정적 신호</b>로 해석할 수 있다.
+  </div>
+
+  <!-- 7 -->
+  <h2>7. DDS — 다음 성장 카드의 값어치</h2>
+  <p>
+    시장은 이 회사를 <b>"화장품 성장 + DDS 모멘텀"의 투트랙</b>으로 본다. 화장품이 현재 실적이라면 DDS는 미래 옵션이다.
+  </p>
+  <table>
+    <thead><tr><th>항목</th><th>내용</th></tr></thead>
+    <tbody>
+      <tr><td><b>핵심 기술</b></td><td><b>마이크로스피어</b> — 생분해성 고분자로 약물을 미세 입자로 감싸 체내 방출 조절</td></tr>
+      <tr><td><b>플랫폼</b></td><td><b>DK-LADS</b> (자체 장기지속형 약물전달 플랫폼)</td></tr>
+      <tr><td><b>대표 파이프라인</b></td><td>로렐린데포주 <b>3개월 제형</b> (DKF-MA102) — 류프로렐린 성분 전립선암 치료 주사제</td></tr>
+      <tr><td><b>진행 상황</b></td><td><b>임상 3상 완료</b> → 연내 임상결과보고서 완료 → <b>2027년 출시 목표</b></td></tr>
+    </tbody>
+  </table>
+  <div class="note">
+    <b>투자 관점에서 DDS를 어떻게 볼까</b><br>
+    <b>기회:</b> 장기지속형 주사제는 환자 편의성이 크게 개선되어 <b>고부가·고마진</b> 영역이다.
+    플랫폼 기술이라 <b>다른 약물로 확장</b>도 가능하다.<br>
+    <b>주의:</b> 신약·개량신약은 <b>허가 지연·임상 결과·출시 후 처방 확대</b>까지 변수가 많다.
+    2027년 출시 목표는 <b>목표</b>이지 확정이 아니다. 또한 출시 초기 매출 기여는 제한적일 수 있다.<br>
+    <b>→ DDS는 "현재 실적"이 아니라 "옵션 가치"로 보고, 마일스톤 달성 여부를 추적하는 게 맞다.</b>
+  </div>
+
+  <!-- 8 -->
+  <h2>8. KPI 대시보드 — 무엇을 추적할까</h2>
+  <table>
+    <thead><tr><th class="c">순위</th><th>KPI</th><th>왜 중요한가</th><th>어디서 확인</th></tr></thead>
+    <tbody>
+      <tr><td class="c">1</td><td><b>화장품 수출액</b></td><td>성장 스토리의 핵심. 1,000억 전망 달성 여부</td><td>분기 실적·IR</td></tr>
+      <tr><td class="c">2</td><td><b>영업이익률(OPM)</b></td><td>성장의 질. 11.2% 전망 대비 실제</td><td>분기 실적</td></tr>
+      <tr><td class="c">3</td><td><b>헬스케어 부문 성장률</b></td><td>+20.5% 전망 유지되는지</td><td>사업부문별 공시</td></tr>
+      <tr><td class="c">4</td><td><b>일본 매장 수·매출</b></td><td>가장 검증 가능한 해외 지표</td><td>IR·업계 보도</td></tr>
+      <tr><td class="c">5</td><td><b>북미 이커머스 순위</b></td><td>아마존·틱톡샵 바이럴 지속성</td><td>플랫폼 랭킹·보도</td></tr>
+      <tr><td class="c">6</td><td><b>마케팅비 비율</b></td><td>매출 대비 판관비. 마진 압박 여부</td><td>분기 손익계산서</td></tr>
+      <tr><td class="c">7</td><td><b>DDS 마일스톤</b></td><td>임상결과보고서·허가 신청·출시 일정</td><td>공시·보도</td></tr>
+      <tr><td class="c">8</td><td><b>방한 관광객 지표</b></td><td>명동 등 내수 외국인 매출 연동</td><td>관광공사 통계</td></tr>
+    </tbody>
+  </table>
+
+  <!-- 9 -->
+  <h2>9. 시나리오 3종 (가정 대입 · 예측 아님)</h2>
+  <div class="warn">
+    아래는 <b>변수의 조합에 따라 그림이 어떻게 달라지는가</b>를 보기 위한 사고실험이며,
+    특정 결과를 전망하거나 권유하는 것이 아닙니다.
+  </div>
+  <table>
+    <thead><tr><th></th><th class="c">🟢 낙관</th><th class="c">🟡 중립</th><th class="c">🔴 비관</th></tr></thead>
+    <tbody>
+      <tr><td><b>화장품 수출</b></td><td class="c">1,000억 초과 달성</td><td class="c">700~1,000억</td><td class="c">500억 내외 그침</td></tr>
+      <tr><td><b>일본 시장</b></td><td class="c">입점 확대 + 재구매 안착</td><td class="c">현 수준 유지</td><td class="c">초도 물량 후 회전 부진</td></tr>
+      <tr><td><b>북미</b></td><td class="c">바이럴 → 정착 브랜드화</td><td class="c">등락 반복</td><td class="c">바이럴 소멸</td></tr>
+      <tr><td><b>영업이익률</b></td><td class="c good">11%대 이상 유지·개선</td><td class="c mid">10~11% 횡보</td><td class="c bad">마케팅비 급증에 하락</td></tr>
+      <tr><td><b>DDS</b></td><td class="c">2027 출시 순항</td><td class="c">일정 소폭 지연</td><td class="c">허가·출시 지연</td></tr>
+      <tr><td><b>시장 인식</b></td><td class="c good">K뷰티 성장주로 재분류</td><td class="c mid">현 상태 유지</td><td class="c bad">중견 제약사로 고착</td></tr>
+    </tbody>
+  </table>
+  <div class="callout">
+    <b>이 표의 쓸모:</b> 분기 실적이 나올 때마다 <b>"이번 숫자는 어느 열의 근거인가"</b>를 표시해 두면
+    감정이 아니라 누적된 근거로 판단할 수 있다. 특히 <b>수출액</b>과 <b>영업이익률</b> 두 줄만 추적해도 대부분 설명된다.
+  </div>
+
+  <!-- 10 -->
+  <h2>10. 리스크 매트릭스</h2>
+  <table>
+    <thead><tr><th>리스크</th><th class="c">가능성</th><th class="c">영향</th><th>설명</th></tr></thead>
+    <tbody>
+      <tr><td><b>화장품 트렌드 변화</b></td><td class="c bad">상시</td><td class="c bad">큼</td><td>K뷰티는 유행 주기가 짧다. 마데카 라인 인기가 영원하지 않음</td></tr>
+      <tr><td><b>마케팅비 부담</b></td><td class="c bad">높음</td><td class="c mid">중</td><td>해외 확장에 비용 선행. 1Q26 영업이익 증가율 둔화가 신호일 수 있음</td></tr>
+      <tr><td><b>경쟁 심화</b></td><td class="c bad">높음</td><td class="c bad">큼</td><td>더마 카테고리에 브랜드·제약사 진입 증가. 구다이글로벌 등 대형 신규 플레이어</td></tr>
+      <tr><td><b>관광 경기 의존</b></td><td class="c mid">중</td><td class="c mid">중</td><td>명동 등 외국인 매출은 방한 관광객 수에 연동</td></tr>
+      <tr><td><b>중국 리스크</b></td><td class="c mid">중</td><td class="c mid">중</td><td>K뷰티 전반의 중국 의존·규제 변수</td></tr>
+      <tr><td><b>DDS 지연</b></td><td class="c mid">중</td><td class="c mid">중</td><td>2027년 출시는 목표. 허가·임상 변수 존재</td></tr>
+      <tr><td><b>약가 인하·규제</b></td><td class="c mid">중</td><td class="c mid">중</td><td>제약 부문의 구조적 리스크</td></tr>
+      <tr><td><b>정체성 미해소</b></td><td class="c mid">중</td><td class="c mid">중</td><td>시장이 계속 제약주로 분류하면 밸류에이션 갭이 안 좁혀짐</td></tr>
+    </tbody>
+  </table>
+
+  <!-- 11 -->
+  <h2>11. 촉매 캘린더</h2>
+  <table>
+    <thead><tr><th>시점/이벤트</th><th>확인할 것</th></tr></thead>
+    <tbody>
+      <tr><td>매 분기 실적발표</td><td><b>화장품 수출액</b>, 헬스케어 성장률, <b>영업이익률</b></td></tr>
+      <tr><td>2026년 연간 실적</td><td><b>매출 1조 원 돌파</b> 확정 여부, OPM 11.2% 달성</td></tr>
+      <tr><td>2026년 내</td><td>로렐린데포 3개월 제형 <b>임상결과보고서 완료</b></td></tr>
+      <tr><td>2027년</td><td>DDS 신제형 <b>출시</b> 여부</td></tr>
+      <tr><td>수시</td><td>일본·북미 <b>신규 채널 입점</b> 발표</td></tr>
+      <tr><td>수시</td><td>신제품 라인 확장 (PDRN·타임리버스 등 후속)</td></tr>
+      <tr><td>업계</td><td>구다이글로벌 상장 등 <b>K뷰티 섹터 이벤트</b> (섹터 밸류에이션 영향)</td></tr>
+    </tbody>
+  </table>
+
+  <!-- 12 -->
+  <h2>12. 밸류에이션 참고</h2>
+  <div class="kpi">
+    <div class="box"><div class="num">약 6,842억</div><div class="lab">시가총액 (2026.02 보도 기준)</div></div>
+    <div class="box"><div class="num">15,390원</div><div class="lab">주가 (2026.02.11 기준)</div></div>
+    <div class="box"><div class="num">9.6배</div><div class="lab">2026E PER (증권사 제시)</div></div>
+    <div class="box"><div class="num">11.2%</div><div class="lab">2026E 영업이익률</div></div>
+  </div>
+  <div class="warn">
+    <b>해석 주의:</b> 위 수치는 <b>특정 시점(2026년 2월) 보도 기준</b>이며 현재와 다를 수 있습니다.
+    '저평가'라는 진단은 <b>해당 증권사의 견해</b>이며, 그 판단에는 "이 회사를 성장주로 분류한다"는 전제가 깔려 있습니다.
+    이 노트는 어떤 가격이 싸다/비싸다는 판단을 제시하지 않습니다. <b>반드시 최신 주가·재무를 직접 확인</b>하시기 바랍니다.
+  </div>
+
+  <h2>투자 전 체크리스트</h2>
+  <div class="note">
+    <ul style="margin-bottom:0;">
+      <li>□ 이 회사가 <b>제약과 화장품의 혼합체</b>라는 점을 이해했는가?</li>
+      <li>□ 성장의 핵심이 <b>화장품 수출</b>이라는 것을 아는가? (내수 아님)</li>
+      <li>□ 1Q26에 <b>영업이익 증가율이 매출보다 낮았다</b>는 점을 확인했는가?</li>
+      <li>□ 순이익 +51.7%가 <b>영업 외 요인</b>일 수 있음을 감안했는가?</li>
+      <li>□ 화장품은 <b>트렌드 변화가 빠른</b> 시장임을 인지했는가?</li>
+      <li>□ '저평가' 진단이 <b>업종 분류 전제</b>에 달려 있다는 점을 아는가?</li>
+      <li>□ DDS는 <b>옵션 가치</b>이지 현재 실적이 아니라는 것을 구분했는가?</li>
+      <li>□ 내가 추적할 <b>KPI 2~3개</b>(수출액·OPM·헬스케어 성장률)를 정했는가?</li>
+      <li>□ 비관 시나리오에서 <b>감당 가능한 손실 범위</b>를 정했는가?</li>
+    </ul>
+  </div>
+
+  <h2>FAQ</h2>
+  <h4>Q. 실적이 계속 좋은데 왜 주가가 저평가라는 말이 나오나요?</h4>
+  <p>시장이 이 회사를 <b>중견 제약사</b>로 분류해 낮은 배수를 적용하기 때문이라는 해석이 있습니다.
+  화장품 성장을 반영하면 더 높은 배수가 정당하다는 게 '저평가' 주장의 논리입니다.
+  다만 <b>시장 인식이 바뀌지 않으면 갭은 유지될 수 있습니다.</b></p>
+  <h4>Q. 명동에서 잘 팔리는 걸 봤는데, 그게 투자 근거가 되나요?</h4>
+  <p>좋은 <b>출발점</b>이지만 그 자체로는 부족합니다. 명동 판매는 <b>내수(외국인)</b>로 잡히고,
+  회사의 성장 스토리는 <b>해외 현지 수출</b>에 달려 있습니다. 관찰을 <b>수출액 지표로 검증</b>하는 단계가 필요합니다.</p>
+  <h4>Q. 가장 큰 리스크는 무엇인가요?</h4>
+  <p><b>화장품 트렌드 변화와 경쟁 심화</b>입니다. 제약 브랜드는 수십 년 가지만 화장품 브랜드는 그렇지 않습니다.
+  마데카 라인의 인기가 지속되는지, 후속 라인이 성공하는지가 관건입니다.</p>
+  <h4>Q. 가장 중요한 지표 하나만 고르면?</h4>
+  <p><b>화장품 수출액</b>입니다. 2026년 1,000억 전망이 달성되는지가 이 종목의 성장 스토리 진위를 가릅니다.
+  두 번째를 고른다면 <b>영업이익률</b>입니다 — 성장의 질을 보여줍니다.</p>
+
+  <h2>출처</h2>
+  <p class="src">
+    • 약사공론, "동국제약, 2026년 '1조 클럽' 간다…헬스케어 해외사업 성장 견인 전망" — https://www.kpanews.co.kr/news/articleView.html?idxno=534562<br>
+    • 메디코파마, "동국제약, 화장품 해외 매출 급증에 연간 성장 기대감 부각" — https://www.medicopharma.co.kr/news/articleView.html?idxno=68122<br>
+    • 의약뉴스, "동국제약 실적 성장에도 '저평가' 분석, 화장품 성장ㆍDDS 모멘텀 주목" — https://www.newsmp.com/news/articleView.html?idxno=252152<br>
+    • 팜뉴스, "역대급 실적에도 저평가된 주가, 동국제약에 '투심' 쏠릴까" — https://www.pharmnews.com/news/articleView.html?idxno=257417<br>
+    • 뉴스퀘스트, "동국제약, 제약사보다 화장품사로 탈바꿈" — https://www.newsquest.co.kr/news/articleView.html?idxno=263235<br>
+    • 뉴스핌, "'센텔리안24' 해외 영토 넓히는 동국제약…인력 확충·日 입점 확대" — https://www.newspim.com/news/view/20260417000859<br>
+    • 메디칼업저버, "'1조원 클럽' 눈 앞 동국제약, DDS 기술로 미래 건다" — https://www.monews.co.kr/news/articleView.html?idxno=410048<br>
+    • 서울파이낸스, "화장품 키우고 DDS 신약 밀고···동국제약, 성장 동력 강화" — https://www.seoulfn.com/news/articleView.html?idxno=623691<br>
+    • 서울와이어, "동국제약, DDS 기술·화장품 수출 날개 달고 주가 '재평가'" — https://www.seoulwire.com/news/articleView.html?idxno=715628<br>
+    • 데일리팜, "동국제약, 3Q 누계 영업익 723억…전년비 15.1%↑" — https://m.dailypharm.com/user/news/300<br>
+    • CJ올리브영 뉴스룸 — https://corp.oliveyoung.com/ko/news/105<br>
+    • 알파스퀘어 게재 증권사 리포트 (2026.05.18 1Q26 Review, 2026.03.30, 2025.10.13)<br>
+    • FnGuide 기업정보 — https://comp.fnguide.com/SVO2/asp/SVD_Main.asp?gicode=A086450
+  </p>
+
+  <div class="foot">
+    <hr>
+    본 문서는 개인 학습·정리 목적의 비상업 노트입니다. 전망치·목표주가·'저평가' 진단은 해당 증권사의 견해이며
+    본 문서의 의견이 아닙니다. 주가·시가총액은 보도 시점 기준으로 현재와 다를 수 있으므로 반드시 최신 자료를 확인하십시오.
+    투자에 대한 최종 판단과 책임은 전적으로 독자 본인에게 있습니다. © 2026 개인 리서치 라이브러리.
+  </div>
+
+</div>
+</body>
+</html>

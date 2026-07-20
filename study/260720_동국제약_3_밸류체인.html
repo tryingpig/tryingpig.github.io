@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>동국제약 밸류체인 — 더마코스메틱 산업 지도에서 어디에 서 있나</title>
+<style>
+  :root{
+    --accent:#be185d; --accent2:#db2777;
+    --ink:#1f2430; --muted:#5c6472; --line:#eee4e9; --bg:#fff; --soft:#fdf6f9;
+    --warnbg:#fff7ed; --warnln:#fb923c;
+  }
+  *{box-sizing:border-box;}
+  body{font-family:"Segoe UI","Malgun Gothic","Apple SD Gothic Neo",system-ui,sans-serif;
+    color:var(--ink); background:var(--bg); margin:0; line-height:1.78; font-size:16.5px; letter-spacing:-0.1px;}
+  .wrap{max-width:920px; margin:0 auto; padding:40px 28px 90px;}
+  h1{font-size:29px; line-height:1.32; margin:8px 0 6px; letter-spacing:-0.6px;}
+  h2{font-size:22px; margin:50px 0 12px; padding-top:14px; border-top:3px solid var(--accent); letter-spacing:-0.4px;}
+  h3{font-size:18.5px; margin:30px 0 8px; color:#2b3242;}
+  h4{font-size:16px; margin:18px 0 6px; color:var(--accent);}
+  p{margin:10px 0;} a{color:var(--accent); text-decoration:none;} a:hover{text-decoration:underline;}
+  .sub{color:var(--muted); font-size:15px;} .lead{font-size:17.5px; color:#333a49;}
+  .kicker{display:inline-block; font-size:13px; font-weight:700; letter-spacing:1.5px;
+    color:var(--accent); background:#fce7f0; padding:5px 12px; border-radius:999px;}
+  .warn{background:var(--warnbg); border:1px solid var(--warnln); border-left:6px solid var(--warnln);
+    border-radius:10px; padding:16px 18px; margin:22px 0; font-size:15px;}
+  .note{background:var(--soft); border:1px solid var(--line); border-radius:10px; padding:16px 18px; margin:18px 0;}
+  .callout{background:#fce7f0; border:1px solid #f9a8d4; border-left:6px solid var(--accent);
+    border-radius:10px; padding:16px 18px; margin:20px 0;}
+  .big{font-size:19px; font-weight:800; color:var(--accent); line-height:1.5;}
+  .grid2{display:grid; grid-template-columns:1fr 1fr; gap:16px;}
+  .grid3{display:grid; grid-template-columns:repeat(3,1fr); gap:14px;}
+  .card{border:1px solid var(--line); border-radius:12px; padding:16px 18px; background:#fff;}
+  table{width:100%; border-collapse:collapse; margin:18px 0; font-size:14.5px;}
+  th,td{border:1px solid var(--line); padding:9px 11px; text-align:left; vertical-align:top;}
+  th{background:var(--soft); font-weight:700;} td.c,th.c{text-align:center;}
+  figure{margin:24px 0; text-align:center;} figcaption{font-size:13px; color:var(--muted); margin-top:8px;}
+  .svgbox{border:1px solid var(--line); border-radius:12px; padding:14px; background:#fff;}
+  ul,ol{margin:10px 0 10px 4px; padding-left:22px;} li{margin:6px 0;}
+  .toc{background:var(--soft); border:1px solid var(--line); border-radius:12px; padding:18px 22px; margin:26px 0;}
+  .toc ol{columns:2; column-gap:34px;}
+  .src{font-size:13px; color:var(--muted); word-break:break-all;}
+  .seriesnav{background:#fce7f0; border:1px solid #f9a8d4; border-radius:10px; padding:14px 18px; margin:20px 0; font-size:14.5px;}
+  .good{color:#059669; font-weight:700;} .bad{color:#dc2626; font-weight:700;} .mid{color:#b45309; font-weight:700;}
+  hr{border:none; border-top:1px solid var(--line); margin:34px 0;}
+  .foot{color:var(--muted); font-size:13px; margin-top:40px;}
+  @media (max-width:680px){.grid2,.grid3{grid-template-columns:1fr;} .toc ol{columns:1;} h1{font-size:24px;}}
+  @media print{body{font-size:11.5pt;} .wrap{max-width:100%; padding:0;} h2{break-after:avoid;}
+    figure,table,.card{break-inside:avoid;} a{color:#000;} .warn,.callout,.note{break-inside:avoid;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <span class="kicker">동국제약 · ③ 밸류체인</span>
+  <h1>동국제약 밸류체인<br>— 더마코스메틱 산업 지도에서 어디에 서 있나</h1>
+  <p class="sub">작성일 2026-07-20 · KOSDAQ 086450 · 개인 리서치 노트 · 입문세트 3/3</p>
+
+  <div class="warn">
+    <b>⚠️ 투자 권유가 아닙니다.</b> 이 문서는 공개 정보를 정리한 <b>개인 학습 노트</b>이며 매수·매도 추천이 아닙니다.
+    시장 규모·점유율 수치는 조사기관마다 정의와 기준이 달라 편차가 크며 추정치입니다.
+    언급된 기업명은 산업 구조 설명을 위한 것이지 투자 대상 추천이 아닙니다.
+    모든 투자 판단과 그 책임은 전적으로 본인에게 있습니다.
+  </div>
+
+  <div class="seriesnav">
+    <b>💄 입문세트 구성</b> — <a href="https://tryingpig.github.io/study/260720_동국제약_1_입문가이드.html">① 입문가이드</a> ·
+    <a href="https://tryingpig.github.io/study/260720_동국제약_2_투자안내서.html">② 투자안내서</a> ·
+    ③ <b>밸류체인(현재 글)</b><br>
+    <span class="sub">제품이 뭔지(①), 숫자가 어떤지(②)는 앞 글에서 다뤘습니다. 여기서는 <b>산업 전체 지도와 동국제약의 좌표</b>를 봅니다.</span>
+  </div>
+
+  <div class="callout">
+    <span class="big">🧭 한 장 요약</span>
+    <ol style="margin-bottom:0;">
+      <li><b>동국제약은 화장품 밸류체인에서 '브랜드사'다.</b> 제조는 상당 부분 외부(ODM/OEM)에 맡기고, 브랜드·기획·유통을 한다.</li>
+      <li><b>차별점은 '원료의 출처'다.</b> 대부분의 브랜드사는 원료를 사 오지만, 이 회사는 <b>자기 의약품(마데카솔)에서 성분 스토리를 가져온다.</b></li>
+      <li><b>병목은 채널이다.</b> 올리브영·일본 드럭스토어·아마존 — 어디에 얼마나 깔리느냐가 매출을 결정한다.</li>
+      <li><b>시장은 크고 성장한다.</b> 글로벌 더마코스메틱 2025년 479억 달러 → 2032년 950억 달러 전망.</li>
+      <li><b>단, 경쟁은 격화된다.</b> 에이피알·구다이글로벌 등 대형 K뷰티 브랜드와 제약사 더마 브랜드가 동시에 몰려든다.</li>
+    </ol>
+  </div>
+
+  <div class="toc">
+    <b>목차</b>
+    <ol>
+      <li>큰 그림 — 화장품 산업의 3단 구조</li>
+      <li>더마코스메틱 밸류체인 전체 지도</li>
+      <li>후방 — 원료와 ODM/OEM</li>
+      <li>동국제약의 구조적 차별점</li>
+      <li>중간 — 브랜드 경쟁 구도</li>
+      <li>전방 — 채널이 곧 병목이다</li>
+      <li>해외 채널 지도</li>
+      <li>시장 규모와 성장률</li>
+      <li>K뷰티의 체질 전환</li>
+      <li>동국제약의 좌표와 강약점</li>
+      <li>제약 부문 밸류체인 (보너스)</li>
+      <li>리스크 지점 · 용어사전 · 출처</li>
+    </ol>
+  </div>
+
+  <!-- 1 -->
+  <h2>1. 큰 그림 — 화장품 산업의 3단 구조</h2>
+  <p class="lead">
+    화장품 산업은 반도체처럼 복잡하지 않다. 크게 <b>원료 → 제조(ODM/OEM) → 브랜드 → 유통</b> 네 단계다.
+    그런데 <b>돈과 권력이 어디에 있는지</b>가 중요하다.
+  </p>
+
+  <figure>
+    <div class="svgbox">
+      <svg viewBox="0 0 860 240" width="100%" role="img" aria-label="화장품 산업 4단계">
+        <g font-family="Segoe UI, sans-serif">
+          <text x="16" y="26" font-size="15" font-weight="800">화장품 산업의 4단계와 부가가치</text>
+
+          <rect x="20" y="50" width="180" height="66" rx="10" fill="#f1f5f9" stroke="#cbd5e1"/>
+          <text x="110" y="76" font-size="13" font-weight="700" text-anchor="middle">① 원료</text>
+          <text x="110" y="98" font-size="11" fill="#5c6472" text-anchor="middle">병풀추출물·PDRN 등</text>
+
+          <rect x="216" y="50" width="180" height="66" rx="10" fill="#f1f5f9" stroke="#cbd5e1"/>
+          <text x="306" y="76" font-size="13" font-weight="700" text-anchor="middle">② 제조 (ODM/OEM)</text>
+          <text x="306" y="98" font-size="11" fill="#5c6472" text-anchor="middle">한국콜마·코스맥스 등</text>
+
+          <rect x="412" y="44" width="200" height="78" rx="10" fill="#be185d"/>
+          <text x="512" y="72" font-size="13.5" font-weight="800" fill="#fff" text-anchor="middle">③ 브랜드</text>
+          <text x="512" y="94" font-size="11" fill="#fce7f0" text-anchor="middle">← 동국제약(센텔리안24)</text>
+          <text x="512" y="112" font-size="10.5" fill="#fbcfe8" text-anchor="middle">부가가치가 가장 큼</text>
+
+          <rect x="628" y="50" width="200" height="66" rx="10" fill="#fef3c7" stroke="#fbbf24"/>
+          <text x="728" y="76" font-size="13" font-weight="700" text-anchor="middle">④ 유통 (채널)</text>
+          <text x="728" y="98" font-size="11" fill="#5c6472" text-anchor="middle">올리브영·드럭스토어·이커머스</text>
+
+          <g stroke="#94a3b8" stroke-width="2" fill="none">
+            <path d="M202,83 L212,83" marker-end="url(#a)"/>
+            <path d="M398,83 L408,83" marker-end="url(#a)"/>
+            <path d="M614,83 L624,83" marker-end="url(#a)"/>
+          </g>
+          <defs><marker id="a" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+            <path d="M0,0 L6,3 L0,6 Z" fill="#94a3b8"/></marker></defs>
+
+          <rect x="20" y="148" width="808" height="66" rx="10" fill="#fdf6f9" stroke="#f9a8d4"/>
+          <text x="424" y="174" font-size="13" font-weight="800" fill="#9d174d" text-anchor="middle">
+            💡 화장품은 '제조'가 아니라 '브랜드'와 '채널'에서 돈이 난다</text>
+          <text x="424" y="196" font-size="11.5" fill="#831843" text-anchor="middle">
+            제조는 ODM에 맡길 수 있지만, 브랜드 신뢰와 매대 자리는 돈으로 빨리 못 산다 — 개인 정리 도식</text>
+        </g>
+      </svg>
+    </div>
+    <figcaption>그림 1. 동국제약은 ③브랜드 단계에 있고, ④채널이 성장의 병목이다. (개인 정리 도식)</figcaption>
+  </figure>
+
+  <div class="note">
+    <b>반도체와 비교하면 이해가 쉽다.</b><br>
+    반도체는 <b>제조(파운드리)</b>가 어렵고 진입장벽이 높다. 반면 화장품은 <b>제조는 상대적으로 쉽다</b>
+    (ODM 업체에 맡기면 된다). 대신 <b>"왜 이 브랜드를 사야 하는가"를 설득하는 일</b>과
+    <b>"매대에 올라가는 일"</b>이 어렵다. 그래서 화장품 회사의 경쟁력은 공장이 아니라
+    <b>브랜드 스토리 + 채널 장악력 + 마케팅</b>에서 나온다.
+  </div>
+
+  <!-- 2 -->
+  <h2>2. 더마코스메틱 밸류체인 전체 지도</h2>
+  <figure>
+    <div class="svgbox">
+      <svg viewBox="0 0 860 430" width="100%" role="img" aria-label="더마코스메틱 밸류체인 지도">
+        <g font-family="Segoe UI, sans-serif">
+          <text x="16" y="26" font-size="15" font-weight="800">더마코스메틱 밸류체인 — 원료에서 소비자까지</text>
+
+          <!-- upstream -->
+          <rect x="20" y="42" width="820" height="80" rx="12" fill="#dcfce7" stroke="#86efac"/>
+          <text x="36" y="66" font-size="13.5" font-weight="800" fill="#166534">후방① 원료 — 스토리의 출발점</text>
+          <g font-size="11.5" fill="#14532d">
+            <rect x="40" y="76" width="180" height="34" rx="7" fill="#fff" stroke="#86efac"/>
+            <text x="130" y="97" text-anchor="middle" font-weight="700">병풀추출물(TECA)</text>
+            <rect x="234" y="76" width="180" height="34" rx="7" fill="#fff" stroke="#86efac"/>
+            <text x="324" y="97" text-anchor="middle" font-weight="700">PDRN·펩타이드</text>
+            <rect x="428" y="76" width="180" height="34" rx="7" fill="#fff" stroke="#86efac"/>
+            <text x="518" y="97" text-anchor="middle" font-weight="700">기능성 원료</text>
+            <rect x="622" y="76" width="198" height="34" rx="7" fill="#fff" stroke="#86efac"/>
+            <text x="721" y="97" text-anchor="middle" font-weight="700">용기·부자재</text>
+          </g>
+
+          <!-- ODM -->
+          <rect x="20" y="134" width="820" height="70" rx="12" fill="#e0f2fe" stroke="#7dd3fc"/>
+          <text x="36" y="158" font-size="13.5" font-weight="800" fill="#075985">후방② 제조 — ODM/OEM</text>
+          <g font-size="11.5" fill="#0c4a6e">
+            <rect x="40" y="168" width="240" height="28" rx="6" fill="#fff" stroke="#7dd3fc"/>
+            <text x="160" y="187" text-anchor="middle">한국콜마 · 코스맥스</text>
+            <rect x="294" y="168" width="240" height="28" rx="6" fill="#fff" stroke="#7dd3fc"/>
+            <text x="414" y="187" text-anchor="middle">코스메카코리아 등</text>
+            <rect x="548" y="168" width="272" height="28" rx="6" fill="#fff" stroke="#7dd3fc"/>
+            <text x="684" y="187" text-anchor="middle">브랜드사 자체 생산 일부 병행</text>
+          </g>
+
+          <!-- brands -->
+          <rect x="20" y="216" width="820" height="96" rx="12" fill="#be185d"/>
+          <text x="36" y="240" font-size="13.5" font-weight="800" fill="#fff">중간 · 브랜드 — 경쟁의 주무대</text>
+          <g font-size="11.5">
+            <rect x="40" y="250" width="150" height="46" rx="7" fill="#fff"/>
+            <text x="115" y="269" text-anchor="middle" font-weight="800" fill="#be185d">동국제약</text>
+            <text x="115" y="285" text-anchor="middle" fill="#5c6472">센텔리안24</text>
+            <rect x="202" y="250" width="150" height="46" rx="7" fill="#fce7f0"/>
+            <text x="277" y="269" text-anchor="middle" font-weight="700">에이피알</text>
+            <text x="277" y="285" text-anchor="middle" fill="#5c6472">메디큐브·디바이스</text>
+            <rect x="364" y="250" width="150" height="46" rx="7" fill="#fce7f0"/>
+            <text x="439" y="269" text-anchor="middle" font-weight="700">구다이글로벌</text>
+            <text x="439" y="285" text-anchor="middle" fill="#5c6472">상장 추진</text>
+            <rect x="526" y="250" width="150" height="46" rx="7" fill="#fce7f0"/>
+            <text x="601" y="269" text-anchor="middle" font-weight="700">기타 K뷰티</text>
+            <text x="601" y="285" text-anchor="middle" fill="#5c6472">브이티 등</text>
+            <rect x="688" y="250" width="132" height="46" rx="7" fill="#fce7f0"/>
+            <text x="754" y="269" text-anchor="middle" font-weight="700">제약사 더마</text>
+            <text x="754" y="285" text-anchor="middle" fill="#5c6472">신규 진입 다수</text>
+          </g>
+
+          <!-- channels -->
+          <rect x="20" y="324" width="820" height="94" rx="12" fill="#fef3c7" stroke="#fbbf24"/>
+          <text x="36" y="348" font-size="13.5" font-weight="800" fill="#92400e">전방 · 채널 — 진짜 병목</text>
+          <g font-size="11.5" fill="#78350f">
+            <rect x="40" y="358" width="150" height="46" rx="7" fill="#fff" stroke="#fbbf24"/>
+            <text x="115" y="377" text-anchor="middle" font-weight="700">올리브영</text>
+            <text x="115" y="393" text-anchor="middle">명동타운 등</text>
+            <rect x="202" y="358" width="150" height="46" rx="7" fill="#fff" stroke="#fbbf24"/>
+            <text x="277" y="377" text-anchor="middle" font-weight="700">홈쇼핑</text>
+            <text x="277" y="393" text-anchor="middle">수수료 높음</text>
+            <rect x="364" y="358" width="150" height="46" rx="7" fill="#fff" stroke="#fbbf24"/>
+            <text x="439" y="377" text-anchor="middle" font-weight="700">자사몰</text>
+            <text x="439" y="393" text-anchor="middle">마진 최상</text>
+            <rect x="526" y="358" width="150" height="46" rx="7" fill="#fff" stroke="#fbbf24"/>
+            <text x="601" y="377" text-anchor="middle" font-weight="700">일본 드럭스토어</text>
+            <text x="601" y="393" text-anchor="middle">마츠키요·돈키호테</text>
+            <rect x="688" y="358" width="132" height="46" rx="7" fill="#fff" stroke="#fbbf24"/>
+            <text x="754" y="377" text-anchor="middle" font-weight="700">아마존·틱톡샵</text>
+            <text x="754" y="393" text-anchor="middle">북미 바이럴</text>
+          </g>
+        </g>
+      </svg>
+    </div>
+    <figcaption>그림 2. 원료 → 제조 → 브랜드 → 채널. 동국제약은 브랜드 단계에 있고, 성장은 채널 확장에서 나온다. (개인 정리 도식)</figcaption>
+  </figure>
+
+  <!-- 3 -->
+  <h2>3. 후방 — 원료와 ODM/OEM</h2>
+  <h3>원료</h3>
+  <p>
+    더마코스메틱에서 원료는 <b>단순 재료가 아니라 마케팅 자산</b>이다. "무슨 성분이 들었나"가 곧 브랜드의 정체성이 된다.
+  </p>
+  <table>
+    <thead><tr><th>원료</th><th>효능 소구점</th><th>동국제약 활용</th></tr></thead>
+    <tbody>
+      <tr><td><b>병풀추출물(TECA)</b></td><td>진정·재생·상처 회복</td><td class="c good"><b>핵심 원료.</b> 마데카솔에서 이어짐</td></tr>
+      <tr><td><b>PDRN</b></td><td>재생·탄력</td><td>마데카 크림 PDRN 라인 등 확장</td></tr>
+      <tr><td>펩타이드·나이아신아마이드 등</td><td>주름·미백 등 기능성</td><td>기능성 라인 확대에 활용</td></tr>
+    </tbody>
+  </table>
+
+  <h3>제조(ODM/OEM)</h3>
+  <p>
+    화장품 브랜드사는 대부분 <b>직접 공장을 돌리지 않는다.</b> 한국콜마·코스맥스·코스메카코리아 같은
+    ODM 업체가 개발·생산을 맡는다. 이 구조 덕분에 브랜드사는 <b>설비 투자 부담 없이 빠르게 제품을 낼 수 있다.</b>
+  </p>
+  <div class="note">
+    <b>양날의 검이다.</b><br>
+    <b>장점:</b> 자본 투입이 적어 <b>ROE가 높고</b>, 신제품 출시가 빠르다. 수요가 줄어도 고정비 부담이 작다.<br>
+    <b>단점:</b> <b>제조 자체가 진입장벽이 되지 못한다.</b> 경쟁사도 같은 ODM에서 비슷한 제품을 만들 수 있다.
+    그래서 <b>차별화는 오직 브랜드·성분 스토리·채널에서만</b> 나온다.<br><br>
+    K뷰티 수출 확대의 수혜가 <b>ODM 업체(한국콜마·코스메카코리아)</b>에도 간다는 분석이 나오는 이유가 이것이다 —
+    브랜드가 누가 뜨든 <b>제조는 이들이 한다.</b>
+  </div>
+
+  <!-- 4 -->
+  <h2>4. 동국제약의 구조적 차별점</h2>
+  <p class="lead">
+    수많은 K뷰티 브랜드 중에서 동국제약이 갖는 <b>구조적으로 남다른 점</b>은 딱 하나로 요약된다.
+  </p>
+
+  <figure>
+    <div class="svgbox">
+      <svg viewBox="0 0 840 250" width="100%" role="img" aria-label="일반 브랜드사와 동국제약 비교">
+        <g font-family="Segoe UI, sans-serif">
+          <text x="16" y="24" font-size="14.5" font-weight="800">원료 스토리의 출처가 다르다</text>
+
+          <!-- typical -->
+          <text x="30" y="58" font-size="12.5" font-weight="700" fill="#5c6472">일반 K뷰티 브랜드</text>
+          <rect x="30" y="68" width="130" height="40" rx="7" fill="#f1f5f9" stroke="#cbd5e1"/>
+          <text x="95" y="93" font-size="11" text-anchor="middle">원료 구매</text>
+          <rect x="180" y="68" width="130" height="40" rx="7" fill="#f1f5f9" stroke="#cbd5e1"/>
+          <text x="245" y="93" font-size="11" text-anchor="middle">ODM 생산</text>
+          <rect x="330" y="68" width="130" height="40" rx="7" fill="#f1f5f9" stroke="#cbd5e1"/>
+          <text x="395" y="93" font-size="11" text-anchor="middle">마케팅으로 설득</text>
+          <text x="490" y="93" font-size="11.5" fill="#dc2626">→ 신뢰를 처음부터 쌓아야 함</text>
+
+          <!-- dongkook -->
+          <text x="30" y="150" font-size="12.5" font-weight="700" fill="#be185d">동국제약</text>
+          <rect x="30" y="160" width="130" height="40" rx="7" fill="#fce7f0" stroke="#f9a8d4"/>
+          <text x="95" y="178" font-size="10.5" text-anchor="middle" font-weight="700">마데카솔</text>
+          <text x="95" y="192" font-size="9.5" text-anchor="middle" fill="#5c6472">(의약품·50여 년)</text>
+          <rect x="180" y="160" width="130" height="40" rx="7" fill="#fce7f0" stroke="#f9a8d4"/>
+          <text x="245" y="178" font-size="10.5" text-anchor="middle" font-weight="700">병풀 성분</text>
+          <text x="245" y="192" font-size="9.5" text-anchor="middle" fill="#5c6472">(검증된 원료)</text>
+          <rect x="330" y="160" width="130" height="40" rx="7" fill="#be185d"/>
+          <text x="395" y="178" font-size="10.5" text-anchor="middle" font-weight="700" fill="#fff">센텔리안24</text>
+          <text x="395" y="192" font-size="9.5" text-anchor="middle" fill="#fbcfe8">(화장품)</text>
+          <text x="490" y="185" font-size="11.5" fill="#059669" font-weight="700">→ 신뢰를 '물려받아' 시작</text>
+
+          <g stroke="#be185d" stroke-width="2" fill="none">
+            <path d="M162,180 L176,180" marker-end="url(#d)"/>
+            <path d="M312,180 L326,180" marker-end="url(#d)"/>
+          </g>
+          <defs><marker id="d" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+            <path d="M0,0 L6,3 L0,6 Z" fill="#be185d"/></marker></defs>
+
+          <text x="420" y="234" font-size="12" fill="#5c6472" text-anchor="middle">
+            ※ 이 '신뢰 상속' 구조가 마케팅 비용 효율과 해외 진출 설득력의 원천 — 개인 정리 도식</text>
+        </g>
+      </svg>
+    </div>
+    <figcaption>그림 3. 동국제약의 차별점은 '약에서 물려받은 신뢰'. (개인 정리 도식)</figcaption>
+  </figure>
+
+  <div class="callout">
+    <b>💊 "약에서 온 화장품"이라는 서사의 가치</b><br>
+    해외 소비자에게 <b>"한국 제약회사가 50년 넘게 만든 상처치료제의 성분"</b>이라는 설명은
+    일반 브랜드의 "좋은 성분이 들어있어요"보다 훨씬 강력하다. 특히 <b>일본·북미처럼 성분을 따지는 시장</b>에서 유리하다.<br><br>
+    <b>다만 한계도 분명하다:</b>
+    <ul style="margin-bottom:0;">
+      <li>이 서사는 <b>병풀(마데카) 라인에만</b> 강하게 작동한다. 다른 카테고리로 확장하면 힘이 약해진다.</li>
+      <li>병풀·시카(Cica) 성분은 이미 <b>K뷰티 전반에서 흔한 소재</b>가 됐다. 원조라는 지위가 영원한 프리미엄은 아니다.</li>
+      <li>제조는 여전히 ODM 구조라 <b>제품 자체의 복제 난도는 낮다.</b></li>
+    </ul>
+  </div>
+
+  <!-- 5 -->
+  <h2>5. 중간 — 브랜드 경쟁 구도</h2>
+  <table>
+    <thead><tr><th>기업</th><th>주력</th><th>특징</th><th class="c">동국제약과의 관계</th></tr></thead>
+    <tbody>
+      <tr><td><b>동국제약</b><br><span class="sub">센텔리안24</span></td><td>더마 스킨케어(크림 중심)</td><td>제약 기반 신뢰 + 3개 사업부 안정성</td><td class="c">—</td></tr>
+      <tr><td><b>에이피알</b></td><td>메디큐브 + <b>뷰티 디바이스</b></td><td>디바이스+화장품 결합, 글로벌 이커머스 강점</td><td class="c bad">직접 경쟁</td></tr>
+      <tr><td><b>구다이글로벌</b></td><td>K뷰티 브랜드</td><td><b>상장 추진 중, 기업가치 10조 원급</b>으로 거론</td><td class="c bad">대형 경쟁자 등장</td></tr>
+      <tr><td><b>브이티 등</b></td><td>K뷰티 브랜드</td><td>일본 등 해외 채널 강세</td><td class="c bad">해외 채널 경쟁</td></tr>
+      <tr><td>제약사 더마 브랜드</td><td>제약 기반 화장품</td><td>동국제약과 <b>같은 논리</b>로 진입</td><td class="c bad">차별점 희석 위험</td></tr>
+      <tr><td>한국콜마·코스메카코리아</td><td>ODM 제조</td><td>브랜드 누가 뜨든 수혜</td><td class="c mid">공급자(협력)</td></tr>
+    </tbody>
+  </table>
+  <div class="note">
+    <b>⚠️ 경쟁 구도에서 주목할 두 가지</b>
+    <ol style="margin-bottom:0;">
+      <li><b>구다이글로벌의 등장.</b> 기업가치 10조 원급으로 거론되는 초대어가 상장을 추진 중이다.
+        이런 대형 플레이어가 등장하면 <b>섹터 밸류에이션 기준</b>이 새로 잡히고, 마케팅 경쟁도 격화된다.
+        동국제약에는 <b>양날</b>이다 — 섹터 관심이 커지는 건 긍정, 경쟁 심화는 부정.</li>
+      <li><b>제약사 더마 브랜드의 확산.</b> "제약사가 만든 화장품"이라는 논리는 동국제약의 독점 자산이 아니다.
+        다른 제약사들도 같은 길로 들어오면 <b>차별점이 희석</b>된다.</li>
+    </ol>
+  </div>
+
+  <!-- 6 -->
+  <h2>6. 전방 — 채널이 곧 병목이다</h2>
+  <p class="lead">
+    화장품 브랜드의 성장은 결국 <b>"몇 개의 매대에 올라가 있느냐"</b>로 결정된다. 좋은 제품이 있어도 팔 곳이 없으면 안 팔린다.
+  </p>
+  <table>
+    <thead><tr><th>채널</th><th>장점</th><th>단점</th><th class="c">마진</th></tr></thead>
+    <tbody>
+      <tr><td><b>홈쇼핑</b></td><td>단기간 대량 판매, 인지도 확산</td><td><b>수수료 부담 큼</b>, 브랜드 이미지 제약</td><td class="c bad">낮음</td></tr>
+      <tr><td><b>올리브영</b></td><td>국내 최대 H&amp;B, <b>외국인 유입</b></td><td>유통 마진 배분, 매대 경쟁 치열</td><td class="c mid">중간</td></tr>
+      <tr><td><b>자사몰(DK SHOP)</b></td><td><b>마진 최상</b>, 고객 데이터 확보</td><td>자체 트래픽 유치 비용</td><td class="c good">높음</td></tr>
+      <tr><td><b>일본 드럭스토어</b></td><td>대량 입점 시 <b>안정적 물량</b></td><td>입점 협상·현지 마케팅 비용</td><td class="c mid">중간</td></tr>
+      <tr><td><b>아마존·틱톡샵</b></td><td>초기 투자 적음, <b>바이럴 폭발력</b></td><td><b>지속성 불확실</b>, 광고비 경쟁</td><td class="c mid">중간</td></tr>
+    </tbody>
+  </table>
+  <div class="callout">
+    <b>🔑 채널 믹스 = 이익률</b><br>
+    같은 매출 1,000억이라도 <b>홈쇼핑 위주면 이익이 적고, 자사몰·직수출 위주면 이익이 크다.</b>
+    그래서 <a href="https://tryingpig.github.io/study/260720_동국제약_2_투자안내서.html">② 투자안내서</a>에서
+    "매출이 얼마 늘었나"보다 <b>"어디서 늘었나"</b>를 봐야 한다고 강조한 것이다.<br><br>
+    현재 흐름은 <b>홈쇼핑·국내 → 해외 수출</b>로 무게가 이동 중이며, 이는 마진 관점에서 긍정적 방향이다.
+  </div>
+
+  <!-- 7 -->
+  <h2>7. 해외 채널 지도</h2>
+  <table>
+    <thead><tr><th>시장</th><th>진출 채널</th><th class="c">규모</th><th class="c">검증 가능성</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><b>🇯🇵 일본</b></td>
+        <td>마츠모토키요시 · 로프트 · 돈키호테</td>
+        <td class="c">85 / 100 / <b>500</b>개점</td>
+        <td class="c good">높음<br><span class="sub">(매장 수로 확인)</span></td>
+      </tr>
+      <tr>
+        <td><b>🇺🇸 북미</b></td>
+        <td>아마존 · 틱톡샵</td>
+        <td class="c">바이럴 기반</td>
+        <td class="c mid">중간<br><span class="sub">(랭킹·리뷰로 추정)</span></td>
+      </tr>
+      <tr>
+        <td><b>🇰🇷 국내(외국인)</b></td>
+        <td>올리브영 명동타운 등</td>
+        <td class="c">외국인 비중 25%↑</td>
+        <td class="c good">높음<br><span class="sub">(관광 통계 연동)</span></td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="note">
+    <b>🇯🇵 일본 채널이 특히 중요한 이유</b><br>
+    <b>돈키호테 500개점</b>은 단순히 매장 수가 많은 게 아니다. 돈키호테는 <b>일본 현지인뿐 아니라 관광객</b>도
+    많이 찾는 곳이라, <b>글로벌 노출</b> 효과가 크다. 일본에서 산 관광객이 자국에서 재구매하는 경로가 열릴 수 있다.<br><br>
+    또한 일본 드럭스토어는 <b>입점 심사가 까다롭기로 유명</b>해, 대량 입점 자체가 품질·신뢰의 방증이 된다.
+    <b>"제약사 성분"이라는 서사가 일본에서 잘 먹히는 구조</b>이기도 하다.
+  </div>
+
+  <!-- 8 -->
+  <h2>8. 시장 규모와 성장률</h2>
+  <table>
+    <thead><tr><th>시장</th><th class="c">기준</th><th class="c">전망</th><th class="c">성장률</th></tr></thead>
+    <tbody>
+      <tr><td><b>글로벌 더마코스메틱</b></td><td class="c">437.1억 달러(2024)<br>479.1억 달러(2025)</td><td class="c"><b>949.5억 달러(2032)</b></td><td class="c good">약 2배 성장</td></tr>
+      <tr><td>한국 화장품(코스메슈티컬)</td><td class="c">9.38억 달러(2026)</td><td class="c">17.01억 달러(2034)</td><td class="c">CAGR 7.72%</td></tr>
+      <tr><td>K뷰티 수출(월간)</td><td class="c" colspan="2">5월 화장품 수출액 <b>전년 동월 대비 +24%</b></td><td class="c good">기초 +27%<br>홈뷰티기기 +25%</td></tr>
+    </tbody>
+  </table>
+  <p class="sub">
+    ※ 조사기관마다 '더마코스메틱' 정의가 달라 수치 편차가 크다. <b>절대값보다 방향과 기울기</b>를 보는 게 안전하다.
+    핵심은 <b>"글로벌 더마 시장이 7~8년에 2배가 되는 성장 시장"</b>이고, <b>K뷰티 수출이 두 자릿수로 늘고 있다</b>는 것.
+    <span class="src">(출처: Business Research Insights, Fortune Business Insights, Verified Market Reports, 바이오타임즈)</span>
+  </p>
+
+  <!-- 9 -->
+  <h2>9. K뷰티의 체질 전환 — 순풍의 정체</h2>
+  <p>
+    지금 동국제약에 유리한 산업 흐름이 하나 있다. <b>K뷰티가 '색조'에서 '더마(성분·기능)'로 체질을 바꾸는 중</b>이라는 것.
+  </p>
+  <div class="grid2">
+    <div class="card">
+      <h4>과거 K뷰티</h4>
+      <ul style="margin-bottom:0;">
+        <li>색조·마스크팩 중심</li>
+        <li>가성비·트렌드 소구</li>
+        <li>중국 의존도 높음</li>
+        <li>유행 주기 짧음</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4>현재 K뷰티</h4>
+      <ul style="margin-bottom:0;">
+        <li><b>기초·더마·기능성 중심</b></li>
+        <li><b>성분·효능 소구</b></li>
+        <li>일본·북미·동남아로 다변화</li>
+        <li>브랜드 충성도 상대적으로 높음</li>
+      </ul>
+    </div>
+  </div>
+  <p>
+    실제 수출 데이터에서도 <b>기초 화장품(+27%)·바디케어(+31%)·홈뷰티 디바이스(+25%)</b> 등
+    퍼스널케어 제품군의 증가세가 두드러진다. <b>동국제약의 포지션(더마 기초 스킨케어)이 정확히 이 흐름의 중심</b>에 있다.
+  </p>
+  <div class="callout">
+    <b>다만 냉정하게:</b> 이 순풍은 <b>동국제약만의 것이 아니다.</b> 같은 흐름을 타는 브랜드가 수십 개다.
+    순풍이 있다는 것과 <b>그 안에서 이길 수 있다는 것</b>은 다른 문제다.
+    결국 <b>브랜드력·채널 확보·제품 경쟁력</b>에서 갈린다.
+  </div>
+
+  <!-- 10 -->
+  <h2>10. 동국제약의 좌표와 강약점</h2>
+  <figure>
+    <div class="svgbox">
+      <svg viewBox="0 0 840 290" width="100%" role="img" aria-label="포지셔닝 맵">
+        <g font-family="Segoe UI, sans-serif">
+          <text x="16" y="24" font-size="14.5" font-weight="800">포지셔닝 — 사업 안정성(세로) × 화장품 성장성(가로)</text>
+          <line x1="70" y1="240" x2="800" y2="240" stroke="#e5d5dd" stroke-width="1.5"/>
+          <line x1="70" y1="45" x2="70" y2="240" stroke="#e5d5dd" stroke-width="1.5"/>
+          <text x="435" y="268" font-size="12" fill="#5c6472" text-anchor="middle">화장품 성장성 →</text>
+          <text x="28" y="145" font-size="12" fill="#5c6472" transform="rotate(-90 28,145)" text-anchor="middle">사업 안정성 →</text>
+
+          <circle cx="330" cy="90" r="42" fill="#be185d"/>
+          <text x="330" y="86" font-size="12.5" text-anchor="middle" font-weight="800" fill="#fff">동국제약</text>
+          <text x="330" y="102" font-size="9.5" text-anchor="middle" fill="#fbcfe8">제약+화장품</text>
+
+          <circle cx="600" cy="150" r="34" fill="#fce7f0" stroke="#be185d"/>
+          <text x="600" y="148" font-size="11" text-anchor="middle" font-weight="700">에이피알</text>
+          <text x="600" y="163" font-size="9" text-anchor="middle" fill="#5c6472">디바이스+화장품</text>
+
+          <circle cx="690" cy="200" r="32" fill="#fce7f0" stroke="#be185d"/>
+          <text x="690" y="198" font-size="11" text-anchor="middle" font-weight="700">순수 K뷰티</text>
+          <text x="690" y="213" font-size="9" text-anchor="middle" fill="#5c6472">브랜드사</text>
+
+          <circle cx="180" cy="120" r="32" fill="#e0f2fe" stroke="#0284c7"/>
+          <text x="180" y="118" font-size="11" text-anchor="middle" font-weight="700">일반 제약사</text>
+          <text x="180" y="133" font-size="9" text-anchor="middle" fill="#5c6472">화장품 비중 낮음</text>
+
+          <circle cx="450" cy="200" r="30" fill="#f1f5f9" stroke="#94a3b8"/>
+          <text x="450" y="198" font-size="10.5" text-anchor="middle" font-weight="700">ODM</text>
+          <text x="450" y="213" font-size="9" text-anchor="middle" fill="#5c6472">한국콜마 등</text>
+
+          <text x="330" y="152" font-size="11.5" fill="#be185d" font-weight="700" text-anchor="middle">← 안정성과 성장성의 중간지대</text>
+          <text x="90" y="282" font-size="10.5" fill="#94a3b8">※ 상대적 위치를 개념적으로 표현한 도식(정량 데이터 아님). 개인 정리.</text>
+        </g>
+      </svg>
+    </div>
+    <figcaption>그림 4. 동국제약은 '제약의 안정성'과 '화장품의 성장성' 사이에 있다. (개념 도식)</figcaption>
+  </figure>
+
+  <div class="grid2">
+    <div class="card">
+      <h4>🟢 구조적 강점</h4>
+      <ul style="margin-bottom:0;">
+        <li><b>신뢰 상속</b> — 마데카솔 50여 년 브랜드에서 화장품 서사를 물려받음</li>
+        <li><b>3개 부문 안정성</b> — OTC·ETC가 현금을 만들어 화장품 확장을 뒷받침</li>
+        <li><b>더마 트렌드 정중앙</b> — K뷰티 체질 전환의 수혜 포지션</li>
+        <li><b>일본 오프라인 대량 입점</b> — 검증 가능한 실체 있는 해외 채널</li>
+        <li><b>DDS 옵션</b> — 제약 쪽에도 별도 성장 카드 보유</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4>🟠 구조적 약점·과제</h4>
+      <ul style="margin-bottom:0;">
+        <li><b>제조 장벽 없음</b> — ODM 구조라 제품 복제가 어렵지 않음</li>
+        <li><b>단일 라인 의존</b> — 마데카(병풀) 라인 편중. 후속 카테고리 확장이 과제</li>
+        <li><b>병풀은 이미 흔한 소재</b> — 시카(Cica) 성분은 K뷰티 전반에 확산됨</li>
+        <li><b>경쟁 격화</b> — 구다이글로벌 등 대형 신규 플레이어, 제약사 더마 브랜드 확산</li>
+        <li><b>채널 의존</b> — 올리브영·드럭스토어 등 유통 협상력에 좌우</li>
+        <li><b>정체성 애매함</b> — 제약도 화장품도 아닌 위치가 밸류에이션에 불리하게 작용할 수 있음</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 11 -->
+  <h2>11. 보너스 — 제약 부문 밸류체인</h2>
+  <p>화장품에 가려져 있지만, 제약 부문도 별도의 밸류체인을 가진다. 간단히 정리한다.</p>
+  <table>
+    <thead><tr><th class="c">단계</th><th>내용</th><th>동국제약 위치</th></tr></thead>
+    <tbody>
+      <tr><td class="c">원료(API)</td><td>원료의약품. 상당 부분 수입 의존이 업계 일반</td><td class="c mid">외부 조달 중심</td></tr>
+      <tr><td class="c">제제·생산</td><td>완제의약품 제조. GMP 시설 필요</td><td class="c good">자체 생산 (1978년~)</td></tr>
+      <tr><td class="c">R&amp;D</td><td>개량신약·제형 개발</td><td class="c good"><b>DDS(마이크로스피어·DK-LADS)</b></td></tr>
+      <tr><td class="c">허가·임상</td><td>식약처 등 규제기관 승인</td><td class="c good">로렐린데포 3개월 제형 3상 완료</td></tr>
+      <tr><td class="c">유통</td><td>OTC=약국 / ETC=병의원·도매</td><td class="c good">브랜드 파워 기반 약국 침투</td></tr>
+    </tbody>
+  </table>
+  <div class="note">
+    <b>제약 부문의 의미:</b> 성장은 느리지만 <b>현금 흐름이 안정적</b>이고, 무엇보다
+    <b>화장품 사업의 '신뢰 원천'</b> 역할을 한다. 즉 제약 부문은 매출 기여뿐 아니라
+    <b>브랜드 자산으로서의 전략적 가치</b>를 함께 갖는다. 이 점이 순수 화장품 브랜드사와 구분되는 지점이다.
+  </div>
+
+  <!-- 12 -->
+  <h2>12. 밸류체인 관점의 리스크 지점</h2>
+  <table>
+    <thead><tr><th class="c">단계</th><th>리스크</th><th>동국제약에 미치는 영향</th></tr></thead>
+    <tbody>
+      <tr><td class="c">원료</td><td>병풀·시카 성분의 범용화</td><td class="c mid">차별점 희석. 원조 프리미엄 약화</td></tr>
+      <tr><td class="c">제조</td><td>ODM 구조 = 진입장벽 부재</td><td class="c bad">경쟁사 미투 제품 빠르게 등장</td></tr>
+      <tr><td class="c">브랜드</td><td>마데카 라인 편중</td><td class="c bad">유행 변화 시 대체 라인 부재 위험</td></tr>
+      <tr><td class="c">브랜드</td><td>제약사 더마 브랜드 확산</td><td class="c mid">"제약사 화장품" 서사의 독점성 상실</td></tr>
+      <tr><td class="c">채널</td><td>올리브영 등 유통 협상력</td><td class="c mid">매대·수수료 조건 악화 가능</td></tr>
+      <tr><td class="c">채널</td><td>북미 바이럴 소멸</td><td class="c mid">수출 성장률 급락 가능</td></tr>
+      <tr><td class="c">수요</td><td>방한 관광객 감소</td><td class="c mid">국내 외국인 매출 직격</td></tr>
+      <tr><td class="c">수요</td><td>중국 등 지역 리스크</td><td class="c mid">K뷰티 섹터 전반 변수</td></tr>
+      <tr><td class="c">제약</td><td>약가 인하·규제</td><td class="c mid">ETC/OTC 수익성 압박</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout">
+    <b>📌 밸류체인 관점의 결론</b><br>
+    동국제약은 <b>"제조 장벽은 없지만 브랜드 서사는 남다르고, 성장은 채널 확장에 달려 있는"</b> 위치에 있다.<br><br>
+    이 좌표에서 회사가 <b>통제할 수 있는 변수</b>는 <b>①해외 채널 확보 ②제품 라인 확장 ③채널 믹스(마진) 관리</b>다.<br>
+    반대로 <b>통제 밖</b>인 것은 <b>K뷰티 트렌드, 경쟁사 진입, 관광 경기, 유통사 협상력</b>이다.<br><br>
+    투자자 입장에서는 <b>"통제 가능한 3가지가 실제 숫자로 나타나는가"</b>(→ 수출액, 신규 입점, 영업이익률)를 추적하고,
+    <b>"통제 불가능한 4가지가 언제 뒤집히는가"</b>를 경계하는 것이 이 산업을 보는 기본 자세다.
+  </div>
+
+  <h2>용어 사전</h2>
+  <table>
+    <tbody>
+      <tr><td><b>더마코스메틱</b></td><td>Derma+Cosmetic. 의학적 검증 성분·기술을 적용한 화장품. 코스메슈티컬과 유사 개념.</td></tr>
+      <tr><td><b>ODM</b></td><td>Original Design Manufacturing. 제조사가 개발·설계까지 해서 브랜드사에 공급하는 방식.</td></tr>
+      <tr><td><b>OEM</b></td><td>Original Equipment Manufacturing. 브랜드사 설계대로 제조만 대행.</td></tr>
+      <tr><td><b>TECA</b></td><td>병풀에서 추출한 활성 성분 복합체. 마데카솔·센텔리안24의 뿌리.</td></tr>
+      <tr><td><b>PDRN</b></td><td>폴리데옥시리보뉴클레오티드. 재생·탄력 소구 성분으로 최근 화장품에 확산.</td></tr>
+      <tr><td><b>시카(Cica)</b></td><td>Centella Asiatica의 약칭. 진정 화장품의 대표 키워드.</td></tr>
+      <tr><td><b>H&amp;B 스토어</b></td><td>Health &amp; Beauty. 올리브영 같은 헬스·뷰티 편집 매장.</td></tr>
+      <tr><td><b>채널 믹스</b></td><td>판매 경로의 구성비. 화장품 이익률의 최대 변수.</td></tr>
+      <tr><td><b>API</b></td><td>Active Pharmaceutical Ingredient. 원료의약품.</td></tr>
+      <tr><td><b>GMP</b></td><td>Good Manufacturing Practice. 의약품 제조 및 품질관리 기준.</td></tr>
+      <tr><td><b>DDS</b></td><td>Drug Delivery System. 약물전달시스템.</td></tr>
+    </tbody>
+  </table>
+
+  <h2>출처</h2>
+  <p class="src">
+    • 바이오타임즈, "수출 신기록 경신한 K-뷰티, '더마코스메틱'으로 체질 전환" — https://www.biotimes.co.kr/news/articleView.html?idxno=30048<br>
+    • Business Research Insights, "Dermacosmetics 시장 규모, 공유 및 분석 보고서 2033" — https://www.businessresearchinsights.com/market-reports/dermacosmetics-market-111650<br>
+    • Verified Market Reports, "글로벌 더마화장품 시장 규모, 점유율, 성장 동향 및 산업 예측(2026-2034)" — https://www.verifiedmarketreports.com/ko/product/dermacosmetics-market/<br>
+    • Fortune Business Insights, "한국 화장품 시장 규모, 점유율 | 성장 [2034]" — https://www.fortunebusinessinsights.com/south-korea-cosmeceuticals-market-115222<br>
+    • 신한금융그룹 인사이트, "K-뷰티의 저력, 2026년 화장품 산업의 성장 전망은?" — https://www.shinhangroup.com/kr/archive/insight/extend/detail/32899<br>
+    • KPMG, "Business Focus: 더마코스메틱 시장에 집중되는 관심과 기업" — https://assets.kpmg.com/content/dam/kpmg/kr/pdf/2022/business-focus/kr-bf-dermacosmetic-20220615.pdf<br>
+    • 뉴스핌, "'센텔리안24' 해외 영토 넓히는 동국제약…인력 확충·日 입점 확대" — https://www.newspim.com/news/view/20260417000859<br>
+    • 이투데이, "동국제약 '센텔리안24' K-뷰티 알린다…글로벌 시장서 훨훨" — https://www.etoday.co.kr/news/view/2573740<br>
+    • CJ올리브영, "'글로벌 K뷰티 허브' CJ올리브영, 방한 외국인 구매 1조원 시대" — https://corp.oliveyoung.com/ko/news/105<br>
+    • 한국경제, "'마데카솔 성분으로 화장품'…뷰티사업 진출한 동국제약의 승부수" — https://www.hankyung.com/article/202402273576i<br>
+    • 메디칼업저버, "'1조원 클럽' 눈 앞 동국제약, DDS 기술로 미래 건다" — https://www.monews.co.kr/news/articleView.html?idxno=410048<br>
+    • THE K BEAUTY SCIENCE, "체급 키우는 C-뷰티·T-뷰티...2026 CES에서 기술력 뽐낸 K-뷰티" — https://www.thekbs.co.kr/news/articleView.html?idxno=14106
+  </p>
+
+  <div class="foot">
+    <hr>
+    본 문서는 개인 학습·정리 목적의 비상업 노트입니다. 시장규모·점유율은 조사기관별 정의 차이로 편차가 크며 추정치입니다.
+    언급된 기업명은 산업 구조 설명 목적이며 투자 추천이 아닙니다.
+    투자에 대한 최종 판단과 책임은 전적으로 독자 본인에게 있습니다. © 2026 개인 리서치 라이브러리.
+  </div>
+
+</div>
+</body>
+</html>

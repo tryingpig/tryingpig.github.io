@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>동국제약 입문 가이드 — 마데카솔 만들던 회사가 화장품 회사가 되기까지</title>
+<style>
+  :root{
+    --accent:#be185d; --accent2:#db2777;
+    --ink:#1f2430; --muted:#5c6472; --line:#eee4e9; --bg:#fff; --soft:#fdf6f9;
+    --warnbg:#fff7ed; --warnln:#fb923c;
+  }
+  *{box-sizing:border-box;}
+  body{font-family:"Segoe UI","Malgun Gothic","Apple SD Gothic Neo",system-ui,sans-serif;
+    color:var(--ink); background:var(--bg); margin:0; line-height:1.78; font-size:16.5px; letter-spacing:-0.1px;}
+  .wrap{max-width:920px; margin:0 auto; padding:40px 28px 90px;}
+  h1{font-size:29px; line-height:1.32; margin:8px 0 6px; letter-spacing:-0.6px;}
+  h2{font-size:22px; margin:50px 0 12px; padding-top:14px; border-top:3px solid var(--accent); letter-spacing:-0.4px;}
+  h3{font-size:18.5px; margin:30px 0 8px; color:#2b3242;}
+  h4{font-size:16px; margin:18px 0 6px; color:var(--accent);}
+  p{margin:10px 0;} a{color:var(--accent); text-decoration:none;} a:hover{text-decoration:underline;}
+  .sub{color:var(--muted); font-size:15px;} .lead{font-size:17.5px; color:#333a49;}
+  .kicker{display:inline-block; font-size:13px; font-weight:700; letter-spacing:1.5px;
+    color:var(--accent); background:#fce7f0; padding:5px 12px; border-radius:999px;}
+  .warn{background:var(--warnbg); border:1px solid var(--warnln); border-left:6px solid var(--warnln);
+    border-radius:10px; padding:16px 18px; margin:22px 0; font-size:15px;}
+  .note{background:var(--soft); border:1px solid var(--line); border-radius:10px; padding:16px 18px; margin:18px 0;}
+  .callout{background:#fce7f0; border:1px solid #f9a8d4; border-left:6px solid var(--accent);
+    border-radius:10px; padding:16px 18px; margin:20px 0;}
+  .big{font-size:19px; font-weight:800; color:var(--accent); line-height:1.5;}
+  .grid2{display:grid; grid-template-columns:1fr 1fr; gap:16px;}
+  .grid3{display:grid; grid-template-columns:repeat(3,1fr); gap:14px;}
+  .card{border:1px solid var(--line); border-radius:12px; padding:16px 18px; background:#fff;}
+  table{width:100%; border-collapse:collapse; margin:18px 0; font-size:14.5px;}
+  th,td{border:1px solid var(--line); padding:9px 11px; text-align:left; vertical-align:top;}
+  th{background:var(--soft); font-weight:700;} td.c,th.c{text-align:center;}
+  figure{margin:24px 0; text-align:center;} figcaption{font-size:13px; color:var(--muted); margin-top:8px;}
+  .svgbox{border:1px solid var(--line); border-radius:12px; padding:14px; background:#fff;}
+  ul,ol{margin:10px 0 10px 4px; padding-left:22px;} li{margin:6px 0;}
+  .kpi{display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin:20px 0;}
+  .kpi .box{border:1px solid var(--line); border-radius:12px; padding:14px; text-align:center; background:var(--soft);}
+  .kpi .num{font-size:21px; font-weight:800; color:var(--accent); letter-spacing:-0.5px;}
+  .kpi .lab{font-size:12.5px; color:var(--muted); margin-top:3px;}
+  .toc{background:var(--soft); border:1px solid var(--line); border-radius:12px; padding:18px 22px; margin:26px 0;}
+  .toc ol{columns:2; column-gap:34px;}
+  .src{font-size:13px; color:var(--muted); word-break:break-all;}
+  .seriesnav{background:#fce7f0; border:1px solid #f9a8d4; border-radius:10px; padding:14px 18px; margin:20px 0; font-size:14.5px;}
+  .good{color:#059669; font-weight:700;} .bad{color:#dc2626; font-weight:700;} .mid{color:#b45309; font-weight:700;}
+  hr{border:none; border-top:1px solid var(--line); margin:34px 0;}
+  .foot{color:var(--muted); font-size:13px; margin-top:40px;}
+  @media (max-width:680px){.grid2,.grid3,.kpi{grid-template-columns:1fr;} .toc ol{columns:1;} h1{font-size:24px;}}
+  @media print{body{font-size:11.5pt;} .wrap{max-width:100%; padding:0;} h2{break-after:avoid;}
+    figure,table,.card{break-inside:avoid;} a{color:#000;} .warn,.callout,.note{break-inside:avoid;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <span class="kicker">동국제약 · ① 입문 가이드</span>
+  <h1>동국제약 입문 가이드<br>— 마데카솔 만들던 회사가 '화장품 회사'가 되기까지</h1>
+  <p class="sub">작성일 2026-07-20 · KOSDAQ 086450 · 개인 리서치 노트 · 입문세트 1/3</p>
+
+  <div class="warn">
+    <b>⚠️ 투자 권유가 아닙니다.</b> 이 문서는 공개 정보를 정리한 <b>개인 학습 노트</b>이며 매수·매도 추천이 아닙니다.
+    수치는 작성일 기준 언론·증권사 자료를 인용한 것으로 <b>추정치가 다수 포함</b>되어 있고 실제와 다를 수 있습니다.
+    모든 투자 판단과 그 책임은 전적으로 본인에게 있습니다.
+  </div>
+
+  <div class="seriesnav">
+    <b>💄 입문세트 구성</b> — ① <b>입문가이드(현재 글)</b> ·
+    <a href="https://tryingpig.github.io/study/260720_동국제약_2_투자안내서.html">② 투자안내서</a> ·
+    <a href="https://tryingpig.github.io/study/260720_동국제약_3_밸류체인.html">③ 밸류체인</a>
+  </div>
+
+  <div class="callout">
+    <span class="big">한 문장 요약</span><br>
+    <b>동국제약은 '마데카솔·인사돌'로 알려진 제약사지만, 지금 성장을 끌고 가는 건 그 원료로 만든 화장품(센텔리안24)이다.</b><br>
+    <span class="sub">명동에서 눈에 띄는 그 마데카크림이, 실제로 이 회사 실적의 성장 엔진이다.</span>
+  </div>
+
+  <div class="toc">
+    <b>목차</b>
+    <ol>
+      <li>동국제약은 어떤 회사인가</li>
+      <li>연혁 — 수입상에서 제약사로, 그리고 뷰티로</li>
+      <li>'이렇게 생겼어요' — 제품으로 보는 회사</li>
+      <li>3대 사업부문 이해하기</li>
+      <li>핵심 스토리: 마데카솔 → 마데카크림</li>
+      <li>왜 명동에서 그렇게 잘 팔리나</li>
+      <li>돈 버는 구조</li>
+      <li>또 하나의 축 — DDS 기술</li>
+      <li>기초 실적 스냅샷</li>
+      <li>FAQ · 용어사전 · 출처</li>
+    </ol>
+  </div>
+
+  <!-- 1 -->
+  <h2>1. 동국제약은 어떤 회사인가</h2>
+  <p class="lead">
+    이름은 '제약'이지만, 지금의 동국제약을 한 문장으로 설명하면 <b>"제약 기반의 헬스&amp;뷰티 회사"</b>가 더 정확하다.
+    실제로 증권가에서는 <b>"제약사보다 화장품사로 탈바꿈하고 있다"</b>는 표현까지 나온다.
+  </p>
+  <p>
+    회사는 세 개의 사업부문으로 굴러간다. <b>일반의약품(OTC) · 전문의약품(ETC) · 헬스케어</b>.
+    이 중 <b>헬스케어 부문</b>이 화장품(센텔리안24)·건강기능식품 등을 담당하는데, 이 부문이 최근 성장을 주도하고 있다.
+  </p>
+
+  <div class="note">
+    <b>🌿 핵심을 관통하는 한 가지 — '병풀(센텔라)'</b><br>
+    이 회사를 이해하는 열쇠는 원료 하나다. <b>병풀(Centella Asiatica)</b>.<br>
+    상처 치료제 <b>마데카솔</b>의 핵심 성분이 병풀 추출물(TECA)인데, 회사는 이 원료와 브랜드 신뢰를 그대로 가져다
+    화장품 브랜드 <b>센텔리안24</b>('센텔라'에서 따온 이름)를 만들었다.<br>
+    <b>"약으로 검증된 성분을 화장품에 쓴다"</b> — 이게 더마코스메틱(Derma + Cosmetic)의 논리이고, 이 회사의 성공 공식이다.
+  </div>
+
+  <!-- 2 -->
+  <h2>2. 연혁 — 수입상에서 제약사로, 그리고 뷰티로</h2>
+  <table>
+    <thead><tr><th class="c">시기</th><th>내용</th></tr></thead>
+    <tbody>
+      <tr><td class="c">1968.10</td><td>프랑스 <b>라로슈 나바론</b>사의 상처치료제 <b>마데카솔</b> 수입·판매 시작</td></tr>
+      <tr><td class="c">1974</td><td>잇몸질환 치료제 <b>인사돌</b> 수입·판매</td></tr>
+      <tr><td class="c">1978</td><td>마데카솔 <b>자체 생산</b> 시작 — 수입상에서 제조사로</td></tr>
+      <tr><td class="c">1982.03</td><td>사명 변경: UEC → <b>동국제약 주식회사</b></td></tr>
+      <tr><td class="c">1990~2000년대</td><td>훼라민Q·판시딜·오라메디 등 OTC 브랜드 확장, 전문의약품(로렐린데포·포폴 등) 강화</td></tr>
+      <tr><td class="c">2015 전후</td><td><b>센텔리안24 출시</b> — 마데카솔 성분을 활용한 더마코스메틱 진출</td></tr>
+      <tr><td class="c">2020년대</td><td>홈쇼핑 → 올리브영·온라인 → <b>해외 수출</b>로 채널 확장. 뷰티 디바이스까지 확대</td></tr>
+      <tr><td class="c">2025~2026</td><td>화장품 수출 급증, <b>매출 1조 클럽 진입</b> 전망. DDS 신약 파이프라인 병행</td></tr>
+    </tbody>
+  </table>
+  <p class="sub">
+    ※ 흥미로운 점: 이 회사는 <b>시작부터 "남의 좋은 물건을 들여와 내 것으로 만드는" DNA</b>가 있었다.
+    프랑스 마데카솔을 수입 → 자체 생산 → 그 성분으로 화장품 브랜드 창출. 같은 패턴의 반복이다.
+    <span class="src">(출처: 위키백과, 나무위키, 동국제약 50주년 역사관, 한국경제)</span>
+  </p>
+
+  <!-- 3 -->
+  <h2>3. '이렇게 생겼어요' — 제품으로 보는 회사</h2>
+  <p>이 회사는 제품을 보면 바로 이해된다. 대부분 한 번쯤 약국이나 올리브영에서 본 것들이다.</p>
+
+  <figure>
+    <div class="svgbox">
+      <svg viewBox="0 0 860 320" width="100%" role="img" aria-label="동국제약 주요 제품군">
+        <g font-family="Segoe UI, sans-serif">
+          <text x="16" y="26" font-size="15" font-weight="800">동국제약 제품 지도 — 약에서 화장품까지</text>
+
+          <!-- OTC -->
+          <rect x="20" y="46" width="260" height="118" rx="12" fill="#fef3c7" stroke="#fbbf24"/>
+          <text x="150" y="70" font-size="13.5" font-weight="800" fill="#92400e" text-anchor="middle">일반의약품 (OTC)</text>
+          <g font-size="11.5" fill="#78350f">
+            <rect x="36" y="82" width="110" height="30" rx="6" fill="#fff" stroke="#fbbf24"/>
+            <text x="91" y="102" text-anchor="middle" font-weight="700">마데카솔</text>
+            <rect x="154" y="82" width="110" height="30" rx="6" fill="#fff" stroke="#fbbf24"/>
+            <text x="209" y="102" text-anchor="middle" font-weight="700">인사돌</text>
+            <rect x="36" y="120" width="110" height="30" rx="6" fill="#fff" stroke="#fbbf24"/>
+            <text x="91" y="140" text-anchor="middle" font-weight="700">훼라민Q</text>
+            <rect x="154" y="120" width="110" height="30" rx="6" fill="#fff" stroke="#fbbf24"/>
+            <text x="209" y="140" text-anchor="middle" font-weight="700">판시딜·오라메디</text>
+          </g>
+
+          <!-- ETC -->
+          <rect x="300" y="46" width="260" height="118" rx="12" fill="#e0f2fe" stroke="#7dd3fc"/>
+          <text x="430" y="70" font-size="13.5" font-weight="800" fill="#075985" text-anchor="middle">전문의약품 (ETC)</text>
+          <g font-size="11.5" fill="#0c4a6e">
+            <rect x="316" y="82" width="228" height="30" rx="6" fill="#fff" stroke="#7dd3fc"/>
+            <text x="430" y="102" text-anchor="middle" font-weight="700">로렐린데포 (전립선암 치료 주사제)</text>
+            <rect x="316" y="120" width="228" height="30" rx="6" fill="#fff" stroke="#7dd3fc"/>
+            <text x="430" y="140" text-anchor="middle" font-weight="700">포폴 (마취제) 외</text>
+          </g>
+
+          <!-- Healthcare -->
+          <rect x="580" y="46" width="260" height="118" rx="12" fill="#be185d"/>
+          <text x="710" y="70" font-size="13.5" font-weight="800" fill="#fff" text-anchor="middle">헬스케어 (성장 엔진)</text>
+          <g font-size="11.5">
+            <rect x="596" y="82" width="228" height="30" rx="6" fill="#fff"/>
+            <text x="710" y="102" text-anchor="middle" font-weight="800" fill="#be185d">센텔리안24 · 마데카크림</text>
+            <rect x="596" y="120" width="228" height="30" rx="6" fill="#fce7f0"/>
+            <text x="710" y="140" text-anchor="middle" font-weight="700" fill="#9d174d">뷰티 디바이스 · 건기식</text>
+          </g>
+
+          <!-- arrow -->
+          <path d="M150,172 C150,210 430,210 700,178" fill="none" stroke="#be185d" stroke-width="2.5" stroke-dasharray="6 4" marker-end="url(#m1)"/>
+          <defs><marker id="m1" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto">
+            <path d="M0,0 L6,3 L0,6 Z" fill="#be185d"/></marker></defs>
+          <text x="420" y="232" font-size="13" font-weight="800" fill="#be185d" text-anchor="middle">
+            마데카솔의 '병풀 성분'이 그대로 화장품으로 넘어간다</text>
+          <text x="420" y="254" font-size="12" fill="#5c6472" text-anchor="middle">
+            → 약으로 쌓은 신뢰를 화장품 마케팅 자산으로 전환한 것이 이 회사의 핵심 전략</text>
+
+          <rect x="20" y="272" width="820" height="36" rx="8" fill="#fdf6f9" stroke="#f9a8d4"/>
+          <text x="430" y="295" font-size="12.5" fill="#9d174d" text-anchor="middle">
+            💡 세 부문이 고르게 성장하되, 헬스케어(화장품)가 가장 빠르게 커지는 구조 — 개인 정리 도식</text>
+        </g>
+      </svg>
+    </div>
+    <figcaption>그림 1. 동국제약의 3대 사업부문과 제품. 병풀 성분이 약에서 화장품으로 이어진다. (개인 정리 도식)</figcaption>
+  </figure>
+
+  <div class="grid3">
+    <div class="card">
+      <h4>🩹 마데카솔</h4>
+      <p class="sub" style="margin:0;">상처 치료제. 병풀 추출물(TECA)이 핵심 성분. 1968년 수입 시작, 1978년부터 자체 생산.
+      <b>회사의 상징이자 화장품 사업의 뿌리.</b></p>
+    </div>
+    <div class="card">
+      <h4>🦷 인사돌</h4>
+      <p class="sub" style="margin:0;">잇몸질환 치료제. 1974년부터. 오라메디와 함께 구강 카테고리 대표 브랜드.
+      내수 침체에도 꾸준히 성장해 온 스테디셀러.</p>
+    </div>
+    <div class="card">
+      <h4>💗 센텔리안24 마데카크림</h4>
+      <p class="sub" style="margin:0;">더마코스메틱 대표 제품. 올리브영 크림 카테고리 상위권.
+      <b>지금 회사 성장의 주인공.</b> 타임리버스·PDRN 등 라인 확장 중.</p>
+    </div>
+  </div>
+
+  <!-- 4 -->
+  <h2>4. 3대 사업부문 이해하기</h2>
+  <table>
+    <thead><tr><th>부문</th><th>무엇을 파나</th><th>특징</th><th class="c">성장성</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><b>일반의약품<br>(OTC)</b></td>
+        <td>마데카솔·인사돌·훼라민Q·판시딜·오라메디</td>
+        <td>약국에서 처방 없이 사는 약. <b>브랜드 파워가 자산</b>. 광고·유통이 중요</td>
+        <td class="c mid">완만<br><span class="sub">(5년 CAGR 7.4%)</span></td>
+      </tr>
+      <tr>
+        <td><b>전문의약품<br>(ETC)</b></td>
+        <td>로렐린데포(전립선암), 포폴(마취제) 등</td>
+        <td>의사 처방이 필요한 약. <b>기술·허가 장벽</b>이 높고 안정적</td>
+        <td class="c good">양호<br><span class="sub">(5년 CAGR 15.8%)</span></td>
+      </tr>
+      <tr>
+        <td><b>헬스케어</b></td>
+        <td><b>센텔리안24 화장품</b>, 뷰티 디바이스, 건기식</td>
+        <td>약이 아닌 소비재. <b>마케팅·채널·트렌드</b>가 승부처. 마진 좋음</td>
+        <td class="c good">최고<br><span class="sub">(5년 CAGR 19.6%)</span></td>
+      </tr>
+    </tbody>
+  </table>
+  <p class="sub">
+    ※ CAGR은 2017~2022년 기준 보도 수치. 최근에는 헬스케어 성장률이 더 가파르다.
+    2026년 헬스케어 부문 매출은 <b>3,813억 원(+20.5%)</b>으로 전망된다.
+    <span class="src">(출처: 한국경제, 약사공론, 증권사 리포트 요약)</span>
+  </p>
+
+  <div class="callout">
+    <b>💡 이 구조가 왜 좋은가 (그리고 왜 주의해야 하나)</b><br>
+    <b>좋은 점:</b> OTC·ETC가 <b>안정적인 현금</b>을 만들어 주고, 그 위에서 헬스케어가 <b>빠르게 성장</b>한다.
+    제약사의 안정성과 화장품사의 성장성을 동시에 가진 구조다.<br>
+    <b>주의할 점:</b> 반대로 말하면 <b>화장품 성장이 멈추면 성장 스토리가 흔들린다.</b>
+    화장품은 트렌드·경쟁이 빠르게 변하는 시장이라, 제약보다 <b>변동성이 크다</b>는 점을 기억해야 한다.
+  </div>
+
+  <!-- 5 -->
+  <h2>5. 핵심 스토리 — 마데카솔에서 마데카크림으로</h2>
+  <p class="lead">
+    이 회사의 성장 스토리는 결국 <b>"약국 브랜드를 화장대 브랜드로 옮긴 것"</b>이다. 숫자로 보면 이렇다.
+  </p>
+  <table>
+    <thead><tr><th class="c">연도</th><th class="c">화장품 매출</th><th class="c">증감</th><th class="c">화장품 수출액</th></tr></thead>
+    <tbody>
+      <tr><td class="c">2023</td><td class="c">1,549억 원</td><td class="c">—</td><td class="c">—</td></tr>
+      <tr><td class="c">2024</td><td class="c">1,815억 원</td><td class="c good">+17%</td><td class="c">163억 원</td></tr>
+      <tr><td class="c">2025</td><td class="c">2,227억 원</td><td class="c good">+23%</td><td class="c">300억 원</td></tr>
+      <tr><td class="c">2026(E)</td><td class="c">약 2,600~2,930억 원</td><td class="c good">+17~32%</td><td class="c good"><b>1,000억 원 이상</b></td></tr>
+    </tbody>
+  </table>
+  <div class="note">
+    <b>여기서 진짜 봐야 할 숫자는 '수출'이다.</b><br>
+    화장품 전체 매출은 연 20% 안팎으로 성장하는데, <b>수출은 163억 → 300억 → 1,000억+</b>로
+    훨씬 빠르게 늘고 있다(전망 기준). 즉 이 회사의 화장품 사업은
+    <b>"국내에서 잘 팔리는 브랜드" → "해외로 나가는 브랜드"로 성격이 바뀌는 국면</b>에 있다.
+    이것이 지금 시장이 주목하는 포인트다. <span class="src">(출처: 메디코파마, 서울파이낸스, 약사공론)</span>
+  </div>
+  <p>
+    참고로 회사 전체 매출에서 <b>센텔리안24 브랜드가 차지하는 비중이 26%까지 올라왔다</b>는 보도가 있었다.
+    제약사인데 단일 화장품 브랜드가 매출의 4분의 1을 넘긴 셈이다.
+  </p>
+
+  <!-- 6 -->
+  <h2>6. 왜 명동에서 그렇게 잘 팔리나</h2>
+  <p>
+    명동에서 동국제약 제품이 눈에 많이 띄는 건 우연이 아니다. <b>세 가지가 겹친 결과</b>다.
+  </p>
+  <div class="grid2">
+    <div class="card">
+      <h4>① 방한 외국인 관광 회복</h4>
+      <p>CJ올리브영은 <b>방한 외국인 구매 1조 원 시대</b>를 언급했고, 외국인 매출 비중이 처음으로 <b>25%대</b>를 넘었다.
+      2023년 11월 리뉴얼한 <b>'올리브영 명동타운'</b>이 글로벌 특화 매장 역할을 한다.</p>
+    </div>
+    <div class="card">
+      <h4>② '약국 브랜드'라는 신뢰</h4>
+      <p>외국인 관광객에게 <b>"한국 제약사가 만든 상처치료제 성분 크림"</b>은 강력한 설득 논리다.
+      일반 화장품 브랜드가 갖기 어려운 <b>의학적 신뢰</b>를 마케팅에 쓸 수 있다.</p>
+    </div>
+    <div class="card">
+      <h4>③ 더마코스메틱 트렌드</h4>
+      <p>K-뷰티가 <b>단순 색조 → 성분·기능 중심(더마)</b>으로 체질 전환 중이다.
+      "성분이 검증된 화장품"을 찾는 흐름이 이 회사에 유리하게 작용한다.</p>
+    </div>
+    <div class="card">
+      <h4>④ 해외 오프라인 확장</h4>
+      <p>일본에서 <b>마츠모토키요시 85개점, 로프트 100개점, 돈키호테 500개점</b>에 입점.
+      돈키호테는 현지인뿐 아니라 관광객 노출도 커 브랜드 확산에 유리하다.</p>
+    </div>
+  </div>
+  <div class="callout">
+    <b>🔍 투자자 관점의 해석</b><br>
+    "명동에서 잘 팔린다"는 관찰은 <b>실제 데이터와 일치한다.</b> 다만 한 단계 더 들어가서 봐야 할 것이 있다.<br>
+    <b>명동 판매는 '내수로 잡히는 외국인 매출'</b>이다. 즉 관광객이 한국에서 사가는 것.
+    반면 <b>수출은 해외 현지에서 팔리는 것</b>이다. 회사가 진짜 레벨업하려면 후자가 커져야 하고,
+    실제로 수출액이 급증하는 중이다. <b>"명동 관찰 → 수출 지표 확인"</b>이 올바른 검증 순서다.
+    (자세한 채널 구조는 <a href="https://tryingpig.github.io/study/260720_동국제약_3_밸류체인.html">③ 밸류체인</a> 참조)
+  </div>
+
+  <!-- 7 -->
+  <h2>7. 돈 버는 구조</h2>
+  <figure>
+    <div class="svgbox">
+      <svg viewBox="0 0 840 230" width="100%" role="img" aria-label="동국제약 수익 구조">
+        <g font-family="Segoe UI, sans-serif">
+          <text x="16" y="26" font-size="15" font-weight="800">세 부문이 서로 다른 방식으로 번다</text>
+
+          <rect x="20" y="48" width="255" height="80" rx="10" fill="#fef3c7" stroke="#fbbf24"/>
+          <text x="147" y="72" font-size="13" font-weight="700" text-anchor="middle">OTC — 브랜드로 번다</text>
+          <text x="147" y="94" font-size="11.5" fill="#5c6472" text-anchor="middle">오래된 브랜드 신뢰</text>
+          <text x="147" y="112" font-size="11.5" fill="#5c6472" text-anchor="middle">광고비가 비용의 핵심</text>
+
+          <rect x="292" y="48" width="255" height="80" rx="10" fill="#e0f2fe" stroke="#7dd3fc"/>
+          <text x="419" y="72" font-size="13" font-weight="700" text-anchor="middle">ETC — 허가로 번다</text>
+          <text x="419" y="94" font-size="11.5" fill="#5c6472" text-anchor="middle">임상·허가 장벽</text>
+          <text x="419" y="112" font-size="11.5" fill="#5c6472" text-anchor="middle">R&amp;D가 비용의 핵심</text>
+
+          <rect x="564" y="48" width="256" height="80" rx="10" fill="#fce7f0" stroke="#f9a8d4"/>
+          <text x="692" y="72" font-size="13" font-weight="700" text-anchor="middle">헬스케어 — 채널로 번다</text>
+          <text x="692" y="94" font-size="11.5" fill="#5c6472" text-anchor="middle">올리브영·홈쇼핑·해외</text>
+          <text x="692" y="112" font-size="11.5" fill="#5c6472" text-anchor="middle">마케팅·수수료가 핵심</text>
+
+          <rect x="20" y="148" width="800" height="60" rx="10" fill="#be185d"/>
+          <text x="420" y="174" font-size="13.5" font-weight="800" fill="#fff" text-anchor="middle">
+            수익성의 열쇠 = 화장품의 '채널 믹스'</text>
+          <text x="420" y="196" font-size="11.5" fill="#fce7f0" text-anchor="middle">
+            홈쇼핑(수수료 높음) → 자사몰·해외 직수출(마진 좋음)로 갈수록 이익률이 개선된다</text>
+        </g>
+      </svg>
+    </div>
+    <figcaption>그림 2. 부문별 수익 구조와, 화장품 채널 믹스가 이익률을 좌우하는 구조. (개인 정리 도식)</figcaption>
+  </figure>
+  <p>
+    화장품 사업에서 <b>어느 채널로 파느냐</b>가 이익률을 크게 좌우한다. 홈쇼핑은 매출을 빠르게 키우지만 <b>수수료 부담</b>이 크고,
+    자사몰·해외 직수출은 <b>마진이 좋다</b>. 그래서 "매출이 얼마나 늘었나"뿐 아니라 <b>"어디서 늘었나"</b>를 봐야 한다.
+    (2026년 1분기 영업이익 증가율이 매출 증가율보다 낮았던 점도 이런 비용 구조와 관련해 살펴볼 지점이다 —
+    <a href="https://tryingpig.github.io/study/260720_동국제약_2_투자안내서.html">② 투자안내서</a> 참조)
+  </p>
+
+  <!-- 8 -->
+  <h2>8. 또 하나의 축 — DDS 기술</h2>
+  <p>
+    화장품만 보면 이 회사의 절반만 본 것이다. <b>제약 쪽에도 성장 카드가 하나 있다 — DDS(약물전달시스템).</b>
+  </p>
+  <div class="note">
+    <b>DDS를 쉽게 설명하면</b><br>
+    약을 몸에 넣는 <b>'방식'</b>을 바꾸는 기술이다. 매일 먹거나 자주 맞아야 하는 약을,
+    <b>한 번 주사로 수개월간 천천히 방출</b>되게 만드는 것.<br><br>
+    동국제약의 핵심 기술은 <b>마이크로스피어</b> — 생분해성 고분자로 약물을 미세 입자로 감싸 체내 방출을 조절한다.
+    이를 자체 플랫폼 <b>DK-LADS</b>로 발전시켜 <b>장기지속형 주사제</b>를 개발 중이다.
+  </div>
+  <table>
+    <thead><tr><th>파이프라인</th><th>내용</th><th class="c">진행 상황</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><b>로렐린데포주 3개월 제형</b><br><span class="sub">(DKF-MA102)</span></td>
+        <td>류프로렐린 성분 장기지속형 <b>전립선암 치료 주사제</b></td>
+        <td class="c"><b>임상 3상 완료</b><br>연내 결과보고서 → <b>2027년 출시 목표</b></td>
+      </tr>
+    </tbody>
+  </table>
+  <p class="sub">
+    ※ 화장품이 '지금의 성장'이라면, DDS는 <b>'다음 성장 카드'</b>로 시장이 보고 있다.
+    증권가에서 "화장품 성장 + DDS 모멘텀"을 <b>투트랙</b>으로 표현하는 이유다.
+    <span class="src">(출처: 메디칼업저버, 서울파이낸스, 의약뉴스)</span>
+  </p>
+
+  <!-- 9 -->
+  <h2>9. 기초 실적 스냅샷</h2>
+  <div class="kpi">
+    <div class="box"><div class="num">9,269억</div><div class="lab">2025 매출</div></div>
+    <div class="box"><div class="num">966억</div><div class="lab">2025 영업이익</div></div>
+    <div class="box"><div class="num">약 1조 3백억</div><div class="lab">2026E 매출 (+11.5%)</div></div>
+    <div class="box"><div class="num">1,115~1,159억</div><div class="lab">2026E 영업이익 (+20%)</div></div>
+    <div class="box"><div class="num">2,510억</div><div class="lab">1Q26 매출 (+12.2%)</div></div>
+    <div class="box"><div class="num">273억</div><div class="lab">1Q26 영업이익 (+8.0%)</div></div>
+    <div class="box"><div class="num">3,813억</div><div class="lab">2026E 헬스케어 매출 (+20.5%)</div></div>
+    <div class="box"><div class="num">약 6,842억</div><div class="lab">시가총액 (2026.02 보도 기준)</div></div>
+  </div>
+  <p class="sub">
+    ※ 2026년 수치는 <b>증권사 추정치</b>로 기관마다 편차가 있다(매출 1조 333억~1조 360억, 영업이익 1,115억~1,159억).
+    시가총액·주가는 보도 시점 기준이라 현재와 다를 수 있다. 상세 분석은
+    <a href="https://tryingpig.github.io/study/260720_동국제약_2_투자안내서.html">② 투자안내서</a> 참조.
+    <span class="src">(출처: 약사공론, 알파스퀘어 게재 증권사 리포트, 팜뉴스, 데일리팜)</span>
+  </p>
+  <div class="callout">
+    <b>🎯 '1조 클럽' 의미</b><br>
+    2026년 매출 1조 원 돌파가 전망된다. 국내 제약업계에서 <b>연매출 1조</b>는 상징적인 문턱이다.
+    다만 주의할 점은 <b>이 1조가 순수 제약 매출이 아니라는 것</b> — 화장품·건기식을 포함한 숫자다.
+    그래서 이 회사를 <b>제약주로 볼 것인가, 화장품주로 볼 것인가</b>가 밸류에이션 논쟁의 핵심이 된다.
+  </div>
+
+  <!-- FAQ -->
+  <h2>FAQ</h2>
+  <h4>Q. 동국제약은 제약주인가요, 화장품주인가요?</h4>
+  <p>둘 다입니다. 매출은 제약(OTC+ETC)이 여전히 더 크지만, <b>성장과 주가 모멘텀은 화장품</b>에서 나옵니다.
+  증권가에서 <b>"제약사보다 화장품사로 탈바꿈"</b>이라는 표현이 나오는 이유입니다. 이 이중성 때문에
+  밸류에이션을 어느 기준으로 볼지가 늘 쟁점입니다.</p>
+  <h4>Q. 마데카솔과 마데카크림은 같은 성분인가요?</h4>
+  <p>뿌리가 같습니다. 둘 다 <b>병풀(센텔라 아시아티카)</b> 추출물을 기반으로 합니다. 다만 마데카솔은
+  <b>의약품(상처 치료)</b>이고 마데카크림은 <b>화장품(주름·보습 등)</b>이라 용도·규제·함량이 다릅니다.
+  회사는 이 <b>성분의 연결성</b>을 브랜드 자산으로 활용합니다.</p>
+  <h4>Q. 명동에서 많이 팔리는 게 실적에 잡히나요?</h4>
+  <p>네, 잡힙니다. 다만 <b>'내수 매출'</b>로 분류됩니다(외국인이 사가도 국내 판매). 회사가 한 단계 더 성장하려면
+  <b>해외 현지 판매(수출)</b>가 커져야 하는데, 수출액이 163억→300억→1,000억+(전망)으로 급증 중인 게 지금의 핵심 스토리입니다.</p>
+  <h4>Q. 경쟁사는 누구인가요?</h4>
+  <p>화장품 쪽은 에이피알, 구다이글로벌 등 K-뷰티 브랜드사와, 제약사 기반 더마 브랜드들이 경쟁합니다.
+  제약 쪽은 국내 중견 제약사들과 경쟁합니다. 자세한 구도는
+  <a href="https://tryingpig.github.io/study/260720_동국제약_3_밸류체인.html">③ 밸류체인</a>에서 다룹니다.</p>
+  <h4>Q. 이 회사를 볼 때 가장 중요한 지표 하나는?</h4>
+  <p><b>화장품 수출액</b>입니다. 국내 판매는 이미 상당히 성숙했고, 앞으로의 성장 여지는 해외에 있습니다.
+  수출이 계획대로 늘어나는지가 성장 스토리의 진위를 결정합니다.</p>
+
+  <!-- glossary -->
+  <h2>용어 사전</h2>
+  <table>
+    <tbody>
+      <tr><td><b>더마코스메틱</b></td><td>Derma(피부과) + Cosmetic(화장품). 의학적으로 검증된 성분·기술을 적용한 화장품.</td></tr>
+      <tr><td><b>병풀(센텔라)</b></td><td>Centella Asiatica. 마데카솔·센텔리안24의 핵심 원료 식물. 진정·재생 효과로 알려짐.</td></tr>
+      <tr><td><b>TECA</b></td><td>병풀에서 추출한 활성 성분 복합체. 마데카솔의 유효 성분.</td></tr>
+      <tr><td><b>OTC</b></td><td>Over The Counter. 일반의약품. 처방 없이 약국에서 살 수 있는 약.</td></tr>
+      <tr><td><b>ETC</b></td><td>Ethical The Counter. 전문의약품. 의사 처방이 필요한 약.</td></tr>
+      <tr><td><b>DDS</b></td><td>Drug Delivery System. 약물전달시스템. 약을 언제·어디서·얼마나 방출할지 제어하는 기술.</td></tr>
+      <tr><td><b>마이크로스피어</b></td><td>약물을 감싼 미세 구형 입자. 서서히 분해되며 약을 장기간 방출.</td></tr>
+      <tr><td><b>DK-LADS</b></td><td>동국제약의 자체 장기지속형 약물전달 플랫폼 명칭.</td></tr>
+      <tr><td><b>채널 믹스</b></td><td>홈쇼핑·올리브영·자사몰·수출 등 판매 경로의 구성비. 이익률을 좌우.</td></tr>
+      <tr><td><b>1조 클럽</b></td><td>연매출 1조 원을 넘긴 제약사를 부르는 업계 표현.</td></tr>
+    </tbody>
+  </table>
+
+  <h2>출처</h2>
+  <p class="src">
+    • 동국제약 공식 홈페이지 · 50주년 역사관 — https://www.dkpharm.co.kr/company/history.php<br>
+    • 동국제약 브랜드 사이트 — https://dkbrand.co.kr/brand/madecassol.php<br>
+    • 위키백과 '동국제약' — https://ko.wikipedia.org/wiki/동국제약<br>
+    • 한국경제, "'마데카솔 성분으로 화장품'…뷰티사업 진출한 동국제약의 승부수" — https://www.hankyung.com/article/202402273576i<br>
+    • 위키트리, "마데카솔 만들던 그 회사? '뷰티 디바이스' 인기 속 무섭게 성장하는 동국제약" — https://www.wikitree.co.kr/articles/931897<br>
+    • 약사공론, "동국제약, 2026년 '1조 클럽' 간다…헬스케어 해외사업 성장 견인 전망" — https://www.kpanews.co.kr/news/articleView.html?idxno=534562<br>
+    • 메디코파마, "동국제약, 화장품 해외 매출 급증에 연간 성장 기대감 부각" — https://www.medicopharma.co.kr/news/articleView.html?idxno=68122<br>
+    • 뉴스퀘스트, "동국제약, 제약사보다 화장품사로 탈바꿈" — https://www.newsquest.co.kr/news/articleView.html?idxno=263235<br>
+    • 뉴스핌, "'센텔리안24' 해외 영토 넓히는 동국제약…인력 확충·日 입점 확대" — https://www.newspim.com/news/view/20260417000859<br>
+    • 이투데이, "동국제약 '센텔리안24' K-뷰티 알린다…글로벌 시장서 훨훨" — https://www.etoday.co.kr/news/view/2573740<br>
+    • 메디칼업저버, "'1조원 클럽' 눈 앞 동국제약, DDS 기술로 미래 건다" — https://www.monews.co.kr/news/articleView.html?idxno=410048<br>
+    • 서울파이낸스, "화장품 키우고 DDS 신약 밀고···동국제약, 성장 동력 강화" — https://www.seoulfn.com/news/articleView.html?idxno=623691<br>
+    • CJ올리브영, "'글로벌 K뷰티 허브' CJ올리브영, 방한 외국인 구매 1조원 시대" — https://corp.oliveyoung.com/ko/news/105<br>
+    • 알파스퀘어 게재 증권사 리포트 (2026.05.18 1Q26 Review, 2026.03.30) · FnGuide 기업정보
+  </p>
+
+  <div class="foot">
+    <hr>
+    본 문서는 개인 학습·정리 목적의 비상업 노트입니다. 수치·인용은 작성일(2026-07-20) 기준 공개 자료를 바탕으로 하며,
+    증권사 추정치가 다수 포함되어 오류가 있을 수 있습니다. 투자에 대한 최종 판단과 책임은 전적으로 독자 본인에게 있습니다.
+    © 2026 개인 리서치 라이브러리.
+  </div>
+
+</div>
+</body>
+</html>

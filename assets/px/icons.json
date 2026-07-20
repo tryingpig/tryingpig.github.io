@@ -625,6 +625,35 @@
         "................",
         "................"
       ]
+    },
+    "proxycard": {
+      "bg": [
+        "#1a1f2e",
+        "#2c1c1c"
+      ],
+      "palette": {
+        "c": "#f4f7fb",
+        "h": "#d94040",
+        "k": "#4a5568"
+      },
+      "grid": [
+        "................",
+        "................",
+        "..cccccccccccc..",
+        "..chhhhhhhhhhc..",
+        "..chhhhhhhhhhc..",
+        "..cccccccccccc..",
+        "..chhckkkkkkcc..",
+        "..cccccccccccc..",
+        "..ckkckkkkkkcc..",
+        "..cccccccccccc..",
+        "..chhckkkkkkcc..",
+        "..cccccccccccc..",
+        "..cccckkkkkkkc..",
+        "..cccccccccccc..",
+        "...kkkkkkkkkkk..",
+        "................"
+      ]
     }
   }
 }

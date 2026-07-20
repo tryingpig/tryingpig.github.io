@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>행동주의 타깃 스크리닝 프레임 — '월가의 암살자'는 어떤 기업을 고를까</title>
+<style>
+  :root{
+    --accent:#1e40af; --accent2:#3b82f6;
+    --ink:#1f2430; --muted:#5c6472; --line:#e4e7ee; --bg:#fff; --soft:#f6f8fc;
+    --warnbg:#fff7ed; --warnln:#fb923c;
+  }
+  *{box-sizing:border-box;}
+  body{font-family:"Segoe UI","Malgun Gothic","Apple SD Gothic Neo",system-ui,sans-serif;
+    color:var(--ink); background:var(--bg); margin:0; line-height:1.78; font-size:16.5px; letter-spacing:-0.1px;}
+  .wrap{max-width:920px; margin:0 auto; padding:40px 28px 90px;}
+  h1{font-size:29px; line-height:1.32; margin:8px 0 6px; letter-spacing:-0.6px;}
+  h2{font-size:22px; margin:50px 0 12px; padding-top:14px; border-top:3px solid var(--accent); letter-spacing:-0.4px;}
+  h3{font-size:18.5px; margin:30px 0 8px; color:#2b3242;}
+  h4{font-size:16px; margin:18px 0 6px; color:var(--accent);}
+  p{margin:10px 0;} a{color:var(--accent); text-decoration:none;} a:hover{text-decoration:underline;}
+  .sub{color:var(--muted); font-size:15px;} .lead{font-size:17.5px; color:#333a49;}
+  .kicker{display:inline-block; font-size:13px; font-weight:700; letter-spacing:1.5px;
+    color:#fff; background:var(--accent); padding:5px 12px; border-radius:999px;}
+  .warn{background:var(--warnbg); border:1px solid var(--warnln); border-left:6px solid var(--warnln);
+    border-radius:10px; padding:16px 18px; margin:22px 0; font-size:15px;}
+  .note{background:var(--soft); border:1px solid var(--line); border-radius:10px; padding:16px 18px; margin:18px 0;}
+  .callout{background:#eff6ff; border:1px solid #93c5fd; border-left:6px solid var(--accent);
+    border-radius:10px; padding:16px 18px; margin:20px 0;}
+  .bust{background:#0f172a; color:#e2e8f0; border-radius:10px; padding:16px 18px; margin:20px 0;}
+  .bust b{color:#fff;}
+  .key{background:#fefce8; border:1px solid #fde047; border-left:6px solid #ca8a04;
+    border-radius:10px; padding:16px 18px; margin:20px 0;}
+  .big{font-size:19px; font-weight:800; color:var(--accent); line-height:1.5;}
+  .grid2{display:grid; grid-template-columns:1fr 1fr; gap:16px;}
+  .card{border:1px solid var(--line); border-radius:12px; padding:16px 18px; background:#fff;}
+  table{width:100%; border-collapse:collapse; margin:18px 0; font-size:14.5px;}
+  th,td{border:1px solid var(--line); padding:9px 11px; text-align:left; vertical-align:top;}
+  th{background:var(--soft); font-weight:700;} td.c,th.c{text-align:center;}
+  figure{margin:24px 0; text-align:center;} figcaption{font-size:13px; color:var(--muted); margin-top:8px;}
+  .svgbox{border:1px solid var(--line); border-radius:12px; padding:14px; background:#fff;}
+  ul,ol{margin:10px 0 10px 4px; padding-left:22px;} li{margin:6px 0;}
+  .kpi{display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin:20px 0;}
+  .kpi .box{border:1px solid var(--line); border-radius:12px; padding:14px; text-align:center; background:var(--soft);}
+  .kpi .num{font-size:20px; font-weight:800; color:var(--accent); letter-spacing:-0.5px;}
+  .kpi .lab{font-size:12.5px; color:var(--muted); margin-top:3px;}
+  .toc{background:var(--soft); border:1px solid var(--line); border-radius:12px; padding:18px 22px; margin:26px 0;}
+  .toc ol{columns:2; column-gap:34px;}
+  .src{font-size:13px; color:var(--muted); word-break:break-all;}
+  .good{color:#059669; font-weight:700;} .bad{color:#dc2626; font-weight:700;} .mid{color:#b45309; font-weight:700;}
+  .score{display:inline-block; min-width:26px; text-align:center; font-weight:800; padding:1px 7px; border-radius:6px;}
+  .s-o{background:#dcfce7; color:#166534;} .s-x{background:#fee2e2; color:#991b1b;} .s-m{background:#fef9c3; color:#854d0e;}
+  hr{border:none; border-top:1px solid var(--line); margin:34px 0;}
+  .foot{color:var(--muted); font-size:13px; margin-top:40px;}
+  @media (max-width:680px){.grid2,.kpi{grid-template-columns:1fr;} .toc ol{columns:1;} h1{font-size:24px;}}
+  @media print{body{font-size:11.5pt;} .wrap{max-width:100%; padding:0;} h2{break-after:avoid;}
+    figure,table,.card{break-inside:avoid;} a{color:#000;} .warn,.callout,.note,.bust,.key{break-inside:avoid;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <span class="kicker">투자 도구 · 스크리닝 프레임</span>
+  <h1>행동주의 타깃 스크리닝 프레임<br>— '월가의 암살자'는 어떤 기업을 고를까</h1>
+  <p class="sub">작성일 2026-07-20 · 개인 리서치 노트 · 파미 콰디르 한국 진출 기사에서 출발</p>
+
+  <div class="warn">
+    <b>⚠️ 투자 권유가 아닙니다.</b> 이 문서는 <b>"행동주의 투자자가 어떤 기준으로 기업을 고르는가"</b>를
+    공개 정보로 재구성한 <b>개인 학습용 분석 틀</b>입니다.
+    <b>특정 기업이 실제 투자 대상이 될 것이라고 예측하거나 주장하지 않습니다.</b>
+    언급된 기업명은 프레임의 사용법을 보여주기 위한 <b>예시</b>이며 매수·매도 추천이 아닙니다.
+    수치는 보도 시점 기준 추정치가 포함되어 있으므로 반드시 최신 공시(DART)를 직접 확인하시기 바랍니다.
+    모든 투자 판단과 그 책임은 전적으로 본인에게 있습니다.
+  </div>
+
+  <div class="note">
+    <b>📰 이 리포트의 출발점</b><br>
+    2026년 7월 20일자 기사 — <b>"'다음 타깃은 한국'…공매도 대박 난 '35세 女 암살자' 정체"</b>.
+    미국 공매도 투자자 <b>파미 콰디르(Fahmi Quadir)</b>가 행동주의로 전환해 한국 증시에 진출한다는 내용.<br><br>
+    여기서 나온 질문: <b>"거버넌스 전과가 있는 기업이 1순위 타깃 아닐까?"</b><br>
+    이 리포트는 그 질문을 <b>개별 종목 찍기</b>가 아니라 <b>재사용 가능한 스크리닝 도구</b>로 바꿔서 답한다.
+  </div>
+
+  <div class="callout">
+    <span class="big">🧭 결론 먼저 (6줄 요약)</span>
+    <ol style="margin-bottom:0;">
+      <li><b>"문제가 많은 회사" ≠ "타깃이 되는 회사".</b> 이 둘을 구분하는 게 이 프레임의 핵심이다.</li>
+      <li>행동주의의 <b>1차 관문은 '이길 수 있는가'</b> — 국내 타깃의 핵심 기준은 <b>최대주주 지분 20% 미만</b>이다.</li>
+      <li>따라서 <b>오너 지분이 높은 회사는 문제가 아무리 많아도 적대적 캠페인 대상이 되기 어렵다.</b></li>
+      <li>다만 콰디르의 논지는 한 겹 더 깊다 — <b>"오너가 승계·상속세 때문에 눌러놓은 밸류"</b>에 베팅한다는 것.</li>
+      <li>그래서 트랙이 <b>둘</b>이다: <b>①적대적 캠페인형</b>(지분 분산 필요)과 <b>②촉매 대기형</b>(오너 유인 일치 필요).</li>
+      <li>본문의 <b>7개 필터 + 채점표</b>로 어떤 종목이 어느 트랙에 해당하는지 스스로 걸러낼 수 있다.</li>
+    </ol>
+  </div>
+
+  <div class="toc">
+    <b>목차</b>
+    <ol>
+      <li>인물 해부 — 파미 콰디르는 누구인가</li>
+      <li>전략 전환의 의미 — 숏에서 롱으로</li>
+      <li>핵심 논지 — "눌러놓은 밸류"에 베팅</li>
+      <li>행동주의 타깃의 3대 조건군</li>
+      <li>🔧 스크리닝 프레임 — 7개 필터</li>
+      <li>채점표 사용법</li>
+      <li>두 갈래 트랙 — 캠페인형 vs 촉매형</li>
+      <li>제도 환경 — 상법 개정과 2조 원의 벽</li>
+      <li>프레임 적용 예시 ① 동국제약</li>
+      <li>국내 선례 — 무엇이 통했나</li>
+      <li>실전 체크리스트</li>
+      <li>프레임의 한계 · FAQ · 용어 · 출처</li>
+    </ol>
+  </div>
+
+  <!-- 1 -->
+  <h2>1. 인물 해부 — 파미 콰디르는 누구인가</h2>
+  <table>
+    <thead><tr><th>항목</th><th>내용</th></tr></thead>
+    <tbody>
+      <tr><td><b>인물</b></td><td>파미 콰디르(Fahmi Quadir), 35세, 방글라데시계 미국인. 현재 런던 거주</td></tr>
+      <tr><td><b>별칭</b></td><td><b>"암살자(the assassin)"</b> — 넷플릭스 다큐멘터리 2편 출연</td></tr>
+      <tr><td><b>기존 펀드</b></td><td><b>사프켓 캐피털(Safkhet Capital)</b> — 2018년 설립. <b>사기·약탈적 비즈니스 모델 기업만</b> 공매도</td></tr>
+      <tr><td><b>대표 전적 ①</b></td><td><b>밸리언트 파마슈티컬스</b>(2016) — 약가 폭리로 비판받던 <b>제약사</b></td></tr>
+      <tr><td><b>대표 전적 ②</b></td><td><b>와이어카드</b>(2019) — 사기 혐의로 붕괴한 독일 결제업체</td></tr>
+      <tr><td><b>새 무대</b></td><td>한국. <b>올여름</b> 시작. 신규 펀드로 <b>롱(매수) 중심 행동주의</b></td></tr>
+      <tr><td><b>규모</b></td><td>최대 <b>3억 달러</b> (약 4,200억 원 수준)</td></tr>
+      <tr><td><b>타깃 규모</b></td><td><b>중소·중견기업</b></td></tr>
+      <tr><td><b>요구 사항</b></td><td><b>이사회·감사의 독립성 확보</b>, <b>자사주 매입·소각</b> 촉진</td></tr>
+      <tr><td><b>준비 강도</b></td><td>거의 매일 <b>새벽 2시</b>에 일어나 한국 관계자와 통화, 기업 데이터 분석</td></tr>
+    </tbody>
+  </table>
+  <p class="sub">
+    ※ 펀드 명칭(사프켓캐피털 / 사프켓센티넬)은 보도마다 표기가 조금씩 다르다. 공통된 사실은
+    <b>기존 공매도 펀드를 정리하고 한국 행동주의용 롱 전략 펀드로 전환한다</b>는 것.
+    <span class="src">(출처: 한국경제, 뉴시스, 전자신문, 이데일리, SBS, KB의 생각, 블록미디어)</span>
+  </p>
+
+  <div class="key">
+    <b>💡 주목할 이력 하나</b><br>
+    콰디르의 첫 대표작이 <b>제약사(밸리언트)</b>였다는 점. 그리고 두 사례 모두 <b>회계·비즈니스 모델의 진실성</b>을 파고든 건이었다.
+    이는 그가 <b>①헬스케어 섹터 이해도</b>와 <b>②재무제표를 깊게 파는 역량</b>을 갖췄다는 뜻이다.
+    한국에서도 <b>"숫자가 예쁜데 뭔가 이상한 회사"</b>를 잘 찾아낼 가능성이 있다.
+  </div>
+
+  <!-- 2 -->
+  <h2>2. 전략 전환의 의미 — 숏에서 롱으로</h2>
+  <p class="lead">
+    이 전환을 가볍게 봐서는 안 된다. <b>공매도와 행동주의는 돈 버는 원리가 정반대</b>다.
+    같은 사람이 방향을 바꿨다는 건, <b>타깃 선정 기준 자체가 달라졌다</b>는 뜻이다.
+  </p>
+
+  <figure>
+    <div class="svgbox">
+      <svg viewBox="0 0 860 260" width="100%" role="img" aria-label="공매도와 행동주의 비교">
+        <g font-family="Segoe UI, sans-serif">
+          <text x="16" y="26" font-size="15" font-weight="800">같은 투자자, 정반대 논리</text>
+
+          <rect x="30" y="48" width="370" height="150" rx="12" fill="#fee2e2" stroke="#fca5a5"/>
+          <text x="215" y="76" font-size="14" font-weight="800" fill="#991b1b" text-anchor="middle">📉 공매도 (과거)</text>
+          <text x="215" y="102" font-size="12" fill="#7f1d1d" text-anchor="middle">찾는 것: <b>거짓말하는 회사</b></text>
+          <text x="215" y="124" font-size="12" fill="#7f1d1d" text-anchor="middle">돈 버는 법: 진실이 드러나 <b>주가 하락</b></text>
+          <text x="215" y="146" font-size="12" fill="#7f1d1d" text-anchor="middle">필요한 것: <b>증거</b> (회계·사기 입증)</text>
+          <text x="215" y="168" font-size="12" fill="#7f1d1d" text-anchor="middle">지분: <b>필요 없음</b> (빌려서 판다)</text>
+          <text x="215" y="188" font-size="11" fill="#991b1b" text-anchor="middle">→ 밸리언트 · 와이어카드</text>
+
+          <rect x="460" y="48" width="370" height="150" rx="12" fill="#dbeafe" stroke="#93c5fd"/>
+          <text x="645" y="76" font-size="14" font-weight="800" fill="#1e40af" text-anchor="middle">📈 행동주의 (현재)</text>
+          <text x="645" y="102" font-size="12" fill="#1e3a8a" text-anchor="middle">찾는 것: <b>저평가된 좋은 회사</b></text>
+          <text x="645" y="124" font-size="12" fill="#1e3a8a" text-anchor="middle">돈 버는 법: 개선을 요구해 <b>주가 상승</b></text>
+          <text x="645" y="146" font-size="12" fill="#1e3a8a" text-anchor="middle">필요한 것: <b>의결권</b> (표 싸움)</text>
+          <text x="645" y="168" font-size="12" fill="#1e3a8a" text-anchor="middle">지분: <b>반드시 필요</b> (사서 모은다)</text>
+          <text x="645" y="188" font-size="11" fill="#1e40af" text-anchor="middle">→ 한국 중소·중견주</text>
+
+          <rect x="30" y="212" width="800" height="38" rx="9" fill="#fefce8" stroke="#fde047"/>
+          <text x="430" y="236" font-size="12.5" font-weight="700" fill="#854d0e" text-anchor="middle">
+            ⚠️ 핵심: 행동주의는 '지분'이 필요하다 → 그래서 <b>지배구조가 뚫리는 회사</b>만 타깃이 된다 (개인 정리 도식)</text>
+        </g>
+      </svg>
+    </div>
+    <figcaption>그림 1. 숏에서 롱으로의 전환은 타깃 기준을 근본적으로 바꾼다. (개인 정리 도식)</figcaption>
+  </figure>
+
+  <div class="bust">
+    <b>🔴 여기서 이 리포트의 첫 번째 교훈이 나온다</b><br><br>
+    공매도 시절에는 <b>"나쁜 회사"</b>면 충분했다. 지분이 필요 없으니까.<br>
+    행동주의는 다르다. <b>"나쁜 회사"이면서 동시에 "내가 이길 수 있는 회사"</b>여야 한다.<br><br>
+    <b>→ 거버넌스 전과가 있다는 것만으로는 타깃 조건의 절반밖에 채우지 못한다.</b>
+  </div>
+
+  <!-- 3 -->
+  <h2>3. 핵심 논지 — "눌러놓은 밸류"에 베팅</h2>
+  <p>
+    콰디르가 한국을 고른 이유를 보도들은 이렇게 전한다.
+  </p>
+  <div class="key">
+    <b>📌 콰디르의 한국 투자 논지 (보도 종합)</b>
+    <ul style="margin-bottom:0;">
+      <li>한국 증시는 <b>반도체를 제외하면 저평가</b>돼 있다</li>
+      <li>상장사 <b>3분의 2 이상이 PBR 1배 미만</b></li>
+      <li>정부의 <b>기업 밸류업 프로그램</b>이 진행 중인 <b>지금이 적기</b></li>
+      <li>미국·유럽에서는 회계부정을 찾아 공매도했다면, 한국에서는
+        <b>"재벌 오너 일가가 상속세 절감을 위해 의도적으로 눌러놓은 기업가치를 끌어올리는 쪽"</b>에 베팅한다</li>
+    </ul>
+  </div>
+  <p>
+    마지막 문장이 이 리포트에서 가장 중요하다. 이건 단순한 "싼 주식 사기"가 아니라
+    <b>한국 특유의 구조를 겨냥한 논지</b>다.
+  </p>
+
+  <figure>
+    <div class="svgbox">
+      <svg viewBox="0 0 860 250" width="100%" role="img" aria-label="눌러놓은 밸류 메커니즘">
+        <g font-family="Segoe UI, sans-serif">
+          <text x="16" y="26" font-size="15" font-weight="800">'눌러놓은 밸류' 메커니즘 — 왜 오너가 주가를 안 올리나</text>
+
+          <rect x="20" y="48" width="185" height="58" rx="10" fill="#f1f5f9" stroke="#cbd5e1"/>
+          <text x="112" y="72" font-size="12" font-weight="700" text-anchor="middle">승계·상속 준비</text>
+          <text x="112" y="92" font-size="10.5" fill="#5c6472" text-anchor="middle">지분 이전 필요</text>
+
+          <rect x="225" y="48" width="185" height="58" rx="10" fill="#f1f5f9" stroke="#cbd5e1"/>
+          <text x="317" y="72" font-size="12" font-weight="700" text-anchor="middle">주가 낮을수록</text>
+          <text x="317" y="92" font-size="10.5" fill="#5c6472" text-anchor="middle">상속·증여세 부담 ↓</text>
+
+          <rect x="430" y="48" width="185" height="58" rx="10" fill="#fee2e2" stroke="#fca5a5"/>
+          <text x="522" y="72" font-size="12" font-weight="700" fill="#991b1b" text-anchor="middle">밸류 억제 유인</text>
+          <text x="522" y="92" font-size="10.5" fill="#7f1d1d" text-anchor="middle">저배당 · 소극적 IR</text>
+
+          <rect x="635" y="48" width="200" height="58" rx="10" fill="#fee2e2" stroke="#fca5a5"/>
+          <text x="735" y="72" font-size="12" font-weight="700" fill="#991b1b" text-anchor="middle">만성 저평가</text>
+          <text x="735" y="92" font-size="10.5" fill="#7f1d1d" text-anchor="middle">PBR 1배 미만 고착</text>
+
+          <g stroke="#94a3b8" stroke-width="2" fill="none">
+            <path d="M207,77 L221,77" marker-end="url(#a)"/>
+            <path d="M412,77 L426,77" marker-end="url(#a)"/>
+            <path d="M617,77 L631,77" marker-end="url(#a)"/>
+          </g>
+          <defs><marker id="a" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+            <path d="M0,0 L6,3 L0,6 Z" fill="#94a3b8"/></marker></defs>
+
+          <rect x="20" y="130" width="815" height="60" rx="10" fill="#dbeafe" stroke="#93c5fd"/>
+          <text x="428" y="154" font-size="13.5" font-weight="800" fill="#1e40af" text-anchor="middle">
+            💡 콰디르의 베팅: "승계가 끝나면 억제할 이유가 사라진다"</text>
+          <text x="428" y="176" font-size="11.5" fill="#1e3a8a" text-anchor="middle">
+            → 억제가 풀리는 시점에 밸류가 정상화된다는 데 미리 걸어두는 전략</text>
+
+          <rect x="20" y="200" width="815" height="38" rx="9" fill="#fefce8" stroke="#fde047"/>
+          <text x="428" y="224" font-size="12" fill="#854d0e" text-anchor="middle">
+            ⚠️ 이 논지가 맞다면, 타깃은 '싸움에서 이길 회사'가 아니라 '억제가 풀릴 회사'다 — 개인 정리 도식</text>
+        </g>
+      </svg>
+    </div>
+    <figcaption>그림 2. 콰디르 논지의 구조. 적대적 캠페인이 아니라 '촉매 대기'에 가깝다. (개인 정리 도식)</figcaption>
+  </figure>
+
+  <div class="callout">
+    <b>🔑 여기서 프레임이 두 갈래로 갈린다</b><br>
+    보도된 콰디르의 요구사항(이사회·감사 독립성, 자사주 소각)은 <b>적대적 캠페인</b>의 언어다.
+    그런데 투자 논지("눌러놓은 밸류")는 <b>촉매 대기</b>의 언어다.<br><br>
+    이 둘은 <b>필요조건이 다르다.</b> 그래서 이 리포트의 스크리닝 프레임도 <b>두 트랙</b>으로 설계한다(7장).
+  </div>
+
+  <!-- 4 -->
+  <h2>4. 행동주의 타깃의 3대 조건군</h2>
+  <p class="lead">
+    국내외 사례와 보도를 종합하면, 행동주의 타깃은 <b>세 종류의 조건</b>을 동시에 만족해야 한다.
+    많은 투자자가 ②만 보고 판단하는데, <b>실제로 결정적인 건 ①</b>이다.
+  </p>
+
+  <figure>
+    <div class="svgbox">
+      <svg viewBox="0 0 860 290" width="100%" role="img" aria-label="타깃 3대 조건군">
+        <g font-family="Segoe UI, sans-serif">
+          <text x="16" y="26" font-size="15" font-weight="800">타깃이 되려면 세 관문을 모두 통과해야 한다</text>
+
+          <rect x="20" y="48" width="255" height="120" rx="12" fill="#fee2e2" stroke="#dc2626" stroke-width="2"/>
+          <text x="147" y="76" font-size="14" font-weight="800" fill="#991b1b" text-anchor="middle">① 공격 가능성</text>
+          <text x="147" y="98" font-size="11.5" fill="#7f1d1d" text-anchor="middle">"내가 이길 수 있나?"</text>
+          <text x="147" y="120" font-size="11" fill="#7f1d1d" text-anchor="middle">• 최대주주 지분 낮음</text>
+          <text x="147" y="138" font-size="11" fill="#7f1d1d" text-anchor="middle">• 유통주식 충분</text>
+          <text x="147" y="156" font-size="11" fill="#7f1d1d" text-anchor="middle">• 시총이 감당 가능</text>
+
+          <rect x="295" y="48" width="255" height="120" rx="12" fill="#fef9c3" stroke="#ca8a04" stroke-width="2"/>
+          <text x="422" y="76" font-size="14" font-weight="800" fill="#854d0e" text-anchor="middle">② 개선 여지</text>
+          <text x="422" y="98" font-size="11.5" fill="#713f12" text-anchor="middle">"고칠 게 있나?"</text>
+          <text x="422" y="120" font-size="11" fill="#713f12" text-anchor="middle">• PBR 1배 미만</text>
+          <text x="422" y="138" font-size="11" fill="#713f12" text-anchor="middle">• 저배당 · 순현금</text>
+          <text x="422" y="156" font-size="11" fill="#713f12" text-anchor="middle">• ROIC↑ vs ROE↓</text>
+
+          <rect x="570" y="48" width="265" height="120" rx="12" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+          <text x="702" y="76" font-size="14" font-weight="800" fill="#1e40af" text-anchor="middle">③ 촉발 요인</text>
+          <text x="702" y="98" font-size="11.5" fill="#1e3a8a" text-anchor="middle">"지금 왜 움직이나?"</text>
+          <text x="702" y="120" font-size="11" fill="#1e3a8a" text-anchor="middle">• 밸류업 미공시</text>
+          <text x="702" y="138" font-size="11" fill="#1e3a8a" text-anchor="middle">• 거버넌스 전과</text>
+          <text x="702" y="156" font-size="11" fill="#1e3a8a" text-anchor="middle">• 승계·제도 변화</text>
+
+          <rect x="20" y="188" width="815" height="46" rx="10" fill="#0f172a"/>
+          <text x="428" y="216" font-size="13" font-weight="800" fill="#fff" text-anchor="middle">
+            ①이 막히면 ②③이 아무리 좋아도 타깃이 되지 않는다 — ①은 필터, ②③은 점수</text>
+
+          <rect x="20" y="244" width="815" height="36" rx="9" fill="#f6f8fc" stroke="#cbd5e1"/>
+          <text x="428" y="267" font-size="11.5" fill="#5c6472" text-anchor="middle">
+            흔한 실수: ②③(문제 많음)만 보고 "타깃 1순위"라고 판단하는 것 — 개인 정리 도식</text>
+        </g>
+      </svg>
+    </div>
+    <figcaption>그림 3. ①은 통과/탈락을 가르는 <b>필터</b>이고, ②③은 매력도를 매기는 <b>점수</b>다. (개인 정리 도식)</figcaption>
+  </figure>
+
+  <div class="bust">
+    <b>📊 결정적 데이터</b><br><br>
+    국내 보도에 따르면 <b>"행동주의 펀드의 핵심 타깃은 최대주주 지분 20% 미만인 기업"</b>이다.
+    상법 개정으로 적은 지분으로도 이사회 재편에 영향을 줄 수 있게 되면서, <b>지분이 분산된 회사</b>가
+    특히 노출되는 구조가 됐다.<br><br>
+    <b>→ 즉 "최대주주 지분 20%"가 사실상의 컷오프 라인이다.</b>
+  </div>
+
+  <!-- 5 -->
+  <h2>5. 🔧 스크리닝 프레임 — 7개 필터</h2>
+  <p>위 3대 조건군을 <b>실제로 확인 가능한 7개 항목</b>으로 분해했다. 이게 이 리포트의 본체다.</p>
+
+  <table>
+    <thead>
+      <tr><th class="c">#</th><th>필터</th><th>기준</th><th class="c">유형</th><th>확인처</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="c"><b>F1</b></td>
+        <td><b>최대주주+특수관계인 지분</b></td>
+        <td class="bad">20% 미만이면 통과<br>30% 초과면 사실상 탈락</td>
+        <td class="c bad">필수<br>(컷오프)</td>
+        <td>DART 사업보고서<br>'주주에 관한 사항'</td>
+      </tr>
+      <tr>
+        <td class="c"><b>F2</b></td>
+        <td><b>시가총액</b></td>
+        <td>중소·중견 규모<br>(펀드가 유의미한 지분 확보 가능)</td>
+        <td class="c bad">필수</td>
+        <td>거래소·증권사 앱</td>
+      </tr>
+      <tr>
+        <td class="c"><b>F3</b></td>
+        <td><b>PBR</b></td>
+        <td class="mid">1배 미만</td>
+        <td class="c mid">점수</td>
+        <td>FnGuide·와이즈리포트</td>
+      </tr>
+      <tr>
+        <td class="c"><b>F4</b></td>
+        <td><b>순현금 / 부채비율</b></td>
+        <td class="mid">순현금 상태거나<br>부채비율 현저히 낮음</td>
+        <td class="c mid">점수</td>
+        <td>재무상태표</td>
+      </tr>
+      <tr>
+        <td class="c"><b>F5</b></td>
+        <td><b>배당성향</b></td>
+        <td class="mid">20% 미만 (환원 여지 큼)</td>
+        <td class="c mid">점수</td>
+        <td>DART·KIND 배당정보</td>
+      </tr>
+      <tr>
+        <td class="c"><b>F6</b></td>
+        <td><b>ROIC vs ROE 괴리</b></td>
+        <td class="mid">ROIC 높고 ROE 낮음<br>(잘 버는데 안 돌려줌)</td>
+        <td class="c mid">점수</td>
+        <td>FnGuide 투자지표</td>
+      </tr>
+      <tr>
+        <td class="c"><b>F7</b></td>
+        <td><b>거버넌스 이벤트 이력</b></td>
+        <td class="mid">쪼개기 상장·약속 미이행<br>밸류업 미공시·소액주주 분쟁</td>
+        <td class="c mid">점수</td>
+        <td>공시·언론 검색</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="note">
+    <b>💡 F1이 왜 컷오프인가 — 산수로 확인</b><br>
+    행동주의가 주주제안을 통과시키려면 <b>출석 주주 과반</b>(사안에 따라 더)이 필요하다.
+    오너 측이 <b>40%</b>를 쥐고 있다면, 나머지 60% 중 <b>거의 대부분</b>을 설득해야 한다.
+    기관·외국인·개인이 모두 한 방향으로 움직여야 가능한 일이고, 현실에서는 매우 드물다.<br><br>
+    반대로 오너 지분이 <b>15%</b> 수준이면, 행동주의가 <b>7~8%만 확보</b>해도 기관 몇 곳만 우군으로 만들면
+    실질적 압박이 가능해진다. 실제 국내 사례들이 이 구간에서 나왔다(10장).
+  </div>
+
+  <!-- 6 -->
+  <h2>6. 채점표 사용법</h2>
+  <p>F1·F2를 통과한 종목만 F3~F7로 점수를 매긴다. 각 항목 <b>○=2점 / △=1점 / ✕=0점</b>, 만점 10점.</p>
+
+  <table>
+    <thead><tr><th class="c">단계</th><th>절차</th></tr></thead>
+    <tbody>
+      <tr><td class="c">1</td><td><b>F1 확인</b> — 최대주주+특수관계인 지분. 30% 초과면 <b>여기서 중단</b>(캠페인형 부적합)</td></tr>
+      <tr><td class="c">2</td><td><b>F2 확인</b> — 시총이 펀드 규모 대비 감당 가능한가</td></tr>
+      <tr><td class="c">3</td><td><b>F3~F7 채점</b> — 각 2점 만점, 총 10점</td></tr>
+      <tr><td class="c">4</td><td><b>해석</b> — 8점 이상: 강한 후보 / 5~7점: 관찰 / 4점 이하: 매력 낮음</td></tr>
+      <tr><td class="c">5</td><td><b>F1 탈락 종목은 트랙②로</b> — 7장의 '촉매 대기형' 기준으로 재평가</td></tr>
+    </tbody>
+  </table>
+
+  <!-- 7 -->
+  <h2>7. 두 갈래 트랙 — 캠페인형 vs 촉매형</h2>
+  <p class="lead">
+    이 리포트에서 가장 실용적인 부분이다. <b>F1에서 탈락한 종목이 무가치한 게 아니다.</b>
+    다만 <b>다른 방식으로 접근해야 한다.</b>
+  </p>
+
+  <figure>
+    <div class="svgbox">
+      <svg viewBox="0 0 860 300" width="100%" role="img" aria-label="두 갈래 트랙">
+        <g font-family="Segoe UI, sans-serif">
+          <text x="16" y="26" font-size="15" font-weight="800">F1(오너 지분) 결과에 따라 갈리는 두 트랙</text>
+
+          <rect x="330" y="44" width="200" height="44" rx="10" fill="#0f172a"/>
+          <text x="430" y="71" font-size="13" font-weight="800" fill="#fff" text-anchor="middle">F1: 오너 지분은?</text>
+
+          <path d="M380,90 L230,120" stroke="#dc2626" stroke-width="2.5" marker-end="url(#b)"/>
+          <path d="M480,90 L630,120" stroke="#2563eb" stroke-width="2.5" marker-end="url(#b)"/>
+          <text x="270" y="106" font-size="11.5" fill="#dc2626" font-weight="700">낮다(20% 미만)</text>
+          <text x="590" y="106" font-size="11.5" fill="#2563eb" font-weight="700">높다(30% 초과)</text>
+          <defs><marker id="b" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+            <path d="M0,0 L6,3 L0,6 Z" fill="#64748b"/></marker></defs>
+
+          <rect x="30" y="126" width="370" height="150" rx="12" fill="#fee2e2" stroke="#fca5a5"/>
+          <text x="215" y="152" font-size="14" font-weight="800" fill="#991b1b" text-anchor="middle">트랙 ① 적대적 캠페인형</text>
+          <text x="215" y="176" font-size="11.5" fill="#7f1d1d" text-anchor="middle">행동주의가 <b>지분을 모아 압박</b></text>
+          <text x="215" y="198" font-size="11" fill="#7f1d1d" text-anchor="middle">• 주주제안 · 이사 선임 요구</text>
+          <text x="215" y="216" font-size="11" fill="#7f1d1d" text-anchor="middle">• 자사주 소각 · 배당 확대 요구</text>
+          <text x="215" y="234" font-size="11" fill="#7f1d1d" text-anchor="middle">• 공개 서한 · 위임장 대결</text>
+          <text x="215" y="258" font-size="11.5" fill="#991b1b" text-anchor="middle" font-weight="700">촉매: <b>행동주의의 등장 자체</b></text>
+
+          <rect x="460" y="126" width="370" height="150" rx="12" fill="#dbeafe" stroke="#93c5fd"/>
+          <text x="645" y="152" font-size="14" font-weight="800" fill="#1e40af" text-anchor="middle">트랙 ② 촉매 대기형</text>
+          <text x="645" y="176" font-size="11.5" fill="#1e3a8a" text-anchor="middle"><b>오너의 유인이 바뀌기를</b> 기다림</text>
+          <text x="645" y="198" font-size="11" fill="#1e3a8a" text-anchor="middle">• 승계 완료 → 억제 이유 소멸</text>
+          <text x="645" y="216" font-size="11" fill="#1e3a8a" text-anchor="middle">• 배당 분리과세 → 배당 유인 발생</text>
+          <text x="645" y="234" font-size="11" fill="#1e3a8a" text-anchor="middle">• 밸류업 정책 압력</text>
+          <text x="645" y="258" font-size="11.5" fill="#1e40af" text-anchor="middle" font-weight="700">촉매: <b>오너 자신의 이해관계 변화</b></text>
+        </g>
+      </svg>
+    </div>
+    <figcaption>그림 4. 오너 지분이 높으면 트랙②로. 압박이 아니라 '유인 일치'를 기다리는 전략. (개인 정리 도식)</figcaption>
+  </figure>
+
+  <table>
+    <thead><tr><th></th><th class="c">트랙 ① 캠페인형</th><th class="c">트랙 ② 촉매 대기형</th></tr></thead>
+    <tbody>
+      <tr><td><b>필요조건</b></td><td class="c">오너 지분 낮음 (20% 미만)</td><td class="c">오너에게 <b>밸류를 올릴 유인</b>이 생김</td></tr>
+      <tr><td><b>주도자</b></td><td class="c">행동주의 펀드</td><td class="c">오너 자신 (또는 정책)</td></tr>
+      <tr><td><b>시간</b></td><td class="c">비교적 빠름 (주총 사이클)</td><td class="c"><b>느림</b> (수년 단위 가능)</td></tr>
+      <tr><td><b>확인 신호</b></td><td class="c">지분 공시(5%룰), 주주서한, 주주제안</td><td class="c">승계 진행 상황, 배당 정책 변화, 밸류업 공시</td></tr>
+      <tr><td><b>리스크</b></td><td class="c">캠페인 실패 시 되돌림</td><td class="c"><b>촉매가 영원히 안 올 수 있음</b></td></tr>
+    </tbody>
+  </table>
+
+  <div class="warn">
+    <b>⚠️ 트랙②의 가장 큰 함정</b><br>
+    "언젠가 오너 유인이 바뀌겠지"는 <b>검증 불가능한 기대</b>가 되기 쉽다.
+    <b>반드시 구체적 시한과 신호를 정해두고</b> 그것이 나타나지 않으면 가설을 폐기해야 한다.
+    (예: "2년 내 배당성향 20% 돌파 없으면 논지 무효")
+  </div>
+
+  <!-- 8 -->
+  <h2>8. 제도 환경 — 상법 개정과 '2조 원의 벽'</h2>
+  <p>
+    행동주의에 유리한 제도 변화가 실제로 진행 중이다. 다만 <b>적용 대상에 규모 기준</b>이 있어 주의가 필요하다.
+  </p>
+  <table>
+    <thead><tr><th>제도</th><th>내용</th><th class="c">적용 대상</th><th class="c">시점</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><b>이사 충실의무 확대</b></td>
+        <td>충실의무 대상에 <b>'주주' 명시</b>. 총주주 이익 보호·공평 대우 규정</td>
+        <td class="c good">전체 상장사</td>
+        <td class="c">2025.07.22 시행</td>
+      </tr>
+      <tr>
+        <td><b>집중투표제 의무화</b></td>
+        <td>소수주주가 표를 몰아 이사를 선임할 수 있게 함</td>
+        <td class="c bad"><b>자산 2조 원 이상</b></td>
+        <td class="c">이사 선임 주총부터</td>
+      </tr>
+      <tr>
+        <td><b>독립이사 과반</b></td>
+        <td>이사 총수의 과반을 독립이사로 구성</td>
+        <td class="c bad"><b>자산 2조 원 이상</b></td>
+        <td class="c">2026.07.23 이후 주총</td>
+      </tr>
+      <tr>
+        <td><b>감사위원 분리선출</b></td>
+        <td>감사위원을 이사와 분리해 선출 (대주주 의결권 제한 효과)</td>
+        <td class="c mid">규모별 차등</td>
+        <td class="c">2026.09.10 시행</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="key">
+    <b>🧱 '2조 원의 벽'이 만드는 역설</b><br>
+    행동주의에 가장 강력한 무기인 <b>집중투표제</b>와 <b>독립이사 과반</b>은 <b>자산총액 2조 원 이상</b> 대규모 상장사에만
+    의무 적용된다.<br><br>
+    그런데 콰디르가 노린다고 밝힌 대상은 <b>중소·중견기업</b>이다. 이들 상당수는 <b>자산 2조 원 미만</b>이라
+    <b>이 제도들의 적용을 받지 않는다.</b><br><br>
+    <b>→ 즉 "상법 개정으로 행동주의가 쉬워졌다"는 말은 대기업에 더 해당한다.</b>
+    중소형주에서는 여전히 <b>F1(오너 지분)</b>이 결정적이다. 이 점을 프레임에 반영해야 한다.
+  </div>
+  <p class="sub">
+    ※ 상법 개정 조항의 적용 범위·시행일은 해석과 후속 시행령에 따라 달라질 수 있다.
+    실제 판단 시에는 <b>법률 전문가 자료나 원문</b>을 확인하기 바란다.
+    <span class="src">(출처: 법률신문, 김·장 법률사무소 인사이트, 법무부 자료)</span>
+  </p>
+
+  <!-- 9 -->
+  <h2>9. 프레임 적용 예시 ① 동국제약</h2>
+  <div class="warn">
+    <b>⚠️ 아래는 프레임 '사용법'을 보여주기 위한 예시입니다.</b> 특정 기업이 실제 투자 대상이 될 것이라고
+    예측하거나 주장하지 않으며, 매수·매도 추천이 아닙니다. 수치는 보도 시점 기준이며 일부는 필자의 추정입니다.
+  </div>
+  <p>
+    이 프레임이 만들어진 계기는 <b>"거버넌스 전과가 있는 기업이 1순위 타깃 아닐까?"</b>라는 질문이었다.
+    실제로 채점해 보자. (배경은 <a href="https://tryingpig.github.io/study/260720_동국제약_4_거버넌스자본배치.html">동국제약 ④거버넌스·자본배치 리포트</a> 참조)
+  </p>
+
+  <table>
+    <thead><tr><th class="c">#</th><th>필터</th><th class="c">동국제약</th><th class="c">판정</th><th>근거</th></tr></thead>
+    <tbody>
+      <tr>
+        <td class="c"><b>F1</b></td><td><b>최대주주+특수관계인 지분</b></td>
+        <td class="c bad"><b>44.22%</b></td>
+        <td class="c"><span class="score s-x">탈락</span></td>
+        <td>기준(20% 미만)의 정반대. <b>여기서 트랙①은 종료</b></td>
+      </tr>
+      <tr>
+        <td class="c"><b>F2</b></td><td>시가총액</td>
+        <td class="c">약 6,842억 원</td>
+        <td class="c"><span class="score s-o">○</span></td>
+        <td>중견 규모. 다만 펀드 전체(약 4,200억)로도 경영권 불가</td>
+      </tr>
+      <tr>
+        <td class="c"><b>F3</b></td><td>PBR</td>
+        <td class="c">약 <b>0.88 추정</b>*</td>
+        <td class="c"><span class="score s-o">○</span></td>
+        <td>1배 미만. *필자 계산(자산·부채비율 역산), 시점 불일치 있음</td>
+      </tr>
+      <tr>
+        <td class="c"><b>F4</b></td><td>순현금 / 부채비율</td>
+        <td class="c">부채비율 <b>39.8%</b></td>
+        <td class="c"><span class="score s-o">○</span></td>
+        <td>업종 평균(60~80%)의 절반. 차입금도 상환 중</td>
+      </tr>
+      <tr>
+        <td class="c"><b>F5</b></td><td>배당성향</td>
+        <td class="c"><b>10%대</b></td>
+        <td class="c"><span class="score s-o">○</span></td>
+        <td>환원 여지 매우 큼. 고배당 제약사(40%+)와 대비</td>
+      </tr>
+      <tr>
+        <td class="c"><b>F6</b></td><td>ROIC vs ROE 괴리</td>
+        <td class="c">미확인</td>
+        <td class="c"><span class="score s-m">△</span></td>
+        <td>개별 수치 확보 실패. 구조상 ROE 낮을 가능성만 추정</td>
+      </tr>
+      <tr>
+        <td class="c"><b>F7</b></td><td>거버넌스 이벤트</td>
+        <td class="c bad">다수</td>
+        <td class="c"><span class="score s-o">○</span></td>
+        <td>물적분할 쪼개기 상장, 보호예수 조기 이탈, 밸류업 미공시</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="bust">
+    <b>📊 채점 결과</b><br><br>
+    <b>F3~F7 점수: 9 / 10점</b> — 개선 여지와 촉발 요인 측면에서는 <b>매우 높은 점수</b>다.<br>
+    <b>그런데 F1에서 탈락</b>한다. 오너 측 44.22%는 행동주의가 표로 이길 수 있는 구조가 아니다.<br><br>
+    <b>결론: "문제 삼을 거리는 교과서적으로 많지만, 적대적 캠페인으로 이길 수 있는 회사는 아니다."</b><br>
+    → 트랙①(캠페인형) 부적합 / 트랙②(촉매 대기형)로 재평가 대상
+  </div>
+
+  <h3>트랙②로 다시 보면?</h3>
+  <table>
+    <thead><tr><th>트랙② 조건</th><th class="c">동국제약</th><th>메모</th></tr></thead>
+    <tbody>
+      <tr><td><b>승계 진행 중인가</b></td><td class="c mid">진행 중으로 보임</td><td>아들 권병훈 씨가 자회사 지분 직접 보유</td></tr>
+      <tr><td><b>배당 확대 유인이 생기나</b></td><td class="c good">있음</td><td><b>오너 지분 44.22%</b> → 배당 분리과세 혜택이 오너에게 크게 귀속</td></tr>
+      <tr><td><b>정책 압력을 받나</b></td><td class="c mid">일부</td><td>밸류업 프로그램. 단 자산 2조 미만이라 상법 강제 조항 상당수 미적용</td></tr>
+      <tr><td><b>확인 가능한 신호</b></td><td class="c" colspan="2">배당성향 상승 · 밸류업 공시 · 자사주 소각 · 추가 분할 여부</td></tr>
+    </tbody>
+  </table>
+  <div class="callout">
+    <b>💡 역설적 시사점</b><br>
+    오너 지분이 높다는 건 <b>외부 압력이 안 들어온다</b>는 뜻이다. 즉 <b>거버넌스 디스카운트가
+    외부 힘으로 해소될 가능성이 낮다.</b> 반대로 오너 지분이 높기 때문에 <b>배당을 늘리면 오너 본인이 가장 큰 수혜자</b>가 된다.<br><br>
+    <b>→ 결국 이 회사의 디스카운트를 풀 수 있는 건 행동주의가 아니라 '오너 자신의 결심'이다.</b>
+    이는 ④거버넌스 리포트의 결론을 강화한다.
+  </div>
+
+  <!-- 10 -->
+  <h2>10. 국내 선례 — 무엇이 통했나</h2>
+  <p>프레임의 타당성을 실제 사례로 검증해 보자. <b>성공적으로 압박이 이뤄진 곳은 모두 지분이 분산된 회사</b>였다.</p>
+  <table>
+    <thead><tr><th>사례</th><th>행동주의</th><th>지분 구조 특징</th><th>요구 내용</th></tr></thead>
+    <tbody>
+      <tr><td><b>KT&amp;G</b></td><td>플래시라이트캐피탈(FCP)</td><td class="good">사실상 <b>지배주주 부재</b></td><td>수년째 압박. 자회사(KGC인삼공사) 인수의향까지 제시</td></tr>
+      <tr><td><b>스틱인베스트</b></td><td>얼라인파트너스</td><td class="good">지분 분산</td><td><b>7~8% 지분</b>으로 대규모 자사주 소각 요구</td></tr>
+      <tr><td><b>솔루엠</b></td><td>얼라인파트너스</td><td class="good">지분 분산</td><td>보유목적 변경 후 주주환원 요구</td></tr>
+      <tr><td><b>덴티움</b></td><td>얼라인파트너스</td><td class="good">지분 분산</td><td>자사주 소각 등 지속 요구</td></tr>
+      <tr><td>금융지주사들</td><td>복수 행동주의</td><td class="good">주인 없는 구조</td><td>배당·자사주 확대 요구</td></tr>
+    </tbody>
+  </table>
+  <div class="note">
+    <b>패턴이 분명하다.</b> 국내 행동주의가 실제로 압박을 성사시킨 곳은 <b>예외 없이 지배주주가 약하거나 없는 회사</b>다.
+    얼라인파트너스가 <b>7~8% 지분</b>으로 요구를 관철할 수 있었던 것도 상대의 지분이 낮았기 때문이다.<br><br>
+    <b>→ F1(최대주주 지분)을 컷오프로 두는 이 프레임의 설계가 선례와 일치한다.</b>
+  </div>
+
+  <!-- 11 -->
+  <h2>11. 실전 체크리스트</h2>
+  <div class="note">
+    <b>어떤 종목을 보든 이 순서로 확인하면 된다.</b>
+    <ol style="margin-bottom:0;">
+      <li>□ DART에서 <b>최대주주+특수관계인 지분율</b> 확인 → 30% 넘으면 트랙②로</li>
+      <li>□ <b>PBR</b> 확인 → 1배 미만인가</li>
+      <li>□ <b>부채비율·순현금</b> 확인 → 자본이 쌓여 있는가</li>
+      <li>□ <b>배당성향</b> 확인 → 20% 미만인가 (환원 여지)</li>
+      <li>□ <b>ROE·ROIC</b> 확인 → 잘 버는데 안 돌려주는 상태인가</li>
+      <li>□ <b>밸류업 공시</b> 여부 확인 (KIND)</li>
+      <li>□ <b>거버넌스 이력</b> 검색 → 물적분할·소액주주 분쟁·약속 미이행</li>
+      <li>□ <b>자산총액 2조 원</b> 넘는가 → 집중투표제·독립이사 과반 적용 여부</li>
+      <li>□ <b>5% 지분공시</b> 모니터링 → 행동주의 등장의 첫 신호</li>
+      <li>□ 트랙②라면 <b>구체적 시한과 폐기 조건</b>을 정해뒀는가</li>
+    </ol>
+  </div>
+
+  <h3>모니터링 포인트 — 행동주의 등장의 조기 신호</h3>
+  <table>
+    <thead><tr><th>신호</th><th>어디서 보나</th><th class="c">긴급도</th></tr></thead>
+    <tbody>
+      <tr><td><b>5% 대량보유 공시</b> (보유목적 '경영참가')</td><td>DART 주식등의대량보유상황보고서</td><td class="c bad">최상</td></tr>
+      <tr><td>보유목적 <b>'단순투자→경영참가' 변경</b></td><td>DART 정정공시</td><td class="c bad">최상</td></tr>
+      <tr><td>공개 <b>주주서한</b></td><td>언론·펀드 홈페이지</td><td class="c mid">높음</td></tr>
+      <tr><td><b>주주제안</b> 접수</td><td>주총 소집공고</td><td class="c mid">높음</td></tr>
+      <tr><td>회사의 <b>선제적 밸류업 공시</b></td><td>KIND</td><td class="c">중 (방어 신호)</td></tr>
+    </tbody>
+  </table>
+
+  <!-- 12 -->
+  <h2>12. 프레임의 한계</h2>
+  <div class="warn">
+    <b>이 프레임은 만능이 아니다. 다음 한계를 반드시 인지하자.</b>
+    <ol style="margin-bottom:0;">
+      <li><b>타깃 예측은 불가능하다.</b> 이 프레임은 "가능성 있는 조건"을 거를 뿐, 실제 선택은 펀드 내부 판단이다.
+        <b>이 리포트는 어떤 기업이 타깃이 될 것이라고 주장하지 않는다.</b></li>
+      <li><b>F1 기준(20%)은 보도 기반 경험칙</b>이지 법정 기준이 아니다. 사안·의결 정족수에 따라 달라진다.</li>
+      <li><b>행동주의가 온다 = 주가 상승</b>이 아니다. 캠페인이 실패하거나 장기화되면 되돌림이 온다.
+        국내에는 <b>"행동주의 펀드가 기업 가치를 떨어뜨린다"</b>는 반대 취지의 보고서도 존재한다.</li>
+      <li><b>ROIC·ROE 데이터 확보가 실무적으로 어렵다.</b> 이 리포트에서도 동국제약 개별 수치를 확보하지 못했다.</li>
+      <li><b>트랙②는 검증이 느슨해지기 쉽다.</b> 반드시 시한과 폐기 조건을 함께 정해야 한다.</li>
+      <li><b>수치는 시점에 민감하다.</b> 지분율·PBR·시총은 계속 변한다. 반드시 최신 공시로 재확인해야 한다.</li>
+    </ol>
+  </div>
+
+  <!-- FAQ -->
+  <h2>FAQ</h2>
+  <h4>Q. 결국 "거버넌스 전과가 있으면 타깃"이라는 생각은 틀린 건가요?</h4>
+  <p><b>절반만 맞습니다.</b> 거버넌스 문제는 <b>②개선 여지·③촉발 요인</b>을 채우는 강력한 근거입니다.
+  하지만 <b>①공격 가능성</b>이라는 관문을 통과하지 못하면 타깃이 되지 않습니다.
+  <b>"문제가 많다"와 "공격당한다"는 다른 이야기</b>라는 게 이 프레임의 핵심입니다.</p>
+  <h4>Q. 화장품처럼 잘나가는 섹터가 타깃이 되기 쉽나요?</h4>
+  <p>오히려 <b>반대일 가능성이 큽니다.</b> 행동주의는 <b>저평가되고 소외된</b> 기업을 찾습니다.
+  섹터가 잘나가서 주가가 오르면 PBR이 올라가고 <b>"고칠 게 많다"는 논리가 약해집니다.</b>
+  콰디르도 <b>"PBR 1배 미만"</b>을 명시적 기준으로 언급했습니다.</p>
+  <h4>Q. 오너 지분이 높은 회사는 그냥 투자 매력이 없는 건가요?</h4>
+  <p>아닙니다. <b>다른 논리로 봐야 한다</b>는 뜻입니다. 외부 압력이 안 들어오는 대신,
+  <b>오너 자신의 유인이 바뀌는 시점</b>(승계 완료, 세제 변화 등)이 촉매가 될 수 있습니다.
+  다만 <b>그 시점을 알 수 없다는 게 큰 리스크</b>입니다.</p>
+  <h4>Q. 이 프레임으로 종목을 찍어줄 수 있나요?</h4>
+  <p>이 노트는 <b>종목 추천을 하지 않습니다.</b> 프레임은 <b>스스로 걸러보라고</b> 만든 도구입니다.
+  11장 체크리스트를 따라 직접 확인하시길 권합니다.</p>
+  <h4>Q. 가장 먼저 봐야 할 지표 하나는?</h4>
+  <p><b>DART의 최대주주+특수관계인 지분율</b>입니다. 이 한 줄이 트랙①인지 트랙②인지를 결정하고,
+  그에 따라 나머지 분석의 의미가 완전히 달라집니다.</p>
+
+  <!-- glossary -->
+  <h2>용어 사전</h2>
+  <table>
+    <tbody>
+      <tr><td><b>행동주의 투자</b></td><td>지분을 확보해 경영·지배구조 개선을 요구하고, 그로 인한 주가 상승으로 수익을 내는 전략.</td></tr>
+      <tr><td><b>공매도</b></td><td>주식을 빌려 판 뒤 하락하면 되사서 갚아 차익을 내는 전략. 지분 보유가 필요 없음.</td></tr>
+      <tr><td><b>PBR</b></td><td>Price to Book Ratio. 주가순자산비율. 1배 미만이면 시총이 장부상 순자산보다 작다는 뜻.</td></tr>
+      <tr><td><b>ROIC</b></td><td>투하자본이익률. 회사가 자본을 얼마나 효율적으로 굴리는지.</td></tr>
+      <tr><td><b>ROE</b></td><td>자기자본이익률. 주주 자본 대비 이익률.</td></tr>
+      <tr><td><b>배당성향</b></td><td>순이익 중 배당으로 지급한 비율.</td></tr>
+      <tr><td><b>5%룰</b></td><td>지분 5% 이상 보유 시 공시 의무. 보유목적('단순투자'/'경영참가')도 밝혀야 함.</td></tr>
+      <tr><td><b>주주제안</b></td><td>일정 요건을 갖춘 주주가 주총 안건을 제안하는 제도.</td></tr>
+      <tr><td><b>집중투표제</b></td><td>이사 선임 시 표를 특정 후보에 몰아줄 수 있는 제도. 소수주주에게 유리.</td></tr>
+      <tr><td><b>감사위원 분리선출</b></td><td>감사위원을 이사와 분리해 뽑는 제도. 대주주 의결권이 제한되는 효과.</td></tr>
+      <tr><td><b>독립이사</b></td><td>경영진·지배주주로부터 독립적인 이사. 이사회 견제 기능.</td></tr>
+      <tr><td><b>밸류업 공시</b></td><td>기업가치 제고 계획 자율공시. 주주환원·자본효율 목표를 밝히는 제도.</td></tr>
+      <tr><td><b>유통주식(free float)</b></td><td>실제 시장에서 거래 가능한 주식. 대주주·자사주 등을 제외한 물량.</td></tr>
+    </tbody>
+  </table>
+
+  <!-- sources -->
+  <h2>출처</h2>
+  <p class="src">
+    • 한국경제, "'다음 타깃은 한국'…공매도 대박 난 '35세 女 암살자' 정체" (2026.07.20) — https://plus.hankyung.com/apps/newsinside.view?aid=2026072051411<br>
+    • 뉴시스, "공매도 대신 한국 기업 투자…'월가 암살자'가 방향 튼 이유" (2026.07.20) — https://www.newsis.com/view/NISX20260720_0003714508<br>
+    • 전자신문, "'韓증시 저평가'…월가의 암살자 '매일 새벽 2시 韓기업 분석'" (2026.07.20) — https://www.etnews.com/20260720000381<br>
+    • 한국경제, "공매도로 뜬 월가의 암살자…韓 주식은 살 것" (2026.03.26) — https://www.hankyung.com/article/2026032693581<br>
+    • KB의 생각, "월가 공매도 투자자 콰디르 첫 매수 투자 무대는 韓" — https://kbthink.com/news-list/view.html?newsId=20260720081221342<br>
+    • KB의 생각, "'월가 암살자'에서 '한국 로빈후드'로" — https://kbthink.com/news-list/view.html?newsId=20260326130002698<br>
+    • 이데일리, "'지금이 적기'…'월가 암살자'도 한국 증시 꽂혔다" — https://edaily.co.kr/News/Read?mediaCodeNo=257&newsId=02482966645516488<br>
+    • 블록미디어, "'암살자' 공매도 전문가, '한국 기업 저평가 돼 있다'" — https://www.blockmedia.co.kr/archives/1118258<br>
+    • 뉴스스페이스, "[The Numbers] '월가의 암살자'가 한국 재벌을 사들이는 이유…파미 콰디르의 롱 전략" — https://www.newsspace.kr/news/article.html?no=14040<br>
+    • 오피니언뉴스, "행동주의 펀드 '표적 신호' 포착…'이런 기업 노린다'" — https://www.opinionnews.co.kr/news/articleView.html?idxno=127802<br>
+    • 이데일리 마켓인, "'어딜 공격해볼까'…활동 시작하는 행동주의에 기업도 분주" — https://marketin.edaily.co.kr/News/Read?newsId=03391526639055544<br>
+    • 파이낸셜뉴스, "행동주의 2라운드는 '독립이사회?'…얼라인·트러스톤이 던진 화두" (2026.07.19) — https://www.fnnews.com/news/202607190056591122<br>
+    • 헤럴드경제, "외국계 펀드, 국내기업 표적 확산…가치투자·행동주의 '경계 모호'" — https://biz.heraldcorp.com/article/3853426<br>
+    • 아시아경제, "[힘세지는 행동주의]②사모펀드·소액주주·외국계까지" — https://core.asiae.co.kr/article/2025070415501441295<br>
+    • 파이낸셜뉴스, "[fn사설] 행동주의 펀드가 기업 가치 떨어뜨린다는 보고서" — https://www.fnnews.com/news/202410211846043228<br>
+    • 법률신문, "2026 정기주주총회를 맞이하며: 개정 상법 시행에 따른 실무 가이드" — https://www.lawtimes.co.kr/news/articleView.html?idxno=216903<br>
+    • 김·장 법률사무소, "이사의 주주 이익 보호 충실의무 및 기업 지배구조 제도 변경 사항" — https://www.kimchang.com/ko/insights/detail.kc?sch_section=4&idx=32950<br>
+    • 법무부, "2025년 개정 상법상 집중투표제에 관한 실무상 쟁점" — https://www.moj.go.kr/bbs/moj/166/487198/download.do
+  </p>
+
+  <div class="foot">
+    <hr>
+    본 문서는 개인 학습·정리 목적의 비상업 노트입니다. <b>특정 기업이 행동주의 투자 대상이 될 것이라고 예측하거나
+    주장하지 않으며</b>, 언급된 기업명은 분석 틀의 사용법을 보여주기 위한 예시입니다.
+    지분율·재무 수치는 보도 시점 기준이며 일부는 필자의 추정치로, 반드시 DART 등 원 공시를 확인하시기 바랍니다.
+    법령 관련 내용은 해석·시행령에 따라 달라질 수 있으므로 전문가 자료를 참고하십시오.
+    투자에 대한 최종 판단과 책임은 전적으로 독자 본인에게 있습니다. © 2026 개인 리서치 라이브러리.
+  </div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>대덕전자 투자 안내서 — 턴어라운드의 구조와 검증 포인트</title>
+<style>
+  :root{
+    --accent:#ea580c; --accent2:#f59e0b;
+    --ink:#1f2430; --muted:#5c6472; --line:#e8e6e2; --bg:#fff; --soft:#fdf7f2;
+    --warnbg:#fff7ed; --warnln:#fb923c;
+  }
+  *{box-sizing:border-box;}
+  body{font-family:"Segoe UI","Malgun Gothic","Apple SD Gothic Neo",system-ui,sans-serif;
+    color:var(--ink); background:var(--bg); margin:0; line-height:1.78; font-size:16.5px; letter-spacing:-0.1px;}
+  .wrap{max-width:920px; margin:0 auto; padding:40px 28px 90px;}
+  h1{font-size:29px; line-height:1.32; margin:8px 0 6px; letter-spacing:-0.6px;}
+  h2{font-size:22px; margin:50px 0 12px; padding-top:14px; border-top:3px solid var(--accent); letter-spacing:-0.4px;}
+  h3{font-size:18.5px; margin:30px 0 8px; color:#2b3242;}
+  h4{font-size:16px; margin:18px 0 6px; color:var(--accent);}
+  p{margin:10px 0;} a{color:var(--accent); text-decoration:none;} a:hover{text-decoration:underline;}
+  .sub{color:var(--muted); font-size:15px;} .lead{font-size:17.5px; color:#333a49;}
+  .kicker{display:inline-block; font-size:13px; font-weight:700; letter-spacing:1.5px;
+    color:var(--accent); background:#fff0e6; padding:5px 12px; border-radius:999px;}
+  .warn{background:var(--warnbg); border:1px solid var(--warnln); border-left:6px solid var(--warnln);
+    border-radius:10px; padding:16px 18px; margin:22px 0; font-size:15px;}
+  .note{background:var(--soft); border:1px solid var(--line); border-radius:10px; padding:16px 18px; margin:18px 0;}
+  .callout{background:#fff0e6; border:1px solid #fdba74; border-left:6px solid var(--accent);
+    border-radius:10px; padding:16px 18px; margin:20px 0;}
+  .grid2{display:grid; grid-template-columns:1fr 1fr; gap:16px;}
+  .card{border:1px solid var(--line); border-radius:12px; padding:16px 18px; background:#fff;}
+  table{width:100%; border-collapse:collapse; margin:18px 0; font-size:14.5px;}
+  th,td{border:1px solid var(--line); padding:9px 11px; text-align:left; vertical-align:top;}
+  th{background:var(--soft); font-weight:700;} td.c,th.c{text-align:center;}
+  figure{margin:24px 0; text-align:center;} figcaption{font-size:13px; color:var(--muted); margin-top:8px;}
+  .svgbox{border:1px solid var(--line); border-radius:12px; padding:14px; background:#fff;}
+  ul,ol{margin:10px 0 10px 4px; padding-left:22px;} li{margin:6px 0;}
+  .kpi{display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin:20px 0;}
+  .kpi .box{border:1px solid var(--line); border-radius:12px; padding:14px; text-align:center; background:var(--soft);}
+  .kpi .num{font-size:21px; font-weight:800; color:var(--accent); letter-spacing:-0.5px;}
+  .kpi .lab{font-size:12.5px; color:var(--muted); margin-top:3px;}
+  .toc{background:var(--soft); border:1px solid var(--line); border-radius:12px; padding:18px 22px; margin:26px 0;}
+  .toc ol{columns:2; column-gap:34px;}
+  .src{font-size:13px; color:var(--muted); word-break:break-all;}
+  .seriesnav{background:#fff0e6; border:1px solid #fdba74; border-radius:10px; padding:14px 18px; margin:20px 0; font-size:14.5px;}
+  .good{color:#059669; font-weight:700;} .bad{color:#dc2626; font-weight:700;} .mid{color:#b45309; font-weight:700;}
+  hr{border:none; border-top:1px solid var(--line); margin:34px 0;}
+  .foot{color:var(--muted); font-size:13px; margin-top:40px;}
+  @media (max-width:680px){.grid2,.kpi{grid-template-columns:1fr;} .toc ol{columns:1;} h1{font-size:24px;}}
+  @media print{body{font-size:11.5pt;} .wrap{max-width:100%; padding:0;} h2{break-after:avoid;}
+    figure,table,.card{break-inside:avoid;} a{color:#000;} .warn,.callout,.note{break-inside:avoid;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <span class="kicker">대덕전자 · ② 투자 안내서</span>
+  <h1>대덕전자 투자 안내서<br>— 턴어라운드의 '구조'와 검증 포인트</h1>
+  <p class="sub">작성일 2026-07-18 · KOSPI 353200 · 개인 리서치 노트 · 입문세트 2/3</p>
+
+  <div class="warn">
+    <b>⚠️ 투자 권유가 아닙니다.</b> 이 문서는 공개 정보와 <b>증권사 추정치</b>를 정리한 개인 학습 노트이며,
+    매수·매도 추천이 아닙니다. 뒤에 나오는 시나리오는 <b>예측이 아니라 가정 대입</b>입니다.
+    목표주가·전망치는 작성 기관의 견해일 뿐 보장되지 않습니다. 모든 투자 판단과 책임은 전적으로 본인에게 있습니다.
+  </div>
+
+  <div class="seriesnav">
+    <b>📘 입문세트 구성</b> — <a href="https://tryingpig.github.io/study/260718_대덕전자_1_입문가이드.html">① 입문가이드</a> ·
+    ② <b>투자안내서(현재 글)</b> ·
+    <a href="https://tryingpig.github.io/study/260718_대덕전자_3_밸류체인.html">③ 밸류체인</a><br>
+    <span class="sub">회사·제품 기초(FC-BGA·MLB가 뭔지, 어떻게 생겼는지)는 ①에서 다뤘습니다. 여기서는 <b>숫자와 검증</b>에 집중합니다.</span>
+  </div>
+
+  <div class="callout">
+    <b>🧭 이 글의 논지 한 장 요약</b>
+    <ol style="margin-bottom:0;">
+      <li><b>사실:</b> 2024년 적자 → 2025년 흑자 전환 → 2026년 대폭 개선 전망. 턴어라운드가 진행 중이다.</li>
+      <li><b>원인:</b> AI發 기판 수요 급증 + 구조적 공급 부족 + 고마진 제품(FC-BGA·MLB) 믹스 개선.</li>
+      <li><b>구조:</b> 고정비가 큰 장치산업이라 <b>가동률이 오르면 이익이 폭발적으로 늘고, 꺾이면 급히 적자</b>가 된다.</li>
+      <li><b>따라서 핵심 질문:</b> "이익이 늘었나?"가 아니라 <b>"이 이익이 얼마나 오래 갈 구조인가?"</b></li>
+      <li><b>검증 포인트:</b> ①증설 완료·가동 일정 ②FC-BGA/MLB 믹스 비중 ③수율 ④공급부족 지속 여부 ⑤메모리 사이클.</li>
+    </ol>
+  </div>
+
+  <div class="toc">
+    <b>목차</b>
+    <ol>
+      <li>실적 추이 — 무슨 일이 있었나</li>
+      <li>턴어라운드의 해부 (왜 이익이 튀었나)</li>
+      <li>2026년 전망치와 그 편차</li>
+      <li>사업부문별 구조</li>
+      <li>증설(CAPEX) 일정 — 가장 중요한 변수</li>
+      <li>수급: 왜 '공급자 우위'인가</li>
+      <li>KPI 대시보드 — 무엇을 추적할까</li>
+      <li>시나리오 3종 (낙관/중립/비관)</li>
+      <li>리스크 매트릭스</li>
+      <li>촉매 캘린더</li>
+      <li>경쟁사 비교</li>
+      <li>밸류에이션 참고 · 체크리스트 · FAQ</li>
+    </ol>
+  </div>
+
+  <!-- 1 -->
+  <h2>1. 실적 추이 — 무슨 일이 있었나</h2>
+  <table>
+    <thead><tr><th class="c">시점</th><th class="c">매출</th><th class="c">영업이익</th><th>메모</th></tr></thead>
+    <tbody>
+      <tr><td class="c">2024 4Q</td><td class="c">—</td><td class="c bad">영업손실</td><td>업황 부진 · 가동률 저조</td></tr>
+      <tr><td class="c">2025 3Q</td><td class="c">2,862억</td><td class="c">244억</td><td>YoY 매출 +23%, 영업이익 +165%</td></tr>
+      <tr><td class="c">2025 4Q</td><td class="c">3,179억</td><td class="c good">290억</td><td>YoY 매출 +54% · <b>흑자 전환</b> · QoQ +18.6%</td></tr>
+      <tr><td class="c">2026 (전망)</td><td class="c">1.43조~1.47조</td><td class="c good">1,702억~2,022억</td><td>증권사 추정. YoY 영업이익 +277%~+312%</td></tr>
+    </tbody>
+  </table>
+  <p class="sub">
+    ※ 2026년 수치는 <b>증권사 추정치</b>이며 기관마다 편차가 크다(대신증권 매출 1.468조·영업이익 2,022억 / 다른 추정 1.43조·1,702억).
+    <span class="src">(출처: 대신증권 2026.01.19·2026.02.02, iM증권 2026.01.30, 데이터투자 2026.02.02)</span>
+  </p>
+
+  <figure>
+    <div class="svgbox">
+      <svg viewBox="0 0 840 280" width="100%" role="img" aria-label="실적 추이 차트">
+        <g font-family="Segoe UI, sans-serif">
+          <text x="16" y="24" font-size="14.5" font-weight="800">분기 매출·영업이익 추이 (단위: 억 원)</text>
+          <!-- axis -->
+          <line x1="60" y1="220" x2="800" y2="220" stroke="#cbd5e1" stroke-width="1.5"/>
+          <line x1="60" y1="50" x2="60" y2="220" stroke="#cbd5e1" stroke-width="1.5"/>
+          <!-- bars: 24Q4(0), 25Q3(2862), 25Q4(3179) -->
+          <rect x="140" y="215" width="70" height="5" fill="#fca5a5"/>
+          <text x="175" y="238" font-size="11.5" text-anchor="middle">24 4Q</text>
+          <text x="175" y="206" font-size="11" fill="#dc2626" text-anchor="middle">적자</text>
+
+          <rect x="330" y="98" width="70" height="122" fill="#fdba74"/>
+          <text x="365" y="238" font-size="11.5" text-anchor="middle">25 3Q</text>
+          <text x="365" y="90" font-size="11" text-anchor="middle">2,862</text>
+
+          <rect x="520" y="84" width="70" height="136" fill="#ea580c"/>
+          <text x="555" y="238" font-size="11.5" text-anchor="middle">25 4Q</text>
+          <text x="555" y="76" font-size="11" text-anchor="middle">3,179</text>
+
+          <!-- OP line -->
+          <circle cx="175" cy="212" r="5" fill="#dc2626"/>
+          <circle cx="365" cy="190" r="5" fill="#059669"/>
+          <circle cx="555" cy="186" r="5" fill="#059669"/>
+          <polyline points="175,212 365,190 555,186" fill="none" stroke="#059669" stroke-width="2.5"/>
+          <text x="365" y="180" font-size="10.5" fill="#059669" text-anchor="middle">244</text>
+          <text x="555" y="176" font-size="10.5" fill="#059669" text-anchor="middle">290</text>
+
+          <!-- legend -->
+          <rect x="640" y="52" width="14" height="14" fill="#ea580c"/><text x="662" y="64" font-size="11.5">매출</text>
+          <line x1="640" y1="82" x2="656" y2="82" stroke="#059669" stroke-width="3"/><text x="662" y="86" font-size="11.5">영업이익</text>
+          <text x="70" y="264" font-size="11" fill="#5c6472">※ 2024 4Q는 영업손실(적자)이라 막대 높이를 0으로 표시. 개인 정리 도식.</text>
+        </g>
+      </svg>
+    </div>
+    <figcaption>그림 1. 적자 → 흑자 전환 → 확대. 매출 증가폭보다 <b>이익 증가폭이 훨씬 크다</b>는 게 포인트. (개인 정리 도식)</figcaption>
+  </figure>
+
+  <!-- 2 -->
+  <h2>2. 턴어라운드의 해부 — 왜 이익이 이렇게 튀었나</h2>
+  <p class="lead">
+    2025년 4분기 영업이익이 전기 대비 <b>1,210%</b> 상승했다는 보도가 있었다. 매출은 같은 기간 이 정도로 늘지 않았다.
+    <b>이 격차가 바로 '영업 레버리지'</b>다. 세 가지가 동시에 작동했다.
+  </p>
+  <div class="grid2">
+    <div class="card">
+      <h4>① 가동률 회복 (물량)</h4>
+      <p>고정비(공장·설비 감가상각·인건비)는 그대로인데 생산량이 늘면, 늘어난 매출의 상당 부분이 그대로 이익으로 떨어진다.
+      장치산업의 전형적 패턴.</p>
+    </div>
+    <div class="card">
+      <h4>② 믹스 개선 (단가·마진)</h4>
+      <p>저마진 메모리 기판 → 고마진 FC-BGA·MLB로 비중 이동. 같은 물량이라도 <b>평균 판매단가와 마진이 올라간다.</b></p>
+    </div>
+    <div class="card">
+      <h4>③ 수율 개선</h4>
+      <p>FC-BGA는 층수가 많아 초기엔 불량이 많다. 양산이 안정되며 수율이 오르면 <b>원가가 내려가 이익률이 급등</b>한다.
+      보도상 FC-BGA의 턴어라운드(흑자전환)가 빠르게 진행된 것으로 판단된다는 분석이 있었다.</p>
+    </div>
+    <div class="card">
+      <h4>④ 응용처 고도화</h4>
+      <p>데이터센터·광모듈·SSD컨트롤러 비중이 50%를 넘어서고, 우주항공·AI가속기·위성향 <b>고마진 제품</b>이 붙었다.</p>
+    </div>
+  </div>
+  <div class="callout">
+    <b>⚠️ 이 구조의 양면성:</b> 영업 레버리지는 <b>양방향</b>으로 작동한다. 지금은 위로 튀지만, 수요가 꺾이거나
+    증설한 설비가 놀면 <b>감가상각비가 그대로 남아 적자 폭이 커진다.</b> 2024년이 정확히 그 모습이었다.
+    "이익이 몇 % 늘었다"보다 <b>"가동률이 유지될 수 있는가"</b>를 봐야 하는 이유다.
+  </div>
+
+  <!-- 3 -->
+  <h2>3. 2026년 전망치와 그 편차</h2>
+  <table>
+    <thead><tr><th>기관/시점</th><th class="c">2026 매출</th><th class="c">2026 영업이익</th><th class="c">YoY 증가율</th></tr></thead>
+    <tbody>
+      <tr><td>대신증권 (2026.01)</td><td class="c">1조 4,680억</td><td class="c">2,022억</td><td class="c">매출 +38% / 영업익 +312%</td></tr>
+      <tr><td>타 증권사 추정</td><td class="c">1조 4,300억</td><td class="c">1,702억</td><td class="c">영업익 +277%</td></tr>
+      <tr><td>데이터투자 인용</td><td class="c">—</td><td class="c">—</td><td class="c">영업익 +264%</td></tr>
+    </tbody>
+  </table>
+  <p>
+    편차가 <b>영업이익 기준 1,702억~2,022억(약 19% 차이)</b>로 작지 않다. 이 편차의 원인은 대체로
+    <b>①증설 물량이 언제부터 매출로 잡히나 ②FC-BGA 수율/단가 가정 ③MLB 램프업 속도</b>에서 갈린다.
+    즉 <b>"타이밍 가정"의 차이</b>다. 투자자는 숫자 자체보다 <b>그 가정이 실제로 확인되는지</b>를 추적하는 게 낫다.
+  </p>
+  <div class="note">
+    <b>주의:</b> 특정 증권사가 제시한 목표주가·시총 타겟(예: "시가총액 8조원 타겟" 같은 표현)은 <b>해당 기관의 견해</b>일 뿐이며
+    이 노트가 지지하거나 권유하는 수치가 아니다. 참고 정보로만 취급하자.
+  </div>
+
+  <!-- 4 -->
+  <h2>4. 사업부문별 구조</h2>
+  <figure>
+    <div class="svgbox">
+      <svg viewBox="0 0 840 250" width="100%" role="img" aria-label="사업부문 구성">
+        <g font-family="Segoe UI, sans-serif">
+          <text x="16" y="24" font-size="14.5" font-weight="800">매출 구성 (개략) 과 성격</text>
+          <!-- stacked bar -->
+          <rect x="60" y="50" width="420" height="46" fill="#fdba74"/>
+          <text x="270" y="79" font-size="13" text-anchor="middle" font-weight="700">메모리 패키지기판 (약 50~60%)</text>
+          <rect x="480" y="50" width="190" height="46" fill="#ea580c"/>
+          <text x="575" y="79" font-size="12.5" fill="#fff" text-anchor="middle" font-weight="700">FC-BGA</text>
+          <rect x="670" y="50" width="120" height="46" fill="#166534"/>
+          <text x="730" y="79" font-size="12.5" fill="#fff" text-anchor="middle" font-weight="700">MLB</text>
+
+          <text x="270" y="128" font-size="12" fill="#5c6472" text-anchor="middle">캐시카우 · 물량 큼 · 메모리 사이클 연동</text>
+          <text x="575" y="128" font-size="12" fill="#5c6472" text-anchor="middle">고부가 · 마진 최상</text>
+          <text x="730" y="128" font-size="12" fill="#5c6472" text-anchor="middle">신규 · 성장 최속</text>
+
+          <line x1="480" y1="140" x2="480" y2="180" stroke="#ea580c" stroke-width="2" stroke-dasharray="4 3"/>
+          <text x="640" y="172" font-size="13" fill="#ea580c" font-weight="800" text-anchor="middle">→ 이 경계선이 오른쪽에서 왼쪽으로</text>
+          <text x="640" y="192" font-size="13" fill="#ea580c" font-weight="800" text-anchor="middle">밀려올수록 (=고부가 비중↑) 마진 개선</text>
+          <text x="240" y="220" font-size="12" fill="#5c6472">※ 비중은 보도 기반 개략치. 분기별로 변동. 개인 정리 도식.</text>
+        </g>
+      </svg>
+    </div>
+    <figcaption>그림 2. 관전 포인트는 <b>'경계선의 이동'</b> — 고부가(FC-BGA·MLB) 비중이 실제로 올라가는지. (개인 정리 도식)</figcaption>
+  </figure>
+  <table>
+    <thead><tr><th>부문</th><th>성격</th><th>연동 변수</th><th class="c">마진</th></tr></thead>
+    <tbody>
+      <tr><td><b>메모리 패키지기판</b></td><td>기본 물량 · 캐시카우</td><td>메모리 업황, 삼성·SK하이닉스 가동률</td><td class="c mid">중</td></tr>
+      <tr><td><b>FC-BGA (비메모리)</b></td><td>고부가 · 기술 난도 최상</td><td>AI 가속기, 데이터센터, 전장, 광모듈</td><td class="c good">높음</td></tr>
+      <tr><td><b>MLB</b></td><td>신규 · 성장 최속</td><td>AI 서버, 네트워크 장비</td><td class="c good">높음</td></tr>
+    </tbody>
+  </table>
+
+  <!-- 5 -->
+  <h2>5. 증설(CAPEX) 일정 — 가장 중요한 변수</h2>
+  <p>
+    기판은 <b>돈을 먼저 쓰고 나중에 버는</b> 사업이다. 증설 타이밍이 실적 궤적을 결정한다. 보도된 투자 내역을 정리하면:
+  </p>
+  <table>
+    <thead><tr><th class="c">시기</th><th>내용</th><th>비고</th></tr></thead>
+    <tbody>
+      <tr><td class="c">2020~2022</td><td>FC-BGA 투자 약 <b>2,700억 원</b></td><td>비메모리 진출 기반</td></tr>
+      <tr><td class="c">2022</td><td>FC-BGA 생산설비 투자 <b>2,700억 원</b> 공식화</td><td>당초 2024년 말 완료 → <b>2027년으로 연기</b></td></tr>
+      <tr><td class="c">~2027</td><td>FC-BGA 누적 투자 약 <b>5,400억 원</b></td><td>단계적 집행</td></tr>
+      <tr><td class="c">최근</td><td><b>2,130억 원</b> 규모 반도체 생산공장 증설 공시</td><td>FC-CSP 수요 대응</td></tr>
+      <tr><td class="c">종합</td><td>AI 기판에 <b>8,000억 원 이상</b> 투입 (보도)</td><td>디일렉 보도 기준</td></tr>
+      <tr><td class="c">2Q26</td><td>증설 완료 예정</td><td><b>3Q26부터 실적 본격 반영</b> 전망</td></tr>
+    </tbody>
+  </table>
+  <div class="callout">
+    <b>⏱️ 여기가 승부처:</b> "증설 2Q26 완료 → 3Q26부터 반영"이라는 시나리오가 <b>실제로 지켜지는지</b>가 2026년 하반기 최대 관전 포인트다.
+    과거 2022년 투자가 <b>2024년 말 → 2027년으로 3년 연기</b>된 전례가 있다는 점은 반드시 기억해야 한다.
+    <b>증설 지연은 이 업종에서 드문 일이 아니다.</b>
+    <span class="src">(출처: 디일렉, 증권사 리포트 요약)</span>
+  </div>
+
+  <!-- 6 -->
+  <h2>6. 수급 — 왜 '공급자 우위'라고 하나</h2>
+  <p>
+    업계·시장조사 자료에 따르면 <b>FC-BGA 수요가 생산능력을 50% 이상 초과</b>하고 있으며, 이 부족이 <b>2027년까지 이어질 것</b>이라는 분석이 나온다.
+    기판 증설은 클린룸·설비 반입·인증까지 <b>2~3년</b>이 걸려 단기간에 공급을 늘릴 수 없다.
+  </p>
+  <div class="grid2">
+    <div class="card">
+      <h4>공급자 우위가 뜻하는 것</h4>
+      <ul style="margin-bottom:0;">
+        <li>가격 협상력이 기판사 쪽으로 이동</li>
+        <li>선수금·장기계약 등 조건 개선 가능</li>
+        <li>증설분이 '지어지자마자' 팔릴 가능성</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4>단, 조심할 점</h4>
+      <ul style="margin-bottom:0;">
+        <li>공급 부족은 <b>영원하지 않다</b> — 전 세계가 동시에 증설 중</li>
+        <li>2027년 이후 <b>공급과잉 반전</b> 가능성이 이 업종의 고질적 사이클</li>
+        <li>부족 국면에 들어간 증설이 <b>과잉 국면에 완공</b>되는 게 최악의 시나리오</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- 7 -->
+  <h2>7. KPI 대시보드 — 무엇을 추적할까</h2>
+  <p>실적 발표·공시·업계 보도에서 아래 항목만 체크해도 흐름을 놓치지 않는다.</p>
+  <table>
+    <thead><tr><th class="c">순위</th><th>KPI</th><th>왜 중요한가</th><th>어디서 확인</th></tr></thead>
+    <tbody>
+      <tr><td class="c">1</td><td><b>FC-BGA + MLB 매출 비중</b></td><td>믹스 개선이 실제로 일어나는지 = 마진의 근거</td><td>분기 실적 · IR 자료</td></tr>
+      <tr><td class="c">2</td><td><b>증설 진행률·완공 일정</b></td><td>3Q26 반영 시나리오의 전제</td><td>공시 · 컨콜</td></tr>
+      <tr><td class="c">3</td><td><b>영업이익률(OPM)</b></td><td>수율·믹스가 종합적으로 드러나는 지표</td><td>분기 실적</td></tr>
+      <tr><td class="c">4</td><td><b>가동률</b></td><td>영업 레버리지의 방향을 결정</td><td>IR · 업계 보도</td></tr>
+      <tr><td class="c">5</td><td><b>AI 가속기 고객사 물량</b></td><td>MLB 성장의 실체 확인</td><td>업계 보도 · 컨콜</td></tr>
+      <tr><td class="c">6</td><td><b>메모리 업황</b></td><td>매출 50~60%를 좌우</td><td>삼성·SK하이닉스 실적</td></tr>
+      <tr><td class="c">7</td><td><b>글로벌 FC-BGA 수급</b></td><td>가격 협상력·사이클 위치</td><td>시장조사기관 · 경쟁사 발표</td></tr>
+    </tbody>
+  </table>
+
+  <!-- 8 -->
+  <h2>8. 시나리오 3종 (가정 대입 · 예측 아님)</h2>
+  <div class="warn">
+    아래는 <b>"어떤 변수가 어떻게 움직이면 그림이 어떻게 달라지는가"</b>를 보기 위한 사고실험입니다.
+    특정 시나리오의 실현 가능성을 주장하거나 목표 수치를 제시하는 것이 아닙니다.
+  </div>
+  <table>
+    <thead><tr><th></th><th class="c">🟢 낙관</th><th class="c">🟡 중립</th><th class="c">🔴 비관</th></tr></thead>
+    <tbody>
+      <tr><td><b>증설 일정</b></td><td class="c">2Q26 예정대로 완료</td><td class="c">일부 분기 지연</td><td class="c">1년 이상 재지연</td></tr>
+      <tr><td><b>FC-BGA 수급</b></td><td class="c">2027년까지 부족 지속</td><td class="c">2027년 중 균형</td><td class="c">조기 공급과잉 전환</td></tr>
+      <tr><td><b>제품 믹스</b></td><td class="c">고부가 비중 빠르게 상승</td><td class="c">완만한 개선</td><td class="c">메모리 의존 지속</td></tr>
+      <tr><td><b>MLB 램프업</b></td><td class="c">대량 양산 안착·고객 확대</td><td class="c">일부 물량에 그침</td><td class="c">퀄 지연·물량 축소</td></tr>
+      <tr><td><b>메모리 업황</b></td><td class="c">호황 지속</td><td class="c">횡보</td><td class="c">둔화·재고조정</td></tr>
+      <tr><td><b>이익 궤적</b></td><td class="c good">레버리지 상방 극대화</td><td class="c mid">개선되나 전망치 하회 가능</td><td class="c bad">증설 감가상각이 부담으로</td></tr>
+    </tbody>
+  </table>
+  <div class="callout">
+    <b>이 표의 쓸모:</b> 뉴스가 나올 때마다 "이건 어느 열의 근거인가"를 표시해 두면, 감정이 아니라 <b>누적된 근거</b>로 판단할 수 있다.
+    특히 <b>증설 일정</b>과 <b>믹스 비중</b> 두 줄만 꾸준히 추적해도 대부분이 설명된다.
+  </div>
+
+  <!-- 9 -->
+  <h2>9. 리스크 매트릭스</h2>
+  <table>
+    <thead><tr><th>리스크</th><th class="c">가능성</th><th class="c">영향</th><th>설명</th></tr></thead>
+    <tbody>
+      <tr><td><b>증설 지연</b></td><td class="c bad">중상</td><td class="c bad">큼</td><td>2022년 투자가 2024→2027로 연기된 전례. 실적 반영 시점이 밀린다.</td></tr>
+      <tr><td><b>사이클 반전(공급과잉)</b></td><td class="c mid">중</td><td class="c bad">큼</td><td>전 세계 동시 증설 → 2027년 이후 과잉 우려. 기판 산업의 고질병.</td></tr>
+      <tr><td><b>메모리 업황 둔화</b></td><td class="c mid">중</td><td class="c bad">큼</td><td>매출 50~60%가 메모리 기판. 직접 타격.</td></tr>
+      <tr><td><b>고객 집중도</b></td><td class="c bad">상시</td><td class="c mid">중</td><td>소수 대형 고객 의존. 발주 변동에 실적이 크게 흔들림.</td></tr>
+      <tr><td><b>수율 문제</b></td><td class="c mid">중</td><td class="c mid">중</td><td>층수 많은 신제품일수록 초기 불량. 마진을 갉아먹음.</td></tr>
+      <tr><td><b>원자재·소재 의존</b></td><td class="c mid">중</td><td class="c mid">중</td><td>ABF 필름 등 핵심 소재가 일본에 편중(③밸류체인 참조).</td></tr>
+      <tr><td><b>주가 선반영</b></td><td class="c bad">현실</td><td class="c bad">큼</td><td>6개월 +204% 급등 보도가 있었을 만큼 기대가 이미 반영. 실적 미스에 민감.</td></tr>
+      <tr><td><b>환율·전방 투자 축소</b></td><td class="c mid">중</td><td class="c mid">중</td><td>빅테크 CAPEX 조정 시 AI 기판 수요 둔화.</td></tr>
+    </tbody>
+  </table>
+
+  <!-- 10 -->
+  <h2>10. 촉매 캘린더</h2>
+  <table>
+    <thead><tr><th>시점/이벤트</th><th>확인할 것</th></tr></thead>
+    <tbody>
+      <tr><td><b>2Q26</b> 증설 완료 예정</td><td>실제 완공 여부 — 시나리오의 최대 분기점</td></tr>
+      <tr><td><b>3Q26</b> 실적</td><td>증설분이 매출로 잡히기 시작하는지, OPM 개선폭</td></tr>
+      <tr><td>매 분기 실적발표·컨콜</td><td>FC-BGA/MLB 비중, 가동률, 수율 코멘트</td></tr>
+      <tr><td>수시 공시</td><td>추가 증설·대규모 공급계약·설비투자</td></tr>
+      <tr><td>고객사 실적</td><td>삼성전자·SK하이닉스 가동률, 빅테크 AI CAPEX</td></tr>
+      <tr><td>경쟁사 발표</td><td>삼성전기·Ibiden·Unimicron 증설 계획 = 공급과잉 선행지표</td></tr>
+    </tbody>
+  </table>
+
+  <!-- 11 -->
+  <h2>11. 경쟁사 비교 (개략)</h2>
+  <table>
+    <thead><tr><th>기업</th><th>국가</th><th>주력</th><th>대덕전자와의 관계</th></tr></thead>
+    <tbody>
+      <tr><td><b>대덕전자</b></td><td>한국</td><td>메모리 기판 + FC-BGA + MLB</td><td>—</td></tr>
+      <tr><td>삼성전기</td><td>한국</td><td>FC-BGA (AI 서버 집중 투자)</td><td>국내 최대 경쟁자. R&amp;D·증설 확대 중</td></tr>
+      <tr><td>심텍</td><td>한국</td><td>메모리 패키지 기판 강자</td><td>메모리 기판에서 직접 경쟁</td></tr>
+      <tr><td>이수페타시스</td><td>한국</td><td>MLB (AI 가속기용 고다층)</td><td><b>MLB에서 직접 경쟁</b></td></tr>
+      <tr><td>Ibiden</td><td>일본</td><td>최고급 FC-BGA</td><td>기술 최상위. 글로벌 점유율 상위</td></tr>
+      <tr><td>Unimicron</td><td>대만</td><td>ABF 기판 1위</td><td>ABF 기판 점유율 약 26.6%</td></tr>
+      <tr><td>Shinko</td><td>일본</td><td>고급 FC-BGA</td><td>Ibiden과 함께 고급 시장 과점</td></tr>
+      <tr><td>Nan Ya PCB</td><td>대만</td><td>ABF 기판</td><td>점유율 약 13.5%</td></tr>
+      <tr><td>AT&amp;S</td><td>오스트리아</td><td>ABF 기판</td><td>점유율 약 8.0%</td></tr>
+    </tbody>
+  </table>
+  <p class="sub">
+    ※ 글로벌 ABF 기판 상위 5개사 합산 점유율이 상당히 높아 <b>과점 구조</b>다. 대덕전자는 이 최상위권에 속하지는 않으나,
+    <b>메모리 기판·FC-BGA·MLB를 모두 하는 폭</b>이 차별점이다. 상세 구도는
+    <a href="https://tryingpig.github.io/study/260718_대덕전자_3_밸류체인.html">③ 밸류체인</a> 참조.
+    <span class="src">(출처: 시장조사 자료 요약, TechTimes 2026.05)</span>
+  </p>
+
+  <!-- 12 -->
+  <h2>12. 밸류에이션 참고</h2>
+  <div class="kpi">
+    <div class="box"><div class="num">약 6.9조</div><div class="lab">시가총액 (2026.05 기준)</div></div>
+    <div class="box"><div class="num">140,400원</div><div class="lab">주가 (2026.05 기준)</div></div>
+    <div class="box"><div class="num">17.5%</div><div class="lab">외국인 지분율</div></div>
+    <div class="box"><div class="num">+204%</div><div class="lab">6개월 주가 상승 (보도 기준)</div></div>
+  </div>
+  <div class="warn">
+    <b>해석 주의:</b> 위 수치는 <b>특정 시점(2026년 5월) 보도 기준</b>이며 현재와 다를 수 있습니다. 또한 6개월 +204%라는 급등은
+    <b>기대가 이미 상당 부분 주가에 반영</b되었을 가능성을 시사합니다. 실적이 전망치를 밑돌 경우 조정 폭이 클 수 있는 구간이라는 점을
+    인지할 필요가 있습니다. 이 노트는 어떤 가격이 싸다/비싸다는 판단을 제시하지 않습니다.
+  </div>
+
+  <h2>투자 전 체크리스트</h2>
+  <div class="note">
+    <ul style="margin-bottom:0;">
+      <li>□ 이 회사가 <b>사이클 산업</b>이라는 점을 이해했는가? (좋을 때 매우 좋고, 나쁠 때 적자)</li>
+      <li>□ 매출의 50~60%가 <b>메모리 기판</b>이라 메모리 업황에 연동된다는 것을 알고 있는가?</li>
+      <li>□ <b>증설 지연 전례</b>(2024→2027)를 감안했는가?</li>
+      <li>□ 2026년 전망치가 <b>증권사 추정</b>이며 기관 간 편차가 크다는 것을 아는가?</li>
+      <li>□ 주가가 이미 크게 오른 뒤라는 점을 감안했는가?</li>
+      <li>□ 내가 추적할 <b>KPI 2~3개</b>(믹스 비중·증설 일정·OPM)를 정했는가?</li>
+      <li>□ 시나리오 비관 국면에서 <b>내가 감당할 수 있는 손실 범위</b>를 정했는가?</li>
+    </ul>
+  </div>
+
+  <h2>FAQ</h2>
+  <h4>Q. 실적이 좋아지고 있는데 왜 이렇게 조심스럽게 쓰나요?</h4>
+  <p>기판은 대표적인 <b>사이클 산업</b>이기 때문입니다. 이익이 폭증하는 국면과 적자가 나는 국면이 반복됩니다.
+  지금 좋은 숫자가 나오는 것과, 그 숫자가 <b>몇 년 지속되는가</b>는 다른 문제입니다.</p>
+  <h4>Q. FC-BGA 공급 부족이 2027년까지라는데, 그 다음은요?</h4>
+  <p>그게 핵심 리스크입니다. 전 세계 기판사가 동시에 증설 중이라, 부족이 해소되는 시점에 <b>공급과잉으로 반전</b>할 수 있습니다.
+  '지금 부족하다'는 뉴스만 보고 장기를 가정하면 위험합니다.</p>
+  <h4>Q. 가장 중요한 지표 하나만 고르면?</h4>
+  <p><b>고부가(FC-BGA+MLB) 매출 비중</b>입니다. 이게 올라가면 메모리 사이클 의존도가 낮아지고 마진 구조가 개선됩니다.
+  이 회사의 '체질 변화'가 진짜인지 가짜인지를 이 한 줄이 말해줍니다.</p>
+
+  <h2>출처</h2>
+  <p class="src">
+    • 대신증권 기업분석, "대덕전자 — 반도체 호황의 수혜" (2026.01.19) — https://www.daeduck.com/file/board/760.do<br>
+    • 대신증권 Results Comment, "FC BGA, 탄탄대로~" (2026.02.02) — http://www.bondweb.co.kr/Data/20261/30/menu01/ratingDS_885673.pdf<br>
+    • 대신증권 Earnings Preview (2025.12.19) — https://www.daeduck.com/file/board/756.do<br>
+    • iM증권 Company Brief, "예상보다 더 빠른 데이터센터향 응용처 확대" (2026.01.30)<br>
+    • 메리츠증권 Company Brief (2026.04.29) — https://www.daeduck.com/file/board/771.do<br>
+    • 데이터투자, "대덕전자, 2026년 영업익 264%↑…전장용 FC BGA 70% 급증" — https://www.datatooza.com/article/20260202112324362052ef3879c9_80<br>
+    • 디일렉, "대덕전자, AI 기판에 8000억 이상 투입" — https://www.thelec.kr/news/articleView.html?idxno=56922<br>
+    • 데일리인베스트, "대덕전자, 패키지기판 '공급자 우위' 진입" — https://www.dailyinvest.kr/news/articleView.html?idxno=71324<br>
+    • 데일리인베스트, "AI발 고부가 기판 쇼티지 수혜" — http://www.dailyinvest.kr/news/articleView.html?idxno=70771<br>
+    • 핀포인트뉴스, "대덕전자, AI 가속기 매출 24% 성장" — https://www.pinpointnews.co.kr/news/articleView.html?idxno=393582<br>
+    • 알파스퀘어 대덕전자 주가 요약 — https://alphasquare.co.kr/home/stock-summary?code=353200<br>
+    • TechTimes, "Samsung Electro-Mechanics AI Server Pivot" (2026.05.29) — https://www.techtimes.com/articles/317337/20260529/
+  </p>
+
+  <div class="foot">
+    <hr>
+    본 문서는 개인 학습·정리 목적의 비상업 노트입니다. 전망치·목표주가는 해당 증권사의 견해이며 본 문서의 의견이 아닙니다.
+    투자에 대한 최종 판단과 책임은 전적으로 독자 본인에게 있습니다. © 2026 개인 리서치 라이브러리.
+  </div>
+
+</div>
+</body>
+</html>

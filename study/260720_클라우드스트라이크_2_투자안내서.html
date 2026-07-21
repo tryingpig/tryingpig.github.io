@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>클라우드스트라이크 투자 안내서 — 성장은 확실한데, 가격이 문제다</title>
+<style>
+  :root{
+    --accent:#dc2626; --accent2:#ef4444;
+    --ink:#1f2430; --muted:#5c6472; --line:#ece6e6; --bg:#fff; --soft:#fdf7f7;
+    --warnbg:#fff7ed; --warnln:#fb923c;
+  }
+  *{box-sizing:border-box;}
+  body{font-family:"Segoe UI","Malgun Gothic","Apple SD Gothic Neo",system-ui,sans-serif;
+    color:var(--ink); background:var(--bg); margin:0; line-height:1.78; font-size:16.5px; letter-spacing:-0.1px;}
+  .wrap{max-width:920px; margin:0 auto; padding:40px 28px 90px;}
+  h1{font-size:29px; line-height:1.32; margin:8px 0 6px; letter-spacing:-0.6px;}
+  h2{font-size:22px; margin:50px 0 12px; padding-top:14px; border-top:3px solid var(--accent); letter-spacing:-0.4px;}
+  h3{font-size:18.5px; margin:30px 0 8px; color:#2b3242;}
+  h4{font-size:16px; margin:18px 0 6px; color:var(--accent);}
+  p{margin:10px 0;} a{color:var(--accent); text-decoration:none;} a:hover{text-decoration:underline;}
+  .sub{color:var(--muted); font-size:15px;} .lead{font-size:17.5px; color:#333a49;}
+  .kicker{display:inline-block; font-size:13px; font-weight:700; letter-spacing:1.5px;
+    color:#fff; background:var(--accent); padding:5px 12px; border-radius:999px;}
+  .warn{background:var(--warnbg); border:1px solid var(--warnln); border-left:6px solid var(--warnln);
+    border-radius:10px; padding:16px 18px; margin:22px 0; font-size:15px;}
+  .note{background:var(--soft); border:1px solid var(--line); border-radius:10px; padding:16px 18px; margin:18px 0;}
+  .callout{background:#fef2f2; border:1px solid #fca5a5; border-left:6px solid var(--accent);
+    border-radius:10px; padding:16px 18px; margin:20px 0;}
+  .dark{background:#0f172a; color:#e2e8f0; border-radius:10px; padding:16px 18px; margin:20px 0;}
+  .dark b{color:#fff;}
+  .big{font-size:19px; font-weight:800; color:var(--accent); line-height:1.5;}
+  .grid2{display:grid; grid-template-columns:1fr 1fr; gap:16px;}
+  .card{border:1px solid var(--line); border-radius:12px; padding:16px 18px; background:#fff;}
+  table{width:100%; border-collapse:collapse; margin:18px 0; font-size:14.5px;}
+  th,td{border:1px solid var(--line); padding:9px 11px; text-align:left; vertical-align:top;}
+  th{background:var(--soft); font-weight:700;} td.c,th.c{text-align:center;}
+  figure{margin:24px 0; text-align:center;} figcaption{font-size:13px; color:var(--muted); margin-top:8px;}
+  .svgbox{border:1px solid var(--line); border-radius:12px; padding:14px; background:#fff;}
+  ul,ol{margin:10px 0 10px 4px; padding-left:22px;} li{margin:6px 0;}
+  .kpi{display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin:20px 0;}
+  .kpi .box{border:1px solid var(--line); border-radius:12px; padding:14px; text-align:center; background:var(--soft);}
+  .kpi .num{font-size:20px; font-weight:800; color:var(--accent); letter-spacing:-0.5px;}
+  .kpi .lab{font-size:12.5px; color:var(--muted); margin-top:3px;}
+  .toc{background:var(--soft); border:1px solid var(--line); border-radius:12px; padding:18px 22px; margin:26px 0;}
+  .toc ol{columns:2; column-gap:34px;}
+  .src{font-size:13px; color:var(--muted); word-break:break-all;}
+  .seriesnav{background:#fef2f2; border:1px solid #fca5a5; border-radius:10px; padding:14px 18px; margin:20px 0; font-size:14.5px;}
+  .good{color:#059669; font-weight:700;} .bad{color:#dc2626; font-weight:700;} .mid{color:#b45309; font-weight:700;}
+  hr{border:none; border-top:1px solid var(--line); margin:34px 0;}
+  .foot{color:var(--muted); font-size:13px; margin-top:40px;}
+  @media (max-width:680px){.grid2,.kpi{grid-template-columns:1fr;} .toc ol{columns:1;} h1{font-size:24px;}}
+  @media print{body{font-size:11.5pt;} .wrap{max-width:100%; padding:0;} h2{break-after:avoid;}
+    figure,table,.card{break-inside:avoid;} a{color:#000;} .warn,.callout,.note,.dark{break-inside:avoid;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <span class="kicker">CROWDSTRIKE · ② 투자 안내서</span>
+  <h1>클라우드스트라이크 투자 안내서<br>— 성장은 확실한데, '가격'이 문제다</h1>
+  <p class="sub">작성일 2026-07-20 · NASDAQ: CRWD · 개인 리서치 노트 · 입문세트 2/3</p>
+
+  <div class="warn">
+    <b>⚠️ 투자 권유가 아닙니다.</b> 이 문서는 공개 실적·언론 자료를 정리한 개인 학습 노트이며 매수·매도 추천이 아닙니다.
+    시나리오는 예측이 아니라 <b>가정 대입</b>입니다. 밸류에이션 관련 서술은 <b>사실 정리</b>일 뿐
+    "싸다/비싸다"는 판단을 제시하지 않습니다. 해외 종목은 환율·세제·거래시간 등 추가 위험이 있습니다.
+    모든 투자 판단과 책임은 전적으로 본인에게 있습니다.
+  </div>
+
+  <div class="seriesnav">
+    <b>🛡️ 입문세트 구성</b> — <a href="https://tryingpig.github.io/study/260720_클라우드스트라이크_1_입문가이드.html">① 입문가이드</a> ·
+    ② <b>투자안내서(현재 글)</b> ·
+    <a href="https://tryingpig.github.io/study/260720_클라우드스트라이크_3_밸류체인.html">③ 밸류체인</a><br>
+    <span class="sub">회사·제품 기초(팰컨 구조, 단일 에이전트, 2024년 사고 경위)는 ①에서 다뤘습니다. 여기서는 <b>숫자와 쟁점</b>에 집중합니다.</span>
+  </div>
+
+  <div class="callout">
+    <b>🧭 이 글의 논지 한 장 요약</b>
+    <ol style="margin-bottom:0;">
+      <li><b>성장은 의심의 여지가 없다.</b> FY2026 매출 +22%, ARR 52.5억 달러(+24%), 순증 ARR 사상 첫 10억 달러 돌파.</li>
+      <li><b>사고는 실적으로 극복됐다.</b> 2024년 대란 이후에도 성장률이 꺾이기는커녕 <b>순증 ARR이 가속</b>됐다.</li>
+      <li><b>진짜 쟁점은 밸류에이션이다.</b> 시총 약 2,050억 달러 vs 연매출 48억 달러 — <b>매출의 40배 수준</b>.</li>
+      <li><b>구조적 위협은 마이크로소프트다.</b> 번들링으로 "공짜에 가깝게" 끼워파는 경쟁자를 어떻게 이길 것인가.</li>
+      <li><b>따라서 핵심 질문:</b> "성장하는가?"가 아니라 <b>"이 성장이 지금 가격을 정당화할 만큼 오래 갈 것인가?"</b></li>
+    </ol>
+  </div>
+
+  <div class="toc">
+    <b>목차</b>
+    <ol>
+      <li>실적 추이 — 숫자로 보는 회복</li>
+      <li>ARR 해부 — 이 회사의 진짜 성적표</li>
+      <li>Falcon Flex — 성장 가속의 엔진</li>
+      <li>수익성 전환 — 흑자 체력은 갖췄나</li>
+      <li>쟁점 ① 밸류에이션 — 40배의 무게</li>
+      <li>쟁점 ② 마이크로소프트라는 구조적 위협</li>
+      <li>쟁점 ③ 2024년 사고의 잔여 리스크</li>
+      <li>KPI 대시보드</li>
+      <li>시나리오 3종</li>
+      <li>리스크 매트릭스</li>
+      <li>촉매 캘린더</li>
+      <li>체크리스트 · FAQ</li>
+    </ol>
+  </div>
+
+  <!-- 1 -->
+  <h2>1. 실적 추이 — 숫자로 보는 회복</h2>
+  <div class="note">
+    <b>📅 회계연도 주의</b><br>
+    클라우드스트라이크의 회계연도는 <b>1월 31일에 끝난다.</b><br>
+    <b>FY2026 = 2025년 2월 ~ 2026년 1월</b> · <b>FY2025 = 2024년 2월 ~ 2025년 1월</b><br>
+    즉 <b>2024년 7월 사고는 FY2025 2분기에 발생</b>했다. 이 타임라인을 알아야 숫자가 읽힌다.
+  </div>
+
+  <table>
+    <thead><tr><th class="c">구분</th><th class="c">매출</th><th class="c">구독 매출</th><th class="c">기말 ARR</th><th class="c">순증 ARR</th></tr></thead>
+    <tbody>
+      <tr><td class="c">FY2025</td><td class="c">$39.5억</td><td class="c">$37.6억</td><td class="c">약 $42.4억</td><td class="c">—</td></tr>
+      <tr><td class="c">FY2026 3Q</td><td class="c">$12.3억<br><span class="good">+22.2%</span></td><td class="c">—</td><td class="c">$49.2억<br><span class="good">+23%</span></td><td class="c good">$2.65억<br><b>+73%</b></td></tr>
+      <tr><td class="c">FY2026 4Q</td><td class="c">$13.1억<br><span class="good">+23%</span></td><td class="c">$12.4억<br><span class="good">+23%</span></td><td class="c">$52.5억<br><span class="good">+24%</span></td><td class="c good">$3.31억</td></tr>
+      <tr><td class="c"><b>FY2026 연간</b></td><td class="c good"><b>$48.1억</b><br>+22%</td><td class="c good"><b>$45.6억</b><br>+21%</td><td class="c good"><b>$52.5억</b><br>+24%</td><td class="c good"><b>$10.1억</b><br>사상 첫 10억 돌파</td></tr>
+    </tbody>
+  </table>
+
+  <figure>
+    <div class="svgbox">
+      <svg viewBox="0 0 840 290" width="100%" role="img" aria-label="ARR 추이">
+        <g font-family="Segoe UI, sans-serif">
+          <text x="16" y="24" font-size="14.5" font-weight="800">기말 ARR 추이 (단위: 억 달러) — 사고 이후에도 우상향</text>
+          <line x1="70" y1="230" x2="800" y2="230" stroke="#ece6e6" stroke-width="1.5"/>
+          <line x1="70" y1="50" x2="70" y2="230" stroke="#ece6e6" stroke-width="1.5"/>
+
+          <rect x="150" y="140" width="95" height="90" fill="#fecaca"/>
+          <text x="197" y="250" font-size="11.5" text-anchor="middle">FY25말</text>
+          <text x="197" y="132" font-size="11.5" text-anchor="middle">42.4</text>
+
+          <rect x="360" y="126" width="95" height="104" fill="#f87171"/>
+          <text x="407" y="250" font-size="11.5" text-anchor="middle">FY26 3Q</text>
+          <text x="407" y="118" font-size="11.5" text-anchor="middle">49.2</text>
+
+          <rect x="570" y="112" width="95" height="118" fill="#dc2626"/>
+          <text x="617" y="250" font-size="11.5" text-anchor="middle">FY26말</text>
+          <text x="617" y="104" font-size="12.5" text-anchor="middle" font-weight="800">52.5</text>
+
+          <!-- outage marker -->
+          <line x1="110" y1="60" x2="110" y2="230" stroke="#0f172a" stroke-width="2" stroke-dasharray="5 4"/>
+          <text x="112" y="56" font-size="11" fill="#0f172a" font-weight="700">← 2024.7 사고 (FY25 2Q)</text>
+
+          <text x="700" y="150" font-size="12" fill="#dc2626" font-weight="700">+24% YoY</text>
+          <text x="80" y="274" font-size="11" fill="#5c6472">※ FY25말 ARR은 보도된 성장률로부터 역산한 개략치. 개인 정리 도식.</text>
+        </g>
+      </svg>
+    </div>
+    <figcaption>그림 1. 사고 이후에도 ARR 곡선이 꺾이지 않았다. 이것이 이 회사의 첫 번째 사실. (개인 정리 도식)</figcaption>
+  </figure>
+
+  <div class="dark">
+    <b>📊 가장 인상적인 숫자 하나</b><br><br>
+    FY2026 3분기 <b>순증 ARR이 전년 동기 대비 +73%</b>였다. 이건 단순 회복이 아니라 <b>가속</b>이다.<br>
+    사고 직후(FY2025)에 계약이 위축됐던 기저효과도 있겠지만, <b>고객이 떠나기는커녕 더 샀다</b>는 뜻이다.
+  </div>
+
+  <!-- 2 -->
+  <h2>2. ARR 해부 — 이 회사의 진짜 성적표</h2>
+  <p class="lead">
+    구독 소프트웨어 회사를 볼 때 <b>매출보다 ARR을 먼저 봐야 한다.</b> 매출은 과거 계약이 회계적으로 인식된 결과지만,
+    ARR은 <b>지금 이 순간의 계약 상태</b>를 보여주기 때문이다.
+  </p>
+  <table>
+    <thead><tr><th>지표</th><th>의미</th><th>왜 중요한가</th></tr></thead>
+    <tbody>
+      <tr><td><b>기말 ARR</b></td><td>현재 계약된 구독의 연간 환산액</td><td>회사의 <b>현재 크기</b></td></tr>
+      <tr><td><b>순증 ARR</b><br><span class="sub">Net New ARR</span></td><td>해당 분기에 늘어난 ARR</td><td>회사의 <b>성장 속도</b> — 가장 민감한 지표</td></tr>
+      <tr><td><b>ARR 성장률</b></td><td>전년 대비 ARR 증가율</td><td>성장의 <b>지속성</b></td></tr>
+      <tr><td><b>모듈 채택률</b></td><td>고객당 평균 사용 모듈 수</td><td><b>업셀</b>이 작동하는지</td></tr>
+    </tbody>
+  </table>
+  <div class="callout">
+    <b>💡 왜 '순증 ARR'이 가장 중요한가</b><br>
+    기말 ARR은 <b>누적</b>이라 웬만해선 줄지 않는다(기존 고객이 갱신하니까). 그래서 <b>겉보기에 안정적</b>이다.<br>
+    반면 순증 ARR은 <b>이번 분기에 새로 판 것</b>이라 시장 상황·경쟁·영업력이 즉시 반영된다.
+    <b>성장이 꺾이면 순증 ARR에서 가장 먼저 나타난다.</b><br><br>
+    FY2026에 연간 순증 ARR이 <b>10.1억 달러</b>로 사상 처음 10억 달러를 넘겼다.
+    회사는 이를 <b>"순수 사이버보안 소프트웨어 기업 중 최초·최단으로 ARR 50억 달러 돌파"</b>라고 표현했다.
+  </div>
+
+  <!-- 3 -->
+  <h2>3. Falcon Flex — 성장 가속의 엔진</h2>
+  <p>
+    최근 성장의 상당 부분을 설명하는 건 <b>Falcon Flex</b>라는 구독 모델이다.
+  </p>
+  <div class="grid2">
+    <div class="card">
+      <h4>기존 방식</h4>
+      <p>모듈 A를 사고, 나중에 모듈 B가 필요하면 <b>다시 계약·협상</b>한다.</p>
+      <ul style="margin-bottom:0;">
+        <li>영업 사이클이 길다</li>
+        <li>고객은 결정을 미룬다</li>
+        <li>모듈 확산이 느리다</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4>Falcon Flex</h4>
+      <p>일정 금액을 <b>먼저 약정</b>하고, 그 안에서 <b>원하는 모듈을 자유롭게</b> 골라 쓴다.</p>
+      <ul style="margin-bottom:0;">
+        <li>고객: 유연하고 부담 적음</li>
+        <li>회사: <b>모듈 채택이 빨라짐</b></li>
+        <li>회사: <b>선약정으로 매출 가시성↑</b></li>
+      </ul>
+    </div>
+  </div>
+  <div class="kpi">
+    <div class="box"><div class="num">$13.5억+</div><div class="lab">Falcon Flex ARR (FY26 3Q)</div></div>
+    <div class="box"><div class="num">+200%↑</div><div class="lab">전년 대비 성장률</div></div>
+    <div class="box"><div class="num">약 27%</div><div class="lab">전체 ARR 대비 비중(개략)</div></div>
+    <div class="box"><div class="num">플랫폼화</div><div class="lab">전략의 실증</div></div>
+  </div>
+  <p class="sub">
+    ※ 비중은 FY26 3Q 기준 Flex ARR($13.5억) ÷ 당시 총 ARR($49.2억)로 필자가 계산한 개략치.
+    회사 공식 발표 수치가 아니므로 참고용.
+  </p>
+  <div class="note">
+    <b>이 지표가 말하는 것:</b> 회사가 오래 주장해 온 <b>"단일 플랫폼으로 여러 보안 제품을 통합한다"</b>는 전략이
+    <b>실제 계약으로 확인되고 있다</b>는 뜻이다. 고객이 여러 벤더를 쓰다가 팰컨 하나로 몰아주는
+    <b>벤더 통합(consolidation)</b>이 일어나고 있다는 근거다.
+  </div>
+
+  <!-- 4 -->
+  <h2>4. 수익성 전환 — 흑자 체력은 갖췄나</h2>
+  <table>
+    <thead><tr><th>항목</th><th class="c">FY2026 3Q</th><th class="c">전년 동기</th><th>메모</th></tr></thead>
+    <tbody>
+      <tr><td><b>Non-GAAP 영업이익</b></td><td class="c">$2.65억</td><td class="c">$2.01억</td><td>+32% 증가</td></tr>
+      <tr><td><b>Non-GAAP EPS</b></td><td class="c">$0.96</td><td class="c">—</td><td>컨센서스 $0.94 상회</td></tr>
+      <tr><td><b>잉여현금흐름(FCF)</b></td><td class="c good">$2.96억</td><td class="c">—</td><td><b>FCF 마진 24%</b></td></tr>
+    </tbody>
+  </table>
+  <div class="callout">
+    <b>💰 FCF 마진 24%의 의미</b><br>
+    매출 100달러를 벌면 <b>24달러가 실제 현금으로 남는다</b>는 뜻이다. 소프트웨어 기업에서도 상당히 좋은 수준이다.<br><br>
+    구독 모델의 특성상 <b>고객이 선불로 결제</b>하는 경우가 많아 현금흐름이 회계상 이익보다 앞서 나온다.
+    즉 <b>회계상 적자여도 현금은 벌 수 있는</b> 구조다.<br><br>
+    <b>⚠️ 단, GAAP(회계) 기준과 Non-GAAP(조정) 기준은 다르다.</b> Non-GAAP은 주식보상비용(SBC) 등을 제외한 수치로,
+    소프트웨어 기업은 SBC가 매우 크다. <b>두 기준의 차이를 반드시 확인</b>해야 한다.
+  </div>
+
+  <!-- 5 -->
+  <h2>5. 쟁점 ① 밸류에이션 — 40배의 무게</h2>
+  <p class="lead">
+    이 종목의 가장 큰 쟁점은 <b>성장이 아니라 가격</b>이다.
+  </p>
+  <div class="kpi">
+    <div class="box"><div class="num">약 $2,050억</div><div class="lab">시가총액 (2026.07 기준)</div></div>
+    <div class="box"><div class="num">$48.1억</div><div class="lab">FY2026 연매출</div></div>
+    <div class="box"><div class="num">약 40배+</div><div class="lab">PSR (시총÷매출, 개략)</div></div>
+    <div class="box"><div class="num">약 39배</div><div class="lab">시총 ÷ ARR (개략)</div></div>
+  </div>
+  <p class="sub">
+    ※ PSR 등은 <b>필자가 공개 수치로 단순 계산한 개략치</b>이며, 조회 시점·기준에 따라 크게 달라진다.
+    반드시 최신 데이터를 직접 확인할 것. 시가총액은 최근 1년간 큰 폭으로 상승한 것으로 보도됐다.
+  </p>
+
+  <div class="dark">
+    <b>🔴 이 숫자가 뜻하는 것 — 감정을 빼고 보기</b><br><br>
+    매출의 <b>40배</b>라는 건, 시장이 이 회사에 대해 다음을 <b>이미 가정하고 있다</b>는 뜻이다:
+    <ul style="margin-bottom:0;">
+      <li>앞으로도 <b>수년간 20%대 이상 성장</b>이 이어진다</li>
+      <li>마진이 계속 개선된다</li>
+      <li>마이크로소프트에 밀리지 않는다</li>
+      <li>또 다른 대형 사고가 없다</li>
+    </ul>
+    <br>
+    <b>즉 좋은 시나리오가 상당 부분 가격에 반영되어 있다.</b> 이 경우 <b>실적이 좋아도 주가가 안 오를 수 있고,
+    기대에 조금만 못 미쳐도 크게 조정</b>될 수 있다. 실제로 FY26 4Q는 <b>기록적 ARR 성장에도 발표 후 주가가 하락</b>했다는 보도가 있었다.
+  </div>
+
+  <div class="note">
+    <b>⚖️ 반대편 논리도 함께</b><br>
+    고성장 SaaS는 전통 PER로 재기 어렵다는 반론이 있다. 이유는:
+    <ul style="margin-bottom:0;">
+      <li><b>구독 매출의 반복성</b> — 한 번 팔면 매년 들어온다. 일회성 매출과 질이 다르다</li>
+      <li><b>높은 전환비용</b> — 고객이 쉽게 못 떠난다</li>
+      <li><b>마진 레버리지</b> — 매출이 늘수록 이익률이 구조적으로 개선된다</li>
+      <li><b>ARR 기준으로 보면</b> 미래 매출이 이미 확보된 부분이 크다</li>
+    </ul>
+    <b>이 노트는 어느 쪽이 옳다고 판단하지 않는다.</b> 다만 <b>"40배를 지불하고 있다"는 사실 자체는
+    인지하고 투자해야 한다</b>는 점을 강조한다.
+  </div>
+
+  <!-- 6 -->
+  <h2>6. 쟁점 ② 마이크로소프트라는 구조적 위협</h2>
+  <p>
+    경쟁사 중 유일하게 <b>구조적 위협</b>이라고 부를 만한 상대가 마이크로소프트다.
+  </p>
+  <figure>
+    <div class="svgbox">
+      <svg viewBox="0 0 840 240" width="100%" role="img" aria-label="MS 번들링 위협">
+        <g font-family="Segoe UI, sans-serif">
+          <text x="16" y="26" font-size="15" font-weight="800">경쟁의 비대칭 — 제품 대 제품이 아니다</text>
+
+          <rect x="30" y="50" width="360" height="140" rx="12" fill="#fef2f2" stroke="#fca5a5"/>
+          <text x="210" y="78" font-size="14" font-weight="800" fill="#991b1b" text-anchor="middle">CrowdStrike</text>
+          <text x="210" y="104" font-size="12" fill="#7f1d1d" text-anchor="middle">보안 <b>전문</b> 회사</text>
+          <text x="210" y="126" font-size="11.5" fill="#7f1d1d" text-anchor="middle">• 별도 예산으로 구매해야 함</text>
+          <text x="210" y="146" font-size="11.5" fill="#7f1d1d" text-anchor="middle">• 성능·전문성으로 승부</text>
+          <text x="210" y="168" font-size="11.5" fill="#7f1d1d" text-anchor="middle">• 보안이 <b>매출 전부</b></text>
+
+          <rect x="450" y="50" width="360" height="140" rx="12" fill="#eff6ff" stroke="#93c5fd"/>
+          <text x="630" y="78" font-size="14" font-weight="800" fill="#1e40af" text-anchor="middle">Microsoft Defender</text>
+          <text x="630" y="104" font-size="12" fill="#1e3a8a" text-anchor="middle">OS·오피스 <b>번들</b></text>
+          <text x="630" y="126" font-size="11.5" fill="#1e3a8a" text-anchor="middle">• E5 라이선스에 <b>끼워서</b> 제공</text>
+          <text x="630" y="146" font-size="11.5" fill="#1e3a8a" text-anchor="middle">• "이미 돈 냈으니 공짜 같다"</text>
+          <text x="630" y="168" font-size="11.5" fill="#1e3a8a" text-anchor="middle">• 보안은 <b>부가 기능</b></text>
+
+          <rect x="30" y="200" width="780" height="34" rx="8" fill="#0f172a"/>
+          <text x="420" y="222" font-size="12.5" font-weight="700" fill="#fff" text-anchor="middle">
+            ⚠️ "충분히 좋은 무료"가 "최고인 유료"를 이기는 구조가 나올 수 있다 — 개인 정리 도식</text>
+        </g>
+      </svg>
+    </div>
+    <figcaption>그림 2. 번들링 경쟁의 비대칭성. 이게 이 섹터의 근본 리스크다. (개인 정리 도식)</figcaption>
+  </figure>
+
+  <table>
+    <thead><tr><th>경쟁사</th><th>접근 방식</th><th class="c">엔드포인트 점유율(참고)</th><th>위협 강도</th></tr></thead>
+    <tbody>
+      <tr><td><b>CrowdStrike</b></td><td>엔드포인트 네이티브 탐지·대응 깊이</td><td class="c good">약 22.5%</td><td>—</td></tr>
+      <tr><td><b>Microsoft Defender</b></td><td><b>엔터프라이즈 번들링</b></td><td class="c">약 13.4%</td><td class="c bad">최상 (구조적)</td></tr>
+      <tr><td>McAfee ePO</td><td>레거시 설치 기반</td><td class="c">약 13.5%</td><td class="c mid">중 (감소 추세)</td></tr>
+      <tr><td><b>SentinelOne</b></td><td>엔드포인트 네이티브 (직접 경쟁)</td><td class="c">약 10.5%</td><td class="c mid">중상</td></tr>
+      <tr><td><b>Palo Alto (Cortex)</b></td><td>광범위 보안 플랫폼 통합</td><td class="c">—</td><td class="c mid">중상 (플랫폼 경쟁)</td></tr>
+      <tr><td>Trend Micro · Cisco · Fortinet</td><td>플랫폼 통합</td><td class="c">—</td><td class="c">중</td></tr>
+    </tbody>
+  </table>
+  <p class="sub">
+    ※ 점유율은 특정 조사기관(6sense) 기준이며 <b>정의·집계 방식에 따라 크게 달라진다.</b> 절대치보다 <b>상대적 위치</b>로만 참고할 것.
+  </p>
+  <div class="callout">
+    <b>🛡️ 클라우드스트라이크의 방어 논리</b>
+    <ul style="margin-bottom:0;">
+      <li><b>성능 차이</b> — 독립 EDR 테스트에서 높은 탐지율로 평가받아 왔다</li>
+      <li><b>단일 벤더 리스크</b> — "OS도 MS, 보안도 MS면 한 곳이 뚫리면 전부 뚫린다"는 논리</li>
+      <li><b>플랫폼 통합</b> — Falcon Flex로 여러 보안 벤더를 대체하며 예산을 흡수</li>
+      <li><b>중립성</b> — MS·AWS·구글 어느 환경에서도 동일하게 작동</li>
+    </ul>
+    <b>다만 이 논리들은 "예산이 충분한 대기업"에서 더 잘 통한다.</b> 중견·중소기업에서는 번들의 가격 매력이 이길 수 있다.
+  </div>
+
+  <!-- 7 -->
+  <h2>7. 쟁점 ③ 2024년 사고의 잔여 리스크</h2>
+  <p>실적은 회복했지만, <b>완전히 끝난 이야기는 아니다.</b></p>
+  <table>
+    <thead><tr><th>잔여 이슈</th><th>현황</th><th class="c">영향</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><b>델타항공 소송</b></td>
+        <td>5억 달러 청구 vs 회사는 "계약상 책임 한도 1,000만 달러 미만" 주장</td>
+        <td class="c mid">재무 영향은 제한적일 수 있으나 <b>판례가 남는다</b></td>
+      </tr>
+      <tr>
+        <td><b>추가 소송 가능성</b></td>
+        <td>피해 기업들의 후속 소송 가능성</td>
+        <td class="c mid">누적되면 비용·평판 부담</td>
+      </tr>
+      <tr>
+        <td><b>MS 윈도 복원력 이니셔티브</b></td>
+        <td>커널 접근 방식 변경 등 OS 차원의 구조 개선 추진</td>
+        <td class="c bad"><b>제품 아키텍처에 영향 가능</b></td>
+      </tr>
+      <tr>
+        <td><b>재발 위험</b></td>
+        <td>배포 프로세스 개선했으나 구조적 위험은 상존</td>
+        <td class="c bad">재발 시 신뢰 붕괴</td>
+      </tr>
+      <tr>
+        <td><b>영업 양보 비용</b></td>
+        <td>사고 후 고객 달래기용 할인·크레딧 제공</td>
+        <td class="c mid">일정 기간 마진 압박</td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="dark">
+    <b>🔍 가장 주목할 것 — 마이크로소프트의 커널 정책 변화</b><br><br>
+    2024년 사고 이후 마이크로소프트는 <b>보안 제품의 커널 접근 방식</b>을 재검토하는 방향으로 움직였다.
+    만약 <b>서드파티 보안 제품의 커널 접근이 제한</b>되면, 클라우드스트라이크를 포함한
+    모든 엔드포인트 보안 업체가 <b>제품 구조를 바꿔야 할 수 있다.</b><br><br>
+    <b>역설:</b> 이 변화는 클라우드스트라이크에 <b>비용</b>이지만, 동시에 <b>모든 경쟁사에게도 똑같은 비용</b>이다.
+    오히려 자원이 많은 1위 사업자에게 유리할 수도 있다. <b>양방향으로 열려 있는 변수</b>다.
+  </div>
+
+  <!-- 8 -->
+  <h2>8. KPI 대시보드 — 무엇을 추적할까</h2>
+  <table>
+    <thead><tr><th class="c">순위</th><th>KPI</th><th>왜 중요한가</th><th class="c">신호</th></tr></thead>
+    <tbody>
+      <tr><td class="c">1</td><td><b>분기 순증 ARR</b></td><td>성장 속도의 가장 민감한 지표</td><td class="c">둔화 = 경고</td></tr>
+      <tr><td class="c">2</td><td><b>ARR 성장률</b></td><td>20%대 유지되는가</td><td class="c">10%대 진입 = 재평가</td></tr>
+      <tr><td class="c">3</td><td><b>Falcon Flex ARR·비중</b></td><td>플랫폼 통합 전략의 실증</td><td class="c">증가 = 긍정</td></tr>
+      <tr><td class="c">4</td><td><b>모듈 채택률</b></td><td>고객당 몇 개 모듈을 쓰는가 (업셀)</td><td class="c">증가 = 긍정</td></tr>
+      <tr><td class="c">5</td><td><b>FCF 마진</b></td><td>현금 창출력. 24% 수준 유지 여부</td><td class="c">하락 = 주의</td></tr>
+      <tr><td class="c">6</td><td><b>GAAP vs Non-GAAP 격차</b></td><td>주식보상비용(SBC) 부담 크기</td><td class="c">확대 = 주의</td></tr>
+      <tr><td class="c">7</td><td><b>MS Defender 점유율</b></td><td>구조적 위협의 진전 여부</td><td class="c">증가 = 경고</td></tr>
+      <tr><td class="c">8</td><td><b>Gartner MQ 등 평가</b></td><td>기술 리더십 유지 여부</td><td class="c">순위 하락 = 경고</td></tr>
+    </tbody>
+  </table>
+
+  <!-- 9 -->
+  <h2>9. 시나리오 3종 (가정 대입 · 예측 아님)</h2>
+  <div class="warn">
+    아래는 <b>변수 조합에 따라 그림이 어떻게 달라지는가</b>를 보기 위한 사고실험이며,
+    특정 결과를 전망하거나 권유하는 것이 아닙니다.
+  </div>
+  <table>
+    <thead><tr><th></th><th class="c">🟢 낙관</th><th class="c">🟡 중립</th><th class="c">🔴 비관</th></tr></thead>
+    <tbody>
+      <tr><td><b>ARR 성장</b></td><td class="c">20%대 중반 유지</td><td class="c">10%대 후반으로 완만 둔화</td><td class="c">10%대 초반 급락</td></tr>
+      <tr><td><b>Falcon Flex</b></td><td class="c">벤더 통합 가속, 비중 급증</td><td class="c">완만한 확산</td><td class="c">성장 정체</td></tr>
+      <tr><td><b>vs 마이크로소프트</b></td><td class="c">대기업에서 우위 유지</td><td class="c">시장 양분</td><td class="c">중견시장부터 잠식당함</td></tr>
+      <tr><td><b>수익성</b></td><td class="c good">FCF 마진 확대</td><td class="c mid">현 수준 유지</td><td class="c bad">가격 경쟁으로 압박</td></tr>
+      <tr><td><b>사고 리스크</b></td><td class="c">무사고, 신뢰 완전 회복</td><td class="c">소송 장기화</td><td class="c bad">재발 또는 대형 판결</td></tr>
+      <tr><td><b>밸류에이션</b></td><td class="c good">고배수 정당화</td><td class="c mid">배수 축소, 실적이 따라잡음</td><td class="c bad">멀티플 축소 + 실적 둔화 동시</td></tr>
+    </tbody>
+  </table>
+  <div class="callout">
+    <b>이 표의 쓸모:</b> 고밸류 성장주에서 가장 무서운 건 <b>"멀티플 축소 + 실적 둔화"가 동시에 오는 것</b>이다.
+    둘 다 오면 주가 하락 폭이 곱셈으로 커진다. 반대로 실적이 좋으면 <b>배수가 줄어도 주가는 버틸 수</b> 있다.
+    <b>순증 ARR</b> 한 줄만 꾸준히 추적해도 어느 열로 가는지 대부분 판별된다.
+  </div>
+
+  <!-- 10 -->
+  <h2>10. 리스크 매트릭스</h2>
+  <table>
+    <thead><tr><th>리스크</th><th class="c">가능성</th><th class="c">영향</th><th>설명</th></tr></thead>
+    <tbody>
+      <tr><td><b>밸류에이션 부담</b></td><td class="c bad">상시</td><td class="c bad">큼</td><td>매출 40배 수준. 기대 미달 시 조정 폭이 큼</td></tr>
+      <tr><td><b>마이크로소프트 번들링</b></td><td class="c bad">높음</td><td class="c bad">큼</td><td>"충분히 좋은 무료"의 압력. 특히 중견시장</td></tr>
+      <tr><td><b>성장 둔화</b></td><td class="c mid">중</td><td class="c bad">큼</td><td>기저가 커질수록 20%대 유지가 어려워짐</td></tr>
+      <tr><td><b>대형 사고 재발</b></td><td class="c mid">낮~중</td><td class="c bad">치명적</td><td>두 번째는 용서받기 어려움</td></tr>
+      <tr><td><b>OS 아키텍처 변화</b></td><td class="c mid">중</td><td class="c mid">중</td><td>커널 접근 제한 시 제품 구조 변경 필요</td></tr>
+      <tr><td><b>소송 리스크</b></td><td class="c mid">진행 중</td><td class="c mid">중</td><td>재무보다 <b>판례·평판</b> 영향</td></tr>
+      <tr><td><b>SBC(주식보상) 희석</b></td><td class="c bad">상시</td><td class="c mid">중</td><td>Non-GAAP과 GAAP 격차. 주주 지분 희석</td></tr>
+      <tr><td><b>보안 예산 축소</b></td><td class="c mid">중</td><td class="c mid">중</td><td>경기 침체 시 IT 예산 압박</td></tr>
+      <tr><td><b>환율</b></td><td class="c mid">상시</td><td class="c mid">중</td><td>국내 투자자 기준 원/달러 변동 노출</td></tr>
+    </tbody>
+  </table>
+
+  <!-- 11 -->
+  <h2>11. 촉매 캘린더</h2>
+  <table>
+    <thead><tr><th>시점/이벤트</th><th>확인할 것</th></tr></thead>
+    <tbody>
+      <tr><td>매 분기 실적 (3·6·9·12월경)</td><td><b>순증 ARR</b>, ARR 성장률, Falcon Flex, FCF 마진, 가이던스</td></tr>
+      <tr><td>FY2027 가이던스</td><td>회사가 제시하는 <b>ARR 성장 목표</b>와 상향 여부</td></tr>
+      <tr><td>Fal.Con 연례 컨퍼런스</td><td>신규 모듈·AI 제품 발표, 플랫폼 로드맵</td></tr>
+      <tr><td>M&amp;A</td><td>판게아(Pangea) 등 인수 통합 진행 상황</td></tr>
+      <tr><td>델타항공 소송</td><td>판결·합의 결과</td></tr>
+      <tr><td>마이크로소프트 발표</td><td>윈도 복원력 이니셔티브, Defender 기능 확장</td></tr>
+      <tr><td>Gartner MQ 등</td><td>엔드포인트 보안 평가에서의 위치</td></tr>
+      <tr><td>경쟁사 실적</td><td>SentinelOne·Palo Alto의 성장률 (섹터 온도계)</td></tr>
+    </tbody>
+  </table>
+
+  <!-- 12 -->
+  <h2>12. 투자 전 체크리스트</h2>
+  <div class="note">
+    <ul style="margin-bottom:0;">
+      <li>□ 이 회사가 <b>매출 40배 수준</b>에 거래되고 있다는 것을 인지했는가?</li>
+      <li>□ <b>회계연도가 1월 종료</b>라 분기 표기가 헷갈릴 수 있음을 아는가?</li>
+      <li>□ <b>ARR과 매출의 차이</b>를 이해했는가?</li>
+      <li>□ <b>GAAP vs Non-GAAP</b> 차이(특히 SBC)를 확인했는가?</li>
+      <li>□ <b>마이크로소프트 번들링</b>이 구조적 위협임을 이해했는가?</li>
+      <li>□ 2024년 사고의 <b>잔여 리스크</b>(소송·OS 변화·재발)를 감안했는가?</li>
+      <li>□ 내가 추적할 <b>KPI 2~3개</b>(순증 ARR·ARR 성장률·Flex)를 정했는가?</li>
+      <li>□ 해외 종목의 <b>환율·세제(양도소득세)·거래시간</b> 차이를 알고 있는가?</li>
+      <li>□ 비관 시나리오(멀티플 축소+실적 둔화)에서 <b>감당 가능한 손실 범위</b>를 정했는가?</li>
+    </ul>
+  </div>
+
+  <h2>FAQ</h2>
+  <h4>Q. 2024년 사고를 냈는데 왜 주가가 올랐나요?</h4>
+  <p>시장이 본 것은 <b>"고객이 떠났는가"</b>였고, 답은 <b>"떠나지 않았다"</b>였습니다.
+  보안 제품은 전환비용이 매우 커서 쉽게 못 바꾸고, 사고가 <b>탐지 성능</b>이 아니라 <b>배포 프로세스</b>의 실패였다는 점도
+  작용했습니다. 실제로 FY2026 순증 ARR은 오히려 가속됐습니다.</p>
+  <h4>Q. PSR 40배는 비싼 건가요?</h4>
+  <p>이 노트는 그 판단을 내리지 않습니다. 다만 <b>사실</b>은 이렇습니다 — 40배는 <b>수년간의 고성장이 이미 가정된 가격</b>입니다.
+  성장이 유지되면 정당화될 수 있고, 둔화되면 조정 폭이 큽니다. <b>중요한 건 "비싸다/싸다"가 아니라
+  "무엇이 가정되어 있는지 아는 것"</b>입니다.</p>
+  <h4>Q. 마이크로소프트에 결국 지는 것 아닌가요?</h4>
+  <p>단정하기 어렵습니다. 번들링은 강력하지만, <b>보안은 "충분히 좋은 것"으로 타협하기 어려운 영역</b>이라는 반론도 있습니다.
+  또 "OS와 보안을 같은 회사에 맡기는 것이 위험하다"는 논리도 실제로 통합니다.
+  <b>대기업 시장에서는 클라우드스트라이크가, 중견 이하에서는 MS가 유리</b>하다는 것이 대체적 시각입니다.</p>
+  <h4>Q. 지스케일러와 클라우드스트라이크 중 뭐가 낫나요?</h4>
+  <p>영역이 달라 우열을 매기기 어렵습니다. 지스케일러는 <b>네트워크 검문소</b>, 클라우드스트라이크는 <b>엔드포인트 경비원</b>입니다.
+  다만 <b>둘 다 플랫폼화를 지향해 영역이 겹쳐가고 있어</b>, 향후 직접 경쟁이 늘어날 수 있습니다.
+  (<a href="https://tryingpig.github.io/study/260718_지스케일러_2_투자안내서.html">지스케일러 투자안내서</a> 참조)</p>
+  <h4>Q. 가장 중요한 지표 하나만 고르면?</h4>
+  <p><b>분기 순증 ARR</b>입니다. 성장이 꺾이면 여기서 가장 먼저 나타나고, 고밸류 종목은 성장 둔화에 가장 민감합니다.</p>
+
+  <h2>출처</h2>
+  <p class="src">
+    • CrowdStrike IR, "Reports Fourth Quarter and Fiscal Year 2026 Financial Results" — https://ir.crowdstrike.com/news-releases/news-release-details/crowdstrike-reports-fourth-quarter-and-fiscal-year-2026<br>
+    • CrowdStrike IR, "Reports Third Quarter Fiscal Year 2026 Financial Results" — https://ir.crowdstrike.com/news-releases/news-release-details/crowdstrike-reports-third-quarter-fiscal-year-2026-financial<br>
+    • CrowdStrike IR, Financial Results Q3 FY2026 자료 — https://ir.crowdstrike.com/static-files/1e06e0bb-28f0-4b12-a2f7-1b808c4c665a<br>
+    • Businesswire, FY2026 Q4 실적 (2026.03.03) — https://www.businesswire.com/news/home/20260303140639/en/<br>
+    • SEC EDGAR, CrowdStrike Form 8-K FY2026 — https://www.sec.gov/Archives/edgar/data/1535527/000153552726000007/crwd-20260303xex991.htm<br>
+    • Investing.com, "CrowdStrike Q4 FY2026 slides: record ARR growth, stock slips after hours" — https://www.investing.com/news/company-news/crowdstrike-q4-fy2026-slides-record-arr-growth-stock-slips-after-hours-93CH-4539522<br>
+    • ChartMill, "CRWD Reports Q3 FY26 Earnings Beat and Raises Full-Year Outlook" — https://www.chartmill.com/news/CRWD/<br>
+    • 24/7 Wall St., CRWD Q3 2026 Earnings — https://247wallst.com/companies/crwd/earnings/2026/Q3<br>
+    • CompaniesMarketCap — CrowdStrike 시가총액 — https://companiesmarketcap.com/crowdstrike/marketcap/<br>
+    • StockAnalysis — CRWD Statistics & Valuation — https://stockanalysis.com/stocks/crwd/statistics/<br>
+    • 6sense, SentinelOne / Endpoint Protection Market Share — https://6sense.com/tech/endpoint-protection/sentinelone-market-share<br>
+    • BankInfoSecurity, "Microsoft, CrowdStrike Lead Endpoint Protection Gartner MQ" — https://www.bankinfosecurity.com/microsoft-crowdstrike-lead-endpoint-protection-gartner-mq-a-21457<br>
+    • CIO Korea, 델타항공 소송 관련 보도 — https://www.cio.com/article/3593383/<br>
+    • 디지털투데이, "제2의 크라우드스트라이크發 IT대란 없다...마이크로소프트, 윈도OS 보안 강화" — https://www.digitaltoday.co.kr/news/articleView.html?idxno=542377
+  </p>
+
+  <div class="foot">
+    <hr>
+    본 문서는 개인 학습·정리 목적의 비상업 노트입니다. PSR 등 일부 배수는 필자가 공개 수치로 단순 계산한 개략치로,
+    조회 시점·기준에 따라 크게 달라집니다. 반드시 최신 데이터를 직접 확인하십시오.
+    해외 종목 투자에는 환율·세제·거래시간 등 추가 위험이 따릅니다.
+    투자에 대한 최종 판단과 책임은 전적으로 독자 본인에게 있습니다. © 2026 개인 리서치 라이브러리.
+  </div>
+
+</div>
+</body>
+</html>

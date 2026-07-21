@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>클라우드스트라이크 밸류체인 — 사이버보안 산업 지도에서 어디에 서 있나</title>
+<style>
+  :root{
+    --accent:#dc2626; --accent2:#ef4444;
+    --ink:#1f2430; --muted:#5c6472; --line:#ece6e6; --bg:#fff; --soft:#fdf7f7;
+    --warnbg:#fff7ed; --warnln:#fb923c;
+  }
+  *{box-sizing:border-box;}
+  body{font-family:"Segoe UI","Malgun Gothic","Apple SD Gothic Neo",system-ui,sans-serif;
+    color:var(--ink); background:var(--bg); margin:0; line-height:1.78; font-size:16.5px; letter-spacing:-0.1px;}
+  .wrap{max-width:920px; margin:0 auto; padding:40px 28px 90px;}
+  h1{font-size:29px; line-height:1.32; margin:8px 0 6px; letter-spacing:-0.6px;}
+  h2{font-size:22px; margin:50px 0 12px; padding-top:14px; border-top:3px solid var(--accent); letter-spacing:-0.4px;}
+  h3{font-size:18.5px; margin:30px 0 8px; color:#2b3242;}
+  h4{font-size:16px; margin:18px 0 6px; color:var(--accent);}
+  p{margin:10px 0;} a{color:var(--accent); text-decoration:none;} a:hover{text-decoration:underline;}
+  .sub{color:var(--muted); font-size:15px;} .lead{font-size:17.5px; color:#333a49;}
+  .kicker{display:inline-block; font-size:13px; font-weight:700; letter-spacing:1.5px;
+    color:#fff; background:var(--accent); padding:5px 12px; border-radius:999px;}
+  .warn{background:var(--warnbg); border:1px solid var(--warnln); border-left:6px solid var(--warnln);
+    border-radius:10px; padding:16px 18px; margin:22px 0; font-size:15px;}
+  .note{background:var(--soft); border:1px solid var(--line); border-radius:10px; padding:16px 18px; margin:18px 0;}
+  .callout{background:#fef2f2; border:1px solid #fca5a5; border-left:6px solid var(--accent);
+    border-radius:10px; padding:16px 18px; margin:20px 0;}
+  .dark{background:#0f172a; color:#e2e8f0; border-radius:10px; padding:16px 18px; margin:20px 0;}
+  .dark b{color:#fff;}
+  .big{font-size:19px; font-weight:800; color:var(--accent); line-height:1.5;}
+  .grid2{display:grid; grid-template-columns:1fr 1fr; gap:16px;}
+  .grid3{display:grid; grid-template-columns:repeat(3,1fr); gap:14px;}
+  .card{border:1px solid var(--line); border-radius:12px; padding:16px 18px; background:#fff;}
+  table{width:100%; border-collapse:collapse; margin:18px 0; font-size:14.5px;}
+  th,td{border:1px solid var(--line); padding:9px 11px; text-align:left; vertical-align:top;}
+  th{background:var(--soft); font-weight:700;} td.c,th.c{text-align:center;}
+  figure{margin:24px 0; text-align:center;} figcaption{font-size:13px; color:var(--muted); margin-top:8px;}
+  .svgbox{border:1px solid var(--line); border-radius:12px; padding:14px; background:#fff;}
+  ul,ol{margin:10px 0 10px 4px; padding-left:22px;} li{margin:6px 0;}
+  .toc{background:var(--soft); border:1px solid var(--line); border-radius:12px; padding:18px 22px; margin:26px 0;}
+  .toc ol{columns:2; column-gap:34px;}
+  .src{font-size:13px; color:var(--muted); word-break:break-all;}
+  .seriesnav{background:#fef2f2; border:1px solid #fca5a5; border-radius:10px; padding:14px 18px; margin:20px 0; font-size:14.5px;}
+  .good{color:#059669; font-weight:700;} .bad{color:#dc2626; font-weight:700;} .mid{color:#b45309; font-weight:700;}
+  hr{border:none; border-top:1px solid var(--line); margin:34px 0;}
+  .foot{color:var(--muted); font-size:13px; margin-top:40px;}
+  @media (max-width:680px){.grid2,.grid3{grid-template-columns:1fr;} .toc ol{columns:1;} h1{font-size:24px;}}
+  @media print{body{font-size:11.5pt;} .wrap{max-width:100%; padding:0;} h2{break-after:avoid;}
+    figure,table,.card{break-inside:avoid;} a{color:#000;} .warn,.callout,.note,.dark{break-inside:avoid;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <span class="kicker">CROWDSTRIKE · ③ 밸류체인</span>
+  <h1>클라우드스트라이크 밸류체인<br>— 사이버보안 산업 지도에서 어디에 서 있나</h1>
+  <p class="sub">작성일 2026-07-20 · NASDAQ: CRWD · 개인 리서치 노트 · 입문세트 3/3</p>
+
+  <div class="warn">
+    <b>⚠️ 투자 권유가 아닙니다.</b> 이 문서는 공개 정보를 정리한 <b>개인 학습 노트</b>이며 매수·매도 추천이 아닙니다.
+    시장 규모·점유율 수치는 조사기관마다 정의와 기준이 달라 <b>편차가 매우 큽니다.</b>
+    언급된 기업명은 산업 구조 설명을 위한 것이지 투자 대상 추천이 아닙니다.
+    모든 투자 판단과 그 책임은 전적으로 본인에게 있습니다.
+  </div>
+
+  <div class="seriesnav">
+    <b>🛡️ 입문세트 구성</b> — <a href="https://tryingpig.github.io/study/260720_클라우드스트라이크_1_입문가이드.html">① 입문가이드</a> ·
+    <a href="https://tryingpig.github.io/study/260720_클라우드스트라이크_2_투자안내서.html">② 투자안내서</a> ·
+    ③ <b>밸류체인(현재 글)</b><br>
+    <span class="sub">제품이 뭔지(①), 숫자가 어떤지(②)는 앞 글에서 다뤘습니다. 여기서는 <b>산업 전체 지도와 좌표</b>를 봅니다.</span>
+  </div>
+
+  <div class="callout">
+    <span class="big">🧭 한 장 요약</span>
+    <ol style="margin-bottom:0;">
+      <li><b>사이버보안은 '밸류체인'이 아니라 '영역 지도'로 봐야 한다.</b> 제조업처럼 위아래로 흐르지 않는다.</li>
+      <li>보안은 크게 <b>엔드포인트 · 네트워크 · 클라우드 · 신원 · 데이터 · 운영(SIEM/SOC)</b> 6개 영역으로 나뉜다.</li>
+      <li><b>클라우드스트라이크는 '엔드포인트'에서 출발해 전 영역으로 확장 중</b>이다.</li>
+      <li>산업의 지배적 흐름은 <b>'벤더 통합(consolidation)'</b> — 여러 보안 제품을 하나로 합치려는 움직임.</li>
+      <li>그래서 <b>모든 강자가 서로의 영역을 침범</b>한다. 팔로알토·마이크로소프트·지스케일러와 전선이 겹친다.</li>
+      <li><b>진짜 후방(공급망)은 클라우드 인프라와 AI</b>이고, 진짜 전방은 <b>기업 보안 예산</b>이다.</li>
+    </ol>
+  </div>
+
+  <div class="toc">
+    <b>목차</b>
+    <ol>
+      <li>큰 그림 — 사이버보안 산업의 구조</li>
+      <li>보안 6대 영역 지도</li>
+      <li>클라우드스트라이크의 좌표와 확장</li>
+      <li>후방 — 이 회사가 의존하는 것</li>
+      <li>중간 — 경쟁 구도 3개 진영</li>
+      <li>전방 — 고객과 유통</li>
+      <li>산업의 지배 흐름: 벤더 통합</li>
+      <li>시장 규모와 성장률</li>
+      <li>AI가 이 산업에 미치는 영향</li>
+      <li>지스케일러·팔로알토와의 전선 비교</li>
+      <li>강약점과 병목 지점</li>
+      <li>용어사전 · 출처</li>
+    </ol>
+  </div>
+
+  <!-- 1 -->
+  <h2>1. 큰 그림 — 사이버보안 산업의 구조</h2>
+  <p class="lead">
+    반도체나 화장품 리포트를 쓸 때는 <b>원료 → 제조 → 유통</b>처럼 위아래로 흐르는 밸류체인을 그렸다.
+    그런데 <b>사이버보안은 그렇게 그려지지 않는다.</b>
+  </p>
+  <div class="note">
+    <b>왜 다른가</b><br>
+    소프트웨어 산업이라 <b>물리적 공급망이 거의 없다.</b> 원자재도, 공장도, 물류도 없다.
+    대신 <b>"지켜야 할 대상"이 여러 종류</b>이고, 회사들이 <b>각자 다른 대상을 지키다가 서로 영역을 넓히며 부딪히는</b> 구조다.<br><br>
+    그래서 밸류체인 대신 <b>'영역 지도(Domain Map)'</b>로 그리는 게 정확하다.
+    이 리포트는 그 방식을 택한다.
+  </div>
+
+  <h3>그래도 있는 3단 구조</h3>
+  <figure>
+    <div class="svgbox">
+      <svg viewBox="0 0 860 240" width="100%" role="img" aria-label="보안 산업 3단 구조">
+        <g font-family="Segoe UI, sans-serif">
+          <text x="16" y="26" font-size="15" font-weight="800">사이버보안의 단순화된 3단 구조</text>
+
+          <rect x="20" y="46" width="820" height="56" rx="11" fill="#eff6ff" stroke="#93c5fd"/>
+          <text x="36" y="70" font-size="13" font-weight="800" fill="#1e40af">후방 — 이 회사가 '쓰는' 것</text>
+          <text x="36" y="90" font-size="11.5" fill="#1e3a8a">클라우드 인프라(AWS 등) · AI/GPU 연산 · 위협 인텔리전스 데이터 · 보안 인재</text>
+
+          <rect x="20" y="112" width="820" height="60" rx="11" fill="#dc2626"/>
+          <text x="36" y="138" font-size="13.5" font-weight="800" fill="#fff">중간 — 보안 소프트웨어 벤더 (경쟁의 주무대)</text>
+          <text x="36" y="160" font-size="11.5" fill="#fecaca">CrowdStrike · Microsoft · Palo Alto · Zscaler · SentinelOne · Fortinet · Cisco …</text>
+
+          <rect x="20" y="182" width="820" height="52" rx="11" fill="#dcfce7" stroke="#86efac"/>
+          <text x="36" y="206" font-size="13" font-weight="800" fill="#166534">전방 — 고객 (기업 보안 예산)</text>
+          <text x="36" y="226" font-size="11.5" fill="#14532d">대기업 · 정부/공공 · 중견기업 · MSP(보안관제 대행) — CISO가 예산을 집행</text>
+        </g>
+      </svg>
+    </div>
+    <figcaption>그림 1. 물리 공급망이 없는 대신 인프라·인재가 후방, 기업 예산이 전방. (개인 정리 도식)</figcaption>
+  </figure>
+
+  <!-- 2 -->
+  <h2>2. 보안 6대 영역 지도</h2>
+  <p>보안 시장을 <b>"무엇을 지키는가"</b>로 나누면 대략 여섯 영역이다. 이게 이 산업을 이해하는 진짜 지도다.</p>
+
+  <figure>
+    <div class="svgbox">
+      <svg viewBox="0 0 860 400" width="100%" role="img" aria-label="보안 6대 영역 지도">
+        <g font-family="Segoe UI, sans-serif">
+          <text x="16" y="26" font-size="15" font-weight="800">보안 6대 영역 — 누가 어디를 지키나</text>
+
+          <!-- 1 endpoint -->
+          <rect x="20" y="46" width="265" height="96" rx="12" fill="#dc2626"/>
+          <text x="152" y="72" font-size="13.5" font-weight="800" fill="#fff" text-anchor="middle">① 엔드포인트</text>
+          <text x="152" y="94" font-size="11" fill="#fecaca" text-anchor="middle">PC·서버·VM 지키기 (EDR/XDR)</text>
+          <text x="152" y="116" font-size="11.5" fill="#fff" text-anchor="middle" font-weight="700">★ CrowdStrike 본진</text>
+          <text x="152" y="133" font-size="10.5" fill="#fecaca" text-anchor="middle">MS Defender · SentinelOne 경쟁</text>
+
+          <!-- 2 network -->
+          <rect x="297" y="46" width="265" height="96" rx="12" fill="#f1f5f9" stroke="#cbd5e1"/>
+          <text x="429" y="72" font-size="13.5" font-weight="800" text-anchor="middle">② 네트워크</text>
+          <text x="429" y="94" font-size="11" fill="#5c6472" text-anchor="middle">트래픽 검문 (방화벽·SASE)</text>
+          <text x="429" y="116" font-size="11.5" text-anchor="middle" font-weight="700">Zscaler · Palo Alto 본진</text>
+          <text x="429" y="133" font-size="10.5" fill="#5c6472" text-anchor="middle">Fortinet · Cisco</text>
+
+          <!-- 3 cloud -->
+          <rect x="574" y="46" width="266" height="96" rx="12" fill="#fef2f2" stroke="#fca5a5"/>
+          <text x="707" y="72" font-size="13.5" font-weight="800" text-anchor="middle">③ 클라우드</text>
+          <text x="707" y="94" font-size="11" fill="#5c6472" text-anchor="middle">클라우드 환경 보안 (CNAPP)</text>
+          <text x="707" y="116" font-size="11.5" text-anchor="middle" font-weight="700">격전지 — 모두가 진입</text>
+          <text x="707" y="133" font-size="10.5" fill="#5c6472" text-anchor="middle">CrowdStrike도 모듈 보유</text>
+
+          <!-- 4 identity -->
+          <rect x="20" y="156" width="265" height="96" rx="12" fill="#fef2f2" stroke="#fca5a5"/>
+          <text x="152" y="182" font-size="13.5" font-weight="800" text-anchor="middle">④ 신원(Identity)</text>
+          <text x="152" y="204" font-size="11" fill="#5c6472" text-anchor="middle">계정 탈취 방어 · NHI</text>
+          <text x="152" y="226" font-size="11.5" text-anchor="middle" font-weight="700">Okta · MS Entra 본진</text>
+          <text x="152" y="243" font-size="10.5" fill="#5c6472" text-anchor="middle">CrowdStrike IDP 모듈로 진입</text>
+
+          <!-- 5 data -->
+          <rect x="297" y="156" width="265" height="96" rx="12" fill="#f1f5f9" stroke="#cbd5e1"/>
+          <text x="429" y="182" font-size="13.5" font-weight="800" text-anchor="middle">⑤ 데이터</text>
+          <text x="429" y="204" font-size="11" fill="#5c6472" text-anchor="middle">DLP · 데이터 보안(DSPM)</text>
+          <text x="429" y="226" font-size="11.5" text-anchor="middle" font-weight="700">분산된 시장</text>
+          <text x="429" y="243" font-size="10.5" fill="#5c6472" text-anchor="middle">인수합병 활발</text>
+
+          <!-- 6 SIEM/SOC -->
+          <rect x="574" y="156" width="266" height="96" rx="12" fill="#fef2f2" stroke="#fca5a5"/>
+          <text x="707" y="182" font-size="13.5" font-weight="800" text-anchor="middle">⑥ 운영 (SIEM/SOC)</text>
+          <text x="707" y="204" font-size="11" fill="#5c6472" text-anchor="middle">로그 통합·관제·대응</text>
+          <text x="707" y="226" font-size="11.5" text-anchor="middle" font-weight="700">Splunk(Cisco) · Palo Alto</text>
+          <text x="707" y="243" font-size="10.5" fill="#5c6472" text-anchor="middle">CrowdStrike Next-Gen SIEM 진입</text>
+
+          <!-- expansion arrows -->
+          <path d="M152,146 L152,152" stroke="#dc2626" stroke-width="2"/>
+          <path d="M285,94 C400,94 460,60 570,80" fill="none" stroke="#dc2626" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#x)"/>
+          <path d="M152,142 L152,152" stroke="#dc2626" stroke-width="2" marker-end="url(#x)"/>
+          <path d="M285,120 C420,150 500,180 570,200" fill="none" stroke="#dc2626" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#x)"/>
+          <defs><marker id="x" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+            <path d="M0,0 L6,3 L0,6 Z" fill="#dc2626"/></marker></defs>
+
+          <rect x="20" y="268" width="820" height="52" rx="11" fill="#0f172a"/>
+          <text x="430" y="292" font-size="13" font-weight="800" fill="#fff" text-anchor="middle">
+            🔴 빨간 점선 = CrowdStrike의 확장 방향 (본진 ①에서 ③④⑥으로)</text>
+          <text x="430" y="311" font-size="11.5" fill="#cbd5e1" text-anchor="middle">
+            동시에 다른 벤더들도 각자 본진에서 뻗어 나온다 → 모두가 모두와 부딪히는 국면</text>
+
+          <rect x="20" y="332" width="820" height="52" rx="11" fill="#fef2f2" stroke="#fca5a5"/>
+          <text x="430" y="356" font-size="12.5" font-weight="700" fill="#991b1b" text-anchor="middle">
+            💡 투자 관점: "이 회사가 어느 영역에서 1등인가"보다 "몇 개 영역을 먹을 수 있는가"가 관건</text>
+          <text x="430" y="374" font-size="11" fill="#7f1d1d" text-anchor="middle">개인 정리 도식</text>
+        </g>
+      </svg>
+    </div>
+    <figcaption>그림 2. 보안 6대 영역과 클라우드스트라이크의 확장 방향. (개인 정리 도식)</figcaption>
+  </figure>
+
+  <!-- 3 -->
+  <h2>3. 클라우드스트라이크의 좌표와 확장</h2>
+  <table>
+    <thead><tr><th class="c">영역</th><th>클라우드스트라이크 제품</th><th class="c">위치</th><th>메모</th></tr></thead>
+    <tbody>
+      <tr><td class="c"><b>① 엔드포인트</b></td><td>Falcon EPP · EDR · NGAV</td><td class="c good"><b>본진 · 1위권</b></td><td>EDR 시장을 만들어낸 회사</td></tr>
+      <tr><td class="c">② 네트워크</td><td>—</td><td class="c bad">미진입</td><td>Zscaler·Palo Alto의 영역</td></tr>
+      <tr><td class="c"><b>③ 클라우드</b></td><td>Falcon Cloud Security (CNAPP)</td><td class="c mid">확장 중</td><td>격전지. 모두가 뛰어듦</td></tr>
+      <tr><td class="c"><b>④ 신원</b></td><td>Falcon Identity Protection (IDP)</td><td class="c mid">확장 중</td><td>Okta·MS Entra와 겹침</td></tr>
+      <tr><td class="c">⑤ 데이터</td><td>일부 모듈</td><td class="c mid">부분</td><td>M&amp;A로 보강 가능성</td></tr>
+      <tr><td class="c"><b>⑥ 운영(SIEM)</b></td><td>Falcon Next-Gen SIEM</td><td class="c mid">확장 중</td><td>Splunk 대체 노림</td></tr>
+      <tr><td class="c">+ AI 계층</td><td>Charlotte AI · 판게아(Pangea) 인수</td><td class="c mid">신규</td><td>AI 보안·AI 분석 비서</td></tr>
+    </tbody>
+  </table>
+  <div class="callout">
+    <b>🎯 이 표가 말하는 전략</b><br>
+    클라우드스트라이크는 <b>"엔드포인트에 깔아둔 에이전트를 발판으로 다른 영역까지 먹겠다"</b>는 전략이다.<br><br>
+    <b>논리:</b> 이미 고객사 전 기기에 에이전트가 깔려 있으니, 그 에이전트가 보는 데이터로
+    <b>클라우드·신원·로그 분석까지 커버</b>할 수 있다는 것. 새 제품을 팔 때 <b>설치가 필요 없다</b>는 게 결정적 이점이다.<br><br>
+    <b>이것이 성공하면</b> TAM(시장 규모)이 엔드포인트를 훨씬 넘어 확장된다. ②투자안내서에서 본
+    <b>Falcon Flex의 급성장</b>이 이 전략이 작동하고 있다는 증거다.
+  </div>
+
+  <!-- 4 -->
+  <h2>4. 후방 — 이 회사가 의존하는 것</h2>
+  <p>물리적 원자재는 없지만, 의존하는 것은 분명히 있다.</p>
+  <div class="grid2">
+    <div class="card">
+      <h4>☁️ 클라우드 인프라</h4>
+      <p>팰컨의 '두뇌'는 클라우드에서 돌아간다. 방대한 텔레메트리를 저장·분석하려면
+      <b>막대한 컴퓨팅·스토리지</b>가 필요하다.</p>
+      <p class="sub" style="margin:0;"><b>리스크:</b> 인프라 비용이 매출총이익률을 좌우한다. 데이터가 늘수록 비용도 는다.</p>
+    </div>
+    <div class="card">
+      <h4>🤖 AI · GPU 연산</h4>
+      <p>행위 기반 탐지는 머신러닝이 핵심이다. Charlotte AI 같은 생성형 AI 기능은 <b>추가 연산 비용</b>을 발생시킨다.</p>
+      <p class="sub" style="margin:0;"><b>리스크:</b> AI 기능 확대가 마진을 압박할 수 있다.</p>
+    </div>
+    <div class="card">
+      <h4>🕵️ 위협 인텔리전스</h4>
+      <p>공격자 그룹·악성코드 정보를 모으는 <b>자체 리서치 조직</b>이 경쟁력의 원천이다.
+      대형 침해사고 조사 경험이 쌓일수록 강해진다.</p>
+      <p class="sub" style="margin:0;"><b>특징:</b> 돈으로 빨리 사기 어려운 자산. 진입장벽.</p>
+    </div>
+    <div class="card">
+      <h4>👨‍💻 보안 인재</h4>
+      <p>보안 연구원·위협 헌터는 <b>전 세계적으로 부족</b>하다. 인건비가 비용의 큰 축이다.</p>
+      <p class="sub" style="margin:0;"><b>리스크:</b> 인건비 상승, 핵심 인력 이탈.</p>
+    </div>
+  </div>
+  <div class="note">
+    <b>🔄 가장 중요한 후방 자산은 '데이터' 그 자체다</b><br>
+    고객이 많을수록 → 텔레메트리가 많아지고 → 탐지 모델이 정확해지고 → 제품이 좋아지고 → 고객이 더 온다.
+    이 <b>데이터 플라이휠</b>이 이 회사의 가장 근본적인 해자이며, 후발주자가 따라잡기 어려운 이유다.<br><br>
+    <b>단, 양날의 검:</b> ①입문가이드에서 봤듯 <b>중앙 집중 구조는 사고도 중앙에서 터진다.</b>
+    2024년 대란이 정확히 그 사례였다.
+  </div>
+
+  <!-- 5 -->
+  <h2>5. 중간 — 경쟁 구도 3개 진영</h2>
+  <p>경쟁사를 개별로 나열하면 헷갈린다. <b>진영</b>으로 묶으면 명확해진다.</p>
+  <table>
+    <thead><tr><th>진영</th><th>대표 기업</th><th>무기</th><th>클라우드스트라이크와의 관계</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><b>Ⓐ 플랫폼 거인</b><br><span class="sub">번들링 진영</span></td>
+        <td><b>Microsoft</b><br>(Defender · Entra · Sentinel)</td>
+        <td><b>OS·오피스 라이선스에 끼워팔기</b>. "이미 돈 냈으니 공짜"</td>
+        <td class="c bad">구조적 최대 위협<br>(특히 중견 이하)</td>
+      </tr>
+      <tr>
+        <td><b>Ⓑ 보안 전업 플랫폼</b><br><span class="sub">통합 진영</span></td>
+        <td><b>Palo Alto Networks</b><br>Fortinet · Cisco</td>
+        <td>방화벽·네트워크에서 출발해 <b>전 영역 통합</b>(Cortex 등)</td>
+        <td class="c bad">플랫폼 통합 경쟁<br>(예산 쟁탈전)</td>
+      </tr>
+      <tr>
+        <td><b>Ⓒ 영역 전문가</b><br><span class="sub">순수 진영</span></td>
+        <td><b>SentinelOne</b>(엔드포인트)<br><b>Zscaler</b>(네트워크)<br>Okta(신원)</td>
+        <td>한 영역에서 <b>깊이</b>로 승부</td>
+        <td class="c mid">직접 경쟁(SentinelOne)<br>영역 인접(Zscaler)</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>엔드포인트 점유율 (참고)</h3>
+  <table>
+    <thead><tr><th>기업</th><th class="c">점유율</th><th>메모</th></tr></thead>
+    <tbody>
+      <tr><td><b>CrowdStrike</b></td><td class="c good"><b>약 22.5%</b></td><td>1위</td></tr>
+      <tr><td>McAfee ePO</td><td class="c">약 13.5%</td><td>레거시 설치 기반. 감소 추세로 평가</td></tr>
+      <tr><td>Microsoft Defender for Endpoint</td><td class="c">약 13.4%</td><td>번들링으로 빠르게 확대</td></tr>
+      <tr><td>SentinelOne</td><td class="c">약 10.5%</td><td>직접 경쟁자</td></tr>
+    </tbody>
+  </table>
+  <div class="warn">
+    <b>⚠️ 점유율 수치 해석 주의</b><br>
+    위 수치는 특정 조사기관(6sense) 기준이며, <b>"설치 기업 수"인지 "매출"인지에 따라 완전히 달라진다.</b>
+    예컨대 무료 번들로 깔린 Defender는 <b>설치 수는 많지만 매출 기여는 작을</b> 수 있다.
+    <b>절대치를 믿지 말고 상대적 위치와 방향성만 참고</b>하자.
+  </div>
+
+  <!-- 6 -->
+  <h2>6. 전방 — 고객과 유통</h2>
+  <table>
+    <thead><tr><th>고객 유형</th><th>특징</th><th class="c">CrowdStrike 강도</th></tr></thead>
+    <tbody>
+      <tr><td><b>글로벌 대기업</b></td><td>보안 예산 크고, 성능·전문성 중시. CISO 조직 보유</td><td class="c good">강함</td></tr>
+      <tr><td><b>정부·공공</b></td><td>인증·규제 요건 까다로움. 계약 규모 크고 안정적</td><td class="c mid">중~강</td></tr>
+      <tr><td><b>중견기업</b></td><td>예산 제약. <b>번들 가격 매력</b>에 민감</td><td class="c mid">경쟁 치열</td></tr>
+      <tr><td><b>중소기업</b></td><td>전담 보안 인력 없음. 관리형 서비스 선호</td><td class="c bad">MS 번들에 취약</td></tr>
+      <tr><td><b>MSP/MSSP</b></td><td>보안관제 대행업체. <b>재판매 채널</b> 역할</td><td class="c mid">파트너십 확대 중</td></tr>
+    </tbody>
+  </table>
+  <div class="callout">
+    <b>💡 전방에서 봐야 할 핵심 — '예산의 성격'</b><br>
+    사이버보안 예산은 <b>경기를 상대적으로 덜 탄다.</b> 침해사고가 나면 회사가 망할 수도 있어서
+    <b>"줄이기 어려운 지출"</b>로 분류된다.<br><br>
+    <b>다만 "안 줄인다"와 "계속 늘린다"는 다르다.</b> 경기가 나빠지면 <b>신규 도입은 미루고 갱신만 하는</b>
+    패턴이 나타난다. 이때 <b>순증 ARR</b>(②투자안내서 참조)이 먼저 둔화된다.
+  </div>
+
+  <!-- 7 -->
+  <h2>7. 산업의 지배 흐름: 벤더 통합</h2>
+  <p class="lead">
+    지금 사이버보안 산업을 관통하는 가장 큰 흐름은 <b>'벤더 통합(Consolidation)'</b>이다.
+  </p>
+  <figure>
+    <div class="svgbox">
+      <svg viewBox="0 0 840 250" width="100%" role="img" aria-label="벤더 통합 흐름">
+        <g font-family="Segoe UI, sans-serif">
+          <text x="16" y="26" font-size="15" font-weight="800">기업 보안팀의 고민이 산업을 바꾼다</text>
+
+          <rect x="30" y="50" width="340" height="150" rx="12" fill="#fef2f2" stroke="#fca5a5"/>
+          <text x="200" y="76" font-size="13.5" font-weight="800" fill="#991b1b" text-anchor="middle">과거: 최고 제품 조합</text>
+          <text x="200" y="100" font-size="11.5" fill="#7f1d1d" text-anchor="middle">영역마다 1등 제품을 골라 씀</text>
+          <text x="200" y="124" font-size="11" fill="#7f1d1d" text-anchor="middle">→ 벤더 20~50개</text>
+          <text x="200" y="144" font-size="11" fill="#7f1d1d" text-anchor="middle">→ 화면도 20~50개</text>
+          <text x="200" y="164" font-size="11" fill="#7f1d1d" text-anchor="middle">→ 연동 안 되고 사각지대 발생</text>
+          <text x="200" y="186" font-size="11.5" fill="#991b1b" text-anchor="middle" font-weight="700">운영이 불가능해짐</text>
+
+          <rect x="470" y="50" width="340" height="150" rx="12" fill="#dcfce7" stroke="#86efac"/>
+          <text x="640" y="76" font-size="13.5" font-weight="800" fill="#166534" text-anchor="middle">현재: 플랫폼 통합</text>
+          <text x="640" y="100" font-size="11.5" fill="#14532d" text-anchor="middle">소수 플랫폼으로 몰아주기</text>
+          <text x="640" y="124" font-size="11" fill="#14532d" text-anchor="middle">→ 벤더 3~5개</text>
+          <text x="640" y="144" font-size="11" fill="#14532d" text-anchor="middle">→ 통합 화면·통합 계약</text>
+          <text x="640" y="164" font-size="11" fill="#14532d" text-anchor="middle">→ 가격 협상력·운영 효율↑</text>
+          <text x="640" y="186" font-size="11.5" fill="#166534" text-anchor="middle" font-weight="700">Falcon Flex가 노리는 지점</text>
+
+          <path d="M375,125 L462,125" stroke="#0f172a" stroke-width="3" marker-end="url(#y)"/>
+          <defs><marker id="y" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto">
+            <path d="M0,0 L6,3 L0,6 Z" fill="#0f172a"/></marker></defs>
+
+          <rect x="30" y="212" width="780" height="30" rx="8" fill="#0f172a"/>
+          <text x="420" y="232" font-size="12" font-weight="700" fill="#fff" text-anchor="middle">
+            ⚔️ 이 통합의 '승자'가 되려는 싸움이 지금 벌어지는 전쟁의 본질 — 개인 정리 도식</text>
+        </g>
+      </svg>
+    </div>
+    <figcaption>그림 3. 벤더 통합 흐름이 모든 경쟁의 배경이다. (개인 정리 도식)</figcaption>
+  </figure>
+  <div class="dark">
+    <b>🏆 통합의 승자가 되면 무엇을 얻나</b>
+    <ul style="margin-bottom:0;">
+      <li>고객사 보안 예산의 <b>더 큰 몫</b>을 가져간다 (지갑 점유율)</li>
+      <li>한 번 통합되면 <b>바꾸기가 더 어려워진다</b> (전환비용 급증)</li>
+      <li>새 모듈을 팔 때 <b>영업 비용이 거의 안 든다</b></li>
+    </ul>
+    <br>
+    <b>반대로 통합에서 밀리면?</b> 여러 영역에서 조금씩 잘려나가다가 <b>"한 영역짜리 벤더"</b>로 축소된다.
+    그래서 모든 강자가 필사적으로 영역을 넓히는 것이다.
+  </div>
+
+  <!-- 8 -->
+  <h2>8. 시장 규모와 성장률</h2>
+  <table>
+    <thead><tr><th>시장</th><th class="c">기준</th><th class="c">전망</th><th class="c">CAGR</th></tr></thead>
+    <tbody>
+      <tr><td><b>엔드포인트 보안</b></td><td class="c">233.4억 달러 (2026)</td><td class="c">394.1억 달러 (2031)</td><td class="c">약 11.0%</td></tr>
+    </tbody>
+  </table>
+  <div class="note">
+    <b>📐 이 숫자를 어떻게 읽을까 — 중요한 관점</b><br>
+    엔드포인트 보안 시장이 <b>2026년 약 233억 달러</b>인데, 클라우드스트라이크의 <b>ARR이 52.5억 달러</b>다.
+    단순 계산하면 이미 <b>시장의 20%대</b>를 차지하고 있다는 뜻이 된다.<br><br>
+    <b>여기서 딜레마가 보인다:</b> 엔드포인트 시장만으로는 <b>지금의 성장률(20%대)을 오래 유지하기 어렵다.</b>
+    시장 자체가 연 11% 성장인데 회사가 24% 성장하려면 <b>점유율을 계속 뺏어야</b> 한다.<br><br>
+    <b>→ 그래서 클라우드·신원·SIEM으로의 확장이 '선택'이 아니라 '필수'다.</b>
+    3장에서 본 확장 전략은 성장률 유지를 위한 <b>구조적 필연</b>인 셈이다.
+  </div>
+  <p class="sub">
+    ※ 시장 규모는 조사기관마다 정의(EDR만인지, EPP 포함인지, 관리형 서비스 포함인지)가 달라 <b>편차가 매우 크다.</b>
+    위 수치도 특정 기관 기준이며 절대치보다 <b>기울기</b>로 참고할 것.
+    <span class="src">(출처: MarketsandMarkets, Mordor Intelligence 등)</span>
+  </p>
+
+  <!-- 9 -->
+  <h2>9. AI가 이 산업에 미치는 영향</h2>
+  <div class="grid2">
+    <div class="card">
+      <h4>⚔️ 공격 측면 (위협 증가)</h4>
+      <ul style="margin-bottom:0;">
+        <li>AI로 <b>피싱 메일이 정교</b>해짐</li>
+        <li>악성코드 <b>변종 생성이 자동화</b></li>
+        <li>공격 속도가 <b>사람보다 빨라짐</b></li>
+        <li>→ <b>보안 수요 증가</b> (산업에 순풍)</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4>🛡️ 방어 측면 (기회)</h4>
+      <ul style="margin-bottom:0;">
+        <li><b>Charlotte AI</b> — 분석가를 돕는 AI 비서</li>
+        <li>경보 분류 자동화 → 인력 부족 해소</li>
+        <li>탐지 정확도 향상</li>
+        <li>→ <b>새 모듈·업셀 기회</b></li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4>🆕 새 보안 대상 (신규 TAM)</h4>
+      <ul style="margin-bottom:0;">
+        <li>기업이 쓰는 <b>AI 자체를 지켜야</b> 함</li>
+        <li>AI 에이전트의 <b>신원·권한</b> 관리</li>
+        <li><b>판게아(Pangea) 인수</b>가 이 맥락</li>
+        <li>→ <b>시장 확장</b></li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4>💸 비용 측면 (리스크)</h4>
+      <ul style="margin-bottom:0;">
+        <li>AI 연산 비용이 <b>원가 상승</b> 요인</li>
+        <li>모든 경쟁사가 같은 기능을 냄 → <b>차별화 어려움</b></li>
+        <li>AI가 <b>보안을 상품화</b>시킬 위험</li>
+      </ul>
+    </div>
+  </div>
+  <div class="callout">
+    <b>🔗 연결해서 보기</b><br>
+    AI 에이전트가 늘면 <b>"사람이 아닌 것의 신원(NHI)"</b>을 관리해야 한다는 문제가 생긴다.
+    이건 지스케일러 시리즈에서 자세히 다룬 주제인데, <b>클라우드스트라이크도 같은 시장을 노리고 있다.</b><br>
+    → <a href="https://tryingpig.github.io/study/260718_지스케일러AI에이전트시장_확장리포트.html">AI 에이전트 시장 스택과 지스케일러의 자리</a> ·
+    <a href="https://tryingpig.github.io/study/260718_AI에이전트쉬운설명_번외편.html">AI 에이전트 쉬운 설명</a>
+  </div>
+
+  <!-- 10 -->
+  <h2>10. 지스케일러·팔로알토와의 전선 비교</h2>
+  <table>
+    <thead><tr><th></th><th class="c">CrowdStrike</th><th class="c">Zscaler</th><th class="c">Palo Alto</th></tr></thead>
+    <tbody>
+      <tr><td><b>출발점</b></td><td class="c">엔드포인트 (EDR)</td><td class="c">네트워크 (제로트러스트 프록시)</td><td class="c">네트워크 (방화벽)</td></tr>
+      <tr><td><b>핵심 위치</b></td><td class="c">기기 <b>안</b></td><td class="c">트래픽 <b>길목</b></td><td class="c">경계 + 플랫폼</td></tr>
+      <tr><td><b>비유</b></td><td class="c">방마다 경비원</td><td class="c">건물 정문 검문소</td><td class="c">종합 경비회사</td></tr>
+      <tr><td><b>확장 방향</b></td><td class="c">클라우드·신원·SIEM</td><td class="c">데이터·AI 에이전트 통제</td><td class="c">전 영역 통합(Cortex 등)</td></tr>
+      <tr><td><b>겹치는 지점</b></td><td class="c" colspan="3"><b>클라우드 보안 · 신원 · AI 보안 · SOC 운영</b> — 셋 다 여기로 몰려온다</td></tr>
+      <tr><td><b>공통 최대 위협</b></td><td class="c" colspan="3"><b>마이크로소프트의 번들링</b></td></tr>
+    </tbody>
+  </table>
+  <div class="note">
+    <b>투자자 관점 정리</b><br>
+    셋은 <b>지금은 주력 영역이 다르지만</b>, 모두 <b>"보안 플랫폼"</b>을 지향하며 같은 방향으로 확장 중이다.
+    즉 <b>지금은 부분 경쟁, 미래는 정면 경쟁</b>이 될 가능성이 높다.<br><br>
+    그래서 이 섹터에 투자할 때는 <b>"누가 통합의 승자가 될 것인가"</b>라는 하나의 질문으로
+    여러 종목을 함께 보는 것이 유용하다.
+  </div>
+
+  <!-- 11 -->
+  <h2>11. 강약점과 병목 지점</h2>
+  <div class="grid2">
+    <div class="card">
+      <h4>🟢 구조적 강점</h4>
+      <ul style="margin-bottom:0;">
+        <li><b>데이터 플라이휠</b> — 고객↑ → 탐지 정확도↑ → 고객↑</li>
+        <li><b>단일 에이전트</b> — 새 모듈 판매 비용이 거의 0</li>
+        <li><b>높은 전환비용</b> — 2024년 사고에도 고객이 안 떠난 이유</li>
+        <li><b>엔드포인트 1위</b> — 확장의 발판이 되는 설치 기반</li>
+        <li><b>클라우드 네이티브</b> — 태생부터 클라우드. 레거시 부채 없음</li>
+        <li><b>중립성</b> — 어떤 클라우드·OS에서도 동일 작동</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4>🟠 구조적 약점·병목</h4>
+      <ul style="margin-bottom:0;">
+        <li><b>번들 경쟁에 취약</b> — 보안이 매출 전부라 공짜로 못 준다</li>
+        <li><b>엔드포인트 시장 성숙</b> — 시장 성장률(11%)보다 빨리 커야 함</li>
+        <li><b>확장 영역은 남의 본진</b> — 신원은 Okta·MS, SIEM은 Splunk</li>
+        <li><b>중앙 집중의 역설</b> — 사고가 나면 전 세계 동시에</li>
+        <li><b>커널 의존</b> — OS 정책 변화에 구조가 흔들릴 수 있음</li>
+        <li><b>AI 비용</b> — 기능 확대가 마진을 압박</li>
+        <li><b>고밸류</b> — 실행에 실패할 여유가 적음</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="callout">
+    <b>📌 밸류체인 관점의 결론</b><br>
+    클라우드스트라이크는 <b>"한 영역의 확실한 1위가, 그 발판으로 여러 영역을 먹으려 시도하는"</b> 위치에 있다.<br><br>
+    <b>통제 가능한 변수:</b> ①모듈 확장 실행력 ②Falcon Flex 확산 ③AI 제품 경쟁력 ④사고 재발 방지<br>
+    <b>통제 불가능한 변수:</b> 마이크로소프트의 번들 정책, OS 아키텍처 변화, 기업 보안 예산 경기, 밸류에이션 멀티플<br><br>
+    투자자 입장에서는 <b>"통제 가능한 4가지가 숫자로 확인되는가"</b>(→ 순증 ARR, Flex 비중, 모듈 채택률)를 추적하고,
+    <b>"통제 불가능한 4가지가 언제 뒤집히는가"</b>를 경계하는 것이 이 산업을 보는 기본 자세다.
+  </div>
+
+  <h2>용어 사전</h2>
+  <table>
+    <tbody>
+      <tr><td><b>EDR</b></td><td>Endpoint Detection & Response. 엔드포인트의 행위를 기록·추적해 위협을 탐지·대응.</td></tr>
+      <tr><td><b>XDR</b></td><td>Extended Detection & Response. 엔드포인트를 넘어 여러 영역을 통합 분석.</td></tr>
+      <tr><td><b>CNAPP</b></td><td>Cloud-Native Application Protection Platform. 클라우드 환경 통합 보안.</td></tr>
+      <tr><td><b>SASE</b></td><td>Secure Access Service Edge. 네트워크와 보안을 클라우드에서 통합 제공.</td></tr>
+      <tr><td><b>SIEM</b></td><td>Security Information and Event Management. 보안 로그를 모아 분석하는 시스템.</td></tr>
+      <tr><td><b>SOC</b></td><td>Security Operations Center. 보안관제센터.</td></tr>
+      <tr><td><b>MSSP</b></td><td>Managed Security Service Provider. 보안관제를 대행하는 업체. 재판매 채널.</td></tr>
+      <tr><td><b>텔레메트리</b></td><td>기기에서 수집되는 행위·상태 데이터. 탐지 모델의 연료.</td></tr>
+      <tr><td><b>데이터 플라이휠</b></td><td>데이터가 쌓일수록 제품이 좋아지고 고객이 더 오는 선순환.</td></tr>
+      <tr><td><b>벤더 통합</b></td><td>여러 보안 제품을 소수 플랫폼으로 합치는 흐름. 현 산업의 지배 트렌드.</td></tr>
+      <tr><td><b>지갑 점유율</b></td><td>고객의 보안 예산 중 우리 회사가 차지하는 비중.</td></tr>
+      <tr><td><b>CISO</b></td><td>Chief Information Security Officer. 최고정보보호책임자. 보안 예산 결정권자.</td></tr>
+      <tr><td><b>NHI</b></td><td>Non-Human Identity. 사람이 아닌 주체(에이전트·API 키 등)의 신원.</td></tr>
+      <tr><td><b>커널</b></td><td>운영체제의 핵심부. 보안 에이전트가 여기서 동작해 강력하지만 위험도 크다.</td></tr>
+    </tbody>
+  </table>
+
+  <h2>출처</h2>
+  <p class="src">
+    • MarketsandMarkets, "Endpoint Security Market" — https://www.marketsandmarkets.com/ResearchInsight/endpoint-security-market.asp<br>
+    • Mordor Intelligence, "Endpoint Security Market Size, Share & Companies Analysis 2026-2031" — https://www.mordorintelligence.com/industry-reports/global-endpoint-security-market-industry<br>
+    • DataM Intelligence, "Endpoint Security Market | EDR, XDR, MDR Trends" — https://www.datamintelligence.com/endpoint-security-market<br>
+    • 6sense, Endpoint Protection Market Share — https://6sense.com/tech/endpoint-protection/sentinelone-market-share<br>
+    • BankInfoSecurity, "Microsoft, CrowdStrike Lead Endpoint Protection Gartner MQ" — https://www.bankinfosecurity.com/microsoft-crowdstrike-lead-endpoint-protection-gartner-mq-a-21457<br>
+    • Deepak Gupta, "Top 10 EDR/XDR Platforms of 2026: CrowdStrike vs SentinelOne vs the Rest" — https://guptadeepak.com/tools/top-10-edr-xdr-platforms-2026/<br>
+    • SentinelOne, "5 Endpoint Protection Vendors in 2026" — https://www.sentinelone.com/cybersecurity-101/endpoint-security/endpoint-protection-vendors/<br>
+    • 전자신문, "엔드포인트·클라우드·신원 보안 통합하는 AI 위협 탐지 플랫폼 '크라우드스트라이크 팔콘'" — https://www.etnews.com/20260527000045<br>
+    • 데이터넷, "[Solution Deep Dive] 크라우드스트라이크 '팔콘' 플랫폼" — https://www.datanet.co.kr/news/articleView.html?idxno=160113<br>
+    • 알파비즈, "크라우드스트라이크, AI 플랫폼 확장 및 판게아 인수 계약" — https://alphabiz.co.kr/news/view/1065565957505597<br>
+    • CrowdStrike IR, FY2026 실적 자료 — https://ir.crowdstrike.com/<br>
+    • 디지털투데이, "제2의 크라우드스트라이크發 IT대란 없다...마이크로소프트, 윈도OS 보안 강화" — https://www.digitaltoday.co.kr/news/articleView.html?idxno=542377
+  </p>
+
+  <div class="foot">
+    <hr>
+    본 문서는 개인 학습·정리 목적의 비상업 노트입니다. 시장규모·점유율은 조사기관별 정의 차이로 편차가 크며 추정치입니다.
+    언급된 기업명은 산업 구조 설명 목적이며 투자 추천이 아닙니다.
+    투자에 대한 최종 판단과 책임은 전적으로 독자 본인에게 있습니다. © 2026 개인 리서치 라이브러리.
+  </div>
+
+</div>
+</body>
+</html>

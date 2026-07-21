@@ -654,6 +654,36 @@
         "...kkkkkkkkkkk..",
         "................"
       ]
+    },
+    "crowdstrike": {
+      "bg": [
+        "#0d1b2a",
+        "#131a26"
+      ],
+      "palette": {
+        "f": "#dbe3ee",
+        "b": "#2f6fd0",
+        "w": "#ffffff",
+        "s": "#8593a8"
+      },
+      "grid": [
+        "................",
+        "..ffffffffffff..",
+        "..fbbbbbbbbbbf..",
+        "..fbbbbbbbbbbf..",
+        "..fbbwwbbwwbbf..",
+        "..fbbwwbbwwbbf..",
+        "..fbbbbbbbbbbf..",
+        "..fbbbwwwwbbbf..",
+        "..fbbwbbbbwbbf..",
+        "..fbbbbbbbbbbf..",
+        "..fbbbbbbbbbbf..",
+        "..ffffffffffff..",
+        ".....ssssss.....",
+        ".......ss.......",
+        "....ssssssss....",
+        "................"
+      ]
     }
   }
 }

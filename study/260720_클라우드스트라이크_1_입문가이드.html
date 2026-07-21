@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>클라우드스트라이크 입문 가이드 — 전 세계 PC를 멈추게 했던 보안 1위 회사</title>
+<style>
+  :root{
+    --accent:#dc2626; --accent2:#ef4444;
+    --ink:#1f2430; --muted:#5c6472; --line:#ece6e6; --bg:#fff; --soft:#fdf7f7;
+    --warnbg:#fff7ed; --warnln:#fb923c;
+  }
+  *{box-sizing:border-box;}
+  body{font-family:"Segoe UI","Malgun Gothic","Apple SD Gothic Neo",system-ui,sans-serif;
+    color:var(--ink); background:var(--bg); margin:0; line-height:1.78; font-size:16.5px; letter-spacing:-0.1px;}
+  .wrap{max-width:920px; margin:0 auto; padding:40px 28px 90px;}
+  h1{font-size:29px; line-height:1.32; margin:8px 0 6px; letter-spacing:-0.6px;}
+  h2{font-size:22px; margin:50px 0 12px; padding-top:14px; border-top:3px solid var(--accent); letter-spacing:-0.4px;}
+  h3{font-size:18.5px; margin:30px 0 8px; color:#2b3242;}
+  h4{font-size:16px; margin:18px 0 6px; color:var(--accent);}
+  p{margin:10px 0;} a{color:var(--accent); text-decoration:none;} a:hover{text-decoration:underline;}
+  .sub{color:var(--muted); font-size:15px;} .lead{font-size:17.5px; color:#333a49;}
+  .kicker{display:inline-block; font-size:13px; font-weight:700; letter-spacing:1.5px;
+    color:#fff; background:var(--accent); padding:5px 12px; border-radius:999px;}
+  .warn{background:var(--warnbg); border:1px solid var(--warnln); border-left:6px solid var(--warnln);
+    border-radius:10px; padding:16px 18px; margin:22px 0; font-size:15px;}
+  .note{background:var(--soft); border:1px solid var(--line); border-radius:10px; padding:16px 18px; margin:18px 0;}
+  .callout{background:#fef2f2; border:1px solid #fca5a5; border-left:6px solid var(--accent);
+    border-radius:10px; padding:16px 18px; margin:20px 0;}
+  .dark{background:#0f172a; color:#e2e8f0; border-radius:10px; padding:16px 18px; margin:20px 0;}
+  .dark b{color:#fff;}
+  .big{font-size:19px; font-weight:800; color:var(--accent); line-height:1.5;}
+  .grid2{display:grid; grid-template-columns:1fr 1fr; gap:16px;}
+  .grid3{display:grid; grid-template-columns:repeat(3,1fr); gap:14px;}
+  .card{border:1px solid var(--line); border-radius:12px; padding:16px 18px; background:#fff;}
+  table{width:100%; border-collapse:collapse; margin:18px 0; font-size:14.5px;}
+  th,td{border:1px solid var(--line); padding:9px 11px; text-align:left; vertical-align:top;}
+  th{background:var(--soft); font-weight:700;} td.c,th.c{text-align:center;}
+  figure{margin:24px 0; text-align:center;} figcaption{font-size:13px; color:var(--muted); margin-top:8px;}
+  .svgbox{border:1px solid var(--line); border-radius:12px; padding:14px; background:#fff;}
+  ul,ol{margin:10px 0 10px 4px; padding-left:22px;} li{margin:6px 0;}
+  .kpi{display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin:20px 0;}
+  .kpi .box{border:1px solid var(--line); border-radius:12px; padding:14px; text-align:center; background:var(--soft);}
+  .kpi .num{font-size:21px; font-weight:800; color:var(--accent); letter-spacing:-0.5px;}
+  .kpi .lab{font-size:12.5px; color:var(--muted); margin-top:3px;}
+  .toc{background:var(--soft); border:1px solid var(--line); border-radius:12px; padding:18px 22px; margin:26px 0;}
+  .toc ol{columns:2; column-gap:34px;}
+  .src{font-size:13px; color:var(--muted); word-break:break-all;}
+  .seriesnav{background:#fef2f2; border:1px solid #fca5a5; border-radius:10px; padding:14px 18px; margin:20px 0; font-size:14.5px;}
+  .good{color:#059669; font-weight:700;} .bad{color:#dc2626; font-weight:700;} .mid{color:#b45309; font-weight:700;}
+  hr{border:none; border-top:1px solid var(--line); margin:34px 0;}
+  .foot{color:var(--muted); font-size:13px; margin-top:40px;}
+  @media (max-width:680px){.grid2,.grid3,.kpi{grid-template-columns:1fr;} .toc ol{columns:1;} h1{font-size:24px;}}
+  @media print{body{font-size:11.5pt;} .wrap{max-width:100%; padding:0;} h2{break-after:avoid;}
+    figure,table,.card{break-inside:avoid;} a{color:#000;} .warn,.callout,.note,.dark{break-inside:avoid;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <span class="kicker">CROWDSTRIKE · ① 입문 가이드</span>
+  <h1>클라우드스트라이크 입문 가이드<br>— 전 세계 PC를 멈추게 했던 '보안 1위' 회사</h1>
+  <p class="sub">작성일 2026-07-20 · NASDAQ: CRWD · 개인 리서치 노트 · 입문세트 1/3</p>
+
+  <div class="warn">
+    <b>⚠️ 투자 권유가 아닙니다.</b> 이 문서는 공개 정보를 정리한 <b>개인 학습 노트</b>이며 매수·매도 추천이 아닙니다.
+    실적·시장 수치는 작성일 기준 공시·언론 자료를 인용한 것으로 <b>추정치가 포함</b>되어 있고 실제와 다를 수 있습니다.
+    해외 종목은 환율·세제·거래시간 등 국내 종목과 다른 위험이 있습니다.
+    모든 투자 판단과 그 책임은 전적으로 본인에게 있습니다.
+  </div>
+
+  <div class="seriesnav">
+    <b>🛡️ 입문세트 구성</b> — ① <b>입문가이드(현재 글)</b> ·
+    <a href="https://tryingpig.github.io/study/260720_클라우드스트라이크_2_투자안내서.html">② 투자안내서</a> ·
+    <a href="https://tryingpig.github.io/study/260720_클라우드스트라이크_3_밸류체인.html">③ 밸류체인</a><br>
+    <span class="sub">※ 같은 사이버보안 섹터의 <a href="https://tryingpig.github.io/study/260718_지스케일러_1_입문가이드.html">지스케일러 시리즈</a>도 함께 보면
+    '네트워크 보안 vs 엔드포인트 보안'의 차이가 선명해집니다.</span>
+  </div>
+
+  <div class="callout">
+    <span class="big">한 문장 요약</span><br>
+    <b>클라우드스트라이크는 회사의 PC·서버 한 대 한 대에 '경비원 프로그램'을 심어, 그 정보를 클라우드로 모아 위협을 잡아내는 회사다.</b><br>
+    <span class="sub">2024년 7월, 바로 그 경비원 프로그램의 업데이트 오류로 전 세계 컴퓨터가 멈췄던 그 회사이기도 하다.</span>
+  </div>
+
+  <div class="toc">
+    <b>목차</b>
+    <ol>
+      <li>클라우드스트라이크는 무엇을 하는 회사인가</li>
+      <li>기초 개념 — '엔드포인트 보안'이 뭔가</li>
+      <li>연혁 — 2011년 창업에서 보안 1위까지</li>
+      <li>'이렇게 생겼어요' — 팰컨 플랫폼 구조</li>
+      <li>핵심 무기 ① 단일 경량 에이전트</li>
+      <li>핵심 무기 ② 클라우드 네이티브</li>
+      <li>돈 버는 구조 — 모듈 장사</li>
+      <li>2024년 7월 19일, 그날 무슨 일이</li>
+      <li>사고 이후 — 회사는 어떻게 됐나</li>
+      <li>기초 실적 스냅샷</li>
+      <li>FAQ · 용어사전 · 출처</li>
+    </ol>
+  </div>
+
+  <!-- 1 -->
+  <h2>1. 클라우드스트라이크는 무엇을 하는 회사인가</h2>
+  <p class="lead">
+    한 문장으로: <b>기업용 사이버보안 소프트웨어 회사</b>다. 그중에서도 <b>엔드포인트(Endpoint)</b>,
+    즉 <b>PC·노트북·서버 같은 '끝단 기기'</b>를 지키는 분야의 세계 1위 사업자다.
+  </p>
+  <p>
+    주력 제품은 <b>팰컨(Falcon)</b> 플랫폼 하나다. 이 플랫폼 위에 여러 보안 기능을 <b>모듈</b> 형태로 얹어 파는 구조다.
+    2011년 창업했고, 창업자는 현재도 CEO인 <b>조지 커츠(George Kurtz)</b>다.
+  </p>
+
+  <div class="note">
+    <b>🏢 비유로 이해하기 — 건물 경비 시스템</b><br>
+    회사를 커다란 건물이라고 하자. 보안에는 두 가지 접근이 있다.<br><br>
+    <b>① 출입구를 지킨다</b> — 정문에 검문소를 세워 들어오고 나가는 사람을 검사한다.
+    → 이게 <b>네트워크 보안</b>(지스케일러, 팔로알토 등)<br>
+    <b>② 방마다 경비원을 둔다</b> — 각 사무실에 경비원을 배치해 안에서 벌어지는 일을 감시한다.
+    → 이게 <b>엔드포인트 보안</b>(클라우드스트라이크)<br><br>
+    클라우드스트라이크는 <b>②</b>에서 출발했다. 그리고 지금은 ①까지 넘보며 <b>'보안 플랫폼'</b>이 되려 하고 있다.
+  </div>
+
+  <!-- 2 -->
+  <h2>2. 기초 개념 — '엔드포인트 보안'이 뭔가</h2>
+  <p>
+    <b>엔드포인트</b>는 네트워크의 '끝단'에 있는 기기를 말한다. 직원 노트북, 데스크톱, 서버, 클라우드 가상머신 등.
+    <b>해커는 결국 이 끝단을 통해 들어온다.</b> 직원이 악성 메일 첨부파일을 열거나, 서버 취약점이 뚫리는 식이다.
+  </p>
+  <table>
+    <thead><tr><th>세대</th><th>기술</th><th>방식</th><th>한계</th></tr></thead>
+    <tbody>
+      <tr>
+        <td class="c">1세대</td><td><b>백신(안티바이러스)</b></td>
+        <td>알려진 악성코드 <b>목록(시그니처)</b>과 대조해 차단</td>
+        <td class="bad">처음 보는 공격은 못 막음</td>
+      </tr>
+      <tr>
+        <td class="c">2세대</td><td><b>NGAV</b><br><span class="sub">차세대 백신</span></td>
+        <td>목록 대신 <b>행동 패턴</b>으로 판단 (머신러닝)</td>
+        <td class="mid">막는 데 집중, 사후 추적은 약함</td>
+      </tr>
+      <tr>
+        <td class="c">3세대</td><td><b>EDR</b><br><span class="sub">엔드포인트 탐지·대응</span></td>
+        <td>모든 행위를 <b>기록·추적</b>해 침입 경로까지 파악</td>
+        <td class="mid">엔드포인트만 봄</td>
+      </tr>
+      <tr>
+        <td class="c">4세대</td><td><b>XDR</b><br><span class="sub">확장 탐지·대응</span></td>
+        <td>엔드포인트 + <b>클라우드·신원·네트워크</b>까지 통합 분석</td>
+        <td class="good">← 지금 여기가 격전지</td>
+      </tr>
+    </tbody>
+  </table>
+  <p class="sub">
+    ※ 클라우드스트라이크는 <b>EDR 시장을 사실상 만들어낸 회사</b>로 평가받는다. 현재는 XDR·플랫폼으로 확장 중이다.
+  </p>
+
+  <!-- 3 -->
+  <h2>3. 연혁 — 2011년 창업에서 보안 1위까지</h2>
+  <table>
+    <thead><tr><th class="c">시기</th><th>내용</th></tr></thead>
+    <tbody>
+      <tr><td class="c">2011</td><td><b>조지 커츠</b>(CEO), <b>드미트리 알페로비치</b>(전 CTO), <b>그렉 마스턴</b>(전 CFO) 공동 창업</td></tr>
+      <tr><td class="c">2010년대</td><td>클라우드 네이티브 EDR로 시장 개척. 대형 침해사고 조사로 명성 확보</td></tr>
+      <tr><td class="c">2019</td><td>나스닥 <b>상장</b> (티커 CRWD)</td></tr>
+      <tr><td class="c">2020년대 초</td><td>모듈 확장 — 클라우드 보안, 신원 보호, 위협 인텔리전스로 플랫폼화</td></tr>
+      <tr><td class="c"><b>2024.07.19</b></td><td><b>글로벌 IT 대란</b> — 팰컨 센서 업데이트 오류로 전 세계 윈도우 시스템 마비</td></tr>
+      <tr><td class="c">2024~2025</td><td>신뢰 회복 국면. 고객 이탈보다 <b>플랫폼 확장 전략</b>이 유지됨</td></tr>
+      <tr><td class="c">2025~2026</td><td><b>Falcon Flex</b> 구독 모델 급성장, AI 보안(샬럿 AI) 확대, <b>판게아(Pangea) 인수</b> 계약</td></tr>
+      <tr><td class="c">FY2026</td><td>연매출 <b>48.1억 달러</b>, ARR <b>52.5억 달러</b> 돌파</td></tr>
+    </tbody>
+  </table>
+  <p class="src">(출처: 위키백과, 나무위키, 전자신문, CrowdStrike IR, 알파비즈)</p>
+
+  <!-- 4 -->
+  <h2>4. '이렇게 생겼어요' — 팰컨 플랫폼 구조</h2>
+  <p>제품이 소프트웨어라 사진으로 보여주기 어렵다. 대신 <b>구조</b>를 그림으로 보자.</p>
+
+  <figure>
+    <div class="svgbox">
+      <svg viewBox="0 0 860 380" width="100%" role="img" aria-label="팰컨 플랫폼 구조">
+        <g font-family="Segoe UI, sans-serif">
+          <text x="16" y="26" font-size="15" font-weight="800">팰컨(Falcon) 플랫폼 — 하나의 에이전트, 여러 개의 모듈</text>
+
+          <!-- endpoints -->
+          <text x="60" y="62" font-size="12.5" font-weight="700" fill="#5c6472">고객사 기기들 (엔드포인트)</text>
+          <g>
+            <rect x="40" y="72" width="80" height="52" rx="7" fill="#f1f5f9" stroke="#cbd5e1"/>
+            <text x="80" y="94" font-size="11" text-anchor="middle">직원 노트북</text>
+            <circle cx="80" cy="112" r="6" fill="#dc2626"/>
+            <rect x="132" y="72" width="80" height="52" rx="7" fill="#f1f5f9" stroke="#cbd5e1"/>
+            <text x="172" y="94" font-size="11" text-anchor="middle">서버</text>
+            <circle cx="172" cy="112" r="6" fill="#dc2626"/>
+            <rect x="224" y="72" width="80" height="52" rx="7" fill="#f1f5f9" stroke="#cbd5e1"/>
+            <text x="264" y="94" font-size="11" text-anchor="middle">클라우드 VM</text>
+            <circle cx="264" cy="112" r="6" fill="#dc2626"/>
+          </g>
+          <text x="330" y="105" font-size="11.5" fill="#dc2626">● = 단일 경량 에이전트</text>
+
+          <!-- arrow up -->
+          <path d="M172,132 L172,158" stroke="#dc2626" stroke-width="2.5" marker-end="url(#a)"/>
+          <text x="196" y="150" font-size="11" fill="#dc2626">텔레메트리(행위 데이터) 전송</text>
+          <defs><marker id="a" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+            <path d="M0,0 L6,3 L0,6 Z" fill="#dc2626"/></marker></defs>
+
+          <!-- cloud brain -->
+          <rect x="40" y="164" width="780" height="66" rx="12" fill="#dc2626"/>
+          <text x="430" y="192" font-size="14" font-weight="800" fill="#fff" text-anchor="middle">
+            클라우드 두뇌 (Threat Graph) — 전 세계 고객 데이터를 한곳에서 분석</text>
+          <text x="430" y="214" font-size="11.5" fill="#fecaca" text-anchor="middle">
+            한 고객에서 발견한 공격 패턴을 → 즉시 모든 고객이 방어 (집단 면역 효과)</text>
+
+          <!-- modules -->
+          <text x="60" y="262" font-size="12.5" font-weight="700" fill="#5c6472">그 위에 얹어 파는 모듈들 (= 매출원)</text>
+          <g font-size="11">
+            <rect x="40" y="272" width="118" height="44" rx="7" fill="#fef2f2" stroke="#fca5a5"/>
+            <text x="99" y="291" text-anchor="middle" font-weight="700">EPP · EDR</text>
+            <text x="99" y="306" text-anchor="middle" fill="#5c6472">엔드포인트</text>
+
+            <rect x="168" y="272" width="118" height="44" rx="7" fill="#fef2f2" stroke="#fca5a5"/>
+            <text x="227" y="291" text-anchor="middle" font-weight="700">IDP</text>
+            <text x="227" y="306" text-anchor="middle" fill="#5c6472">신원 보호</text>
+
+            <rect x="296" y="272" width="118" height="44" rx="7" fill="#fef2f2" stroke="#fca5a5"/>
+            <text x="355" y="291" text-anchor="middle" font-weight="700">CNAPP</text>
+            <text x="355" y="306" text-anchor="middle" fill="#5c6472">클라우드 보안</text>
+
+            <rect x="424" y="272" width="118" height="44" rx="7" fill="#fef2f2" stroke="#fca5a5"/>
+            <text x="483" y="291" text-anchor="middle" font-weight="700">Next-Gen SIEM</text>
+            <text x="483" y="306" text-anchor="middle" fill="#5c6472">로그 통합분석</text>
+
+            <rect x="552" y="272" width="118" height="44" rx="7" fill="#fef2f2" stroke="#fca5a5"/>
+            <text x="611" y="291" text-anchor="middle" font-weight="700">위협 인텔리전스</text>
+            <text x="611" y="306" text-anchor="middle" fill="#5c6472">TI</text>
+
+            <rect x="680" y="272" width="140" height="44" rx="7" fill="#0f172a"/>
+            <text x="750" y="291" text-anchor="middle" font-weight="700" fill="#fff">Charlotte AI</text>
+            <text x="750" y="306" text-anchor="middle" fill="#cbd5e1">AI 분석 비서</text>
+          </g>
+
+          <rect x="40" y="332" width="780" height="36" rx="9" fill="#fef2f2" stroke="#fca5a5"/>
+          <text x="430" y="355" font-size="12.5" fill="#991b1b" text-anchor="middle">
+            💡 핵심: 에이전트는 <b>한 번만 깔면 되고</b>, 모듈은 <b>스위치처럼 켜서 추가 판매</b>한다 (개인 정리 도식)</text>
+        </g>
+      </svg>
+    </div>
+    <figcaption>그림 1. 팰컨 플랫폼의 3층 구조 — 에이전트 → 클라우드 두뇌 → 모듈. (개인 정리 도식)</figcaption>
+  </figure>
+
+  <!-- 5 -->
+  <h2>5. 핵심 무기 ① 단일 경량 에이전트</h2>
+  <p class="lead">
+    이 회사를 이해하는 열쇠는 <b>"에이전트를 하나만 깐다"</b>는 것이다. 이게 왜 강력한 무기인지 알아야 한다.
+  </p>
+  <div class="grid2">
+    <div class="card">
+      <h4>😰 전통적 방식의 문제</h4>
+      <p>백신 회사 A, EDR 회사 B, 클라우드보안 회사 C를 각각 쓰면 <b>PC에 프로그램 3개를 깔아야 한다.</b></p>
+      <ul style="margin-bottom:0;">
+        <li>PC가 느려짐 (자원 소모)</li>
+        <li>프로그램끼리 충돌</li>
+        <li>관리 화면이 3개 (운영 부담)</li>
+        <li>계약·갱신도 3번</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4>😀 팰컨의 방식</h4>
+      <p><b>에이전트 하나만 깔면</b> 그 위에서 모듈을 켜고 끄는 방식으로 기능이 추가된다.</p>
+      <ul style="margin-bottom:0;">
+        <li>가볍다 (성능 부담 적음)</li>
+        <li>충돌 없음</li>
+        <li>관리 화면 하나</li>
+        <li>계약도 하나로 통합</li>
+      </ul>
+    </div>
+  </div>
+  <div class="callout">
+    <b>💰 이게 왜 돈이 되나 — '설치 기반'의 힘</b><br>
+    에이전트를 이미 깔아둔 고객에게 <b>새 모듈을 파는 비용은 거의 0에 가깝다.</b>
+    새로 설치할 필요도, 영업을 처음부터 다시 할 필요도 없다. <b>"스위치만 켜세요"</b>면 된다.<br><br>
+    그래서 이 회사의 성장 공식은 <b>"고객 수 늘리기 + 고객당 모듈 수 늘리기"</b> 두 축이고,
+    후자가 마진이 훨씬 좋다. (자세한 건 <a href="https://tryingpig.github.io/study/260720_클라우드스트라이크_2_투자안내서.html">②투자안내서</a>)
+  </div>
+
+  <!-- 6 -->
+  <h2>6. 핵심 무기 ② 클라우드 네이티브</h2>
+  <p>
+    두 번째 무기는 <b>처음부터 클라우드로 설계됐다</b>는 점이다. 경쟁사 상당수는 기존 설치형 제품을
+    나중에 클라우드로 옮긴 반면, 팰컨은 <b>2011년 창업 때부터 클라우드 기반</b>이었다.
+  </p>
+  <div class="note">
+    <b>🧠 '집단 면역' 효과</b><br>
+    모든 고객사의 기기에서 나오는 행위 데이터가 <b>클라우드의 한 두뇌</b>로 모인다.
+    그래서 <b>어느 한 고객사에서 새로운 공격이 발견되면, 그 패턴이 즉시 전 세계 모든 고객에게 적용</b>된다.<br><br>
+    고객이 많아질수록 데이터가 많아지고 → 탐지가 정확해지고 → 더 많은 고객이 오는
+    <b>네트워크 효과</b>가 작동한다. 이것이 이 회사의 진짜 해자다.
+  </div>
+  <p>
+    다만 <b>바로 이 구조가 2024년 사고의 원인이기도 했다.</b> 중앙에서 모든 기기에 즉시 업데이트를 밀어넣을 수 있다는 건,
+    <b>잘못된 업데이트도 즉시 전 세계에 퍼진다</b>는 뜻이기 때문이다. (8장)
+  </p>
+
+  <!-- 7 -->
+  <h2>7. 돈 버는 구조 — 모듈 장사</h2>
+  <figure>
+    <div class="svgbox">
+      <svg viewBox="0 0 840 230" width="100%" role="img" aria-label="수익 구조">
+        <g font-family="Segoe UI, sans-serif">
+          <text x="16" y="26" font-size="15" font-weight="800">매출 = 고객 수 × 고객당 모듈 수 × 단가 (전부 구독)</text>
+
+          <rect x="30" y="52" width="240" height="66" rx="10" fill="#fef2f2" stroke="#fca5a5"/>
+          <text x="150" y="78" font-size="13" font-weight="700" text-anchor="middle">① 신규 고객 확보</text>
+          <text x="150" y="99" font-size="11" fill="#5c6472" text-anchor="middle">에이전트 최초 설치 · 영업비용 큼</text>
+
+          <rect x="300" y="52" width="240" height="66" rx="10" fill="#dc2626"/>
+          <text x="420" y="78" font-size="13" font-weight="700" fill="#fff" text-anchor="middle">② 모듈 업셀 ★</text>
+          <text x="420" y="99" font-size="11" fill="#fecaca" text-anchor="middle">스위치만 켜면 됨 · 마진 최상</text>
+
+          <rect x="570" y="52" width="240" height="66" rx="10" fill="#fef2f2" stroke="#fca5a5"/>
+          <text x="690" y="78" font-size="13" font-weight="700" text-anchor="middle">③ 갱신·확대</text>
+          <text x="690" y="99" font-size="11" fill="#5c6472" text-anchor="middle">기기 수 증가 → 자동 증액</text>
+
+          <rect x="30" y="140" width="780" height="70" rx="10" fill="#0f172a"/>
+          <text x="420" y="166" font-size="13.5" font-weight="800" fill="#fff" text-anchor="middle">
+            핵심 지표는 매출이 아니라 ARR (연간 반복 매출)</text>
+          <text x="420" y="188" font-size="11.5" fill="#cbd5e1" text-anchor="middle">
+            구독 사업이라 "지금 계약된 연간 매출이 얼마인가"가 실질을 보여준다 — 개인 정리 도식</text>
+        </g>
+      </svg>
+    </div>
+    <figcaption>그림 2. 구독 기반 모듈 장사. 성장의 핵심은 ②업셀. (개인 정리 도식)</figcaption>
+  </figure>
+
+  <div class="note">
+    <b>📦 Falcon Flex — 최근 성장의 주인공</b><br>
+    <b>"일단 큰 금액을 약정하고, 그 안에서 원하는 모듈을 자유롭게 골라 쓰는"</b> 구독 방식이다.
+    고객은 유연해서 좋고, 회사는 <b>모듈 채택이 빨라져서</b> 좋다.<br><br>
+    FY2026 3분기 기준 Falcon Flex의 ARR이 <b>13.5억 달러를 넘었고, 전년 대비 200% 이상 성장</b>했다.
+    회사의 <b>플랫폼 통합 전략</b>이 실제로 먹히고 있다는 증거로 읽힌다.
+  </div>
+
+  <!-- 8 -->
+  <h2>8. 2024년 7월 19일, 그날 무슨 일이</h2>
+  <div class="dark">
+    <b>🔴 이 회사를 이야기할 때 반드시 알아야 할 사건</b><br><br>
+    2024년 7월 19일, 클라우드스트라이크가 <b>팰컨 센서의 '채널 파일'을 업데이트</b>했다.
+    그 파일에 <b>논리적 오류</b>가 있었고, 결과적으로 윈도우 시스템에 잘못된 부팅 루틴이 심어져
+    전 세계 컴퓨터에서 <b>블루스크린(BSOD)</b>이 발생했다.<br><br>
+    공항·항공사·병원·은행·방송사가 동시에 멈췄다. <b>사이버 공격이 아니라 자사의 업데이트 오류</b>였다는 점을
+    CEO 조지 커츠가 직접 확인했다.
+  </div>
+
+  <h3>왜 그렇게 피해가 컸나</h3>
+  <ol>
+    <li><b>지연 업데이트가 적용되지 않는 종류였다.</b> 고객사들은 보통 대규모 패치를 바로 받지 않고 검증 후 적용한다.
+      그런데 이번 건은 <b>수시로 배포되는 '정의 업데이트'</b>였고, 여기엔 지연 옵션이 적용되지 않아
+      <b>속수무책으로 즉시 배포</b>됐다.</li>
+    <li><b>커널 수준에서 동작한다.</b> 보안 에이전트는 운영체제 깊은 곳에서 돌기 때문에, 문제가 생기면
+      <b>OS 자체가 부팅되지 않는다.</b></li>
+    <li><b>클라우드 네이티브의 역설.</b> 즉시 전 세계에 배포되는 강점이 <b>즉시 전 세계를 망가뜨리는</b> 약점이 됐다.</li>
+    <li><b>복구가 수동이었다.</b> 부팅이 안 되니 원격 조치가 어려워, 기기마다 사람이 손을 대야 했다.</li>
+  </ol>
+
+  <h3>법적 후폭풍 — 델타항공 사례</h3>
+  <table>
+    <thead><tr><th>항목</th><th>내용</th></tr></thead>
+    <tbody>
+      <tr><td><b>피해</b></td><td>델타항공 <b>약 7,000편 결항</b></td></tr>
+      <tr><td><b>소송</b></td><td>델타항공이 <b>5억 달러</b> 규모 손해배상 소송 제기 (마이크로소프트도 함께 겨냥)</td></tr>
+      <tr><td><b>회사 대응</b></td><td>클라우드스트라이크는 <b>계약상 책임 한도가 1,000만 달러 미만</b>이라고 반박</td></tr>
+      <tr><td><b>파급</b></td><td>델타항공은 "MS 의존도를 재고하겠다"고 언급. SW 공급망 점검이 업계 화두로</td></tr>
+    </tbody>
+  </table>
+  <p class="sub">
+    ※ 참고로 <b>국내 피해는 제한적</b>이었다. 과기정통부가 파악한 국내 피해기업 10개사는 모두 복구가 완료됐다.
+    국내 기업들의 팰컨 도입률이 상대적으로 낮았던 것이 역설적으로 방어막이 됐다.
+    <span class="src">(출처: 위키백과, 나무위키, CIO Korea, 디지털투데이, 테크42)</span>
+  </p>
+
+  <!-- 9 -->
+  <h2>9. 사고 이후 — 회사는 어떻게 됐나</h2>
+  <p class="lead">
+    투자자 입장에서 가장 궁금한 질문. <b>"그 정도 사고를 치고도 회사가 멀쩡한가?"</b>
+  </p>
+  <div class="callout">
+    <b>결론부터: 실적으로만 보면 회복을 넘어 성장했다.</b>
+    <ul style="margin-bottom:0;">
+      <li>FY2026(2026년 1월 종료) 매출 <b>48.1억 달러</b>, 전년 대비 <b>+22%</b></li>
+      <li>ARR <b>52.5억 달러</b> 돌파 — 순수 사이버보안 소프트웨어 기업 중 <b>최초·최단 기록</b>이라고 회사는 밝힘</li>
+      <li>연간 순증 ARR <b>10.1억 달러</b> — <b>사상 처음 10억 달러 돌파</b></li>
+      <li>사고 1년여 뒤인 2026년 7월 기준 <b>시가총액 2,000억 달러대</b>, 최근 1년 상승률이 크게 나타남</li>
+    </ul>
+  </div>
+  <h3>왜 고객이 떠나지 않았나 — 세 가지 해석</h3>
+  <div class="grid3">
+    <div class="card">
+      <h4>① 교체 비용이 크다</h4>
+      <p class="sub" style="margin:0;">보안 제품은 전사 기기에 깔려 있어 바꾸는 데 <b>시간·비용·위험</b>이 크다.
+      화나도 쉽게 못 떠난다(전환비용).</p>
+    </div>
+    <div class="card">
+      <h4>② 제품 자체 평가는 유지</h4>
+      <p class="sub" style="margin:0;">사고는 <b>배포 프로세스</b>의 실패였지 <b>탐지 성능</b>의 실패가 아니었다.
+      독립 테스트에서 높은 탐지율 평가는 이어졌다.</p>
+    </div>
+    <div class="card">
+      <h4>③ 대안이 마땅찮다</h4>
+      <p class="sub" style="margin:0;">경쟁사로 옮겨도 <b>같은 구조적 위험</b>(커널 수준 에이전트)이 존재한다.
+      "여긴 안전한가?"의 답이 명확하지 않다.</p>
+    </div>
+  </div>
+  <div class="warn">
+    <b>⚠️ 그렇다고 리스크가 사라진 건 아니다.</b> 소송 결과, 재발 시 신뢰 붕괴 가능성, 마이크로소프트가 추진하는
+    <b>'윈도 복원력 이니셔티브'</b>(커널 접근 방식 변경 논의) 같은 구조적 변화는 여전히 진행형이다.
+    자세한 리스크는 <a href="https://tryingpig.github.io/study/260720_클라우드스트라이크_2_투자안내서.html">②투자안내서</a>에서 다룬다.
+  </div>
+
+  <!-- 10 -->
+  <h2>10. 기초 실적 스냅샷</h2>
+  <div class="kpi">
+    <div class="box"><div class="num">$48.1억</div><div class="lab">FY2026 매출 (+22%)</div></div>
+    <div class="box"><div class="num">$45.6억</div><div class="lab">FY2026 구독 매출 (+21%)</div></div>
+    <div class="box"><div class="num">$52.5억</div><div class="lab">기말 ARR (+24%)</div></div>
+    <div class="box"><div class="num">$10.1억</div><div class="lab">연간 순증 ARR (첫 10억 돌파)</div></div>
+    <div class="box"><div class="num">$13.1억</div><div class="lab">FY26 4Q 매출 (+23%)</div></div>
+    <div class="box"><div class="num">$3.3억</div><div class="lab">4Q 순증 ARR</div></div>
+    <div class="box"><div class="num">$13.5억+</div><div class="lab">Falcon Flex ARR (+200%)</div></div>
+    <div class="box"><div class="num">약 $2,050억</div><div class="lab">시가총액 (2026.07 기준)</div></div>
+  </div>
+  <p class="sub">
+    ※ 클라우드스트라이크의 회계연도(FY)는 <b>1월 31일에 끝난다.</b> 즉 <b>FY2026 = 2025년 2월~2026년 1월</b>이다.
+    분기 표기도 이 기준이니 헷갈리지 않도록 주의. 시가총액은 조회 시점에 따라 변동한다.
+    <span class="src">(출처: CrowdStrike IR, Businesswire, SEC 8-K, Nasdaq, 시장 데이터 사이트)</span>
+  </p>
+
+  <!-- FAQ -->
+  <h2>FAQ</h2>
+  <h4>Q. 백신 회사랑 뭐가 다른가요?</h4>
+  <p>전통 백신은 <b>"알려진 악성코드를 막는 것"</b>에 집중합니다. 클라우드스트라이크는 <b>"모든 행위를 기록하고
+  이상 패턴을 찾아내는 것"</b>에 집중합니다. 즉 <b>막는 것</b>보다 <b>보이게 하는 것</b>에 강점이 있고,
+  침입 후 경로 추적까지 가능합니다.</p>
+  <h4>Q. 지스케일러와는 경쟁 관계인가요?</h4>
+  <p>영역이 다릅니다. 지스케일러는 <b>네트워크 트래픽의 검문소</b>(출입구), 클라우드스트라이크는 <b>기기 안의 경비원</b>(방)입니다.
+  다만 둘 다 <b>'보안 플랫폼'</b>을 지향하며 확장 중이라 <b>영역이 점점 겹치고 있습니다.</b></p>
+  <h4>Q. 2024년 사고 때문에 투자하면 안 되는 회사인가요?</h4>
+  <p>이 노트는 그런 판단을 내리지 않습니다. 다만 <b>사실관계</b>는 이렇습니다 — 사고 이후에도 매출·ARR은
+  두 자릿수 성장을 이어갔고, 시장은 회사를 계속 높게 평가하고 있습니다. 동시에 <b>소송·재발 위험·구조적 변화</b>는
+  현재진행형입니다. 양쪽을 다 보고 판단하시길 권합니다.</p>
+  <h4>Q. ARR이 뭔가요? 매출과 다른가요?</h4>
+  <p><b>ARR(연간 반복 매출)</b>은 "지금 계약되어 있는 구독을 1년치로 환산한 금액"입니다.
+  구독 회사에서는 <b>회계상 매출보다 ARR이 실질을 더 잘 보여줍니다.</b> 매출은 과거 계약이 인식된 결과지만,
+  ARR은 현재 계약 상태를 보여주기 때문입니다.</p>
+  <h4>Q. 이 회사를 볼 때 가장 중요한 지표 하나는?</h4>
+  <p><b>순증 ARR(Net New ARR)</b>입니다. "이번 분기에 계약이 얼마나 늘었나"를 보여주는 가장 직접적인 성장 지표입니다.
+  FY2026에 연간 10.1억 달러로 사상 처음 10억 달러를 넘겼습니다.</p>
+
+  <!-- glossary -->
+  <h2>용어 사전</h2>
+  <table>
+    <tbody>
+      <tr><td><b>엔드포인트</b></td><td>네트워크 끝단의 기기. PC·노트북·서버·클라우드 VM 등.</td></tr>
+      <tr><td><b>에이전트</b></td><td>기기에 설치되는 작은 감시 프로그램. 클라우드스트라이크는 <b>단일 경량 에이전트</b>가 강점.</td></tr>
+      <tr><td><b>EPP</b></td><td>Endpoint Protection Platform. 엔드포인트 보호(예방) 기능.</td></tr>
+      <tr><td><b>EDR</b></td><td>Endpoint Detection & Response. 행위를 기록·추적해 탐지하고 대응.</td></tr>
+      <tr><td><b>XDR</b></td><td>Extended Detection & Response. 엔드포인트를 넘어 클라우드·신원·네트워크까지 통합.</td></tr>
+      <tr><td><b>NGAV</b></td><td>Next-Gen Antivirus. 시그니처 대신 행동 기반으로 판단하는 차세대 백신.</td></tr>
+      <tr><td><b>CNAPP</b></td><td>클라우드 네이티브 애플리케이션 보호 플랫폼. 클라우드 환경 전반 보안.</td></tr>
+      <tr><td><b>IDP</b></td><td>Identity Protection. 계정·신원 탈취 공격 방어.</td></tr>
+      <tr><td><b>SIEM</b></td><td>보안 로그를 모아 분석하는 시스템. 팰컨은 Next-Gen SIEM 모듈 보유.</td></tr>
+      <tr><td><b>Charlotte AI</b></td><td>클라우드스트라이크의 AI 보안 분석 비서.</td></tr>
+      <tr><td><b>Falcon Flex</b></td><td>큰 금액을 약정하고 모듈을 유연하게 골라 쓰는 구독 모델.</td></tr>
+      <tr><td><b>ARR</b></td><td>Annual Recurring Revenue. 연간 반복 매출.</td></tr>
+      <tr><td><b>순증 ARR</b></td><td>Net New ARR. 해당 기간에 늘어난 ARR. 성장의 핵심 지표.</td></tr>
+      <tr><td><b>커널</b></td><td>운영체제의 가장 깊은 핵심부. 여기서 문제가 나면 OS가 부팅 안 됨.</td></tr>
+      <tr><td><b>BSOD</b></td><td>Blue Screen of Death. 윈도우 치명적 오류 화면. 2024년 사고의 상징.</td></tr>
+    </tbody>
+  </table>
+
+  <h2>출처</h2>
+  <p class="src">
+    • CrowdStrike IR, "Reports Fourth Quarter and Fiscal Year 2026 Financial Results" — https://ir.crowdstrike.com/news-releases/news-release-details/crowdstrike-reports-fourth-quarter-and-fiscal-year-2026<br>
+    • CrowdStrike IR, "Reports Third Quarter Fiscal Year 2026 Financial Results" — https://ir.crowdstrike.com/news-releases/news-release-details/crowdstrike-reports-third-quarter-fiscal-year-2026-financial<br>
+    • Businesswire, FY2026 Q4 실적 발표 (2026.03.03) — https://www.businesswire.com/news/home/20260303140639/en/<br>
+    • SEC EDGAR, CrowdStrike Form 8-K FY2026 — https://www.sec.gov/Archives/edgar/data/1535527/000153552726000007/crwd-20260303xex991.htm<br>
+    • 전자신문, "엔드포인트·클라우드·신원 보안 통합하는 AI 위협 탐지 플랫폼 '크라우드스트라이크 팔콘'" — https://www.etnews.com/20260527000045<br>
+    • 데이터넷, "[Solution Deep Dive] 크라우드스트라이크 '팔콘' 플랫폼" — https://www.datanet.co.kr/news/articleView.html?idxno=160113<br>
+    • 위키백과, "크라우드스트라이크" / "2024년 크라우드스트라이크 사고" — https://ko.wikipedia.org/wiki/크라우드스트라이크<br>
+    • CIO Korea, "'5억 달러 손실 책임져'··· 델타항공, 크라우드스트라이크 상대로 소송 제기" — https://www.cio.com/article/3593383/<br>
+    • CIO Korea, "델타항공, 크라우드스트라이크 사태 이후 'MS 의존도 재고할 것'" — https://www.cio.com/article/3537909/<br>
+    • 디지털투데이, "크라우드스트라이크 보안SW 패치 장애, 국내 피해기업 10개사 모두 복구 완료" — https://www.digitaltoday.co.kr/news/articleView.html?idxno=526364<br>
+    • 디지털투데이, "제2의 크라우드스트라이크發 IT대란 없다...마이크로소프트, 윈도OS 보안 강화" — https://www.digitaltoday.co.kr/news/articleView.html?idxno=542377<br>
+    • 알파비즈, "크라우드스트라이크, AI 플랫폼 확장 및 판게아 인수 계약…주가 급등" — https://alphabiz.co.kr/news/view/1065565957505597<br>
+    • 24/7 Wall St., CRWD Q3 2026 Earnings Report — https://247wallst.com/companies/crwd/earnings/2026/Q3<br>
+    • CompaniesMarketCap / StockAnalysis — CRWD 시가총액 데이터
+  </p>
+
+  <div class="foot">
+    <hr>
+    본 문서는 개인 학습·정리 목적의 비상업 노트입니다. 수치·인용은 작성일(2026-07-20) 기준 공개 자료를 바탕으로 하며
+    오류가 있을 수 있습니다. 해외 종목 투자에는 환율·세제·거래시간 등 추가 위험이 따릅니다.
+    투자에 대한 최종 판단과 책임은 전적으로 독자 본인에게 있습니다. © 2026 개인 리서치 라이브러리.
+  </div>
+
+</div>
+</body>
+</html>

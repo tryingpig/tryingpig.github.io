@@ -684,6 +684,36 @@
         "....ssssssss....",
         "................"
       ]
+    },
+    "paloalto": {
+      "bg": [
+        "#161d2b",
+        "#2a1a12"
+      ],
+      "palette": {
+        "b": "#cfd8e3",
+        "h": "#f3f7fb",
+        "d": "#5c6572",
+        "o": "#ff8a3d"
+      },
+      "grid": [
+        "................",
+        "................",
+        "................",
+        "................",
+        ".hhhhhhhhhhhhhh.",
+        ".bbbbbbbbbbbbbb.",
+        ".bddbddbddboobb.",
+        ".bddbddbddboobb.",
+        ".bbbbbbbbbbbbbb.",
+        ".bddbddbddbbbbb.",
+        ".bddbddbddbbbbb.",
+        ".dddddddddddddd.",
+        "..d..........d..",
+        "................",
+        "................",
+        "................"
+      ]
     }
   }
 }

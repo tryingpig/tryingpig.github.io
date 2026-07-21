@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>팔로알토 투자 안내서 — 인수로 만든 성장, 그 질을 묻다</title>
+<style>
+  :root{
+    --accent:#9a3412; --accent2:#c2410c;
+    --ink:#1f2430; --muted:#5c6472; --line:#ece7e3; --bg:#fff; --soft:#fdf8f5;
+    --warnbg:#fff7ed; --warnln:#fb923c;
+  }
+  *{box-sizing:border-box;}
+  body{font-family:"Segoe UI","Malgun Gothic","Apple SD Gothic Neo",system-ui,sans-serif;
+    color:var(--ink); background:var(--bg); margin:0; line-height:1.78; font-size:16.5px; letter-spacing:-0.1px;}
+  .wrap{max-width:920px; margin:0 auto; padding:40px 28px 90px;}
+  h1{font-size:29px; line-height:1.32; margin:8px 0 6px; letter-spacing:-0.6px;}
+  h2{font-size:22px; margin:50px 0 12px; padding-top:14px; border-top:3px solid var(--accent); letter-spacing:-0.4px;}
+  h3{font-size:18.5px; margin:30px 0 8px; color:#2b3242;}
+  h4{font-size:16px; margin:18px 0 6px; color:var(--accent);}
+  p{margin:10px 0;} a{color:var(--accent2); text-decoration:none;} a:hover{text-decoration:underline;}
+  .sub{color:var(--muted); font-size:15px;} .lead{font-size:17.5px; color:#333a49;}
+  .kicker{display:inline-block; font-size:13px; font-weight:700; letter-spacing:1.5px;
+    color:#fff; background:var(--accent); padding:5px 12px; border-radius:999px;}
+  .warn{background:var(--warnbg); border:1px solid var(--warnln); border-left:6px solid var(--warnln);
+    border-radius:10px; padding:16px 18px; margin:22px 0; font-size:15px;}
+  .note{background:var(--soft); border:1px solid var(--line); border-radius:10px; padding:16px 18px; margin:18px 0;}
+  .callout{background:#fff7ed; border:1px solid #fdba74; border-left:6px solid var(--accent);
+    border-radius:10px; padding:16px 18px; margin:20px 0;}
+  .dark{background:#1c1917; color:#e7e5e4; border-radius:10px; padding:16px 18px; margin:20px 0;}
+  .dark b{color:#fff;}
+  .big{font-size:19px; font-weight:800; color:var(--accent); line-height:1.5;}
+  .grid2{display:grid; grid-template-columns:1fr 1fr; gap:16px;}
+  .card{border:1px solid var(--line); border-radius:12px; padding:16px 18px; background:#fff;}
+  table{width:100%; border-collapse:collapse; margin:18px 0; font-size:14.5px;}
+  th,td{border:1px solid var(--line); padding:9px 11px; text-align:left; vertical-align:top;}
+  th{background:var(--soft); font-weight:700;} td.c,th.c{text-align:center;}
+  figure{margin:24px 0; text-align:center;} figcaption{font-size:13px; color:var(--muted); margin-top:8px;}
+  .svgbox{border:1px solid var(--line); border-radius:12px; padding:14px; background:#fff;}
+  ul,ol{margin:10px 0 10px 4px; padding-left:22px;} li{margin:6px 0;}
+  .kpi{display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin:20px 0;}
+  .kpi .box{border:1px solid var(--line); border-radius:12px; padding:14px; text-align:center; background:var(--soft);}
+  .kpi .num{font-size:20px; font-weight:800; color:var(--accent); letter-spacing:-0.5px;}
+  .kpi .lab{font-size:12.5px; color:var(--muted); margin-top:3px;}
+  .toc{background:var(--soft); border:1px solid var(--line); border-radius:12px; padding:18px 22px; margin:26px 0;}
+  .toc ol{columns:2; column-gap:34px;}
+  .src{font-size:13px; color:var(--muted); word-break:break-all;}
+  .seriesnav{background:#fff7ed; border:1px solid #fdba74; border-radius:10px; padding:14px 18px; margin:20px 0; font-size:14.5px;}
+  .good{color:#059669; font-weight:700;} .bad{color:#dc2626; font-weight:700;} .mid{color:#b45309; font-weight:700;}
+  hr{border:none; border-top:1px solid var(--line); margin:34px 0;}
+  .foot{color:var(--muted); font-size:13px; margin-top:40px;}
+  @media (max-width:680px){.grid2,.kpi{grid-template-columns:1fr;} .toc ol{columns:1;} h1{font-size:24px;}}
+  @media print{body{font-size:11.5pt;} .wrap{max-width:100%; padding:0;} h2{break-after:avoid;}
+    figure,table,.card{break-inside:avoid;} a{color:#000;} .warn,.callout,.note,.dark{break-inside:avoid;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <span class="kicker">PALO ALTO NETWORKS · ② 투자 안내서</span>
+  <h1>팔로알토 투자 안내서<br>— 인수로 만든 성장, 그 '질'을 묻다</h1>
+  <p class="sub">작성일 2026-07-20 · NASDAQ: PANW · 개인 리서치 노트 · 입문세트 2/3</p>
+
+  <div class="warn">
+    <b>⚠️ 투자 권유가 아닙니다.</b> 이 문서는 공개 실적·언론 자료를 정리한 개인 학습 노트이며 매수·매도 추천이 아닙니다.
+    시나리오는 예측이 아니라 <b>가정 대입</b>입니다. 밸류에이션 서술은 <b>사실 정리</b>일 뿐
+    "싸다/비싸다"는 판단을 제시하지 않습니다. 일부 비율은 <b>필자가 공개 수치로 단순 계산한 개략치</b>입니다.
+    해외 종목은 환율·세제·거래시간 등 추가 위험이 있습니다.
+    모든 투자 판단과 책임은 전적으로 본인에게 있습니다.
+  </div>
+
+  <div class="seriesnav">
+    <b>🔥 입문세트 구성</b> — <a href="https://tryingpig.github.io/study/260720_팔로알토_1_입문가이드.html">① 입문가이드</a> ·
+    ② <b>투자안내서(현재 글)</b> ·
+    <a href="https://tryingpig.github.io/study/260720_팔로알토_3_밸류체인.html">③ 밸류체인</a><br>
+    <span class="sub">회사·제품 기초(NGFW, 3대 플랫폼, 플랫폼화 개념, 사이버아크 인수 경위)는 ①에서 다뤘습니다. 여기서는 <b>숫자와 쟁점</b>에 집중합니다.</span>
+  </div>
+
+  <div class="callout">
+    <b>🧭 이 글의 논지 한 장 요약</b>
+    <ol style="margin-bottom:0;">
+      <li><b>겉보기 숫자는 압도적이다.</b> FY26 3Q 매출 +31%, NGS ARR +60%, RPO +36%, NRR 120%.</li>
+      <li><b>그런데 이 숫자에는 인수 효과가 섞여 있다.</b> 사이버아크·Chronosphere·Koi Security가 모두 포함돼 있다.</li>
+      <li><b>핵심 질문 1:</b> 이 성장 중 <b>얼마가 자체 성장(오가닉)</b>이고 얼마가 <b>사서 붙인 것</b>인가?</li>
+      <li><b>핵심 질문 2:</b> GAAP 기준으로는 <b>순손실(-1.77억 달러)</b>인데, Non-GAAP은 <b>순이익(6.84억 달러)</b>이다. 이 격차는 무엇인가?</li>
+      <li><b>구조적 강점:</b> 플랫폼화 고객 2,280개와 NRR 120%는 전략이 실제로 먹히고 있다는 증거다.</li>
+      <li><b>따라서:</b> "성장하는가?"가 아니라 <b>"인수 없이도 성장하는가, 그리고 그 성장이 이익으로 돌아오는가?"</b>가 관건이다.</li>
+    </ol>
+  </div>
+
+  <div class="toc">
+    <b>목차</b>
+    <ol>
+      <li>실적 스냅샷 — FY26 3분기</li>
+      <li>NGS ARR — 이 회사의 진짜 성적표</li>
+      <li>쟁점 ① 오가닉 성장 vs 인수 성장</li>
+      <li>쟁점 ② GAAP 적자와 Non-GAAP 흑자</li>
+      <li>쟁점 ③ 사이버아크 250억 달러의 무게</li>
+      <li>플랫폼화 지표 해부</li>
+      <li>RPO — 미래 매출의 창고</li>
+      <li>밸류에이션 참고</li>
+      <li>경쟁 구도 — 3면 전쟁</li>
+      <li>KPI 대시보드</li>
+      <li>시나리오 3종</li>
+      <li>리스크 · 촉매 · 체크리스트 · FAQ</li>
+    </ol>
+  </div>
+
+  <!-- 1 -->
+  <h2>1. 실적 스냅샷 — FY26 3분기</h2>
+  <div class="note">
+    <b>📅 회계연도 주의</b> — 팔로알토 회계연도는 <b>7월 31일 종료</b>.
+    <b>FY2026 = 2025년 8월 ~ 2026년 7월</b>. 아래 3분기는 <b>2026년 2~4월</b> 기간이며 <b>2026년 6월 2일</b> 발표됐다.
+  </div>
+  <table>
+    <thead><tr><th>항목</th><th class="c">FY26 3Q</th><th class="c">YoY</th><th>메모</th></tr></thead>
+    <tbody>
+      <tr><td><b>총매출</b></td><td class="c">$30.0억</td><td class="c good">+31%</td><td>인수 효과 포함</td></tr>
+      <tr><td><b>NGS ARR</b></td><td class="c good"><b>$81억</b></td><td class="c good"><b>+60%</b></td><td>차세대 보안 연간 반복 매출</td></tr>
+      <tr><td><b>RPO</b></td><td class="c">$184억</td><td class="c good">+36%</td><td>계약했으나 미인식 매출</td></tr>
+      <tr><td><b>플랫폼화 고객</b></td><td class="c">2,280개</td><td class="c">—</td><td>전략 실증 지표</td></tr>
+      <tr><td><b>NRR(순유지율)</b></td><td class="c good">120%</td><td class="c">—</td><td>기존 고객이 20% 더 씀</td></tr>
+      <tr><td><b>GAAP 순손익</b></td><td class="c bad">-$1.77억<br>(-$0.22/주)</td><td class="c">—</td><td><b>적자</b></td></tr>
+      <tr><td><b>Non-GAAP 순이익</b></td><td class="c good">$6.84억<br>($0.85/주)</td><td class="c">—</td><td><b>흑자</b></td></tr>
+      <tr><td><b>영업활동 현금흐름</b></td><td class="c">$8.71억</td><td class="c">—</td><td>현금은 잘 벌고 있음</td></tr>
+      <tr><td><b>조정 FCF</b></td><td class="c good">$9.10억</td><td class="c">—</td><td>FCF 마진 약 30%</td></tr>
+    </tbody>
+  </table>
+  <h3>FY2026 가이던스 (회사 제시)</h3>
+  <div class="kpi">
+    <div class="box"><div class="num">$89~89.5억</div><div class="lab">NGS ARR (+59~60%)</div></div>
+    <div class="box"><div class="num">$209~210억</div><div class="lab">RPO (+32~33%)</div></div>
+    <div class="box"><div class="num">상향</div><div class="lab">FY26 가이던스 조정 방향</div></div>
+    <div class="box"><div class="num">약 30%</div><div class="lab">조정 FCF 마진(개략)</div></div>
+  </div>
+  <p class="sub">
+    ※ FCF 마진은 조정 FCF($9.10억) ÷ 매출($30.0억)로 <b>필자가 계산한 개략치</b>다.
+    회사 공식 지표와 정의가 다를 수 있다.
+    <span class="src">(출처: Palo Alto Networks IR, SEC 8-K, PRNewswire, TradingView, CNBC)</span>
+  </p>
+
+  <!-- 2 -->
+  <h2>2. NGS ARR — 이 회사의 진짜 성적표</h2>
+  <p class="lead">
+    팔로알토를 볼 때 <b>총매출보다 NGS ARR을 먼저 봐야 한다.</b> 이유가 있다.
+  </p>
+  <figure>
+    <div class="svgbox">
+      <svg viewBox="0 0 840 250" width="100%" role="img" aria-label="매출 구성과 NGS ARR">
+        <g font-family="Segoe UI, sans-serif">
+          <text x="16" y="26" font-size="15" font-weight="800">왜 총매출이 아니라 NGS ARR인가</text>
+
+          <rect x="30" y="52" width="360" height="130" rx="12" fill="#f5f5f4" stroke="#d6d3d1"/>
+          <text x="210" y="78" font-size="13.5" font-weight="800" text-anchor="middle">총매출에 섞여 있는 것</text>
+          <rect x="50" y="92" width="150" height="34" rx="6" fill="#e7e5e4"/>
+          <text x="125" y="114" font-size="11" text-anchor="middle">하드웨어(방화벽 장비)</text>
+          <rect x="212" y="92" width="158" height="34" rx="6" fill="#fed7aa"/>
+          <text x="291" y="114" font-size="11" text-anchor="middle">레거시 구독</text>
+          <rect x="50" y="132" width="320" height="34" rx="6" fill="#9a3412"/>
+          <text x="210" y="154" font-size="11.5" text-anchor="middle" fill="#fff" font-weight="700">차세대 보안(NGS) 구독 ★</text>
+
+          <rect x="470" y="52" width="340" height="130" rx="12" fill="#fff7ed" stroke="#fdba74"/>
+          <text x="640" y="78" font-size="13.5" font-weight="800" fill="#9a3412" text-anchor="middle">NGS ARR만 떼어보면</text>
+          <text x="640" y="104" font-size="11.5" fill="#7c2d12" text-anchor="middle">• 하드웨어 변동성 <b>제거</b></text>
+          <text x="640" y="126" font-size="11.5" fill="#7c2d12" text-anchor="middle">• 일회성 매출 <b>제거</b></text>
+          <text x="640" y="148" font-size="11.5" fill="#7c2d12" text-anchor="middle">• <b>반복되는 구독</b>만 남음</text>
+          <text x="640" y="170" font-size="12" fill="#9a3412" text-anchor="middle" font-weight="700">= 진짜 성장 엔진</text>
+
+          <rect x="30" y="196" width="780" height="44" rx="10" fill="#1c1917"/>
+          <text x="420" y="216" font-size="12.5" font-weight="800" fill="#fff" text-anchor="middle">
+            총매출 +31% vs NGS ARR +60% — 격차가 성장의 방향을 보여준다</text>
+          <text x="420" y="234" font-size="11" fill="#d6d3d1" text-anchor="middle">
+            구독이 하드웨어보다 훨씬 빠르게 큰다 = 체질이 바뀌고 있다 (개인 정리 도식)</text>
+        </g>
+      </svg>
+    </div>
+    <figcaption>그림 1. NGS ARR이 총매출보다 두 배 가까이 빠르게 성장한다. (개인 정리 도식)</figcaption>
+  </figure>
+  <div class="callout">
+    <b>💡 이 격차가 좋은 신호인 이유</b><br>
+    <b>총매출 +31%</b>인데 <b>NGS ARR +60%</b>라는 건, 성장이 <b>저마진 하드웨어가 아니라 고마진 구독</b>에서
+    나오고 있다는 뜻이다. 시간이 갈수록 <b>매출의 질이 좋아진다.</b><br><br>
+    <b>다만 반드시 확인할 것:</b> 이 +60%에는 <b>사이버아크 인수분이 통째로 더해져 있다.</b>
+    인수한 회사의 ARR이 그대로 합산되기 때문이다. 그래서 다음 장의 질문이 중요하다.
+  </div>
+
+  <!-- 3 -->
+  <h2>3. 쟁점 ① 오가닉 성장 vs 인수 성장</h2>
+  <div class="dark">
+    <b>🔴 이 리포트에서 가장 중요한 질문</b><br><br>
+    FY26 3Q 실적은 <b>"강한 유기적 성장, AI 보안 수요, 그리고 최근 인수(사이버아크·Chronosphere·Koi Security)의 기여"</b>가
+    함께 만든 것이라고 보도됐다.<br><br>
+    문제는 <b>이 중 인수 기여분이 얼마인지 명확히 구분된 공개 수치를 확보하기 어렵다</b>는 점이다.
+    <b>사이버아크만 해도 250억 달러짜리 회사</b>이므로, ARR 기여가 상당할 수밖에 없다.
+  </div>
+
+  <h3>왜 이 구분이 결정적인가</h3>
+  <div class="grid2">
+    <div class="card">
+      <h4>🟢 오가닉 성장이라면</h4>
+      <p>제품 경쟁력과 플랫폼화 전략이 <b>실제로 작동</b>한다는 뜻.</p>
+      <ul style="margin-bottom:0;">
+        <li>추가 비용 없이 반복 가능</li>
+        <li>마진이 개선된다</li>
+        <li><b>높은 배수가 정당화</b>된다</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4>🔴 인수 의존이라면</h4>
+      <p>성장을 <b>돈으로 사고 있다</b>는 뜻.</p>
+      <ul style="margin-bottom:0;">
+        <li>계속 사려면 <b>계속 돈이 든다</b></li>
+        <li>상각비·통합비용이 이익을 갉아먹음</li>
+        <li>인수가 멈추면 <b>성장률이 급락</b></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="warn">
+    <b>⚠️ 이 노트의 한계를 명확히 밝힌다</b><br>
+    이 조사에서 <b>오가닉 성장률과 인수 기여분을 분리한 신뢰할 만한 수치를 확보하지 못했다.</b><br><br>
+    <b>투자 판단 시에는 반드시:</b>
+    <ul style="margin-bottom:0;">
+      <li>회사 <b>실적 발표 자료(IR 슬라이드)</b>에서 오가닉 성장률 언급을 확인</li>
+      <li><b>컨퍼런스콜 녹취</b>에서 애널리스트가 이 질문을 어떻게 던졌고 경영진이 어떻게 답했는지 확인</li>
+      <li><b>10-Q/10-K 공시</b>에서 인수 관련 주석 확인</li>
+    </ul>
+    이 세 가지를 직접 보지 않으면 <b>성장의 질을 판단할 수 없다.</b>
+  </div>
+
+  <div class="note">
+    <b>📌 추적 방법 — 인수 효과는 1년 뒤 드러난다</b><br>
+    인수 기업의 실적은 인수 시점부터 합산되므로, <b>인수 1주년이 지나면 기저효과가 사라진다.</b>
+    즉 <b>사이버아크 인수 1년 후의 성장률</b>이 진짜 실력을 보여준다.<br>
+    → 이 시점의 NGS ARR 성장률이 <b>어디로 수렴하는지</b>가 핵심 관전 포인트다.
+  </div>
+
+  <!-- 4 -->
+  <h2>4. 쟁점 ② GAAP 적자와 Non-GAAP 흑자</h2>
+  <p class="lead">
+    FY26 3Q에 <b>GAAP 기준으로는 1.77억 달러 순손실</b>인데, <b>Non-GAAP으로는 6.84억 달러 순이익</b>이었다.
+    <b>약 8.6억 달러의 격차</b>다. 이걸 이해해야 한다.
+  </p>
+
+  <figure>
+    <div class="svgbox">
+      <svg viewBox="0 0 840 260" width="100%" role="img" aria-label="GAAP vs Non-GAAP">
+        <g font-family="Segoe UI, sans-serif">
+          <text x="16" y="26" font-size="15" font-weight="800">같은 분기, 두 개의 손익 (FY26 3Q)</text>
+
+          <rect x="40" y="52" width="330" height="110" rx="12" fill="#fef2f2" stroke="#fca5a5"/>
+          <text x="205" y="80" font-size="14" font-weight="800" fill="#991b1b" text-anchor="middle">GAAP (회계 기준)</text>
+          <text x="205" y="112" font-size="22" font-weight="800" fill="#dc2626" text-anchor="middle">-$1.77억</text>
+          <text x="205" y="136" font-size="11.5" fill="#7f1d1d" text-anchor="middle">주당 -$0.22 · <b>적자</b></text>
+
+          <rect x="470" y="52" width="330" height="110" rx="12" fill="#dcfce7" stroke="#86efac"/>
+          <text x="635" y="80" font-size="14" font-weight="800" fill="#166534" text-anchor="middle">Non-GAAP (조정 기준)</text>
+          <text x="635" y="112" font-size="22" font-weight="800" fill="#059669" text-anchor="middle">+$6.84억</text>
+          <text x="635" y="136" font-size="11.5" fill="#14532d" text-anchor="middle">주당 $0.85 · <b>흑자</b></text>
+
+          <text x="420" y="112" font-size="20" font-weight="800" fill="#78716c" text-anchor="middle">≠</text>
+
+          <rect x="40" y="176" width="760" height="70" rx="11" fill="#1c1917"/>
+          <text x="420" y="200" font-size="13" font-weight="800" fill="#fff" text-anchor="middle">
+            차이를 만드는 것: 주식보상비용(SBC) + 인수 관련 무형자산 상각 + 인수 비용</text>
+          <text x="420" y="222" font-size="11.5" fill="#d6d3d1" text-anchor="middle">
+            Non-GAAP은 이것들을 "일회성·비현금"이라며 제외한다 — 그런데 정말 무시해도 될까?</text>
+          <text x="420" y="240" font-size="10.5" fill="#a8a29e" text-anchor="middle">개인 정리 도식</text>
+        </g>
+      </svg>
+    </div>
+    <figcaption>그림 2. GAAP과 Non-GAAP의 격차. 보안 SaaS 투자에서 반드시 확인할 지점. (개인 정리 도식)</figcaption>
+  </figure>
+
+  <table>
+    <thead><tr><th>조정 항목</th><th>Non-GAAP에서 제외하는 논리</th><th>반론</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><b>주식보상비용(SBC)</b></td>
+        <td>"현금이 안 나간다"</td>
+        <td class="bad">주식을 새로 발행하니 <b>주주 지분이 희석</b>된다. 실질적 비용</td>
+      </tr>
+      <tr>
+        <td><b>인수 무형자산 상각</b></td>
+        <td>"과거 인수의 회계적 잔영"</td>
+        <td class="mid">인수를 <b>계속 하면 계속 발생</b>한다. 일회성이 아님</td>
+      </tr>
+      <tr>
+        <td><b>인수 관련 비용</b></td>
+        <td>"일회성 거래 비용"</td>
+        <td class="mid">M&amp;A가 성장 전략이면 <b>반복되는 비용</b></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout">
+    <b>⚖️ 균형 잡힌 시각</b><br>
+    <b>Non-GAAP을 옹호하는 논리:</b> 사업의 현금 창출력을 보려면 비현금 항목을 빼는 게 맞다.
+    실제로 <b>영업활동 현금흐름 8.71억 달러, 조정 FCF 9.10억 달러</b>로 <b>현금은 확실히 벌고 있다.</b><br><br>
+    <b>비판하는 논리:</b> SBC는 매년 반복되고 주주 가치를 희석시킨다.
+    M&amp;A 상각도 인수를 계속 하는 한 사라지지 않는다. "조정하면 흑자"는 위험한 습관이다.<br><br>
+    <b>이 노트의 입장:</b> 어느 쪽이 옳다고 판단하지 않는다. 다만 <b>"두 숫자가 다르다는 사실과 그 이유를 알고
+    투자해야 한다"</b>는 점을 강조한다. 특히 <b>SBC 규모와 주식 수 증가</b>는 직접 확인하길 권한다.
+  </div>
+
+  <!-- 5 -->
+  <h2>5. 쟁점 ③ 사이버아크 250억 달러의 무게</h2>
+  <div class="dark">
+    <b>💰 규모 감각 잡기</b><br><br>
+    사이버아크 인수가 <b>약 250억 달러(한화 약 34조 원)</b>.<br>
+    팔로알토 시가총액이 <b>약 2,900억 달러</b> 수준이니, <b>시총의 약 8~9%</b>에 해당하는 딜이다.<br><br>
+    무엇보다 <b>기존 원칙을 깼다.</b> 팔로알토는 그동안 <b>10억 달러 미만</b>의 <b>비상장 스타트업</b> 인수에
+    집중해 왔다. <b>250억 달러는 그 기준의 25배가 넘는다.</b>
+  </div>
+
+  <div class="grid2">
+    <div class="card">
+      <h4>🟢 긍정 논리</h4>
+      <ul style="margin-bottom:0;">
+        <li><b>신원은 빠진 퍼즐이었다</b> — 네트워크·클라우드·운영은 있었지만 신원이 없었다</li>
+        <li><b>1위 기업 확보</b> — 특권계정관리(PAM) 선도 기업</li>
+        <li><b>AI 에이전트 시대 대비</b> — 비인간 신원(NHI) 관리 수요 폭증 전망</li>
+        <li><b>플랫폼 완성도↑</b> — "보안 전부"에 한 발 더</li>
+        <li><b>즉시 ARR 증가</b> — 성장률 방어</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4>🔴 우려 논리</h4>
+      <ul style="margin-bottom:0;">
+        <li><b>가격 부담</b> — 원칙을 깬 초대형 딜</li>
+        <li><b>통합 리스크</b> — 조직·제품·문화 통합에 수년</li>
+        <li><b>회계 부담</b> — 무형자산 상각이 GAAP 이익을 장기간 압박</li>
+        <li><b>재무 부담</b> — 자금 조달 방식에 따라 희석 또는 차입</li>
+        <li><b>성장의 질 희석</b> — "샀다"는 비판</li>
+        <li><b>경쟁 심화</b> — Okta·MS Entra와 새 전선</li>
+      </ul>
+    </div>
+  </div>
+  <div class="note">
+    <b>🔗 흥미로운 대비 — 같은 미래, 다른 베팅</b><br>
+    "AI 에이전트가 늘면 비인간 신원(NHI) 관리가 격전지가 된다"는 논지는
+    <a href="https://tryingpig.github.io/study/260718_지스케일러AI에이전트시장_확장리포트.html">지스케일러 확장편</a>에서 다뤘다.<br><br>
+    <b>같은 미래를 보고 셋이 다르게 움직였다:</b>
+    <ul style="margin-bottom:0;">
+      <li><b>팔로알토</b> — 250억 달러에 <b>사버렸다</b> (인수)</li>
+      <li><b>지스케일러</b> — 자체 개발 + Symmetry 인수 + Oasis 등 <b>파트너십</b></li>
+      <li><b>클라우드스트라이크</b> — IDP 모듈 <b>자체 확장</b> + 판게아 인수</li>
+    </ul>
+    <b>누가 옳았는지는 몇 년 뒤에 드러난다.</b> 투자자로서는 이 대비를 기억해 두면 유용하다.
+  </div>
+
+  <!-- 6 -->
+  <h2>6. 플랫폼화 지표 해부</h2>
+  <table>
+    <thead><tr><th>지표</th><th class="c">현황</th><th>의미</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><b>플랫폼화 고객 수</b></td>
+        <td class="c good">2,280개</td>
+        <td>여러 플랫폼을 함께 쓰는 고객. <b>전략의 실증</b></td>
+      </tr>
+      <tr>
+        <td><b>NRR(순유지율)</b></td>
+        <td class="c good">120%</td>
+        <td>기존 고객이 작년보다 <b>20% 더 지출</b>. 신규 없이도 매출 20% 성장</td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="callout">
+    <b>💡 NRR 120%가 왜 중요한가</b><br>
+    구독 사업에서 <b>NRR 100%</b>는 "고객이 작년만큼 쓴다"는 뜻이다. <b>120%</b>는
+    <b>"신규 고객을 한 명도 못 데려와도 매출이 20% 는다"</b>는 의미다.<br><br>
+    이게 가능한 이유는 <b>업셀</b>이다. 방화벽만 쓰던 고객이 → 클라우드 보안을 추가하고 → 보안운영까지 붙이면
+    고객당 지출이 계속 커진다. <b>플랫폼화 전략이 정확히 노리는 것이 이 숫자</b>다.<br><br>
+    <b>추적 포인트:</b> NRR이 <b>110% 밑으로 내려가면</b> 업셀 동력이 약해진다는 신호로 볼 수 있다.
+  </div>
+
+  <!-- 7 -->
+  <h2>7. RPO — 미래 매출의 창고</h2>
+  <p>
+    <b>RPO(Remaining Performance Obligation)</b>는 <b>"계약은 했는데 아직 매출로 안 잡힌 금액"</b>이다.
+    쉽게 말해 <b>미래 매출의 창고</b>다.
+  </p>
+  <div class="kpi">
+    <div class="box"><div class="num">$184억</div><div class="lab">FY26 3Q RPO (+36%)</div></div>
+    <div class="box"><div class="num">$209~210억</div><div class="lab">FY26 RPO 가이던스</div></div>
+    <div class="box"><div class="num">+32~33%</div><div class="lab">가이던스 성장률</div></div>
+    <div class="box"><div class="num">약 6배</div><div class="lab">RPO ÷ 분기매출(개략)</div></div>
+  </div>
+  <div class="note">
+    <b>RPO를 보는 법</b><br>
+    <b>RPO가 매출보다 빠르게 늘면</b> → 미래 매출이 이미 확보되고 있다는 뜻 (긍정).<br>
+    <b>RPO 성장이 매출 성장보다 느려지면</b> → 신규 계약이 둔화되고 있다는 조기 경고.<br><br>
+    현재 RPO +36%로 매출(+31%)보다 빠르다. <b>지금은 긍정적 신호</b>다.
+    다만 가이던스상 RPO 성장률은 <b>+32~33%로 다소 낮아진다.</b> 이 완만한 둔화가 유지되는지 봐야 한다.
+  </div>
+
+  <!-- 8 -->
+  <h2>8. 밸류에이션 참고</h2>
+  <div class="kpi">
+    <div class="box"><div class="num">약 $2,900억</div><div class="lab">시가총액 (2026.07 기준)</div></div>
+    <div class="box"><div class="num">+115%</div><div class="lab">최근 1년 시총 증가율(보도)</div></div>
+    <div class="box"><div class="num">약 36배</div><div class="lab">시총 ÷ NGS ARR(개략)</div></div>
+    <div class="box"><div class="num">약 24배</div><div class="lab">시총 ÷ 연환산매출(개략)</div></div>
+  </div>
+  <div class="warn">
+    <b>⚠️ 위 배수는 필자가 단순 계산한 개략치입니다.</b>
+    시총 2,900억 달러 ÷ NGS ARR 81억 달러 ≈ 36배, 시총 ÷ (3Q 매출 30억 × 4) ≈ 24배로 계산했습니다.
+    <b>조회 시점·기준에 따라 크게 달라지며</b>, 회사 공식 지표가 아닙니다. 반드시 최신 데이터를 직접 확인하십시오.
+    이 노트는 "싸다/비싸다"를 판단하지 않습니다.
+  </div>
+  <div class="dark">
+    <b>🔍 참고 — 같은 섹터 3사 비교 (개략)</b><br><br>
+    <table style="width:100%; margin-top:10px; font-size:13.5px; color:#e7e5e4;">
+      <tr style="border-bottom:1px solid #57534e;">
+        <td style="padding:6px; border:none;"><b>회사</b></td>
+        <td style="padding:6px; border:none;"><b>시가총액</b></td>
+        <td style="padding:6px; border:none;"><b>ARR 계열 지표</b></td>
+        <td style="padding:6px; border:none;"><b>특징</b></td>
+      </tr>
+      <tr><td style="padding:6px; border:none;">Palo Alto</td><td style="padding:6px; border:none;">약 $2,900억</td>
+        <td style="padding:6px; border:none;">NGS ARR $81억</td><td style="padding:6px; border:none;">최대 규모·전방위</td></tr>
+      <tr><td style="padding:6px; border:none;">CrowdStrike</td><td style="padding:6px; border:none;">약 $2,050억</td>
+        <td style="padding:6px; border:none;">ARR $52.5억</td><td style="padding:6px; border:none;">엔드포인트 1위</td></tr>
+      <tr><td style="padding:6px; border:none;">Zscaler</td><td style="padding:6px; border:none;">—</td>
+        <td style="padding:6px; border:none;">ARR 약 $35억</td><td style="padding:6px; border:none;">순수 클라우드 제로트러스트</td></tr>
+      <tr><td style="padding:6px; border:none;">Fortinet</td><td style="padding:6px; border:none;">약 $1,150억</td>
+        <td style="padding:6px; border:none;">통합 SASE ARR $12.2억</td><td style="padding:6px; border:none;">가성비·하드웨어 강세</td></tr>
+    </table>
+    <br>
+    <b>※ 시점·정의가 제각각이라 엄밀한 비교가 아니다.</b> Zscaler 시총은 신뢰할 만한 수치를 확보하지 못해 공란.
+    <b>규모 감각을 잡는 용도로만</b> 참고할 것.
+  </div>
+
+  <!-- 9 -->
+  <h2>9. 경쟁 구도 — 3면 전쟁</h2>
+  <p>
+    ①입문가이드에서 봤듯 팔로알토는 <b>세 플랫폼이 각각 다른 강자와 싸운다.</b> 이걸 정리하면:
+  </p>
+  <table>
+    <thead><tr><th>전선</th><th>팔로알토 제품</th><th>주요 상대</th><th class="c">강도</th></tr></thead>
+    <tbody>
+      <tr><td><b>네트워크</b></td><td>Strata (NGFW)</td><td>Fortinet · Cisco · Check Point</td><td class="c mid">본진 방어</td></tr>
+      <tr><td><b>클라우드·SASE</b></td><td>Prisma</td><td><b>Zscaler</b> · Netskope · Cloudflare</td><td class="c bad">치열</td></tr>
+      <tr><td><b>보안운영</b></td><td>Cortex (XSIAM/XDR)</td><td><b>CrowdStrike</b> · Splunk(Cisco) · MS Sentinel</td><td class="c bad">치열</td></tr>
+      <tr><td><b>신원</b></td><td>CyberArk</td><td>Okta · Microsoft Entra</td><td class="c bad">신규 전선</td></tr>
+      <tr><td><b>전방위</b></td><td>플랫폼 전체</td><td><b>Microsoft</b> (번들링)</td><td class="c bad">구조적</td></tr>
+    </tbody>
+  </table>
+  <div class="callout">
+    <b>⚔️ '전방위 전쟁'의 양면성</b><br>
+    <b>장점:</b> 어느 한 전선에서 밀려도 다른 전선이 받쳐준다. <b>고객 지갑 점유율</b>을 최대로 가져갈 수 있다.<br>
+    <b>단점:</b> 각 전선에서 <b>그 분야만 파는 전문가</b>와 싸워야 한다. Zscaler는 SASE만, CrowdStrike는 엔드포인트만 판다.
+    <b>"다 하는 것"이 "다 잘하는 것"은 아니다.</b><br><br>
+    이 트레이드오프를 어떻게 평가하느냐가 이 종목을 보는 핵심 관점이다.
+    <b>플랫폼화 고객 2,280개와 NRR 120%</b>는 지금까지는 <b>"통합이 이기고 있다"</b>는 쪽 증거다.
+  </div>
+
+  <!-- 10 -->
+  <h2>10. KPI 대시보드</h2>
+  <table>
+    <thead><tr><th class="c">순위</th><th>KPI</th><th>왜 중요한가</th><th class="c">경고 신호</th></tr></thead>
+    <tbody>
+      <tr><td class="c">1</td><td><b>NGS ARR 성장률</b></td><td>진짜 성장 엔진</td><td class="c">인수 1주년 후 급락</td></tr>
+      <tr><td class="c">2</td><td><b>오가닉 성장률</b></td><td>인수 빼고도 성장하는가</td><td class="c">공개 회피 시 주의</td></tr>
+      <tr><td class="c">3</td><td><b>NRR(순유지율)</b></td><td>업셀 동력</td><td class="c">110% 하회</td></tr>
+      <tr><td class="c">4</td><td><b>플랫폼화 고객 수</b></td><td>전략 실증</td><td class="c">증가세 둔화</td></tr>
+      <tr><td class="c">5</td><td><b>RPO 성장률</b></td><td>미래 매출 가시성</td><td class="c">매출 성장률 하회</td></tr>
+      <tr><td class="c">6</td><td><b>GAAP-NonGAAP 격차</b></td><td>SBC·상각 부담</td><td class="c">격차 확대</td></tr>
+      <tr><td class="c">7</td><td><b>주식 수 증가율</b></td><td>주주 희석 정도</td><td class="c">가속</td></tr>
+      <tr><td class="c">8</td><td><b>사이버아크 통합 진행</b></td><td>250억 달러의 회수 여부</td><td class="c">이탈·지연 보도</td></tr>
+    </tbody>
+  </table>
+
+  <!-- 11 -->
+  <h2>11. 시나리오 3종 (가정 대입 · 예측 아님)</h2>
+  <div class="warn">
+    아래는 <b>변수 조합에 따라 그림이 어떻게 달라지는가</b>를 보기 위한 사고실험이며,
+    특정 결과를 전망하거나 권유하는 것이 아닙니다.
+  </div>
+  <table>
+    <thead><tr><th></th><th class="c">🟢 낙관</th><th class="c">🟡 중립</th><th class="c">🔴 비관</th></tr></thead>
+    <tbody>
+      <tr><td><b>오가닉 성장</b></td><td class="c">20%대 유지 확인</td><td class="c">10%대 중후반</td><td class="c">10% 미만 드러남</td></tr>
+      <tr><td><b>사이버아크 통합</b></td><td class="c">순조·시너지 발생</td><td class="c">시간 소요</td><td class="c">인력 이탈·시너지 실패</td></tr>
+      <tr><td><b>NRR</b></td><td class="c good">120% 이상 유지</td><td class="c mid">110%대</td><td class="c bad">100%대로 하락</td></tr>
+      <tr><td><b>vs 전문 경쟁사</b></td><td class="c">통합이 이김</td><td class="c">영역별 분점</td><td class="c">각 전선에서 잠식</td></tr>
+      <tr><td><b>vs 마이크로소프트</b></td><td class="c">대기업에서 우위</td><td class="c">중견시장 접전</td><td class="c">번들에 밀림</td></tr>
+      <tr><td><b>GAAP 흑자 전환</b></td><td class="c good">상각 소화 후 전환</td><td class="c mid">지연</td><td class="c bad">추가 인수로 계속 적자</td></tr>
+    </tbody>
+  </table>
+  <div class="callout">
+    <b>이 표의 쓸모:</b> 이 종목의 핵심 분기점은 <b>"오가닉 성장률"</b> 한 줄이다.
+    인수 1주년이 지나 기저효과가 사라진 뒤의 NGS ARR 성장률이 <b>어디로 수렴하는지</b>가
+    낙관/비관을 가른다. 실적 발표 때 <b>이 한 줄만 추적해도</b> 대부분 판별된다.
+  </div>
+
+  <!-- 12 -->
+  <h2>12. 리스크 매트릭스</h2>
+  <table>
+    <thead><tr><th>리스크</th><th class="c">가능성</th><th class="c">영향</th><th>설명</th></tr></thead>
+    <tbody>
+      <tr><td><b>오가닉 성장 둔화 노출</b></td><td class="c mid">중</td><td class="c bad">큼</td><td>인수 기저효과 소멸 후 실체가 드러남</td></tr>
+      <tr><td><b>사이버아크 통합 실패</b></td><td class="c mid">중</td><td class="c bad">큼</td><td>250억 달러가 손상차손으로 돌아올 위험</td></tr>
+      <tr><td><b>GAAP 적자 지속</b></td><td class="c bad">높음</td><td class="c mid">중</td><td>상각·SBC로 회계 이익 압박 장기화</td></tr>
+      <tr><td><b>주주 희석</b></td><td class="c bad">상시</td><td class="c mid">중</td><td>SBC와 인수 대가 지급으로 주식 수 증가</td></tr>
+      <tr><td><b>마이크로소프트 번들링</b></td><td class="c bad">높음</td><td class="c bad">큼</td><td>섹터 공통 구조적 위협</td></tr>
+      <tr><td><b>전문 경쟁사에 잠식</b></td><td class="c mid">중</td><td class="c mid">중</td><td>각 전선의 특화 강자(Zscaler·CrowdStrike)</td></tr>
+      <tr><td><b>하드웨어 사이클</b></td><td class="c mid">중</td><td class="c mid">중</td><td>방화벽 교체 주기에 따른 변동성</td></tr>
+      <tr><td><b>밸류에이션 부담</b></td><td class="c bad">상시</td><td class="c bad">큼</td><td>1년간 시총 +115%. 기대가 반영된 구간</td></tr>
+      <tr><td><b>보안 예산 축소</b></td><td class="c mid">중</td><td class="c mid">중</td><td>경기 침체 시 신규 도입 지연</td></tr>
+      <tr><td><b>환율</b></td><td class="c mid">상시</td><td class="c mid">중</td><td>국내 투자자 기준 원/달러 변동 노출</td></tr>
+    </tbody>
+  </table>
+
+  <h2>13. 촉매 캘린더</h2>
+  <table>
+    <thead><tr><th>시점/이벤트</th><th>확인할 것</th></tr></thead>
+    <tbody>
+      <tr><td><b>FY2026 4분기·연간 실적</b><br><span class="sub">(8~9월경 발표 예상)</span></td><td>FY26 마감 실적, <b>FY27 가이던스</b></td></tr>
+      <tr><td>매 분기 실적</td><td><b>NGS ARR·오가닉 성장률·NRR·플랫폼화 고객</b></td></tr>
+      <tr><td><b>사이버아크 인수 1주년</b></td><td>기저효과 소멸 후 <b>진짜 성장률</b></td></tr>
+      <tr><td>Ignite 연례 컨퍼런스</td><td>신제품·AI 로드맵·플랫폼 통합 발표</td></tr>
+      <tr><td>추가 M&amp;A 발표</td><td>규모와 영역 — 또 초대형이면 주의</td></tr>
+      <tr><td>경쟁사 실적</td><td>CrowdStrike·Zscaler·Fortinet 성장률 (섹터 온도계)</td></tr>
+      <tr><td>마이크로소프트 보안 발표</td><td>Defender·Entra·Sentinel 확장</td></tr>
+    </tbody>
+  </table>
+
+  <h2>14. 투자 전 체크리스트</h2>
+  <div class="note">
+    <ul style="margin-bottom:0;">
+      <li>□ <b>회계연도가 7월 종료</b>라는 것을 아는가? (CRWD는 1월 종료 — 비교 시 주의)</li>
+      <li>□ <b>NGS ARR</b>이 총매출과 다른 지표임을 이해했는가?</li>
+      <li>□ 성장률에 <b>인수 효과가 섞여 있다</b>는 것을 인지했는가?</li>
+      <li>□ <b>오가닉 성장률</b>을 IR 자료·컨콜에서 직접 확인했는가?</li>
+      <li>□ <b>GAAP 적자 / Non-GAAP 흑자</b>의 이유(SBC·상각)를 확인했는가?</li>
+      <li>□ <b>주식 수 증가</b>(희석) 추이를 확인했는가?</li>
+      <li>□ 사이버아크 <b>250억 달러</b>의 통합 리스크를 감안했는가?</li>
+      <li>□ <b>3면 전쟁</b> 구조(각 전선에 전문 강자)를 이해했는가?</li>
+      <li>□ 내가 추적할 <b>KPI 2~3개</b>(NGS ARR·NRR·오가닉)를 정했는가?</li>
+      <li>□ 해외 종목의 <b>환율·세제·거래시간</b> 차이를 알고 있는가?</li>
+      <li>□ 비관 시나리오에서 <b>감당 가능한 손실 범위</b>를 정했는가?</li>
+    </ul>
+  </div>
+
+  <h2>FAQ</h2>
+  <h4>Q. GAAP 적자인데 괜찮은 회사인가요?</h4>
+  <p>회계상 적자와 현금 창출은 다릅니다. <b>영업활동 현금흐름 8.71억 달러, 조정 FCF 9.10억 달러</b>로
+  <b>현금은 확실히 벌고 있습니다.</b> 적자의 상당 부분은 SBC와 인수 상각 같은 비현금 항목입니다.
+  다만 <b>SBC는 주주 지분을 희석시키는 실질 비용</b>이므로 무시해선 안 됩니다.</p>
+  <h4>Q. 성장률 +60%면 엄청난 것 아닌가요?</h4>
+  <p>인상적이지만 <b>인수 효과가 포함된 숫자</b>입니다. 사이버아크의 ARR이 통째로 더해졌기 때문입니다.
+  <b>진짜 실력은 인수 1주년 이후에 드러납니다.</b> 그때 성장률이 어디로 수렴하는지가 핵심입니다.</p>
+  <h4>Q. 팔로알토 vs 클라우드스트라이크, 어디가 나은가요?</h4>
+  <p>성격이 다릅니다. <b>팔로알토</b>는 규모가 크고 <b>전방위</b>로 넓게 갑니다(인수 포함).
+  <b>클라우드스트라이크</b>는 엔드포인트에서 <b>깊게</b> 파고 자체 확장합니다.
+  <b>"넓게 vs 깊게"</b>의 대비로 보면 이해가 쉽습니다. 이 노트는 우열을 판단하지 않습니다.</p>
+  <h4>Q. 마이크로소프트가 결국 다 먹는 것 아닌가요?</h4>
+  <p>섹터 공통의 근본 리스크입니다. 다만 <b>대기업 시장</b>에서는 "OS와 보안을 한 회사에 맡기면 위험하다"는
+  논리와 <b>성능 차이</b>가 여전히 통합니다. 반면 <b>중견 이하</b>에서는 번들 가격이 강력합니다.</p>
+  <h4>Q. 가장 중요한 지표 하나만 고르면?</h4>
+  <p><b>오가닉 NGS ARR 성장률</b>입니다. "인수 빼고도 성장하는가"가 이 회사의 모든 논쟁을 정리합니다.
+  다만 <b>공개 수치를 직접 찾아 확인</b>해야 합니다 — 이 노트도 확보하지 못했습니다.</p>
+
+  <h2>출처</h2>
+  <p class="src">
+    • Palo Alto Networks IR, "Reports Fiscal Third Quarter 2026 Financial Results" — https://investors.paloaltonetworks.com/news-releases/news-release-details/palo-alto-networks-reports-fiscal-third-quarter-2026-financial<br>
+    • Palo Alto Networks IR, FY26 Q3 실적 PDF — https://investors.paloaltonetworks.com/node/20546/pdf<br>
+    • SEC EDGAR, Form 8-K FY2026 Q3 Earnings Release — https://www.sec.gov/Archives/edgar/data/1327567/000132756726000012/ex991q326earningsrelease.htm<br>
+    • PRNewswire, "Palo Alto Networks Reports Fiscal Third Quarter 2026 Financial Results" — https://www.prnewswire.com/news-releases/palo-alto-networks-reports-fiscal-third-quarter-2026-financial-results-302789148.html<br>
+    • TradingView, "PANW reports Q3 FY2026 revenue $3.00B; NGS ARR $8.1B" — https://www.tradingview.com/news/tradingview:1016dc06b5f5c:0-palo-alto-networks-reports-q3-fy2026-revenue-3-00b-next-gen-security-arr-8-1b/<br>
+    • CNBC, "Palo Alto Networks (PANW) Q3 earnings 2026" — https://www.cnbc.com/2026/06/02/palo-alto-networks-panw-q3-earnings-2026.html<br>
+    • Quartr, "Palo Alto Networks (PANW) Q3 2026 Summary" — https://quartr.com/events/palo-alto-networks-inc-panw-q3-2026_3YZ8mp55<br>
+    • CIO Korea, "거래 규모 250억 달러··· 팔로알토-사이버아크 인수의 의미" — https://www.cio.com/article/4031886/<br>
+    • 아이티데일리, "팔로알토 네트웍스, ID 보안 기업 '사이버아크' 34조원에 인수" — http://www.itdaily.kr/news/articleView.html?idxno=234548<br>
+    • CompaniesMarketCap — Palo Alto Networks 시가총액 — https://companiesmarketcap.com/palo-alto-networks/marketcap/<br>
+    • StockAnalysis — PANW Market Cap — https://stockanalysis.com/stocks/panw/market-cap/<br>
+    • CompaniesMarketCap — Fortinet 시가총액 — https://companiesmarketcap.com/fortinet/marketcap/<br>
+    • Yahoo Finance, "Zscaler vs. Fortinet: Which Cybersecurity Stock Is the Better Buy?" — https://finance.yahoo.com/markets/stocks/articles/zscaler-vs-fortinet-cybersecurity-stock-133200582.html
+  </p>
+
+  <div class="foot">
+    <hr>
+    본 문서는 개인 학습·정리 목적의 비상업 노트입니다. 밸류에이션 배수 등 일부 수치는 필자가 공개 자료로 단순 계산한
+    개략치이며, 조회 시점·기준에 따라 크게 달라집니다. 오가닉 성장률 등 확보하지 못한 데이터는 본문에 명시했습니다.
+    반드시 최신 공시·IR 자료를 직접 확인하십시오. 해외 종목 투자에는 환율·세제·거래시간 등 추가 위험이 따릅니다.
+    투자에 대한 최종 판단과 책임은 전적으로 독자 본인에게 있습니다. © 2026 개인 리서치 라이브러리.
+  </div>
+
+</div>
+</body>
+</html>

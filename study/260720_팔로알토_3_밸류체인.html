@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>팔로알토 밸류체인 — 보안 산업 통합 전쟁의 지도</title>
+<style>
+  :root{
+    --accent:#9a3412; --accent2:#c2410c;
+    --ink:#1f2430; --muted:#5c6472; --line:#ece7e3; --bg:#fff; --soft:#fdf8f5;
+    --warnbg:#fff7ed; --warnln:#fb923c;
+  }
+  *{box-sizing:border-box;}
+  body{font-family:"Segoe UI","Malgun Gothic","Apple SD Gothic Neo",system-ui,sans-serif;
+    color:var(--ink); background:var(--bg); margin:0; line-height:1.78; font-size:16.5px; letter-spacing:-0.1px;}
+  .wrap{max-width:920px; margin:0 auto; padding:40px 28px 90px;}
+  h1{font-size:29px; line-height:1.32; margin:8px 0 6px; letter-spacing:-0.6px;}
+  h2{font-size:22px; margin:50px 0 12px; padding-top:14px; border-top:3px solid var(--accent); letter-spacing:-0.4px;}
+  h3{font-size:18.5px; margin:30px 0 8px; color:#2b3242;}
+  h4{font-size:16px; margin:18px 0 6px; color:var(--accent);}
+  p{margin:10px 0;} a{color:var(--accent2); text-decoration:none;} a:hover{text-decoration:underline;}
+  .sub{color:var(--muted); font-size:15px;} .lead{font-size:17.5px; color:#333a49;}
+  .kicker{display:inline-block; font-size:13px; font-weight:700; letter-spacing:1.5px;
+    color:#fff; background:var(--accent); padding:5px 12px; border-radius:999px;}
+  .warn{background:var(--warnbg); border:1px solid var(--warnln); border-left:6px solid var(--warnln);
+    border-radius:10px; padding:16px 18px; margin:22px 0; font-size:15px;}
+  .note{background:var(--soft); border:1px solid var(--line); border-radius:10px; padding:16px 18px; margin:18px 0;}
+  .callout{background:#fff7ed; border:1px solid #fdba74; border-left:6px solid var(--accent);
+    border-radius:10px; padding:16px 18px; margin:20px 0;}
+  .dark{background:#1c1917; color:#e7e5e4; border-radius:10px; padding:16px 18px; margin:20px 0;}
+  .dark b{color:#fff;}
+  .big{font-size:19px; font-weight:800; color:var(--accent); line-height:1.5;}
+  .grid2{display:grid; grid-template-columns:1fr 1fr; gap:16px;}
+  .grid3{display:grid; grid-template-columns:repeat(3,1fr); gap:14px;}
+  .card{border:1px solid var(--line); border-radius:12px; padding:16px 18px; background:#fff;}
+  table{width:100%; border-collapse:collapse; margin:18px 0; font-size:14.5px;}
+  th,td{border:1px solid var(--line); padding:9px 11px; text-align:left; vertical-align:top;}
+  th{background:var(--soft); font-weight:700;} td.c,th.c{text-align:center;}
+  figure{margin:24px 0; text-align:center;} figcaption{font-size:13px; color:var(--muted); margin-top:8px;}
+  .svgbox{border:1px solid var(--line); border-radius:12px; padding:14px; background:#fff;}
+  ul,ol{margin:10px 0 10px 4px; padding-left:22px;} li{margin:6px 0;}
+  .toc{background:var(--soft); border:1px solid var(--line); border-radius:12px; padding:18px 22px; margin:26px 0;}
+  .toc ol{columns:2; column-gap:34px;}
+  .src{font-size:13px; color:var(--muted); word-break:break-all;}
+  .seriesnav{background:#fff7ed; border:1px solid #fdba74; border-radius:10px; padding:14px 18px; margin:20px 0; font-size:14.5px;}
+  .good{color:#059669; font-weight:700;} .bad{color:#dc2626; font-weight:700;} .mid{color:#b45309; font-weight:700;}
+  hr{border:none; border-top:1px solid var(--line); margin:34px 0;}
+  .foot{color:var(--muted); font-size:13px; margin-top:40px;}
+  @media (max-width:680px){.grid2,.grid3{grid-template-columns:1fr;} .toc ol{columns:1;} h1{font-size:24px;}}
+  @media print{body{font-size:11.5pt;} .wrap{max-width:100%; padding:0;} h2{break-after:avoid;}
+    figure,table,.card{break-inside:avoid;} a{color:#000;} .warn,.callout,.note,.dark{break-inside:avoid;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <span class="kicker">PALO ALTO NETWORKS · ③ 밸류체인</span>
+  <h1>팔로알토 밸류체인<br>— 보안 산업 '통합 전쟁'의 지도</h1>
+  <p class="sub">작성일 2026-07-20 · NASDAQ: PANW · 개인 리서치 노트 · 입문세트 3/3</p>
+
+  <div class="warn">
+    <b>⚠️ 투자 권유가 아닙니다.</b> 이 문서는 공개 정보를 정리한 <b>개인 학습 노트</b>이며 매수·매도 추천이 아닙니다.
+    시장 규모·점유율 수치는 조사기관마다 정의와 기준이 달라 <b>편차가 매우 큽니다.</b>
+    언급된 기업명은 산업 구조 설명을 위한 것이지 투자 대상 추천이 아닙니다.
+    모든 투자 판단과 그 책임은 전적으로 본인에게 있습니다.
+  </div>
+
+  <div class="seriesnav">
+    <b>🔥 입문세트 구성</b> — <a href="https://tryingpig.github.io/study/260720_팔로알토_1_입문가이드.html">① 입문가이드</a> ·
+    <a href="https://tryingpig.github.io/study/260720_팔로알토_2_투자안내서.html">② 투자안내서</a> ·
+    ③ <b>밸류체인(현재 글)</b><br>
+    <span class="sub">🛡️ <b>보안 3부작 완성</b>: <a href="https://tryingpig.github.io/study/260720_클라우드스트라이크_3_밸류체인.html">클라우드스트라이크 밸류체인</a> ·
+    <a href="https://tryingpig.github.io/study/260718_지스케일러_3_밸류체인.html">지스케일러 밸류체인</a> — 이 글에 <b>3사 종합 비교</b>가 있습니다(10장).</span>
+  </div>
+
+  <div class="callout">
+    <span class="big">🧭 한 장 요약</span>
+    <ol style="margin-bottom:0;">
+      <li><b>사이버보안은 '영역 지도'로 봐야 한다.</b> 물리 공급망이 없어 위아래로 흐르는 밸류체인이 아니다.</li>
+      <li><b>팔로알토는 6대 영역 중 5개에 발을 걸친 유일한 회사</b>다. 네트워크·클라우드·운영·신원 + AI.</li>
+      <li>그래서 이 회사는 <b>'통합 전쟁의 총사령관'</b>을 자처한다 — 기업당 60개 보안 도구를 자기 것으로 바꾸겠다는 것.</li>
+      <li><b>확장 방식이 다르다.</b> 클라우드스트라이크는 '자체 개발', 팔로알토는 <b>'인수'</b>로 영역을 넓힌다.</li>
+      <li><b>후방의 진짜 자산은 M&amp;A 실행력과 통합 역량</b>이다. 이게 이 회사 모델의 심장이자 아킬레스건.</li>
+      <li>공통의 최종 상대는 <b>마이크로소프트</b>다. 번들링이라는 비대칭 무기를 가진 유일한 상대.</li>
+    </ol>
+  </div>
+
+  <div class="toc">
+    <b>목차</b>
+    <ol>
+      <li>큰 그림 — 보안 산업의 구조</li>
+      <li>보안 6대 영역과 팔로알토의 좌표</li>
+      <li>후방 — 이 회사가 의존하는 것</li>
+      <li>M&amp;A 머신 — 확장의 엔진</li>
+      <li>중간 — 경쟁 3진영</li>
+      <li>전방 — 고객과 채널</li>
+      <li>통합 전쟁의 논리</li>
+      <li>시장 규모와 성장률</li>
+      <li>하드웨어라는 유산</li>
+      <li>🔑 보안 3사 종합 비교</li>
+      <li>강약점과 병목 지점</li>
+      <li>용어사전 · 출처</li>
+    </ol>
+  </div>
+
+  <!-- 1 -->
+  <h2>1. 큰 그림 — 보안 산업의 구조</h2>
+  <p class="lead">
+    사이버보안은 반도체·화장품처럼 <b>원료 → 제조 → 유통</b>으로 흐르지 않는다.
+    소프트웨어 산업이라 <b>물리적 공급망이 거의 없다.</b>
+  </p>
+  <p>
+    대신 <b>"무엇을 지키는가"</b>에 따라 영역이 나뉘고, 회사들이 각자 본진에서 출발해
+    <b>서로의 영역으로 확장하며 부딪히는</b> 구조다. 그래서 밸류체인 대신 <b>'영역 지도'</b>로 그린다.
+  </p>
+  <figure>
+    <div class="svgbox">
+      <svg viewBox="0 0 860 230" width="100%" role="img" aria-label="보안 산업 3단 구조">
+        <g font-family="Segoe UI, sans-serif">
+          <text x="16" y="26" font-size="15" font-weight="800">사이버보안의 단순화된 3단 구조</text>
+
+          <rect x="20" y="44" width="820" height="58" rx="11" fill="#eff6ff" stroke="#93c5fd"/>
+          <text x="36" y="68" font-size="13" font-weight="800" fill="#1e40af">후방 — 이 회사가 '쓰는' 것</text>
+          <text x="36" y="89" font-size="11.5" fill="#1e3a8a">클라우드 인프라 · AI 연산 · 위협 인텔리전스 · 보안 인재 · <b>그리고 M&amp;A 자금</b></text>
+
+          <rect x="20" y="112" width="820" height="58" rx="11" fill="#9a3412"/>
+          <text x="36" y="136" font-size="13.5" font-weight="800" fill="#fff">중간 — 보안 벤더 (경쟁의 주무대)</text>
+          <text x="36" y="157" font-size="11.5" fill="#fed7aa">Palo Alto · Microsoft · CrowdStrike · Zscaler · Fortinet · Cisco · Check Point …</text>
+
+          <rect x="20" y="180" width="820" height="42" rx="11" fill="#dcfce7" stroke="#86efac"/>
+          <text x="36" y="200" font-size="13" font-weight="800" fill="#166534">전방 — 고객 (기업 보안 예산)</text>
+          <text x="36" y="216" font-size="11.5" fill="#14532d">대기업 · 정부/공공 · 중견기업 · 파트너/MSSP — CISO가 예산 집행</text>
+        </g>
+      </svg>
+    </div>
+    <figcaption>그림 1. 팔로알토의 경우 후방에 <b>'M&amp;A 자금'</b>이 하나 더 붙는다. (개인 정리 도식)</figcaption>
+  </figure>
+
+  <!-- 2 -->
+  <h2>2. 보안 6대 영역과 팔로알토의 좌표</h2>
+  <figure>
+    <div class="svgbox">
+      <svg viewBox="0 0 860 400" width="100%" role="img" aria-label="보안 6대 영역과 팔로알토">
+        <g font-family="Segoe UI, sans-serif">
+          <text x="16" y="26" font-size="15" font-weight="800">보안 6대 영역 — 팔로알토는 5개에 발을 걸쳤다</text>
+
+          <rect x="20" y="46" width="265" height="92" rx="12" fill="#9a3412"/>
+          <text x="152" y="72" font-size="13.5" font-weight="800" fill="#fff" text-anchor="middle">① 네트워크 ★본진</text>
+          <text x="152" y="94" font-size="11" fill="#fed7aa" text-anchor="middle">Strata (NGFW)</text>
+          <text x="152" y="114" font-size="10.5" fill="#fed7aa" text-anchor="middle">경쟁: Fortinet · Cisco</text>
+          <text x="152" y="131" font-size="10.5" fill="#fff" text-anchor="middle">캐시카우</text>
+
+          <rect x="297" y="46" width="265" height="92" rx="12" fill="#c2410c"/>
+          <text x="429" y="72" font-size="13.5" font-weight="800" fill="#fff" text-anchor="middle">② 클라우드·SASE</text>
+          <text x="429" y="94" font-size="11" fill="#fed7aa" text-anchor="middle">Prisma</text>
+          <text x="429" y="114" font-size="10.5" fill="#fed7aa" text-anchor="middle">경쟁: Zscaler · Netskope</text>
+          <text x="429" y="131" font-size="10.5" fill="#fff" text-anchor="middle">고성장 격전지</text>
+
+          <rect x="574" y="46" width="266" height="92" rx="12" fill="#ea580c"/>
+          <text x="707" y="72" font-size="13.5" font-weight="800" fill="#fff" text-anchor="middle">③ 보안운영(SecOps)</text>
+          <text x="707" y="94" font-size="11" fill="#fed7aa" text-anchor="middle">Cortex XSIAM·XDR</text>
+          <text x="707" y="114" font-size="10.5" fill="#fed7aa" text-anchor="middle">경쟁: CrowdStrike · Splunk</text>
+          <text x="707" y="131" font-size="10.5" fill="#fff" text-anchor="middle">SIEM 대체 노림</text>
+
+          <rect x="20" y="150" width="265" height="92" rx="12" fill="#1c1917"/>
+          <text x="152" y="176" font-size="13.5" font-weight="800" fill="#fff" text-anchor="middle">④ 신원(Identity)</text>
+          <text x="152" y="198" font-size="11" fill="#d6d3d1" text-anchor="middle">CyberArk (2025 인수)</text>
+          <text x="152" y="218" font-size="10.5" fill="#d6d3d1" text-anchor="middle">경쟁: Okta · MS Entra</text>
+          <text x="152" y="235" font-size="10.5" fill="#fbbf24" text-anchor="middle">250억 달러로 확보</text>
+
+          <rect x="297" y="150" width="265" height="92" rx="12" fill="#f5f5f4" stroke="#d6d3d1"/>
+          <text x="429" y="176" font-size="13.5" font-weight="800" text-anchor="middle">⑤ 데이터</text>
+          <text x="429" y="198" font-size="11" fill="#5c6472" text-anchor="middle">일부 커버</text>
+          <text x="429" y="218" font-size="10.5" fill="#5c6472" text-anchor="middle">분산된 시장</text>
+          <text x="429" y="235" font-size="10.5" fill="#78716c" text-anchor="middle">추가 M&amp;A 가능 영역</text>
+
+          <rect x="574" y="150" width="266" height="92" rx="12" fill="#fff7ed" stroke="#fdba74"/>
+          <text x="707" y="176" font-size="13.5" font-weight="800" fill="#9a3412" text-anchor="middle">⑥ AI 보안 (신규)</text>
+          <text x="707" y="198" font-size="11" fill="#7c2d12" text-anchor="middle">Precision AI · AI 에이전트 보안</text>
+          <text x="707" y="218" font-size="10.5" fill="#7c2d12" text-anchor="middle">경쟁: 전원 참전</text>
+          <text x="707" y="235" font-size="10.5" fill="#9a3412" text-anchor="middle">시장 형성 중</text>
+
+          <rect x="20" y="256" width="820" height="52" rx="11" fill="#fef3c7" stroke="#fbbf24"/>
+          <text x="430" y="280" font-size="13" font-weight="800" fill="#92400e" text-anchor="middle">
+            🏆 6개 영역 중 5개에 유의미하게 진입한 회사는 팔로알토와 마이크로소프트뿐</text>
+          <text x="430" y="299" font-size="11.5" fill="#78350f" text-anchor="middle">
+            CrowdStrike는 ①을 뺀 확장 중, Zscaler는 ②에서 확장 중 — 커버리지 폭이 팔로알토의 차별점</text>
+
+          <rect x="20" y="322" width="820" height="60" rx="11" fill="#1c1917"/>
+          <text x="430" y="346" font-size="12.5" font-weight="800" fill="#fff" text-anchor="middle">
+            ⚠️ 단, "폭"이 곧 "깊이"는 아니다</text>
+          <text x="430" y="368" font-size="11.5" fill="#d6d3d1" text-anchor="middle">
+            각 영역마다 그것만 파는 전문가와 싸운다 — 이 트레이드오프가 이 회사의 핵심 쟁점 (개인 정리 도식)</text>
+        </g>
+      </svg>
+    </div>
+    <figcaption>그림 2. 팔로알토는 커버리지 폭이 가장 넓다. 그것이 강점이자 부담이다. (개인 정리 도식)</figcaption>
+  </figure>
+
+  <!-- 3 -->
+  <h2>3. 후방 — 이 회사가 의존하는 것</h2>
+  <div class="grid2">
+    <div class="card">
+      <h4>☁️ 클라우드 인프라 · AI 연산</h4>
+      <p>Prisma·Cortex는 클라우드에서 돌아간다. Precision AI 기능이 늘수록 <b>연산 비용</b>도 는다.</p>
+      <p class="sub" style="margin:0;"><b>리스크:</b> AI 기능 확대가 마진을 압박.</p>
+    </div>
+    <div class="card">
+      <h4>🏭 하드웨어 공급망</h4>
+      <p>다른 보안 SW 기업과 달리 <b>물리적 방화벽 장비를 만든다.</b> 부품·제조·물류가 실제로 필요하다.</p>
+      <p class="sub" style="margin:0;"><b>리스크:</b> 반도체 수급·관세·재고. <b>순수 SaaS엔 없는 부담.</b></p>
+    </div>
+    <div class="card">
+      <h4>🕵️ 위협 인텔리전스</h4>
+      <p>Unit 42 등 자체 위협 연구·침해대응 조직이 제품 경쟁력의 원천이다.</p>
+      <p class="sub" style="margin:0;"><b>특징:</b> 돈으로 빨리 못 사는 자산. 진입장벽.</p>
+    </div>
+    <div class="card">
+      <h4>💵 M&amp;A 자금 ★</h4>
+      <p><b>이 회사만의 특별한 후방 자산.</b> 영역 확장을 <b>인수로</b> 하기 때문에
+      현금·주가·차입 여력이 곧 전략 실행력이다.</p>
+      <p class="sub" style="margin:0;"><b>리스크:</b> 주가가 빠지면 인수 여력도 준다.</p>
+    </div>
+  </div>
+  <div class="callout">
+    <b>💡 팔로알토 후방의 특수성</b><br>
+    클라우드스트라이크의 후방 핵심 자산이 <b>'데이터 플라이휠'</b>이라면,
+    팔로알토의 핵심 자산은 <b>'M&amp;A 실행력과 통합 역량'</b>이다.<br><br>
+    이건 <b>기술 자산이 아니라 경영 자산</b>이다. 그래서 이 회사를 볼 때는
+    <b>"CEO와 경영진이 인수를 잘 하는가"</b>가 다른 어떤 보안 기업보다 중요한 변수가 된다.
+  </div>
+
+  <!-- 4 -->
+  <h2>4. M&amp;A 머신 — 확장의 엔진</h2>
+  <p class="lead">
+    팔로알토의 확장 방식을 이해하면 이 회사의 모든 것이 설명된다. <b>사서 붙인다.</b>
+  </p>
+  <table>
+    <thead><tr><th class="c">시기</th><th>인수</th><th>영역</th><th class="c">규모</th></tr></thead>
+    <tbody>
+      <tr><td class="c">~2024</td><td>다수의 비상장 스타트업</td><td>클라우드·SecOps 등</td><td class="c">대체로 <b>10억 달러 미만</b></td></tr>
+      <tr><td class="c">2025</td><td><b>CyberArk</b></td><td><b>신원(PAM)</b></td><td class="c bad"><b>약 250억 달러</b></td></tr>
+      <tr><td class="c">2025~26</td><td>Chronosphere</td><td>관측성(Observability)</td><td class="c">—</td></tr>
+      <tr><td class="c">2025~26</td><td>Koi Security</td><td>보안</td><td class="c">—</td></tr>
+    </tbody>
+  </table>
+
+  <figure>
+    <div class="svgbox">
+      <svg viewBox="0 0 840 260" width="100%" role="img" aria-label="확장 전략 비교">
+        <g font-family="Segoe UI, sans-serif">
+          <text x="16" y="26" font-size="15" font-weight="800">영역 확장의 두 가지 방식</text>
+
+          <rect x="30" y="50" width="360" height="160" rx="12" fill="#fff7ed" stroke="#fdba74"/>
+          <text x="210" y="78" font-size="14" font-weight="800" fill="#9a3412" text-anchor="middle">팔로알토: 사서 붙인다</text>
+          <text x="210" y="104" font-size="11.5" fill="#7c2d12" text-anchor="middle">🟢 빠르다 — 즉시 1위 기술 확보</text>
+          <text x="210" y="126" font-size="11.5" fill="#7c2d12" text-anchor="middle">🟢 즉시 ARR 증가</text>
+          <text x="210" y="148" font-size="11.5" fill="#7c2d12" text-anchor="middle">🔴 비싸다 — 프리미엄 지불</text>
+          <text x="210" y="170" font-size="11.5" fill="#7c2d12" text-anchor="middle">🔴 통합 난이도 — 제품·조직·문화</text>
+          <text x="210" y="192" font-size="11.5" fill="#7c2d12" text-anchor="middle">🔴 상각비가 GAAP 이익 압박</text>
+
+          <rect x="470" y="50" width="340" height="160" rx="12" fill="#fef2f2" stroke="#fca5a5"/>
+          <text x="640" y="78" font-size="14" font-weight="800" fill="#991b1b" text-anchor="middle">CrowdStrike: 만들어 붙인다</text>
+          <text x="640" y="104" font-size="11.5" fill="#7f1d1d" text-anchor="middle">🟢 통합이 자연스럽다(단일 에이전트)</text>
+          <text x="640" y="126" font-size="11.5" fill="#7f1d1d" text-anchor="middle">🟢 마진 구조가 깔끔</text>
+          <text x="640" y="148" font-size="11.5" fill="#7f1d1d" text-anchor="middle">🔴 느리다 — 개발에 시간</text>
+          <text x="640" y="170" font-size="11.5" fill="#7f1d1d" text-anchor="middle">🔴 남의 본진에서 1위 되기 어려움</text>
+          <text x="640" y="192" font-size="11.5" fill="#7f1d1d" text-anchor="middle">🔴 놓친 시장은 못 따라잡을 수도</text>
+
+          <rect x="30" y="222" width="780" height="32" rx="8" fill="#1c1917"/>
+          <text x="420" y="243" font-size="12" font-weight="700" fill="#fff" text-anchor="middle">
+            어느 쪽이 옳은지는 5~10년 뒤에 드러난다 — 지금은 둘 다 성장 중 (개인 정리 도식)</text>
+        </g>
+      </svg>
+    </div>
+    <figcaption>그림 3. '사서 붙이기' vs '만들어 붙이기'. 두 전략의 트레이드오프. (개인 정리 도식)</figcaption>
+  </figure>
+
+  <div class="dark">
+    <b>🔍 M&amp;A 모델의 구조적 함정</b><br><br>
+    인수로 성장하는 회사는 <b>'인수를 멈추면 성장률이 급락하는'</b> 구조에 갇히기 쉽다.<br>
+    시장이 높은 배수를 주면 → 주식으로 인수하기 쉬워지고 → 성장률이 유지되고 → 배수가 유지된다.<br>
+    <b>반대로 주가가 빠지면</b> → 인수 여력이 줄고 → 성장률이 떨어지고 → 배수가 더 빠지는 <b>역회전</b>이 일어난다.<br><br>
+    <b>그래서 ②투자안내서에서 '오가닉 성장률'을 핵심 질문으로 꼽은 것</b>이다.
+    인수 없이도 성장한다면 이 함정에서 자유롭다.
+  </div>
+
+  <!-- 5 -->
+  <h2>5. 중간 — 경쟁 3진영</h2>
+  <table>
+    <thead><tr><th>진영</th><th>대표</th><th>무기</th><th>팔로알토와의 관계</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><b>Ⓐ 플랫폼 거인</b></td>
+        <td><b>Microsoft</b></td>
+        <td>OS·오피스 라이선스에 <b>번들링</b></td>
+        <td class="c bad">구조적 최대 위협</td>
+      </tr>
+      <tr>
+        <td><b>Ⓑ 보안 전업 통합</b></td>
+        <td><b>Palo Alto</b> · Fortinet · Cisco · Check Point</td>
+        <td>여러 영역을 <b>한 회사가</b> 커버</td>
+        <td class="c mid">같은 진영 내 1위 경쟁</td>
+      </tr>
+      <tr>
+        <td><b>Ⓒ 영역 전문가</b></td>
+        <td><b>CrowdStrike</b>(엔드포인트)<br><b>Zscaler</b>(SASE) · Okta(신원)</td>
+        <td>한 영역에서 <b>깊이</b></td>
+        <td class="c bad">각 전선에서 직접 충돌</td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="note">
+    <b>⚔️ 팔로알토가 처한 독특한 위치</b><br>
+    팔로알토는 <b>Ⓑ진영의 선두주자</b>다. 그런데 문제는 <b>Ⓐ와 Ⓒ 양쪽에서 동시에 압박</b>받는다는 것.
+    <ul style="margin-bottom:0;">
+      <li><b>위에서:</b> 마이크로소프트가 "이미 라이선스 값 냈으니 보안은 덤"이라며 밀고 들어온다</li>
+      <li><b>아래에서:</b> Zscaler·CrowdStrike가 "우리는 그 영역만 판다, 우리가 더 낫다"며 파고든다</li>
+    </ul>
+    <b>팔로알토의 답:</b> "60개 도구를 관리하느니 우리 하나로 통합하세요" — <b>운영 편의성과 통합 가치</b>로 승부한다.
+    <b>NRR 120%와 플랫폼화 고객 2,280개</b>는 이 논리가 지금까지는 먹히고 있다는 증거다.
+  </div>
+
+  <!-- 6 -->
+  <h2>6. 전방 — 고객과 채널</h2>
+  <table>
+    <thead><tr><th>고객 유형</th><th>특징</th><th class="c">팔로알토 강도</th></tr></thead>
+    <tbody>
+      <tr><td><b>글로벌 대기업</b></td><td>보안 도구 수십~수백 개. <b>통합 니즈가 가장 큼</b></td><td class="c good">매우 강함</td></tr>
+      <tr><td><b>정부·공공</b></td><td>인증 요건 까다롭고 계약이 큼. 하드웨어 선호도 있음</td><td class="c good">강함</td></tr>
+      <tr><td><b>중견기업</b></td><td>예산 제약. 번들 가격에 민감</td><td class="c mid">경쟁 치열</td></tr>
+      <tr><td><b>중소기업</b></td><td>전담 인력 없음</td><td class="c bad">MS·Fortinet에 취약</td></tr>
+      <tr><td><b>파트너·MSSP</b></td><td>재판매·관제 대행. 채널 매출 비중 큼</td><td class="c good">전통적 강점</td></tr>
+    </tbody>
+  </table>
+  <div class="callout">
+    <b>💡 팔로알토가 유독 대기업에 강한 이유</b><br>
+    <b>보안 도구가 많은 고객일수록 통합의 가치가 크다.</b> 도구 5개 쓰는 회사는 통합할 이유가 별로 없지만,
+    <b>60~220개</b> 쓰는 대기업은 통합이 절실하다.<br><br>
+    즉 팔로알토의 플랫폼화 전략은 <b>구조적으로 대기업 시장에 최적화</b>되어 있다.
+    반대로 <b>중소기업에서는 번들 가격을 이기기 어렵다.</b>
+  </div>
+
+  <!-- 7 -->
+  <h2>7. 통합 전쟁의 논리</h2>
+  <div class="dark">
+    <b>📌 이 산업을 관통하는 한 문장</b><br><br>
+    <b>"기업은 평균 약 60개, 많게는 220개의 보안 도구를 쓴다."</b><br><br>
+    이 한 문장이 지금 보안 산업에서 벌어지는 모든 일의 배경이다.
+    팔로알토 임원의 표현을 빌리면, 임무는 <b>"이를 통합한 다음 자동화까지 계층화하는 것"</b>이다.
+  </div>
+  <figure>
+    <div class="svgbox">
+      <svg viewBox="0 0 840 250" width="100%" role="img" aria-label="통합 전쟁의 3단계">
+        <g font-family="Segoe UI, sans-serif">
+          <text x="16" y="26" font-size="15" font-weight="800">통합 전쟁의 3단계 — 팔로알토의 로드맵</text>
+
+          <rect x="30" y="50" width="240" height="90" rx="11" fill="#fff7ed" stroke="#fdba74"/>
+          <text x="150" y="76" font-size="13" font-weight="800" fill="#9a3412" text-anchor="middle">1단계: 통합</text>
+          <text x="150" y="100" font-size="11" fill="#7c2d12" text-anchor="middle">60개 도구 → 우리 플랫폼</text>
+          <text x="150" y="120" font-size="11" fill="#7c2d12" text-anchor="middle">지표: 플랫폼화 고객 수</text>
+
+          <rect x="300" y="50" width="240" height="90" rx="11" fill="#fed7aa" stroke="#ea580c"/>
+          <text x="420" y="76" font-size="13" font-weight="800" fill="#9a3412" text-anchor="middle">2단계: 데이터 통합</text>
+          <text x="420" y="100" font-size="11" fill="#7c2d12" text-anchor="middle">모든 로그·신호를 한곳으로</text>
+          <text x="420" y="120" font-size="11" fill="#7c2d12" text-anchor="middle">제품: Cortex XSIAM</text>
+
+          <rect x="570" y="50" width="240" height="90" rx="11" fill="#9a3412"/>
+          <text x="690" y="76" font-size="13" font-weight="800" fill="#fff" text-anchor="middle">3단계: AI 자동화</text>
+          <text x="690" y="100" font-size="11" fill="#fed7aa" text-anchor="middle">사람 대신 AI가 대응</text>
+          <text x="690" y="120" font-size="11" fill="#fed7aa" text-anchor="middle">제품: Precision AI</text>
+
+          <g stroke="#78716c" stroke-width="2.5" fill="none">
+            <path d="M272,95 L296,95" marker-end="url(#q)"/>
+            <path d="M542,95 L566,95" marker-end="url(#q)"/>
+          </g>
+          <defs><marker id="q" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto">
+            <path d="M0,0 L6,3 L0,6 Z" fill="#78716c"/></marker></defs>
+
+          <rect x="30" y="156" width="780" height="80" rx="11" fill="#fef3c7" stroke="#fbbf24"/>
+          <text x="420" y="180" font-size="12.5" font-weight="800" fill="#92400e" text-anchor="middle">
+            💡 각 단계가 다음 단계의 조건이 된다</text>
+          <text x="420" y="202" font-size="11.5" fill="#78350f" text-anchor="middle">
+            제품을 통합해야 → 데이터가 모이고 → 데이터가 모여야 → AI 자동화가 가능하다</text>
+          <text x="420" y="224" font-size="11.5" fill="#78350f" text-anchor="middle">
+            이것이 "왜 굳이 다 사려 하는가"에 대한 회사의 답변이다 (개인 정리 도식)</text>
+        </g>
+      </svg>
+    </div>
+    <figcaption>그림 4. 통합 → 데이터 → AI 자동화. 확장 전략의 논리적 근거. (개인 정리 도식)</figcaption>
+  </figure>
+
+  <!-- 8 -->
+  <h2>8. 시장 규모와 성장률</h2>
+  <table>
+    <thead><tr><th>시장</th><th class="c">기준</th><th class="c">전망</th><th class="c">CAGR</th></tr></thead>
+    <tbody>
+      <tr><td><b>SASE</b></td><td class="c">191.9억 달러 (2026)</td><td class="c">680.6억 달러 (2032)</td><td class="c good">약 28.8%</td></tr>
+      <tr><td><b>네트워크 보안 SW</b></td><td class="c">약 222억 달러 (2026)</td><td class="c">약 513억 달러 (2035)</td><td class="c">약 9.6%</td></tr>
+      <tr><td>엔드포인트 보안<br><span class="sub">(참고·Cortex 관련)</span></td><td class="c">233.4억 달러 (2026)</td><td class="c">394.1억 달러 (2031)</td><td class="c">약 11.0%</td></tr>
+    </tbody>
+  </table>
+  <div class="note">
+    <b>📐 이 표에서 읽어야 할 것</b><br>
+    <b>SASE가 압도적으로 빠르다(약 29%).</b> 반면 전통 네트워크 보안 SW는 약 9.6%로 완만하다.<br><br>
+    <b>팔로알토에 주는 시사점:</b> 본진(Strata·네트워크)은 <b>성숙 시장</b>이고,
+    성장은 <b>Prisma(SASE)와 Cortex, 그리고 신원</b>에서 나와야 한다.
+    실제로 회사가 NGS ARR을 강조하는 이유가 이것이다 — <b>성장하는 부분만 떼어 보여주는 것</b>.<br><br>
+    <b>동시에 리스크:</b> SASE가 가장 빠르게 크는 시장이라 <b>Zscaler와의 전선이 가장 중요</b>해진다.
+    여기서 밀리면 성장 엔진 하나를 잃는다.
+  </div>
+  <p class="sub">
+    ※ 시장 규모는 조사기관마다 정의가 달라 편차가 크다. 절대치보다 <b>상대적 성장 속도</b>로 참고할 것.
+    <span class="src">(출처: MarketsandMarkets, MarketGrowthReports, Mordor Intelligence 등)</span>
+  </p>
+
+  <!-- 9 -->
+  <h2>9. 하드웨어라는 유산</h2>
+  <p>
+    팔로알토가 다른 보안 SaaS 기업과 결정적으로 다른 점 하나 — <b>물리 장비를 판다.</b>
+  </p>
+  <div class="grid2">
+    <div class="card">
+      <h4>🟢 하드웨어의 장점</h4>
+      <ul style="margin-bottom:0;">
+        <li><b>성능</b> — 전용 칩으로 대용량 트래픽 처리</li>
+        <li><b>규제 대응</b> — 금융·정부는 <b>물리적 통제</b>를 요구하는 경우가 있음</li>
+        <li><b>기존 설치 기반</b> — 이미 깔린 장비가 진입장벽</li>
+        <li><b>업셀 발판</b> — 장비 고객에게 구독을 판다</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4>🟠 하드웨어의 부담</h4>
+      <ul style="margin-bottom:0;">
+        <li><b>낮은 마진</b> — 소프트웨어보다 수익성 낮음</li>
+        <li><b>공급망 리스크</b> — 부품·물류·관세</li>
+        <li><b>교체 사이클 변동성</b> — 매출이 들쭉날쭉</li>
+        <li><b>재고 부담</b> — 순수 SaaS엔 없는 자산</li>
+        <li><b>"레거시" 이미지</b> — 밸류에이션 할인 요인</li>
+      </ul>
+    </div>
+  </div>
+  <div class="callout">
+    <b>💡 그래서 NGS ARR이 존재한다</b><br>
+    회사가 <b>총매출 대신 NGS ARR을 강조</b>하는 이유가 여기 있다.
+    <b>"하드웨어 빼고 보면 우리는 고성장 SaaS입니다"</b>라는 메시지다.<br><br>
+    투자자로서는 <b>양쪽을 다 봐야 한다.</b> NGS ARR만 보면 하드웨어 사이클 리스크를 놓치고,
+    총매출만 보면 성장의 질을 놓친다.
+  </div>
+
+  <!-- 10 -->
+  <h2>10. 🔑 보안 3사 종합 비교</h2>
+  <p class="lead">
+    이 시리즈로 <b>지스케일러 · 클라우드스트라이크 · 팔로알토</b> 세 회사를 모두 다뤘다. 여기서 한 번에 비교한다.
+  </p>
+  <table>
+    <thead>
+      <tr><th></th><th class="c">Palo Alto (PANW)</th><th class="c">CrowdStrike (CRWD)</th><th class="c">Zscaler (ZS)</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><b>출발점</b></td><td class="c">네트워크 방화벽</td><td class="c">엔드포인트 EDR</td><td class="c">클라우드 프록시</td></tr>
+      <tr><td><b>비유</b></td><td class="c">종합 경비회사</td><td class="c">방마다 경비원</td><td class="c">정문 검문소</td></tr>
+      <tr><td><b>핵심 지표</b></td><td class="c">NGS ARR</td><td class="c">순증 ARR</td><td class="c">ARR</td></tr>
+      <tr><td><b>규모(참고)</b></td><td class="c">NGS ARR $81억</td><td class="c">ARR $52.5억</td><td class="c">ARR 약 $35억</td></tr>
+      <tr><td><b>성장률(참고)</b></td><td class="c">NGS ARR +60%<br><span class="sub">(인수 포함)</span></td><td class="c">ARR +24%<br><span class="sub">(오가닉 중심)</span></td><td class="c">ARR +25%</td></tr>
+      <tr><td><b>확장 방식</b></td><td class="c bad"><b>인수(M&amp;A)</b></td><td class="c good"><b>자체 개발</b></td><td class="c mid">자체 + 소규모 인수</td></tr>
+      <tr><td><b>하드웨어</b></td><td class="c mid">있음</td><td class="c good">없음</td><td class="c good">없음</td></tr>
+      <tr><td><b>커버 영역</b></td><td class="c good">5개 (최광)</td><td class="c mid">3~4개</td><td class="c mid">2~3개</td></tr>
+      <tr><td><b>GAAP 손익</b></td><td class="c bad">적자(FY26 3Q)</td><td class="c mid">개선 중</td><td class="c mid">개선 중</td></tr>
+      <tr><td><b>최대 리스크</b></td><td class="c">인수 의존·통합 실패</td><td class="c">고밸류·사고 재발</td><td class="c">성장 둔화(FY27 16~17%)</td></tr>
+      <tr><td><b>공통 위협</b></td><td class="c" colspan="3"><b>마이크로소프트의 번들링</b></td></tr>
+    </tbody>
+  </table>
+  <p class="sub">
+    ※ 회계연도가 서로 다르고(PANW 7월·CRWD 1월·ZS 7월 종료) 지표 정의도 달라 <b>엄밀한 동일 조건 비교가 아니다.</b>
+    <b>성격 차이를 파악하는 용도</b>로만 사용할 것. 수치는 각 사 최근 발표 기준이며 시점이 다르다.
+  </p>
+
+  <div class="dark">
+    <b>🎯 세 회사를 한 문장으로</b><br><br>
+    <b>Palo Alto</b> — "다 사서 하나로 합치겠다" · <b>넓이</b>로 승부 · 리스크는 <b>통합</b><br>
+    <b>CrowdStrike</b> — "하나의 에이전트로 다 하겠다" · <b>깊이</b>로 승부 · 리스크는 <b>가격</b><br>
+    <b>Zscaler</b> — "길목만 확실히 잡겠다" · <b>위치</b>로 승부 · 리스크는 <b>성장 둔화</b><br><br>
+    <b>셋 다 결국 같은 곳(통합 플랫폼)을 향한다.</b> 그래서 이 섹터는 개별 종목이 아니라
+    <b>"누가 통합의 승자가 되는가"</b>라는 하나의 질문으로 묶어서 보는 게 유용하다.
+  </div>
+
+  <!-- 11 -->
+  <h2>11. 강약점과 병목 지점</h2>
+  <div class="grid2">
+    <div class="card">
+      <h4>🟢 구조적 강점</h4>
+      <ul style="margin-bottom:0;">
+        <li><b>최광 커버리지</b> — 6대 영역 중 5개</li>
+        <li><b>통합 니즈에 최적</b> — 도구 60개 쓰는 대기업의 답</li>
+        <li><b>NRR 120%</b> — 업셀 엔진이 실제 작동</li>
+        <li><b>NGFW 설치 기반</b> — 확장의 발판</li>
+        <li><b>채널·파트너망</b> — 오랜 영업 자산</li>
+        <li><b>M&amp;A 실행력</b> — 빠르게 빈 곳을 메움</li>
+        <li><b>현금 창출</b> — 조정 FCF 마진 약 30%</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4>🟠 구조적 약점·병목</h4>
+      <ul style="margin-bottom:0;">
+        <li><b>인수 의존</b> — 멈추면 성장률 급락 위험</li>
+        <li><b>통합 난이도</b> — 250억 달러짜리 통합 진행 중</li>
+        <li><b>GAAP 적자</b> — 상각·SBC 부담 장기화</li>
+        <li><b>3면 전쟁</b> — 각 전선에 특화 강자</li>
+        <li><b>하드웨어 유산</b> — 마진·변동성·공급망</li>
+        <li><b>중소기업 취약</b> — 번들 가격 경쟁</li>
+        <li><b>번들 위협</b> — 마이크로소프트</li>
+        <li><b>고밸류</b> — 실행 실패의 여유가 적음</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="callout">
+    <b>📌 밸류체인 관점의 결론</b><br>
+    팔로알토는 <b>"가장 넓은 땅을 가졌지만, 그 땅 하나하나에서 전문가와 싸워야 하는"</b> 위치에 있다.
+    그리고 그 땅을 <b>주로 사서 넓혔다.</b><br><br>
+    <b>통제 가능한 변수:</b> ①인수 통합 실행력 ②플랫폼화 확산(NRR·고객 수) ③AI 제품 경쟁력 ④비용 관리<br>
+    <b>통제 불가능한 변수:</b> 마이크로소프트 번들 정책, 기업 보안 예산 경기, 하드웨어 사이클, 밸류에이션 멀티플<br><br>
+    투자자 입장에서는 <b>"통제 가능한 4가지가 숫자로 확인되는가"</b>
+    (→ 오가닉 NGS ARR 성장률, NRR, 플랫폼화 고객 수, GAAP-NonGAAP 격차)를 추적하고,
+    <b>"통제 불가능한 4가지가 언제 뒤집히는가"</b>를 경계하는 것이 기본 자세다.
+  </div>
+
+  <h2>용어 사전</h2>
+  <table>
+    <tbody>
+      <tr><td><b>NGFW</b></td><td>Next-Generation Firewall. 애플리케이션·사용자를 식별하는 방화벽.</td></tr>
+      <tr><td><b>SASE</b></td><td>Secure Access Service Edge. 네트워크+보안을 클라우드에서 통합 제공. 가장 빠르게 크는 시장.</td></tr>
+      <tr><td><b>CNAPP</b></td><td>클라우드 네이티브 애플리케이션 보호 플랫폼.</td></tr>
+      <tr><td><b>XSIAM</b></td><td>팔로알토의 AI 기반 보안 상황실 플랫폼. SIEM 대체를 노림.</td></tr>
+      <tr><td><b>XDR</b></td><td>Extended Detection & Response. 여러 영역을 통합 탐지·대응.</td></tr>
+      <tr><td><b>PAM</b></td><td>Privileged Access Management. 특권 계정 관리. CyberArk의 주력.</td></tr>
+      <tr><td><b>NGS ARR</b></td><td>Next-Generation Security ARR. 하드웨어 제외한 차세대 보안 구독 매출.</td></tr>
+      <tr><td><b>RPO</b></td><td>Remaining Performance Obligation. 계약했으나 미인식된 매출. 미래 매출 창고.</td></tr>
+      <tr><td><b>NRR</b></td><td>Net Retention Rate. 순유지율. 120%면 기존 고객이 20% 더 씀.</td></tr>
+      <tr><td><b>SBC</b></td><td>Stock-Based Compensation. 주식보상비용. GAAP/Non-GAAP 격차의 주범.</td></tr>
+      <tr><td><b>플랫폼화</b></td><td>Platformization. 고객의 여러 보안 제품을 자사 플랫폼으로 통합시키는 전략.</td></tr>
+      <tr><td><b>MSSP</b></td><td>Managed Security Service Provider. 보안관제 대행업체. 채널 파트너.</td></tr>
+      <tr><td><b>Unit 42</b></td><td>팔로알토의 위협 인텔리전스·침해대응 조직.</td></tr>
+      <tr><td><b>CISO</b></td><td>Chief Information Security Officer. 보안 예산 결정권자.</td></tr>
+    </tbody>
+  </table>
+
+  <h2>출처</h2>
+  <p class="src">
+    • Palo Alto Networks IR, FY2026 Q3 실적 — https://investors.paloaltonetworks.com/news-releases/news-release-details/palo-alto-networks-reports-fiscal-third-quarter-2026-financial<br>
+    • SEC EDGAR, Form 8-K FY2026 Q3 — https://www.sec.gov/Archives/edgar/data/1327567/000132756726000012/ex991q326earningsrelease.htm<br>
+    • Palo Alto Networks 공식, 사이버아크 인수 발표 — https://www.paloaltonetworks.co.kr/company/press/2025/palo-alto-networks-announces-agreement-to-acquire-cyberark-the-identity-security-leader<br>
+    • CIO Korea, "거래 규모 250억 달러··· 팔로알토-사이버아크 인수의 의미" — https://www.cio.com/article/4031886/<br>
+    • 디일렉, "팔로알토, 사이버보안에 'AI 에이전트' '플랫폼' 전략으로 승부" — https://www.thelec.kr/news/articleView.html?idxno=32290<br>
+    • CIO Korea, "팔로알토 네트웍스, '프리시전 AI' 기술에 기반한 AI 보안 솔루션 출시" — https://www.cio.com/article/3521228/<br>
+    • 데일리시큐, "팔로알토 네트웍스, 프리시전 AI 기반 SOC 플랫폼 '코어텍스 XSIAM' 신버전 공개" — https://www.dailysecu.com/news/articleView.html?idxno=156116<br>
+    • MarketsandMarkets, "Secure Access Service Edge (SASE) Market worth $68.06 billion by 2032" — https://www.marketsandmarkets.com/PressReleases/secure-access-service-edge.asp<br>
+    • MarketGrowthReports, "Network Security Software Market Size, Share & Growth By 2035" — https://www.marketgrowthreports.com/market-reports/network-security-software-market-123002<br>
+    • Mordor Intelligence, "Endpoint Security Market" — https://www.mordorintelligence.com/industry-reports/global-endpoint-security-market-industry<br>
+    • CompaniesMarketCap — PANW / Fortinet 시가총액 — https://companiesmarketcap.com/palo-alto-networks/marketcap/<br>
+    • Yahoo Finance, "Zscaler vs. Fortinet: Which Cybersecurity Stock Is the Better Buy?" — https://finance.yahoo.com/markets/stocks/articles/zscaler-vs-fortinet-cybersecurity-stock-133200582.html<br>
+    • CrowdStrike IR / Zscaler IR — 비교표용 각 사 실적 자료
+  </p>
+
+  <div class="foot">
+    <hr>
+    본 문서는 개인 학습·정리 목적의 비상업 노트입니다. 시장규모·점유율은 조사기관별 정의 차이로 편차가 크며 추정치입니다.
+    10장 3사 비교표는 회계연도·지표 정의가 서로 달라 엄밀한 동일 조건 비교가 아니며, 성격 파악용입니다.
+    언급된 기업명은 산업 구조 설명 목적이며 투자 추천이 아닙니다.
+    투자에 대한 최종 판단과 책임은 전적으로 독자 본인에게 있습니다. © 2026 개인 리서치 라이브러리.
+  </div>
+
+</div>
+</body>
+</html>

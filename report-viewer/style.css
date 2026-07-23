@@ -174,7 +174,7 @@ a { color: inherit; text-decoration: none; }
 .star.on i { fill: var(--ink); }
 .card .meta { font-size: 12px; color: var(--sub); margin-bottom: 8px; }
 .card .meta > span { color: var(--txt-3); margin: 0 5px; }
-.llm-sug { color: var(--ink); font-size: 11.5px; font-weight: 600; cursor: help; white-space: nowrap; }
+.llm-done { color: var(--down); font-size: 11.5px; font-weight: 600; cursor: help; white-space: nowrap; }
 .tags { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
 .tag {
   font-size: 11px; padding: 2px 7px; border-radius: 5px;

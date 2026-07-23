@@ -9,7 +9,7 @@
   <title>리포트 마커</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
-  <link rel="stylesheet" href="style.css?v=23">
+  <link rel="stylesheet" href="style.css?v=24">
 </head>
 <body>
   <div class="topbar">
@@ -337,9 +337,9 @@
         const pend = r.pending_deletion ? `<span class="tag warn">🗑 삭제예정 ~${esc((r.delete_after || "").slice(5))}</span>` : "";
         const hlChip = marked ? `<span class="tag tag-hl"><i data-lucide="highlighter"></i><span class="num">${r.highlight_count}</span></span>` : "";
         const pages = r.pages ? `<span class="pages num">${r.pages}p</span>` : "";
-        // 휴리스틱 품질 낮으면 'AI 추출 추천'(이미 LLM으로 뽑은 건 제외)
-        const llmSug = (r.llm_suggested && r.text_engine !== "llm")
-          ? ` <span class="llm-sug" title="휴리스틱 본문 추출 품질이 낮아 보임 → AI(LLM) 재추출 추천${(r.heur_flags && r.heur_flags.length) ? " · " + r.heur_flags.map(esc).join(", ") : ""}">🤖 추천</span>`
+        // LLM으로 본문을 정리한 리포트에만 '✅ AI' 배지(휴리스틱은 표시 안 함)
+        const llmSug = (r.text_engine === "llm" || r.text_engine === "mixed")
+          ? ` <span class="llm-done" title="읽기 본문을 AI(LLM)로 정리한 리포트">✅ AI</span>`
           : "";
         const thumb = localStorage.getItem("rv_thumb_" + r.id);
         const thumbHtml = thumb ? `<img src="${thumb}" alt="">` : `<i data-lucide="file-text"></i>`;

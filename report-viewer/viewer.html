@@ -1795,12 +1795,83 @@
       } catch (_) { return false; }
     }
 
+    /* PDF 모드 더블클릭: 탭한 지점이 속한 '문장'을 선택(마침표 경계까지, 여러 줄 가능).
+       span 들을 시각적 읽기순서로 이어붙여 문장 경계를 찾고 그 범위를 선택한다.
+       문장을 못 잡으면(다단 등) 줄 선택으로 폴백. */
+    function selectSentenceAtPdf(x, y) {
+      const pos = caretFromPoint(x, y);
+      let node = (pos && pos.node) || (document.elementFromPoint ? document.elementFromPoint(x, y) : null);
+      if (!node) return false;
+      const tapSpan = node.nodeType === 3 ? node.parentElement
+                    : (node.closest ? node.closest(".textLayer span") : null);
+      const layer = tapSpan && tapSpan.closest ? tapSpan.closest(".textLayer") : null;
+      if (!layer || !tapSpan.firstChild) return false;
+
+      // span 들을 시각적 읽기순서(줄 y → 줄 안 x)로 정렬해 줄 단위로 묶는다.
+      const ws = Array.from(layer.querySelectorAll("span")).filter((s) => s.firstChild)
+        .map((sp) => { const r = sp.getBoundingClientRect(); return { sp, top: r.top, bot: r.bottom, cy: (r.top + r.bot) / 2, left: r.left }; });
+      if (!ws.length) return false;
+      ws.sort((a, b) => a.cy - b.cy || a.left - b.left);
+      const lines = [];
+      for (const w of ws) {
+        const ln = lines[lines.length - 1];
+        if (ln && Math.abs(ln.cy - w.cy) <= Math.max(4, (w.bot - w.top) * 0.5)) {
+          ln.items.push(w); ln.cy = (ln.cy * ln.n + w.cy) / (ln.n + 1); ln.n++;
+        } else lines.push({ cy: w.cy, n: 1, items: [w] });
+      }
+      lines.forEach((L) => L.items.sort((a, b) => a.left - b.left));
+
+      // 연결 텍스트 + char->{span,off}. 줄 사이에만 공백(문장부호+공백 판정용).
+      let big = ""; const map = [];
+      lines.forEach((L, li) => {
+        L.items.forEach((w) => {
+          const s = w.sp.firstChild.textContent;
+          for (let k = 0; k < s.length; k++) { big += s[k]; map.push({ sp: w.sp, off: k }); }
+        });
+        if (li < lines.length - 1) { big += " "; map.push(null); }
+      });
+
+      // 탭한 지점의 글로벌 char index
+      let caret = -1, acc = 0;
+      for (const L of lines) {
+        for (const w of L.items) {
+          const len = w.sp.firstChild.textContent.length;
+          if (w.sp === tapSpan) { caret = acc + Math.min(pos ? pos.offset : 0, len); break; }
+          acc += len;
+        }
+        if (caret >= 0) break;
+        acc += 1;   // 줄 사이 공백
+      }
+      if (caret < 0) return false;
+
+      const isEnd = (i) => /[.!?。]/.test(big[i]) && (i + 1 >= big.length || /\s/.test(big[i + 1]));
+      let start = 0, end = big.length;
+      for (let i = caret - 1; i >= 0; i--) { if (isEnd(i)) { start = i + 1; break; } }
+      for (let i = caret; i < big.length; i++) { if (isEnd(i)) { end = i + 1; break; } }
+      while (start < end && (map[start] == null || /\s/.test(big[start]))) start++;
+      while (end > start && (map[end - 1] == null || /\s/.test(big[end - 1]))) end--;
+      if (start >= end) return false;
+
+      const sm = map[start], em = map[end - 1];
+      if (!sm || !em) return false;
+      try {
+        const range = document.createRange();
+        range.setStart(sm.sp.firstChild, sm.off);
+        range.setEnd(em.sp.firstChild, em.off + 1);
+        if (range.collapsed) return false;   // DOM 순서 뒤집힘(다단 등) → 폴백
+        const sel = window.getSelection();
+        sel.removeAllRanges(); sel.addRange(range);
+        onSelectionEnd();
+        return true;
+      } catch (_) { return false; }
+    }
+
     function handlePdfDoubleTap(x, y, target) {
       if (mode !== "pdf") return;
       if (Date.now() < dtSuppress) return;        // 터치 더블탭 뒤 따라오는 dblclick 무시(공용 억제)
       dtSuppress = Date.now() + 500;
       if (target && target.closest && target.closest(".hl-rect")) return;   // 하이라이트 위는 무시(단일 탭=삭제팝업)
-      selectLineAtPdf(x, y);
+      if (!selectSentenceAtPdf(x, y)) selectLineAtPdf(x, y);   // 문장 우선, 실패 시 줄
     }
 
     const pdfDtContainer = document.getElementById("pdfContainer");

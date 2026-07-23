@@ -255,7 +255,7 @@
         const thumb = localStorage.getItem("rv_thumb_" + r.id);
         const thumbHtml = thumb ? `<img src="${thumb}" alt="">` : `<i data-lucide="file-text"></i>`;
         const fav = isBookmarked(r.id);
-        const readUrl = `viewer.html?id=${encodeURIComponent(r.id)}&mode=read&v=24`;
+        const readUrl = `viewer.html?id=${encodeURIComponent(r.id)}&mode=read&v=25`;
         const chk = delMode ? `<input type="checkbox" class="card-chk"${SELECTED.has(r.id) ? " checked" : ""}>` : "";
         const tg = marked ? `<button class="act tg-send${isTgSent(r.id) ? " sent" : ""}" data-id="${esc(r.id)}" title="${isTgSent(r.id) ? "이미 텔레그램으로 보냄 · 다시 보내기" : "하이라이트를 텔레그램으로 보내기"}" aria-label="텔레그램으로 보내기">${isTgSent(r.id) ? SENT_SVG : TG_SVG}</button>` : "";
         return `
@@ -271,7 +271,7 @@
               <div class="tags">
                 ${sector}${scan}${pend}${hlChip}${pages}
                 <div class="acts">
-                  <a class="act" href="viewer.html?id=${encodeURIComponent(r.id)}&v=24" title="PDF로 보기" aria-label="PDF"><i data-lucide="file"></i></a>
+                  <a class="act" href="viewer.html?id=${encodeURIComponent(r.id)}&v=25" title="PDF로 보기" aria-label="PDF"><i data-lucide="file"></i></a>
                   <a class="act" href="highlights.html?id=${encodeURIComponent(r.id)}" title="하이라이트 모아보기" aria-label="모아보기"><i data-lucide="list"></i></a>
                   ${tg}
                   <a class="act" href="edit.html?id=${encodeURIComponent(r.id)}" title="수정" aria-label="수정"><i data-lucide="settings-2"></i></a>

@@ -1822,9 +1822,19 @@
       }
       lines.forEach((L) => L.items.sort((a, b) => a.left - b.left));
 
-      // 연결 텍스트 + char->{span,off}. 줄 사이 간격이 본문 줄간격보다 넓으면
-      // 제목/문단 경계로 보고 하드 경계(SENT)를 넣어 문장 선택이 그걸 넘지 않게 한다.
-      // (그래서 제목 바로 아래 문단 첫 문장을 더블클릭해도 제목이 안 딸려온다)
+      // 이 리포트의 제목 줄 목록. 색-제목은 크기·간격이 본문과 같아 기하학으론 못 가리므로,
+      // 수집 때 색으로 판별해 저장한 READTEXT(kind h/sub)로 어느 줄이 제목인지 안다.
+      const wrap = layer.closest(".page-wrap");
+      const pageNo = wrap ? parseInt(wrap.dataset.page, 10) : null;
+      const rd = (typeof READTEXT !== "undefined" && READTEXT && pageNo != null) ? (READTEXT[String(pageNo)] || []) : [];
+      const heads = rd.filter((b) => b.kind && b.kind !== "p").map((b) => NW(b.text)).filter((t) => t.length >= 4);
+      const isHead = lines.map((L) => {
+        const lt = NW(L.items.map((w) => w.sp.firstChild.textContent).join(""));
+        return lt.length >= 4 && heads.some((h) => h.includes(lt) || lt.includes(h));
+      });
+
+      // 연결 텍스트 + char->{span,off}. 제목 줄(READTEXT)이나 넓은 줄간격은 하드 경계(SENT)로
+      // 막아 문장 선택이 제목·문단을 넘지 않게 한다(제목 아래 문장 더블클릭해도 제목 안 딸려옴).
       const SENT = "";
       let big = ""; const map = [];
       lines.forEach((L, li) => {
@@ -1835,7 +1845,8 @@
         if (li < lines.length - 1) {
           const gap = lines[li + 1].cy - L.cy;
           const lh = L.bot - L.top || 1;
-          big += (gap > lh * 1.6) ? SENT : " ";   // 넓은 간격 = 문단/제목 경계
+          const brk = isHead[li] || isHead[li + 1] || gap > lh * 1.6;   // 제목 줄 또는 넓은 간격 = 경계
+          big += brk ? SENT : " ";
           map.push(null);
         }
       });

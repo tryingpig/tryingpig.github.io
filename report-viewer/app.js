@@ -410,6 +410,55 @@ async function persistTgSent(id, add) {
 function markTgSent(id) { TG_SENT.add(id); saveTgSentCache(); persistTgSent(id, true); }
 function unmarkTgSent(id) { TG_SENT.delete(id); saveTgSentCache(); persistTgSent(id, false); }
 
+/* ── 노션 게시 (모아보기 → 노션 게시판) ──────────────────────
+   뷰어는 요청만 큐에 넣는다(index/notion_requests.json). 집 PC의 post_notion.py가
+   3분 주기로 꺼내 텍스트·캡처·PDF를 노션에 올리고 결과를 index/notion_posted.json에 남긴다.
+   → 노션 토큰이 브라우저에 없어도 되고, PDF 원본이 로컬에 있어 첨부가 확실하다. */
+RV.NOTION_REQ_PATH = "index/notion_requests.json";
+RV.NOTION_POSTED_PATH = "index/notion_posted.json";
+let NOTION_PENDING = new Set();      // 처리 대기중인 report_id
+let NOTION_POSTED = {};              // {id: {url, at, hl, pdf, images, failed}}
+let NOTION_FAILED = {};              // {id: {at, error}} — 3회 실패로 내려온 것
+
+function notionPosted(id) { return NOTION_POSTED[id] || null; }
+function isNotionPending(id) { return NOTION_PENDING.has(id); }
+
+/* 큐/결과 파일을 함께 읽어 메모리 갱신. 실패해도 조용히 무시(비필수 표시). */
+async function fetchNotionState() {
+  try {
+    const [reqRes, postRes] = await Promise.all([
+      ghFetch("contents/" + RV.NOTION_REQ_PATH, { accept: "application/vnd.github.raw", cache: "no-store" }),
+      ghFetch("contents/" + RV.NOTION_POSTED_PATH, { accept: "application/vnd.github.raw", cache: "no-store" }),
+    ]);
+    if (reqRes.ok) {
+      const doc = await reqRes.json();
+      NOTION_PENDING = new Set((doc.pending || []).map((p) => p.id || p));
+      NOTION_FAILED = {};
+      for (const f of doc.failed || []) NOTION_FAILED[f.id] = f;
+    }
+    if (postRes.ok) NOTION_POSTED = (await postRes.json()).items || {};
+  } catch (e) { /* 표시용이라 실패해도 그냥 둔다 */ }
+}
+
+/* 큐에 report_id 추가 (sha 충돌 409/422 재시도). llm_requests.json과 같은 방식. */
+async function requestNotionPost(id) {
+  for (let attempt = 0; attempt < 4; attempt++) {
+    const res = await ghFetch("contents/" + RV.NOTION_REQ_PATH, { cache: "no-store" });
+    let doc = { pending: [], done: [], failed: [] }, sha = null;
+    if (res.ok) { const o = await res.json(); doc = JSON.parse(decodeB64Utf8(o.content)); sha = o.sha; }
+    else if (res.status !== 404) throw new Error("요청 실패 " + res.status);
+    doc.pending = doc.pending || [];
+    if (!doc.pending.some((p) => (p.id || p) === id)) doc.pending.push({ id, requested_at: nowKst() });
+    doc.failed = (doc.failed || []).filter((f) => f.id !== id);   // 재시도면 실패기록 정리
+    const body = { message: `notion-req: ${id}`, content: encodeUtf8B64(JSON.stringify(doc, null, 2)) };
+    if (sha) body.sha = sha;
+    const put = await ghFetch("contents/" + RV.NOTION_REQ_PATH, { method: "PUT", body });
+    if (put.ok) { NOTION_PENDING.add(id); delete NOTION_FAILED[id]; return; }
+    if (put.status !== 409 && put.status !== 422) throw new Error("요청 실패 " + put.status);
+  }
+  throw new Error("요청 충돌(잠시 후 다시)");
+}
+
 /* ── 즐겨찾기(⭐) ─────────────────────────────────────────
    tg_sent와 동일 구조: vault 공유 파일(index/bookmarks.json)이 원본 → 모든 기기 공통.
    localStorage는 즉시표시용 캐시. 메모리 BOOKMARKS가 렌더 기준. */

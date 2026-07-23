@@ -9,7 +9,7 @@
   <title>리포트 마커</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
-  <link rel="stylesheet" href="style.css?v=19">
+  <link rel="stylesheet" href="style.css?v=20">
 </head>
 <body>
   <div class="topbar">
@@ -53,7 +53,7 @@
   <div id="thumbHover" style="display:none"><img alt="미리보기"></div>
   <div class="toast" id="toast"></div>
 
-  <script src="app.js?v=18"></script>
+  <script src="app.js?v=19"></script>
   <script>
     let ALL = [];
     /* 텔레그램 로고 (원+비행기 각각 칠함 → 전송 후 둘 다 회색으로 바뀌게. CSS .tg-disc/.tg-plane) */
@@ -64,6 +64,10 @@
     const SENT_SVG = '<svg viewBox="0 0 512 512" aria-hidden="true">'
       + '<circle cx="256" cy="256" r="256" fill="#9aa3af"/>'
       + '<path d="M176 176 L336 336 M336 176 L176 336" stroke="#fff" stroke-width="52" stroke-linecap="round" fill="none"/></svg>';
+    /* 노션 로고 (흰 사각형 + N). 상태별 색은 CSS .nt-post 에서 (.queued/.posted/.stale/.failed) */
+    const NOTION_SVG = '<svg viewBox="0 0 24 24" aria-hidden="true">'
+      + '<rect class="nt-box" x="1.6" y="1.6" width="20.8" height="20.8" rx="4"/>'
+      + '<path class="nt-n" d="M7.6 16.9V7.5h2.1l4.9 6.4V7.5h1.8v9.4h-2.1L9.4 10.4v6.5z"/></svg>';
     let FILTER = { title: "", broker: "", sector: "", from: "", to: "", range: false, onlyHl: false, onlyFav: false };
     let SORT = "pub";   // pub=발행일 · up=수집순 · hl=하이라이트 · title=제목
     let delMode = false;
@@ -151,6 +155,76 @@
           delete btn.dataset.busy;
         }
       });
+    }
+
+    /* ── 노션 버튼 ────────────────────────────────────────
+       상태: idle(안 올림) · queued(요청됨, 집 PC 처리 대기) · posted(올림) ·
+             stale(올린 뒤 하이라이트가 바뀜) · failed(3회 실패)
+       클릭: idle/stale/failed → 요청, queued → 안내, posted → 노션 페이지 열기 */
+    function notionState(r) {
+      if (isNotionPending(r.id)) return "queued";
+      if (NOTION_FAILED[r.id]) return "failed";
+      const p = notionPosted(r.id);
+      if (!p) return "idle";
+      return (p.hl != null && p.hl !== (r.highlight_count || 0)) ? "stale" : "posted";
+    }
+    const NOTION_TIP = {
+      idle: "노션 게시판에 올리기",
+      queued: "노션 게시 요청됨 · 처리 대기중",
+      posted: "노션에 올림 · 눌러서 노션에서 열기",
+      stale: "하이라이트가 바뀜 · 눌러서 노션 갱신",
+      failed: "노션 게시 실패 · 눌러서 다시 시도",
+    };
+    function notionBtnHtml(r) {
+      const st = notionState(r);
+      const p = notionPosted(r.id);
+      const tip = NOTION_TIP[st] + (p && p.at ? ` (${p.at})` : "");
+      return `<button class="act nt-post ${st}" data-id="${esc(r.id)}" title="${esc(tip)}" aria-label="노션">${NOTION_SVG}</button>`;
+    }
+
+    let notionPoll = null;
+    function startNotionPoll() {
+      if (notionPoll) return;
+      notionPoll = setInterval(async () => {
+        const before = [...NOTION_PENDING];
+        await fetchNotionState();
+        const finished = before.filter((id) => !NOTION_PENDING.has(id));
+        if (finished.length) {
+          renderList();
+          const bad = finished.filter((id) => NOTION_FAILED[id]).length;
+          toast(bad ? `노션 게시 ${bad}건 실패(아이콘을 눌러 재시도)` : "노션 게시 완료");
+        }
+        if (!NOTION_PENDING.size) { clearInterval(notionPoll); notionPoll = null; }
+      }, 25000);   // 25초마다 상태 확인(집 PC는 3분 주기 처리)
+    }
+
+    async function postCardToNotion(id, btn) {
+      const r = ALL.find((x) => x.id === id);
+      if (!r) return;
+      const st = notionState(r);
+      const p = notionPosted(id);
+      if (st === "queued") { toast("이미 요청됨 · 몇 분 내 노션에 올라가요"); return; }
+      if (st === "posted") { if (p && p.url) window.open(p.url, "_blank", "noopener"); return; }
+      const msg = st === "stale"
+        ? `"${r.title || id}"\n하이라이트가 바뀌었어요. 노션 페이지를 최신 내용으로 갱신할까요?`
+        : st === "failed"
+          ? `"${r.title || id}"\n지난번 게시가 실패했어요(${(NOTION_FAILED[id] || {}).error || "원인 미상"}).\n다시 시도할까요?`
+          : `"${r.title || id}"\n모아보기 내용과 PDF를 노션 게시판에 올릴까요?`;
+      if (!confirm(msg)) return;
+      if (btn.dataset.busy) return;
+      btn.dataset.busy = "1";
+      try {
+        await requestNotionPost(id);
+        renderList();
+        toast("요청됨 · 몇 분 내 노션에 올라가요");
+        startNotionPoll();
+      } catch (err) {
+        console.error(err);
+        toast(err.message || "요청 실패");
+        if (err instanceof AuthError) handleError(err, load);
+      } finally {
+        delete btn.dataset.busy;
+      }
     }
 
     const cardDate = (r) => r.publish_date || (r.uploaded_at || "").slice(0, 10);
@@ -258,6 +332,7 @@
         const readUrl = `viewer.html?id=${encodeURIComponent(r.id)}&mode=read&v=25`;
         const chk = delMode ? `<input type="checkbox" class="card-chk"${SELECTED.has(r.id) ? " checked" : ""}>` : "";
         const tg = marked ? `<button class="act tg-send${isTgSent(r.id) ? " sent" : ""}" data-id="${esc(r.id)}" title="${isTgSent(r.id) ? "이미 텔레그램으로 보냄 · 다시 보내기" : "하이라이트를 텔레그램으로 보내기"}" aria-label="텔레그램으로 보내기">${isTgSent(r.id) ? SENT_SVG : TG_SVG}</button>` : "";
+        const nt = marked ? notionBtnHtml(r) : "";
         return `
           <article class="card${marked ? " marked" : ""}${delMode ? " selectable" : ""}${SELECTED.has(r.id) ? " sel" : ""}" data-id="${esc(r.id)}" data-read="${readUrl}">
             ${chk}
@@ -274,6 +349,7 @@
                   <a class="act" href="viewer.html?id=${encodeURIComponent(r.id)}&v=25" title="PDF로 보기" aria-label="PDF"><i data-lucide="file"></i></a>
                   <a class="act" href="highlights.html?id=${encodeURIComponent(r.id)}" title="하이라이트 모아보기" aria-label="모아보기"><i data-lucide="list"></i></a>
                   ${tg}
+                  ${nt}
                   <a class="act" href="edit.html?id=${encodeURIComponent(r.id)}" title="수정" aria-label="수정"><i data-lucide="settings-2"></i></a>
                   ${delMode ? "" : `<button class="act card-del" title="삭제" aria-label="삭제"><i data-lucide="trash-2"></i></button>`}
                 </div>
@@ -309,6 +385,13 @@
             e.stopPropagation();
             if (delMode) return;
             sendCardToTelegram(tgBtn.dataset.id, tgBtn);
+            return;
+          }
+          const ntBtn = e.target.closest(".nt-post");
+          if (ntBtn) {                            // 노션 게시 버튼
+            e.stopPropagation();
+            if (delMode) return;
+            postCardToNotion(ntBtn.dataset.id, ntBtn);
             return;
           }
           if (e.target.closest(".card-del")) {   // 삭제
@@ -392,6 +475,10 @@
         renderList();                                   // 캐시 기준 즉시 표시
         fetchTgSentShared().then(() => renderList());   // vault 공유 전송이력 받아 X 표시 갱신
         fetchBookmarksShared().then(() => renderList()); // vault 공유 즐겨찾기 받아 ★ 표시 갱신
+        fetchNotionState().then(() => {                 // 노션 게시 상태(대기·완료·실패) 갱신
+          renderList();
+          if (NOTION_PENDING.size) startNotionPoll();
+        });
       } catch (err) {
         handleError(err, load);
       }

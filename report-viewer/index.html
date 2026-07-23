@@ -9,7 +9,7 @@
   <title>리포트 마커</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
-  <link rel="stylesheet" href="style.css?v=27">
+  <link rel="stylesheet" href="style.css?v=28">
 </head>
 <body>
   <div class="topbar">
@@ -70,6 +70,9 @@
       + '<rect class="nt-box" x="3" y="3" width="18" height="18" rx="3"/><path class="nt-n" d="M8.5 16.5V7.5l7 9V7.5"/></svg>';
     let FILTER = { title: "", broker: "", sector: "", from: "", to: "", range: false, onlyHl: false, onlyFav: false };
     let SORT = "pub";   // pub=발행일 · up=수집순 · hl=하이라이트 · title=제목
+    let SORT_DIR = "desc";   // 같은 정렬 버튼 재클릭 시 asc↔desc 토글(↑/↓)
+    const SORT_LABEL = { pub: "발행일", up: "수집순", hl: "하이라이트", title: "제목" };
+    const SORT_DEFDIR = { pub: "desc", up: "desc", hl: "desc", title: "asc" };   // 각 정렬의 기본 방향
     let delMode = false;
     const SELECTED = new Set();
     const HOVER_OK = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
@@ -284,7 +287,7 @@
 
     function resetSearch() {
       FILTER = { title: "", broker: "", sector: "", from: "", to: "", range: false, onlyHl: false, onlyFav: false };
-      SORT = "pub";
+      SORT = "pub"; SORT_DIR = "desc";
       document.getElementById("qTitle").value = "";
       document.getElementById("qBroker").value = "";
       document.getElementById("qSector").value = "";
@@ -293,7 +296,7 @@
       document.getElementById("qRange").checked = false;
       document.getElementById("qHl").checked = false;
       document.getElementById("qFav").checked = false;
-      document.querySelectorAll("#sortSeg button").forEach((x) => x.classList.toggle("on", x.dataset.sort === "pub"));
+      updateSortSeg();
       setRange(false);
       renderList();
     }
@@ -314,15 +317,18 @@
       if (FILTER.onlyHl) rows = rows.filter((r) => (r.highlight_count || 0) > 0);
       if (FILTER.onlyFav) rows = rows.filter((r) => isBookmarked(r.id));
 
+      // 오름차순(작은/오래된/적은 값 먼저)을 기준으로 정의하고, 내림차순이면 부호만 뒤집는다.
       const CMP = {
-        pub: (a, b) => (cardDate(b) || "").localeCompare(cardDate(a) || "") ||
-                       (b.uploaded_at || "").localeCompare(a.uploaded_at || ""),
-        up: (a, b) => (b.uploaded_at || "").localeCompare(a.uploaded_at || ""),
-        hl: (a, b) => ((b.highlight_count || 0) - (a.highlight_count || 0)) ||
-                      (cardDate(b) || "").localeCompare(cardDate(a) || ""),
+        pub: (a, b) => (cardDate(a) || "").localeCompare(cardDate(b) || "") ||
+                       (a.uploaded_at || "").localeCompare(b.uploaded_at || ""),
+        up: (a, b) => (a.uploaded_at || "").localeCompare(b.uploaded_at || ""),
+        hl: (a, b) => ((a.highlight_count || 0) - (b.highlight_count || 0)) ||
+                      (cardDate(a) || "").localeCompare(cardDate(b) || ""),
         title: (a, b) => (a.title || "").localeCompare(b.title || "", "ko"),
       };
-      rows.sort(CMP[SORT] || CMP.pub);
+      const cmp = CMP[SORT] || CMP.pub;
+      const sign = SORT_DIR === "asc" ? 1 : -1;
+      rows.sort((a, b) => sign * cmp(a, b));
 
       const list = document.getElementById("list");
       if (!rows.length) {
@@ -572,14 +578,26 @@
       const open = sb.classList.toggle("collapsed") === false;
       document.getElementById("filterToggle").classList.toggle("on", open);
     };
-    // 정렬 세그먼트: 클릭 즉시 반영
+    // 정렬 세그먼트: 활성 버튼에 방향 화살표(↑/↓) 표시
+    function updateSortSeg() {
+      document.querySelectorAll("#sortSeg button").forEach((b) => {
+        const k = b.dataset.sort;
+        const active = k === SORT;
+        b.classList.toggle("on", active);
+        b.textContent = SORT_LABEL[k] + (active ? (SORT_DIR === "asc" ? " ↑" : " ↓") : "");
+      });
+    }
+    // 클릭: 같은 정렬 재클릭이면 방향 토글, 다른 정렬이면 그 정렬의 기본 방향으로
     document.querySelectorAll("#sortSeg button").forEach((b) => {
       b.addEventListener("click", () => {
-        SORT = b.dataset.sort;
-        document.querySelectorAll("#sortSeg button").forEach((x) => x.classList.toggle("on", x === b));
+        const k = b.dataset.sort;
+        if (k === SORT) SORT_DIR = SORT_DIR === "asc" ? "desc" : "asc";
+        else { SORT = k; SORT_DIR = SORT_DEFDIR[k]; }
+        updateSortSeg();
         renderList();
       });
     });
+    updateSortSeg();   // 초기 화살표 표시
     document.getElementById("qTitle").addEventListener("keydown", (e) => {
       if (e.key === "Enter") applySearch();
     });

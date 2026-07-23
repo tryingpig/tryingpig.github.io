@@ -9,7 +9,7 @@
   <title>리포트 마커</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
-  <link rel="stylesheet" href="style.css?v=20">
+  <link rel="stylesheet" href="style.css?v=21">
 </head>
 <body>
   <div class="topbar">
@@ -53,7 +53,7 @@
   <div id="thumbHover" style="display:none"><img alt="미리보기"></div>
   <div class="toast" id="toast"></div>
 
-  <script src="app.js?v=19"></script>
+  <script src="app.js?v=20"></script>
   <script>
     let ALL = [];
     /* 텔레그램 로고 (원+비행기 각각 칠함 → 전송 후 둘 다 회색으로 바뀌게. CSS .tg-disc/.tg-plane) */
@@ -162,7 +162,8 @@
              stale(올린 뒤 하이라이트가 바뀜) · failed(3회 실패)
        클릭: idle/stale/failed → 요청, queued → 안내, posted → 노션 페이지 열기 */
     function notionState(r) {
-      if (isNotionPending(r.id)) return "queued";
+      // 대기중이면서 이미 페이지가 있으면 = 본문은 올라갔고 PDF 첨부만 재시도 중
+      if (isNotionPending(r.id)) return notionPosted(r.id) ? "queuedpdf" : "queued";
       if (NOTION_FAILED[r.id]) return "failed";
       const p = notionPosted(r.id);
       if (!p) return "idle";
@@ -172,6 +173,7 @@
     const NOTION_TIP = {
       idle: "노션 게시판에 올리기",
       queued: "노션 게시 요청됨 · 처리 대기중",
+      queuedpdf: "본문은 올림 · PDF 첨부 재시도 중 (눌러서 노션 열기)",
       posted: "노션에 올림 · 눌러서 노션에서 열기",
       stale: "하이라이트가 바뀜 · 눌러서 노션 갱신",
       partial: "올렸지만 PDF 첨부 실패 · 눌러서 다시 올리기",
@@ -206,6 +208,11 @@
       const st = notionState(r);
       const p = notionPosted(id);
       if (st === "queued") { toast("이미 요청됨 · 몇 분 내 노션에 올라가요"); return; }
+      if (st === "queuedpdf") {                 // 본문은 이미 올라감 → 페이지 열어주고 PDF는 계속 재시도
+        if (p && p.url) window.open(p.url, "_blank", "noopener");
+        toast("PDF 첨부는 아직 재시도 중이에요");
+        return;
+      }
       if (st === "posted") { if (p && p.url) window.open(p.url, "_blank", "noopener"); return; }
       const msg = st === "stale"
         ? `"${r.title || id}"\n하이라이트가 바뀌었어요. 노션 페이지를 최신 내용으로 갱신할까요?`

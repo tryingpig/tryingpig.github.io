@@ -166,13 +166,15 @@
       if (NOTION_FAILED[r.id]) return "failed";
       const p = notionPosted(r.id);
       if (!p) return "idle";
-      return (p.hl != null && p.hl !== (r.highlight_count || 0)) ? "stale" : "posted";
+      if (p.hl != null && p.hl !== (r.highlight_count || 0)) return "stale";
+      return p.pdf === false ? "partial" : "posted";
     }
     const NOTION_TIP = {
       idle: "노션 게시판에 올리기",
       queued: "노션 게시 요청됨 · 처리 대기중",
       posted: "노션에 올림 · 눌러서 노션에서 열기",
       stale: "하이라이트가 바뀜 · 눌러서 노션 갱신",
+      partial: "올렸지만 PDF 첨부 실패 · 눌러서 다시 올리기",
       failed: "노션 게시 실패 · 눌러서 다시 시도",
     };
     function notionBtnHtml(r) {
@@ -207,6 +209,8 @@
       if (st === "posted") { if (p && p.url) window.open(p.url, "_blank", "noopener"); return; }
       const msg = st === "stale"
         ? `"${r.title || id}"\n하이라이트가 바뀌었어요. 노션 페이지를 최신 내용으로 갱신할까요?`
+        : st === "partial"
+          ? `"${r.title || id}"\n글은 올라갔지만 PDF 첨부에 실패했어요. 다시 올릴까요?`
         : st === "failed"
           ? `"${r.title || id}"\n지난번 게시가 실패했어요(${(NOTION_FAILED[id] || {}).error || "원인 미상"}).\n다시 시도할까요?`
           : `"${r.title || id}"\n모아보기 내용과 PDF를 노션 게시판에 올릴까요?`;

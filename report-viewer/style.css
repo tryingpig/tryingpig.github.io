@@ -213,8 +213,8 @@ a { color: inherit; text-decoration: none; }
 .act.nt-post.queued { animation: nt-blink 1.4s ease-in-out infinite; }
 .act.nt-post.queued .nt-box { fill: #fff; stroke: #b07d1e; stroke-dasharray: 3 2; }
 .act.nt-post.queued .nt-n { fill: #b07d1e; }
-.act.nt-post.stale .nt-box { fill: #f8f1dd; stroke: #b07d1e; }
-.act.nt-post.stale .nt-n { fill: #b07d1e; }
+.act.nt-post.stale .nt-box, .act.nt-post.partial .nt-box { fill: #f8f1dd; stroke: #b07d1e; }
+.act.nt-post.stale .nt-n, .act.nt-post.partial .nt-n { fill: #b07d1e; }
 .act.nt-post.failed .nt-box { fill: #fff; stroke: #e5484d; }
 .act.nt-post.failed .nt-n { fill: #e5484d; }
 @keyframes nt-blink { 0%, 100% { opacity: 1; } 50% { opacity: .45; } }

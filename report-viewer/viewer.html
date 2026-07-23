@@ -1645,8 +1645,11 @@
       return false;
     }
 
-    /* 읽기 모드에서 고른 텍스트를 PDF 정규화 좌표로 역산 */
-    function computeRectsFromText(pageNo, text) {
+    /* 읽기 모드에서 고른 텍스트를 PDF 정규화 좌표로 역산.
+       anchorText(선택이 속한 블록 전체 텍스트)를 주면 검색을 그 블록 위치로 좁힌다.
+       안 그러면 같은 문구('AI 매출' 등)가 페이지에 여러 번 나올 때 big.indexOf 가
+       '첫' 위치를 집어 엉뚱한 줄(보통 위쪽)에 하이라이트가 찍힌다(2026-07-23 실측 버그). */
+    function computeRectsFromText(pageNo, text, anchorText) {
       const items = pageItems[pageNo];
       if (!items || !items.length) return [];
       const target = NW(text);
@@ -1657,7 +1660,16 @@
         const s = NW(it.str);
         for (let k = 0; k < s.length; k++) { big += s[k]; map.push(ii); }
       });
-      const pos = big.indexOf(target);
+      // 블록 앞부분(프리픽스)으로 검색 시작점을 그 블록으로 옮긴다. 추출기 차이에
+      // 관대하도록 앞 16자만 쓰고, 못 찾으면 전체에서 찾던 기존 동작으로 폴백.
+      let start = 0;
+      if (anchorText) {
+        const probe = NW(anchorText).slice(0, 16);
+        const ap = probe ? big.indexOf(probe) : -1;
+        if (ap >= 0) start = ap;
+      }
+      let pos = big.indexOf(target, start);
+      if (pos < 0) pos = big.indexOf(target);   // 블록 안에서 못 찾으면 전체 폴백
       if (pos < 0) return [];
       const from = map[pos], to = map[pos + target.length - 1];
       let rects = items.slice(from, to + 1).map((it) => ({ x: it.x, y: it.y, w: it.w, h: it.h }));
@@ -1686,7 +1698,8 @@
         else r.setEnd(br.endContainer, br.endOffset);
         const sub = r.toString().trim();
         if (!sub) continue;
-        const rects = computeRectsFromText(pageNo, sub);
+        // b.textContent = 이 조각이 속한 블록 전체 → 검색을 그 블록 위치로 좁혀 오매칭 방지
+        const rects = computeRectsFromText(pageNo, sub, b.textContent);
         if (!rects.length) continue;          // 좌표 못 찾은 조각은 버림 (text↔rects 일치 보장)
         allRects = allRects.concat(rects);
         segs.push(sub);

@@ -174,7 +174,8 @@ a { color: inherit; text-decoration: none; }
 .star.on i { fill: var(--ink); }
 .card .meta { font-size: 12px; color: var(--sub); margin-bottom: 8px; }
 .card .meta > span { color: var(--txt-3); margin: 0 5px; }
-.llm-done { color: var(--down); font-size: 11.5px; font-weight: 600; cursor: help; white-space: nowrap; }
+.llm-done { display: inline-flex; align-items: center; gap: 2px; color: var(--accent); font-size: 11.5px; font-weight: 600; cursor: help; white-space: nowrap; }
+.llm-done i { width: 12px; height: 12px; }
 .tags { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; }
 .tag {
   font-size: 11px; padding: 2px 7px; border-radius: 5px;
@@ -198,27 +199,21 @@ a { color: inherit; text-decoration: none; }
 .act:hover { color: var(--ink); background: var(--raise); }
 .act i { width: 15px; height: 15px; }
 .act.card-del:hover { color: var(--up); }
-.act.tg-send svg { width: 19px; height: 19px; display: block; }
-.act.tg-send .tg-disc { fill: #29a9ea; }
-.act.tg-send .tg-plane { fill: #fff; }
-.act.tg-send.sent .tg-disc { fill: #c9ccd2; }
-.act.tg-send.sent .tg-plane { fill: #8a9099; }
+/* 텔레그램·노션 아이콘: 나머지 액션 아이콘과 같은 선(line) 스타일·크기.
+   색은 .act 의 currentColor(회색↔hover 잉크)를 그대로 따르고, 상태는 색으로만 구분. */
+.act.tg-send svg, .act.nt-post svg { width: 15px; height: 15px; display: block; }
 
-/* 노션 게시 버튼 — idle(로고) / queued(점선·깜빡) / posted(회색) / stale(골드) / failed(빨강) */
-.act.nt-post svg { width: 19px; height: 19px; display: block; }
-.act.nt-post .nt-box { fill: #fff; stroke: #1c1e22; stroke-width: 1.6; }
-.act.nt-post .nt-n { fill: #1c1e22; }
-.act.nt-post.posted .nt-box { fill: #f1f2f4; stroke: #c9ccd2; }
-.act.nt-post.posted .nt-n { fill: #9aa3af; }
-/* 처리 대기중도 '보냄' 취급 — 누르는 즉시 회색, 처리중임은 옅은 깜빡임으로만 구분 */
-.act.nt-post.queued, .act.nt-post.queuedpdf { animation: nt-blink 1.6s ease-in-out infinite; }
-.act.nt-post.queued .nt-box, .act.nt-post.queuedpdf .nt-box { fill: #f1f2f4; stroke: #c9ccd2; }
-.act.nt-post.queued .nt-n, .act.nt-post.queuedpdf .nt-n { fill: #9aa3af; }
-.act.nt-post.stale .nt-box, .act.nt-post.partial .nt-box { fill: #f8f1dd; stroke: #b07d1e; }
-.act.nt-post.stale .nt-n, .act.nt-post.partial .nt-n { fill: #b07d1e; }
-.act.nt-post.failed .nt-box { fill: #fff; stroke: #e5484d; }
-.act.nt-post.failed .nt-n { fill: #e5484d; }
-@keyframes nt-blink { 0%, 100% { opacity: 1; } 50% { opacity: .45; } }
+/* 텔레그램: 보냄 = 회색 고정(더블체크 모양으로도 구분) */
+.act.tg-send.sent, .act.tg-send.sent:hover { color: #9aa3af; }
+
+/* 노션 게시 버튼 상태색 — idle(기본 회색) / posted(회색·완료) /
+   queued(회색+깜빡) / stale·partial(골드=갱신필요) / failed(빨강) */
+.act.nt-post.posted, .act.nt-post.posted:hover { color: var(--down); }   /* 올림·링크 있음(idle 회색과 구분) */
+.act.nt-post.queued, .act.nt-post.queuedpdf { color: #9aa3af; animation: nt-blink 1.6s ease-in-out infinite; }
+.act.nt-post.stale, .act.nt-post.partial { color: var(--accent); }
+.act.nt-post.stale:hover, .act.nt-post.partial:hover { color: var(--accent); }
+.act.nt-post.failed, .act.nt-post.failed:hover { color: var(--up); }
+@keyframes nt-blink { 0%, 100% { opacity: 1; } 50% { opacity: .5; } }
 
 /* 삭제 모드: 카드 선택 */
 .card.selectable { cursor: pointer; }

@@ -9,7 +9,7 @@
   <title>리포트 마커</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
-  <link rel="stylesheet" href="style.css?v=24">
+  <link rel="stylesheet" href="style.css?v=25">
 </head>
 <body>
   <div class="topbar">
@@ -56,18 +56,18 @@
   <script src="app.js?v=22"></script>
   <script>
     let ALL = [];
-    /* 텔레그램 로고 (원+비행기 각각 칠함 → 전송 후 둘 다 회색으로 바뀌게. CSS .tg-disc/.tg-plane) */
-    const TG_SVG = '<svg viewBox="0 0 512 512" aria-hidden="true">'
-      + '<circle class="tg-disc" cx="256" cy="256" r="256"/>'
-      + '<path class="tg-plane" transform="translate(96 86) scale(0.68)" d="M446.7 98.6l-67.6 318.8c-5.1 22.5-18.4 28.1-37.3 17.5l-103-75.9-49.7 47.8c-5.5 5.5-10.1 10.1-20.7 10.1l7.4-104.9 190.9-172.5c8.3-7.4-1.8-11.5-12.9-4.1L117.8 284 16.2 252.2c-22.1-6.9-22.5-22.1 4.6-32.7L418.2 66.4c18.4-6.8 34.5 4.4 28.5 32.2z"/></svg>';
-    /* 전송됨 표시: 동그라미 X (아이콘 자체를 통째로 교체) */
-    const SENT_SVG = '<svg viewBox="0 0 512 512" aria-hidden="true">'
-      + '<circle cx="256" cy="256" r="256" fill="#9aa3af"/>'
-      + '<path d="M176 176 L336 336 M336 176 L176 336" stroke="#fff" stroke-width="52" stroke-linecap="round" fill="none"/></svg>';
-    /* 노션 로고 (흰 사각형 + N). 상태별 색은 CSS .nt-post 에서 (.queued/.posted/.stale/.failed) */
-    const NOTION_SVG = '<svg viewBox="0 0 24 24" aria-hidden="true">'
-      + '<rect class="nt-box" x="1.6" y="1.6" width="20.8" height="20.8" rx="4"/>'
-      + '<path class="nt-n" d="M7.6 16.9V7.5h2.1l4.9 6.4V7.5h1.8v9.4h-2.1L9.4 10.4v6.5z"/></svg>';
+    /* 아래 3개 아이콘은 나머지 액션 아이콘(lucide)과 같은 '얇은 선' 스타일로 통일.
+       fill 없이 stroke=currentColor → .act 의 회색↔잉크 색을 그대로 따라가고, 상태는 색으로만 구분. */
+    const LUCIDE_ATTR = 'viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"';
+    /* 텔레그램(=보내기): 종이비행기(lucide send) */
+    const TG_SVG = `<svg ${LUCIDE_ATTR}>`
+      + '<polygon points="22 2 15 22 11 13 2 9 22 2"/><line x1="22" y1="2" x2="11" y2="13"/></svg>';
+    /* 전송됨: 더블 체크(lucide check-check) — 메신저 '읽음'처럼 보냈다는 뜻 */
+    const SENT_SVG = `<svg ${LUCIDE_ATTR}>`
+      + '<path d="M18 6 7 17l-5-5"/><path d="m22 10-7.5 7.5L13 16"/></svg>';
+    /* 노션: 둥근 사각형 + N (선 아이콘). 상태색은 CSS .nt-post 에서 */
+    const NOTION_SVG = `<svg ${LUCIDE_ATTR}>`
+      + '<rect x="3" y="3" width="18" height="18" rx="3"/><path d="M8.5 16.5V7.5l7 9V7.5"/></svg>';
     let FILTER = { title: "", broker: "", sector: "", from: "", to: "", range: false, onlyHl: false, onlyFav: false };
     let SORT = "pub";   // pub=발행일 · up=수집순 · hl=하이라이트 · title=제목
     let delMode = false;
@@ -337,9 +337,9 @@
         const pend = r.pending_deletion ? `<span class="tag warn">🗑 삭제예정 ~${esc((r.delete_after || "").slice(5))}</span>` : "";
         const hlChip = marked ? `<span class="tag tag-hl"><i data-lucide="highlighter"></i><span class="num">${r.highlight_count}</span></span>` : "";
         const pages = r.pages ? `<span class="pages num">${r.pages}p</span>` : "";
-        // LLM으로 본문을 정리한 리포트에만 '✅ AI' 배지(휴리스틱은 표시 안 함)
+        // LLM으로 본문을 정리한 리포트에만 'AI' 배지(휴리스틱은 표시 안 함) — 선 아이콘으로 통일
         const llmSug = (r.text_engine === "llm" || r.text_engine === "mixed")
-          ? ` <span class="llm-done" title="읽기 본문을 AI(LLM)로 정리한 리포트">✅ AI</span>`
+          ? ` <span class="llm-done" title="읽기 본문을 AI(LLM)로 정리한 리포트"><i data-lucide="sparkles"></i>AI</span>`
           : "";
         const thumb = localStorage.getItem("rv_thumb_" + r.id);
         const thumbHtml = thumb ? `<img src="${thumb}" alt="">` : `<i data-lucide="file-text"></i>`;

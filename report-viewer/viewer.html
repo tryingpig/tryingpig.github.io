@@ -478,20 +478,25 @@
     let selPopupText = null;   // 색 팝업이 현재 떠 있는 선택 텍스트(중복 재생성 방지)
 
     /* 드래그 선택을 덜 예민하게: 선택 양끝을 가까운 '단어(어절)' 경계까지 확장.
-       글자 끝에 정확히 안 맞춰도 단어 통째로 잡힘. (좌표는 확장된 선택 그대로 계산되어 정확) */
+       글자 끝에 정확히 안 맞춰도 단어 통째로 잡힘. (좌표는 확장된 선택 그대로 계산되어 정확)
+       단, 한글 리포트는 띄어쓰기 없이 붙은 문장이 많아 공백까지 확장하면 줄 전체를
+       삼킨다 → SNAP_MAX 글자까지만 확장하고, 그 안에 경계(공백/문장부호)가 없으면
+       사용자가 실제로 끝낸 지점을 존중한다. */
+    const SNAP_MAX = 4;
+    const _boundary = (ch) => !ch || /[\s.,;:!?)\]}»”’·…]/.test(ch);
     function snapRangeToWords(range) {
       try {
         const sc = range.startContainer;
         if (sc.nodeType === 3) {
-          const t = sc.textContent; let s = range.startOffset;
-          while (s > 0 && !/\s/.test(t[s - 1])) s--;
-          if (s !== range.startOffset) range.setStart(sc, s);
+          const t = sc.textContent; let s = range.startOffset, n = 0;
+          while (s > 0 && !_boundary(t[s - 1]) && n < SNAP_MAX) { s--; n++; }
+          if (n < SNAP_MAX && s !== range.startOffset) range.setStart(sc, s);  // 경계 만났을 때만 확장
         }
         const ec = range.endContainer;
         if (ec.nodeType === 3) {
-          const t = ec.textContent; let e = range.endOffset;
-          while (e < t.length && !/\s/.test(t[e])) e++;
-          if (e !== range.endOffset) range.setEnd(ec, e);
+          const t = ec.textContent; let e = range.endOffset, n = 0;
+          while (e < t.length && !_boundary(t[e]) && n < SNAP_MAX) { e++; n++; }
+          if (n < SNAP_MAX && e !== range.endOffset) range.setEnd(ec, e);
         }
       } catch (_) { /* 경계 확장 실패는 무시 (원래 선택 유지) */ }
     }
@@ -1810,15 +1815,25 @@
       } else { pdtLast = now; pdtX = t.clientX; pdtY = t.clientY; }
     });
 
-    /* 이벤트 — selectionchange 디바운스로 모바일 길게눌러 선택에 대응 */
-    let selTimer = null;
-    function scheduleSel() { clearTimeout(selTimer); selTimer = setTimeout(onSelectionEnd, 280); }
+    /* 이벤트 — 선택 확정은 '손을 뗄 때'만.
+       예전엔 selectionchange 디바운스가 드래그 도중에도 발동해, onSelectionEnd 안의
+       snapRangeToWords 가 살아있는 선택을 단어경계로 밀어 "선택이 저절로 움직이는"
+       느낌을 줬다. dragging 플래그로 드래그 중 확정을 막고, 뗄 때만 확정한다.
+       (모바일 길게눌러 선택은 손을 뗀 뒤 selectionchange 가 오므로 그대로 대응됨) */
+    let selTimer = null, dragging = false;
+    function scheduleSel() {
+      clearTimeout(selTimer);
+      selTimer = setTimeout(() => { if (!dragging) onSelectionEnd(); }, 280);
+    }
     document.addEventListener("selectionchange", scheduleSel);
     document.addEventListener("mouseup", () => setTimeout(onSelectionEnd, 10));
     document.addEventListener("touchend", () => setTimeout(onSelectionEnd, 10));
     document.addEventListener("pointerdown", (e) => {
+      dragging = true;
       if (popupEl && !e.target.closest(".hl-popup") && !e.target.closest(".hl-rect")) removePopup();
     });
+    document.addEventListener("pointerup", () => { dragging = false; });
+    document.addEventListener("pointercancel", () => { dragging = false; });
 
     // 스크롤 시 상단바 숨김
     let lastY = 0;

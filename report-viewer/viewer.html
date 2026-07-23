@@ -1817,18 +1817,27 @@
         const ln = lines[lines.length - 1];
         if (ln && Math.abs(ln.cy - w.cy) <= Math.max(4, (w.bot - w.top) * 0.5)) {
           ln.items.push(w); ln.cy = (ln.cy * ln.n + w.cy) / (ln.n + 1); ln.n++;
-        } else lines.push({ cy: w.cy, n: 1, items: [w] });
+          ln.top = Math.min(ln.top, w.top); ln.bot = Math.max(ln.bot, w.bot);
+        } else lines.push({ cy: w.cy, n: 1, items: [w], top: w.top, bot: w.bot });
       }
       lines.forEach((L) => L.items.sort((a, b) => a.left - b.left));
 
-      // 연결 텍스트 + char->{span,off}. 줄 사이에만 공백(문장부호+공백 판정용).
+      // 연결 텍스트 + char->{span,off}. 줄 사이 간격이 본문 줄간격보다 넓으면
+      // 제목/문단 경계로 보고 하드 경계(SENT)를 넣어 문장 선택이 그걸 넘지 않게 한다.
+      // (그래서 제목 바로 아래 문단 첫 문장을 더블클릭해도 제목이 안 딸려온다)
+      const SENT = "";
       let big = ""; const map = [];
       lines.forEach((L, li) => {
         L.items.forEach((w) => {
           const s = w.sp.firstChild.textContent;
           for (let k = 0; k < s.length; k++) { big += s[k]; map.push({ sp: w.sp, off: k }); }
         });
-        if (li < lines.length - 1) { big += " "; map.push(null); }
+        if (li < lines.length - 1) {
+          const gap = lines[li + 1].cy - L.cy;
+          const lh = L.bot - L.top || 1;
+          big += (gap > lh * 1.6) ? SENT : " ";   // 넓은 간격 = 문단/제목 경계
+          map.push(null);
+        }
       });
 
       // 탭한 지점의 글로벌 char index
@@ -1840,14 +1849,15 @@
           acc += len;
         }
         if (caret >= 0) break;
-        acc += 1;   // 줄 사이 공백
+        acc += 1;   // 줄 사이 구분자 1글자
       }
       if (caret < 0) return false;
 
-      const isEnd = (i) => /[.!?。]/.test(big[i]) && (i + 1 >= big.length || /\s/.test(big[i + 1]));
+      // 문장 경계 = 마침표+공백, 또는 문단/제목 경계(SENT).
+      const isEnd = (i) => big[i] === SENT || (/[.!?。]/.test(big[i]) && (i + 1 >= big.length || /\s/.test(big[i + 1])));
       let start = 0, end = big.length;
-      for (let i = caret - 1; i >= 0; i--) { if (isEnd(i)) { start = i + 1; break; } }
-      for (let i = caret; i < big.length; i++) { if (isEnd(i)) { end = i + 1; break; } }
+      for (let i = caret - 1; i >= 0; i--) { if (big[i] === SENT) { start = i + 1; break; } if (isEnd(i)) { start = i + 1; break; } }
+      for (let i = caret; i < big.length; i++) { if (big[i] === SENT) { end = i; break; } if (isEnd(i)) { end = i + 1; break; } }
       while (start < end && (map[start] == null || /\s/.test(big[start]))) start++;
       while (end > start && (map[end - 1] == null || /\s/.test(big[end - 1]))) end--;
       if (start >= end) return false;

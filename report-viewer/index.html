@@ -9,7 +9,7 @@
   <title>리포트 마커</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
-  <link rel="stylesheet" href="style.css?v=22">
+  <link rel="stylesheet" href="style.css?v=23">
 </head>
 <body>
   <div class="topbar">
@@ -53,7 +53,7 @@
   <div id="thumbHover" style="display:none"><img alt="미리보기"></div>
   <div class="toast" id="toast"></div>
 
-  <script src="app.js?v=21"></script>
+  <script src="app.js?v=22"></script>
   <script>
     let ALL = [];
     /* 텔레그램 로고 (원+비행기 각각 칠함 → 전송 후 둘 다 회색으로 바뀌게. CSS .tg-disc/.tg-plane) */
@@ -344,7 +344,7 @@
         const thumb = localStorage.getItem("rv_thumb_" + r.id);
         const thumbHtml = thumb ? `<img src="${thumb}" alt="">` : `<i data-lucide="file-text"></i>`;
         const fav = isBookmarked(r.id);
-        const readUrl = `viewer.html?id=${encodeURIComponent(r.id)}&mode=read&v=25`;
+        const readUrl = `viewer.html?id=${encodeURIComponent(r.id)}&mode=read&v=26`;
         const chk = delMode ? `<input type="checkbox" class="card-chk"${SELECTED.has(r.id) ? " checked" : ""}>` : "";
         const tg = marked ? `<button class="act tg-send${isTgSent(r.id) ? " sent" : ""}" data-id="${esc(r.id)}" title="${isTgSent(r.id) ? "이미 텔레그램으로 보냄 · 다시 보내기" : "하이라이트를 텔레그램으로 보내기"}" aria-label="텔레그램으로 보내기">${isTgSent(r.id) ? SENT_SVG : TG_SVG}</button>` : "";
         const nt = marked ? notionBtnHtml(r) : "";
@@ -361,7 +361,7 @@
               <div class="tags">
                 ${sector}${scan}${pend}${hlChip}${pages}
                 <div class="acts">
-                  <a class="act" href="viewer.html?id=${encodeURIComponent(r.id)}&v=25" title="PDF로 보기" aria-label="PDF"><i data-lucide="file"></i></a>
+                  <a class="act" href="viewer.html?id=${encodeURIComponent(r.id)}&v=26" title="PDF로 보기" aria-label="PDF"><i data-lucide="file"></i></a>
                   <a class="act" href="highlights.html?id=${encodeURIComponent(r.id)}" title="하이라이트 모아보기" aria-label="모아보기"><i data-lucide="list"></i></a>
                   ${tg}
                   ${nt}

@@ -7,7 +7,7 @@
   <meta name="theme-color" content="#101216" media="(prefers-color-scheme: dark)">
   <title>리포트 뷰어</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
-  <link rel="stylesheet" href="style.css?v=22">
+  <link rel="stylesheet" href="style.css?v=23">
 </head>
 <body>
   <div class="topbar viewer-topbar" id="topbar">
@@ -25,7 +25,7 @@
   <div id="captureHint" style="display:none">드래그로 영역 선택 · 표/그림 캡처<button id="captureHintX">✕</button></div>
   <div class="toast" id="toast"></div>
 
-  <script src="app.js?v=21"></script>
+  <script src="app.js?v=22"></script>
   <script type="module">
     import * as pdfjsLib from "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.6.82/pdf.min.mjs";
     pdfjsLib.GlobalWorkerOptions.workerSrc =
@@ -666,7 +666,7 @@
     /* 특정 하이라이트로 스크롤 + 잠깐 강조. 요소가 아직 없으면 페이지로 폴백. */
     function gotoHighlight(hid, fallbackPage) {
       const sel = (mode === "reading")
-        ? `#readingContainer mark.rd-hl[data-hid="${hid}"]`
+        ? `#readingContainer mark.rd-hl[data-hid="${hid}"], #readingContainer .rd-imgbox[data-hid="${hid}"]`
         : `.hlLayer .hl-rect[data-hid="${hid}"]`;
       let el = document.querySelector(sel);
       if (!el && fallbackPage > 0) {
@@ -676,7 +676,7 @@
       }
       if (!el) return;
       el.scrollIntoView({ block: "center", behavior: "smooth" });
-      const flashEl = el.closest("mark.rd-hl, .hl-rect, .rd-page, .page-wrap") || el;
+      const flashEl = el.closest("mark.rd-hl, .rd-imgbox, .hl-rect, .rd-page, .page-wrap") || el;
       flashEl.classList.add("hl-flash");
       setTimeout(() => flashEl.classList.remove("hl-flash"), 1600);
     }
@@ -1172,6 +1172,7 @@
           wrap.innerHTML = "";
           wrap.appendChild(img);
           wrap.style.minHeight = "";
+          renderReadImgBoxes(pageNo);          // 이 페이지의 캡처 박스 얹기
           return;
         }
         const page = await pdfDoc.getPage(pageNo);
@@ -1196,6 +1197,7 @@
         wrap.innerHTML = "";
         wrap.appendChild(img);
         wrap.style.minHeight = "";
+        renderReadImgBoxes(pageNo);            // 이 페이지의 캡처 박스 얹기
       } catch (e) {
         wrap._rendered = false;   // 실패 시 다시 시도할 수 있게
       }
@@ -1347,7 +1349,9 @@
       const hl = { hid, page: pageNo, type: "image", rects: [rect], clip, color, created_at: nowKst() };
       // 낙관적: 캡처 흔적을 '즉시' 표시(업로드 끝나기 전에도 바로 보이게) + 잠깐 반짝임
       highlights.push(hl);
-      if (mode === "pdf") { renderOneHighlightPdf(hl); flashCaptured(hid); }
+      if (mode === "pdf") { renderOneHighlightPdf(hl); }
+      else { renderReadImgBoxes(pageNo); }     // 읽기모드도 즉시 박스 표시
+      flashCaptured(hid);
       toast("캡처 저장 중…");
       try {
         const blob = await renderRegionBlob(pageNo, rect);
@@ -1358,14 +1362,14 @@
         console.error(e);
         // 업로드 실패 → 방금 추가한 캡처 롤백
         highlights = highlights.filter((h) => h.hid !== hid);
-        if (mode === "pdf") rerenderAllHighlights();
+        if (mode === "pdf") rerenderAllHighlights(); else renderReadImgBoxes(pageNo);
         toast("캡처 저장 실패 — 다시 시도해 주세요");
       }
     }
 
     /* 방금 만든 캡처 박스를 잠깐 반짝여 눈에 띄게 */
     function flashCaptured(hid) {
-      document.querySelectorAll(`.hl-rect[data-hid="${hid}"]`).forEach((el) => {
+      document.querySelectorAll(`.hl-rect[data-hid="${hid}"], .rd-imgbox[data-hid="${hid}"]`).forEach((el) => {
         el.classList.add("just-captured");
         setTimeout(() => el.classList.remove("just-captured"), 1400);
       });
@@ -1555,7 +1559,39 @@
     function renderReadingHighlights() {
       if (!readingBuilt) return;
       clearReadingMarks();
-      for (const hl of highlights) wrapReading(hl);
+      for (const hl of highlights) {
+        if (hl.type === "image") continue;    // 캡처는 텍스트가 아니라 페이지 이미지 위 박스로
+        wrapReading(hl);
+      }
+      document.querySelectorAll("#readingContainer .rd-pageimg").forEach(
+        (w) => renderReadImgBoxes(parseInt(w.dataset.page, 10)));
+    }
+
+    /* ── 읽기모드: 페이지 이미지 위에 캡처 영역 박스 (PDF 모드 .hl-rect.hl-img 대응) ──
+       rects 는 0~1 정규좌표라 %로 얹으면 이미지 크기가 바뀌어도 따라간다.
+       이미지가 지연 로딩이라 renderPageInto 직후에도 한 번 불러야 한다. */
+    function renderReadImgBoxes(pageNo) {
+      const wrap = document.querySelector(`#readingContainer .rd-pageimg[data-page="${pageNo}"]`);
+      if (!wrap) return;
+      wrap.querySelectorAll(".rd-imgbox").forEach((el) => el.remove());
+      if (!wrap.querySelector("img.rd-pagecanvas")) return;   // 접혀 있거나 아직 렌더 전
+      for (const hl of highlights) {
+        if (hl.type !== "image" || hl.page !== pageNo) continue;
+        for (const r of hl.rects || []) {
+          const div = document.createElement("div");
+          div.className = "rd-imgbox " + (hl.color || "yellow");
+          div.style.left = r.x * 100 + "%";
+          div.style.top = r.y * 100 + "%";
+          div.style.width = r.w * 100 + "%";
+          div.style.height = r.h * 100 + "%";
+          div.dataset.hid = hl.hid;
+          div.addEventListener("click", (e) => {
+            e.stopPropagation();                              // 이미지 클릭(접기)과 분리
+            showDeletePopup(hl, e.clientX, e.clientY);
+          });
+          wrap.appendChild(div);
+        }
+      }
     }
 
     /* 텍스트 노드의 [idx, idx+len)을 mark로 감싼다 */
@@ -1741,7 +1777,9 @@
       if (mode !== "reading") return;
       if (Date.now() < dtSuppress) return;   // 직전 처리 뒤 따라오는 dblclick 무시
       dtSuppress = Date.now() + 500;
-      const mk = markAtPoint(x, y) || (target && target.closest ? target.closest("mark.rd-hl") : null);
+      // 캡처 박스 위 더블탭도 텍스트 하이라이트와 똑같이 삭제
+      const box = target && target.closest ? target.closest(".rd-imgbox") : null;
+      const mk = box || markAtPoint(x, y) || (target && target.closest ? target.closest("mark.rd-hl") : null);
       if (mk && mk.dataset.hid) {
         removeHighlight(mk.dataset.hid);
         const sel = window.getSelection(); if (sel) sel.removeAllRanges();
@@ -1920,7 +1958,7 @@
     document.addEventListener("touchend", () => setTimeout(onSelectionEnd, 10));
     document.addEventListener("pointerdown", (e) => {
       dragging = true;
-      if (popupEl && !e.target.closest(".hl-popup") && !e.target.closest(".hl-rect")) removePopup();
+      if (popupEl && !e.target.closest(".hl-popup") && !e.target.closest(".hl-rect, .rd-imgbox")) removePopup();
     });
     document.addEventListener("pointerup", () => { dragging = false; });
     document.addEventListener("pointercancel", () => { dragging = false; });

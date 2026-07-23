@@ -477,30 +477,6 @@
 
     let selPopupText = null;   // 색 팝업이 현재 떠 있는 선택 텍스트(중복 재생성 방지)
 
-    /* 드래그 선택을 덜 예민하게: 선택 양끝을 가까운 '단어(어절)' 경계까지 확장.
-       글자 끝에 정확히 안 맞춰도 단어 통째로 잡힘. (좌표는 확장된 선택 그대로 계산되어 정확)
-       단, 한글 리포트는 띄어쓰기 없이 붙은 문장이 많아 공백까지 확장하면 줄 전체를
-       삼킨다 → SNAP_MAX 글자까지만 확장하고, 그 안에 경계(공백/문장부호)가 없으면
-       사용자가 실제로 끝낸 지점을 존중한다. */
-    const SNAP_MAX = 4;
-    const _boundary = (ch) => !ch || /[\s.,;:!?)\]}»”’·…]/.test(ch);
-    function snapRangeToWords(range) {
-      try {
-        const sc = range.startContainer;
-        if (sc.nodeType === 3) {
-          const t = sc.textContent; let s = range.startOffset, n = 0;
-          while (s > 0 && !_boundary(t[s - 1]) && n < SNAP_MAX) { s--; n++; }
-          if (n < SNAP_MAX && s !== range.startOffset) range.setStart(sc, s);  // 경계 만났을 때만 확장
-        }
-        const ec = range.endContainer;
-        if (ec.nodeType === 3) {
-          const t = ec.textContent; let e = range.endOffset, n = 0;
-          while (e < t.length && !_boundary(t[e]) && n < SNAP_MAX) { e++; n++; }
-          if (n < SNAP_MAX && e !== range.endOffset) range.setEnd(ec, e);
-        }
-      } catch (_) { /* 경계 확장 실패는 무시 (원래 선택 유지) */ }
-    }
-
     function onSelectionEnd() {
       const sel = window.getSelection();
       if (!sel || sel.rangeCount === 0 || sel.isCollapsed || !sel.toString().trim()) {
@@ -508,7 +484,8 @@
         removePopup(); selPopupText = null; return;
       }
       const range = sel.getRangeAt(0);
-      snapRangeToWords(range);   // 드래그 선택 양끝을 단어 경계로 확장(덜 예민하게)
+      // 선택 보정(단어 자동확장)은 하지 않는다 — 고른 만큼만 잡아야 PDF 원본 선택처럼
+      // 편하다. 예전 snap 은 끝에 안 붙이면 선택이 홱 바뀌어 오히려 불편했다(2026-07-23).
       let node = range.startContainer;
       if (node.nodeType === 3) node = node.parentElement;
       const text = sel.toString().trim();
@@ -538,16 +515,18 @@
         const built = buildReadingHighlight(pageNo, range);
         if (!built) { removePopup(); toast("PDF에서 위치를 못 찾았어요"); return; }
         showColorPopup(last.left, last.bottom, (color) =>
-          createHighlight(pageNo, built.text, built.rects, color, built.segs));
+          createHighlight(pageNo, built.text, built.rects, color, built.segs, built.segBlocks));
       } else {
         removePopup();
       }
     }
 
-    /* 두 모드 공통 하이라이트 생성. segs: 읽기 모드 다중 블록 조각(선택) */
-    function createHighlight(pageNo, text, rects, color, segs) {
+    /* 두 모드 공통 하이라이트 생성. segs: 읽기 모드 다중 블록 조각(선택).
+       segBlocks: 각 seg 가 속한 블록 인덱스 → 렌더 시 그 블록에서만 찾아 오매칭 방지. */
+    function createHighlight(pageNo, text, rects, color, segs, segBlocks) {
       const hl = { hid: "h_" + Date.now(), page: pageNo, text, rects: rects || [], color, created_at: nowKst() };
       if (segs && segs.length) hl.segs = segs;
+      if (segBlocks && segBlocks.length) hl.segBlocks = segBlocks;
       highlights.push(hl);
       // 새로 친 것 하나만 즉시 그림(전체 재렌더 X → 리포트가 커도 툭 끊기지 않음)
       if (mode === "reading") { wrapReading(hl); } else { renderOneHighlightPdf(hl); }
@@ -1602,11 +1581,15 @@
       if (!page) return false;
       // 읽기모드에서 친 건 블록별 segs가 있음. PDF에서 친 건 통짜 text라
       // 여러 블록에 걸치면 한 덩어리로 못 찾음 → rects로 줄 단위 조각을 복원해 매칭.
-      const targets = (hl.segs && hl.segs.length) ? hl.segs : segsFromRects(hl);
+      const useSegs = hl.segs && hl.segs.length;
+      const targets = useSegs ? hl.segs : segsFromRects(hl);
       let any = false;
-      for (const seg of targets) {
-        const t = NS(seg);
-        if (t && wrapSeg(page, t, hl)) any = true;
+      for (let i = 0; i < targets.length; i++) {
+        const t = NS(targets[i]);
+        // segBlocks 가 있으면 그 seg 가 속한 블록에서만 찾는다(같은 문구가 다른
+        // 블록에 있어도 엉뚱한 데 안 찍힘). 없으면(옛 하이라이트) 전체 검색 폴백.
+        const bi = (useSegs && hl.segBlocks) ? hl.segBlocks[i] : null;
+        if (t && wrapSeg(page, t, hl, bi)) any = true;
       }
       return any;
     }
@@ -1631,11 +1614,14 @@
     /* 블록들의 텍스트 노드에서 t를 찾아(공백 차이 무시) 첫 위치를 감싼다.
        firstChild만 보지 않고 마크 사이로 쪼개진 텍스트 노드까지 모두 순회 →
        이미 밑줄 친 문단에서 새로 칠해도 아래로 처지지 않음 */
-    function wrapSeg(page, t, hl) {
+    function wrapSeg(page, t, hl, blockIdx) {
       let re;
       try { re = new RegExp(t.split(/\s+/).map(escRe).join("\\s*")); }
       catch (e) { return false; }
-      for (const b of page.querySelectorAll(RD_SEL)) {
+      const blocks = page.querySelectorAll(RD_SEL);
+      // 블록 인덱스를 알면 그 블록만 본다(오매칭 방지). 모르면 전체 순회(옛 방식).
+      const scope = (blockIdx != null && blocks[blockIdx]) ? [blocks[blockIdx]] : blocks;
+      for (const b of scope) {
         for (const node of b.childNodes) {
           if (node.nodeType !== 3) continue;   // 직속 텍스트 노드만 (마크 내부는 제외)
           const m = re.exec(node.textContent);
@@ -1684,10 +1670,11 @@
       const rdC = document.getElementById("readingContainer");
       const page = rdC.querySelector(`.rd-page[data-page="${pageNo}"]`);
       if (!page) return null;
-      const segs = [];
+      const segs = [], segBlocks = [];
       let allRects = [];
-      for (const b of page.querySelectorAll(RD_SEL)) {
-        if (!range.intersectsNode(b)) continue;
+      const blocks = page.querySelectorAll(RD_SEL);
+      blocks.forEach((b, bi) => {
+        if (!range.intersectsNode(b)) return;
         // 선택 범위 ∩ 블록 = 이 블록에서 실제로 선택된 부분
         const br = document.createRange();
         br.selectNodeContents(b);
@@ -1697,15 +1684,15 @@
         if (range.compareBoundaryPoints(Range.END_TO_END, br) <= 0) r.setEnd(range.endContainer, range.endOffset);
         else r.setEnd(br.endContainer, br.endOffset);
         const sub = r.toString().trim();
-        if (!sub) continue;
-        // b.textContent = 이 조각이 속한 블록 전체 → 검색을 그 블록 위치로 좁혀 오매칭 방지
+        if (!sub) return;
+        // 좌표(PDF 모드·형광펜용)는 블록 위치로 좁혀 역산. 못 찾아도 읽기모드 표시는
+        // segBlocks 로 정확히 되므로 조각을 버리지 않는다(예전엔 좌표 없으면 통째로 버렸다).
         const rects = computeRectsFromText(pageNo, sub, b.textContent);
-        if (!rects.length) continue;          // 좌표 못 찾은 조각은 버림 (text↔rects 일치 보장)
-        allRects = allRects.concat(rects);
-        segs.push(sub);
-      }
+        if (rects.length) allRects = allRects.concat(rects);
+        segs.push(sub); segBlocks.push(bi);
+      });
       if (!segs.length) return null;
-      return { text: segs.join(" "), rects: mergeLineRects(allRects), segs };
+      return { text: segs.join(" "), rects: mergeLineRects(allRects), segs, segBlocks };
     }
 
     document.getElementById("modeBtn").onclick = () => setMode(mode === "pdf" ? "reading" : "pdf");
@@ -1828,10 +1815,8 @@
       } else { pdtLast = now; pdtX = t.clientX; pdtY = t.clientY; }
     });
 
-    /* 이벤트 — 선택 확정은 '손을 뗄 때'만.
-       예전엔 selectionchange 디바운스가 드래그 도중에도 발동해, onSelectionEnd 안의
-       snapRangeToWords 가 살아있는 선택을 단어경계로 밀어 "선택이 저절로 움직이는"
-       느낌을 줬다. dragging 플래그로 드래그 중 확정을 막고, 뗄 때만 확정한다.
+    /* 이벤트 — 선택 확정은 '손을 뗄 때'만. 드래그 도중 확정하면 팝업이 깜빡이고
+       선택이 예민하게 굴어 불편하다. dragging 플래그로 드래그 중 확정을 막고 뗄 때만.
        (모바일 길게눌러 선택은 손을 뗀 뒤 selectionchange 가 오므로 그대로 대응됨) */
     let selTimer = null, dragging = false;
     function scheduleSel() {

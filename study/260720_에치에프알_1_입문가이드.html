@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>에치에프알(HFR) 입문 가이드 — 광전송에서 오픈랜·AI RAN까지</title>
+<style>
+  :root{
+    --accent:#0369a1; --accent2:#0284c7;
+    --ink:#1f2430; --muted:#5c6472; --line:#e2e8ec; --bg:#fff; --soft:#f2f8fb;
+    --warnbg:#fff7ed; --warnln:#fb923c;
+  }
+  *{box-sizing:border-box;}
+  body{font-family:"Segoe UI","Malgun Gothic","Apple SD Gothic Neo",system-ui,sans-serif;
+    color:var(--ink); background:var(--bg); margin:0; line-height:1.78; font-size:16.5px; letter-spacing:-0.1px;}
+  .wrap{max-width:920px; margin:0 auto; padding:40px 28px 90px;}
+  h1{font-size:29px; line-height:1.32; margin:8px 0 6px; letter-spacing:-0.6px;}
+  h2{font-size:22px; margin:50px 0 12px; padding-top:14px; border-top:3px solid var(--accent); letter-spacing:-0.4px;}
+  h3{font-size:18.5px; margin:30px 0 8px; color:#2b3242;}
+  h4{font-size:16px; margin:18px 0 6px; color:var(--accent);}
+  p{margin:10px 0;} a{color:var(--accent); text-decoration:none;} a:hover{text-decoration:underline;}
+  .sub{color:var(--muted); font-size:15px;} .lead{font-size:17.5px; color:#333a49;}
+  .kicker{display:inline-block; font-size:13px; font-weight:700; letter-spacing:1.5px;
+    color:#fff; background:var(--accent); padding:5px 12px; border-radius:999px;}
+  .warn{background:var(--warnbg); border:1px solid var(--warnln); border-left:6px solid var(--warnln);
+    border-radius:10px; padding:16px 18px; margin:22px 0; font-size:15px;}
+  .note{background:var(--soft); border:1px solid var(--line); border-radius:10px; padding:16px 18px; margin:18px 0;}
+  .callout{background:#e0f2fe; border:1px solid #7dd3fc; border-left:6px solid var(--accent);
+    border-radius:10px; padding:16px 18px; margin:20px 0;}
+  .big{font-size:19px; font-weight:800; color:var(--accent); line-height:1.5;}
+  .grid2{display:grid; grid-template-columns:1fr 1fr; gap:16px;}
+  .grid3{display:grid; grid-template-columns:repeat(3,1fr); gap:14px;}
+  .card{border:1px solid var(--line); border-radius:12px; padding:16px 18px; background:#fff;}
+  table{width:100%; border-collapse:collapse; margin:18px 0; font-size:14.5px;}
+  th,td{border:1px solid var(--line); padding:9px 11px; text-align:left; vertical-align:top;}
+  th{background:var(--soft); font-weight:700;} td.c,th.c{text-align:center;}
+  figure{margin:24px 0; text-align:center;} figcaption{font-size:13px; color:var(--muted); margin-top:8px;}
+  .svgbox{border:1px solid var(--line); border-radius:12px; padding:14px; background:#fff;}
+  ul,ol{margin:10px 0 10px 4px; padding-left:22px;} li{margin:6px 0;}
+  .kpi{display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin:20px 0;}
+  .kpi .box{border:1px solid var(--line); border-radius:12px; padding:14px; text-align:center; background:var(--soft);}
+  .kpi .num{font-size:20px; font-weight:800; color:var(--accent); letter-spacing:-0.5px;}
+  .kpi .lab{font-size:12.5px; color:var(--muted); margin-top:3px;}
+  .toc{background:var(--soft); border:1px solid var(--line); border-radius:12px; padding:18px 22px; margin:26px 0;}
+  .toc ol{columns:2; column-gap:34px;}
+  .src{font-size:13px; color:var(--muted); word-break:break-all;}
+  .seriesnav{background:#e0f2fe; border:1px solid #7dd3fc; border-radius:10px; padding:14px 18px; margin:20px 0; font-size:14.5px;}
+  .good{color:#059669; font-weight:700;} .bad{color:#dc2626; font-weight:700;} .mid{color:#b45309; font-weight:700;}
+  hr{border:none; border-top:1px solid var(--line); margin:34px 0;}
+  .foot{color:var(--muted); font-size:13px; margin-top:40px;}
+  @media (max-width:680px){.grid2,.grid3,.kpi{grid-template-columns:1fr;} .toc ol{columns:1;} h1{font-size:24px;}}
+  @media print{body{font-size:11.5pt;} .wrap{max-width:100%; padding:0;} h2{break-after:avoid;}
+    figure,table,.card{break-inside:avoid;} a{color:#000;} .warn,.callout,.note{break-inside:avoid;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <span class="kicker">에치에프알(HFR) · ① 입문 가이드</span>
+  <h1>에치에프알(HFR) 입문 가이드<br>— 광전송에서 오픈랜·AI RAN까지</h1>
+  <p class="sub">작성일 2026-07-20 · KOSDAQ 230240 · 개인 리서치 노트 · 입문세트 1/3</p>
+
+  <div class="warn">
+    <b>⚠️ 투자 권유가 아닙니다.</b> 이 문서는 공개 정보를 정리한 <b>개인 학습 노트</b>이며 매수·매도 추천이 아닙니다.
+    실적·목표주가 수치는 작성일 기준 <b>증권사·언론 자료를 인용</b>한 것으로 추정치가 포함되어 있고 실제와 다를 수 있습니다.
+    특히 목표주가는 <b>해당 증권사의 견해</b>일 뿐 본 문서의 판단이 아닙니다.
+    모든 투자 판단과 그 책임은 전적으로 본인에게 있습니다.
+  </div>
+
+  <div class="seriesnav">
+    <b>📡 입문세트 구성</b> — ① <b>입문가이드(현재 글)</b> ·
+    <a href="https://tryingpig.github.io/study/260720_에치에프알_2_투자안내서.html">② 투자안내서</a> ·
+    <a href="https://tryingpig.github.io/study/260720_에치에프알_3_밸류체인.html">③ 밸류체인</a><br>
+    <span class="sub">📶 먼저 <a href="https://tryingpig.github.io/study/260720_AIRAN_개념설명리포트.html">AI RAN 개념 설명 리포트</a>를 보면
+    이 회사의 성장 스토리(AI RAN)가 훨씬 잘 이해됩니다.</span>
+  </div>
+
+  <div class="callout">
+    <span class="big">한 문장 요약</span><br>
+    <b>에치에프알은 통신망의 '광(빛) 전송장비'로 성장한 회사이고, 지금은 오픈랜·이음5G·AI RAN이라는 새 판에 올라타려는 통신장비 업체다.</b><br>
+    <span class="sub">"AI RAN 수혜주"로 주목받지만, 본업(광전송·브로드밴드)이 실적의 뿌리라는 점을 먼저 알아야 한다.</span>
+  </div>
+
+  <div class="toc">
+    <b>목차</b>
+    <ol>
+      <li>에치에프알은 무엇을 하는 회사인가</li>
+      <li>회사 개요와 연혁</li>
+      <li>'이렇게 생겼어요' — 사업 3부문</li>
+      <li>① 모바일 액세스 (광전송·프론트홀)</li>
+      <li>② 브로드밴드 액세스 (유선)</li>
+      <li>③ 이음5G / 특화망 (성장 카드)</li>
+      <li>오픈랜과 AI RAN — 새 판</li>
+      <li>돈 버는 구조</li>
+      <li>왜 지금 주목받나</li>
+      <li>기초 실적 스냅샷</li>
+      <li>FAQ · 용어사전 · 출처</li>
+    </ol>
+  </div>
+
+  <!-- 1 -->
+  <h2>1. 에치에프알은 무엇을 하는 회사인가</h2>
+  <p class="lead">
+    한마디로 <b>통신장비 회사</b>다. 그중에서도 뿌리는 <b>광(光)전송 장비</b> — 통신 트래픽을
+    <b>광섬유(빛)로 실어 나르는 장비</b>를 만든다. 회사명 HFR도 여기서 왔다(광통신 기반).
+  </p>
+  <p>
+    KOSDAQ 상장(종목코드 <b>230240</b>)이고, 2000년 <b>정종민 대표</b>가 창업했다. 정 대표는 SK텔레콤 선임연구원 출신이다.
+    국내뿐 아니라 <b>버라이즌·AT&amp;T·NTT도코모</b> 등 글로벌 통신사를 고객으로 둔다.
+  </p>
+
+  <div class="note">
+    <b>🔌 비유로 이해하기 — 통신망의 '혈관과 신경'</b><br>
+    통신망을 사람 몸에 비유하면:<br>
+    • <b>기지국(안테나)</b> = 감각기관<br>
+    • <b>광전송 장비</b> = 그 신호를 몸 곳곳으로 빠르게 실어 나르는 <b>혈관·신경</b><br><br>
+    에치에프알은 이 <b>'혈관·신경'</b>을 만드는 회사에서 출발했다. 눈에 잘 안 띄지만 통신망에 반드시 필요한 부품이다.
+    그리고 지금은 <b>기지국(RAN) 영역까지</b> 사업을 넓히고 있다.
+  </div>
+
+  <!-- 2 -->
+  <h2>2. 회사 개요와 연혁</h2>
+  <table>
+    <thead><tr><th class="c">시기</th><th>내용</th></tr></thead>
+    <tbody>
+      <tr><td class="c">2000</td><td><b>정종민 대표</b>(SK텔레콤 선임연구원 출신) 창업. 광전송 장비로 시작</td></tr>
+      <tr><td class="c">2000년대~</td><td>광전송·프론트홀·인빌딩 DAS로 사업 다각화. 국내외 통신사 납품</td></tr>
+      <tr><td class="c">상장</td><td>KOSDAQ 상장 (종목코드 230240)</td></tr>
+      <tr><td class="c">2021</td><td>과기부 <b>'이음5G(e-Um 5G)' 정책</b> 발표 → 5G CPE·vRAN·vCore 등 특화망 솔루션 확대</td></tr>
+      <tr><td class="c">2020년대 초</td><td>미국 <b>디시네트워크(Dish)</b> 통해 오픈랜 시장 진출 추진. 5G 장비 수출 급증</td></tr>
+      <tr><td class="c">2024~2025</td><td>업황 부진으로 적자 → <b>2025년 흑자 전환</b>(영업이익 약 30억)</td></tr>
+      <tr><td class="c">2026</td><td>과기부 <b>AI-RAN 실증사업</b> 수행기관 선정(SKT 주관, 삼성·에릭슨·노키아와 나란히). AT&amp;T C-RAN 전환 수혜 기대</td></tr>
+    </tbody>
+  </table>
+  <p class="src">(출처: 비즈니스포스트 [Who Is?], 디지털데일리, THE VC, 넷매니아스, 미래에셋·하나증권 리포트)</p>
+
+  <!-- 3 -->
+  <h2>3. '이렇게 생겼어요' — 사업 3부문</h2>
+  <p>이 회사를 이해하는 열쇠는 <b>사업이 3개 부문</b>으로 나뉜다는 것이다. 매출 비중과 성격이 다르다.</p>
+
+  <figure>
+    <div class="svgbox">
+      <svg viewBox="0 0 860 340" width="100%" role="img" aria-label="에치에프알 사업 3부문">
+        <g font-family="Segoe UI, sans-serif">
+          <text x="16" y="26" font-size="15" font-weight="800">에치에프알 사업 3부문 — 유선이 크고, 무선·특화망이 성장</text>
+
+          <!-- broadband -->
+          <rect x="20" y="46" width="820" height="80" rx="12" fill="#e0f2fe" stroke="#0284c7" stroke-width="2"/>
+          <text x="36" y="72" font-size="14" font-weight="800" fill="#0369a1">② 브로드밴드 액세스 (유선) — 매출의 대부분</text>
+          <text x="36" y="94" font-size="11.5" fill="#075985">FTTH/GPON ONU · 이더넷 스위치 · WiFi 6 AP · xDSL</text>
+          <text x="36" y="113" font-size="11.5" fill="#075985">성격: <b>안정적 캐시카우</b> · 2026E 매출 약 1,212억(+8.3%) — 미국 AT&amp;T 수혜</text>
+
+          <!-- mobile -->
+          <rect x="20" y="136" width="820" height="80" rx="12" fill="#f0f9ff" stroke="#7dd3fc"/>
+          <text x="36" y="162" font-size="14" font-weight="800" fill="#0369a1">① 모바일 액세스 (무선) — 광전송의 뿌리</text>
+          <text x="36" y="184" font-size="11.5" fill="#075985">광전송장비(프론트홀) · 인빌딩 DAS · 광분기모듈(MUX)</text>
+          <text x="36" y="203" font-size="11.5" fill="#075985">성격: <b>회사의 원조 사업</b> · 2026E 매출 약 305억(+13.1%)</text>
+
+          <!-- private 5G -->
+          <rect x="20" y="226" width="820" height="80" rx="12" fill="#0369a1"/>
+          <text x="36" y="252" font-size="14" font-weight="800" fill="#fff">③ 이음5G / 특화망 (Private 5G) — 성장 카드</text>
+          <text x="36" y="274" font-size="11.5" fill="#bae6fd">5G CPE · <b>vRAN / vCore</b> · RU · Biz·서비스 플랫폼</text>
+          <text x="36" y="293" font-size="11.5" fill="#bae6fd">성격: <b>미래 성장·AI RAN 연결고리</b> · 아직 규모는 작음</text>
+
+          <text x="430" y="330" font-size="10.5" fill="#94a3b8" text-anchor="middle">
+            ※ 부문 매출은 증권사 2026년 추정치. 개인 정리 도식.</text>
+        </g>
+      </svg>
+    </div>
+    <figcaption>그림 1. 유선(브로드밴드)이 매출의 대부분, 무선·특화망이 성장 축. (개인 정리 도식)</figcaption>
+  </figure>
+
+  <div class="callout">
+    <b>💡 여기서 가장 중요한 사실</b><br>
+    "AI RAN 수혜주"로 불리지만, <b>현재 매출의 대부분은 ②브로드밴드(유선)</b>다.
+    <b>AI RAN·이음5G(③)는 아직 규모가 작은 미래 카드</b>다.<br><br>
+    즉 <b>"본업(유선)이 실적을 받치고, AI RAN이 기대(모멘텀)를 만드는"</b> 구조다.
+    이 둘을 구분하는 게 이 회사를 보는 출발점이다. (자세한 건
+    <a href="https://tryingpig.github.io/study/260720_에치에프알_2_투자안내서.html">②투자안내서</a>)
+  </div>
+
+  <!-- 4 -->
+  <h2>4. ① 모바일 액세스 (광전송·프론트홀)</h2>
+  <p>회사의 <b>뿌리 사업</b>. 기지국에서 나온 신호를 광섬유로 실어 나르는 장비다.</p>
+  <div class="note">
+    <b>📡 '프론트홀(Fronthaul)'이 뭔가</b><br>
+    <a href="https://tryingpig.github.io/study/260720_AIRAN_개념설명리포트.html">AI RAN 리포트</a>에서 본 RU(안테나)와 DU(신호처리) 사이를 잇는 구간을 <b>프론트홀</b>이라 한다.
+    5G는 데이터가 많아 이 구간에 <b>대용량 광전송</b>이 필수다. 에치에프알은 여기 장비를 공급한다.<br><br>
+    <b>왜 중요한가:</b> 미국 <b>AT&amp;T가 통신망을 C-RAN 구조로 전환</b>하면서 프론트홀 장비 수요가 늘고, 에치에프알이
+    이 물량의 수혜를 본다는 게 증권가 스토리다.
+  </div>
+  <ul>
+    <li><b>광전송장비(프론트홀)</b> — 기지국 신호를 광으로 전달</li>
+    <li><b>인빌딩 DAS</b> — 건물 내부 전파 음영 해소(분산안테나시스템)</li>
+    <li><b>광분기모듈(MUX)</b> — 여러 신호를 하나의 광선로에 다중화</li>
+  </ul>
+
+  <!-- 5 -->
+  <h2>5. ② 브로드밴드 액세스 (유선)</h2>
+  <p>
+    <b>가장 큰 매출원</b>이지만 상대적으로 덜 주목받는 부문. <b>유선 인터넷 인프라 장비</b>다.
+  </p>
+  <table>
+    <thead><tr><th>제품</th><th>역할</th></tr></thead>
+    <tbody>
+      <tr><td><b>FTTH/GPON ONU</b></td><td>광가입자망 단말. 집·건물까지 들어오는 광인터넷 장치</td></tr>
+      <tr><td><b>이더넷 스위치</b></td><td>네트워크 트래픽 분배</td></tr>
+      <tr><td><b>WiFi 6 AP</b></td><td>무선 공유기(액세스포인트)</td></tr>
+      <tr><td><b>xDSL</b></td><td>구리선 기반 인터넷(레거시)</td></tr>
+    </tbody>
+  </table>
+  <div class="callout">
+    <b>💰 이 부문이 실적의 안전판</b><br>
+    브로드밴드는 <b>꾸준한 교체·증설 수요</b>가 있어 안정적이다. 특히 <b>미국 시장 수요</b>가 실적을 끌고 있다.
+    2026년 이 부문 매출은 약 <b>1,212억(+8.3%)</b>으로 전망된다 — 전체 매출의 대부분.<br><br>
+    <b>즉 AI RAN 이야기가 실현되기 전에도, 이 유선 사업이 회사를 흑자로 지탱</b>한다.
+    이 점이 순수 테마주와 다른 부분이다.
+  </div>
+
+  <!-- 6 -->
+  <h2>6. ③ 이음5G / 특화망 (성장 카드)</h2>
+  <p class="lead">
+    여기가 <b>미래 성장 스토리이자 AI RAN 연결고리</b>다.
+  </p>
+  <div class="note">
+    <b>📶 '이음5G(특화망)'가 뭔가</b><br>
+    통신3사의 공용망이 아니라, <b>특정 기업·공장·건물이 자기만의 5G망</b>을 까는 것을 말한다(Private 5G).
+    2021년 과기부가 <b>'이음5G'</b>로 명명하며 정책 지원을 시작했다.<br><br>
+    예: 스마트공장이 자체 5G망으로 로봇·설비를 제어. 이때 <b>기지국·코어망을 통째로</b> 깔아야 하는데,
+    에치에프알은 <b>5G CPE·vRAN·vCore·RU까지 End-to-End로 공급 가능한 국내 유일 사업자</b>라는 평가를 받는다.
+  </div>
+  <div class="callout">
+    <b>🔗 왜 이게 AI RAN으로 이어지나</b><br>
+    이음5G에 필요한 <b>vRAN(가상화 기지국)·RU·코어</b>가 바로 <b>오픈랜·AI RAN의 부품</b>과 같은 계열이다.
+    즉 에치에프알은 특화망을 하면서 <b>AI RAN에 필요한 기술 스택을 이미 갖춰가고 있는</b> 셈이다.<br><br>
+    하나증권 노트가 <b>"HFR이 AI RAN에 진출 가능"</b>이라고 본 근거의 하나가 이 <b>End-to-End 역량</b>이다.
+    (AI RAN 3종이 뭔지는 <a href="https://tryingpig.github.io/study/260720_AIRAN_개념설명리포트.html">AI RAN 리포트</a> 참조)
+  </div>
+
+  <!-- 7 -->
+  <h2>7. 오픈랜과 AI RAN — 새 판</h2>
+  <figure>
+    <div class="svgbox">
+      <svg viewBox="0 0 840 210" width="100%" role="img" aria-label="오픈랜이 기회가 되는 구조">
+        <g font-family="Segoe UI, sans-serif">
+          <text x="16" y="24" font-size="14.5" font-weight="800">왜 오픈랜이 에치에프알에 기회인가</text>
+
+          <rect x="30" y="46" width="360" height="120" rx="12" fill="#fef2f2" stroke="#fca5a5"/>
+          <text x="210" y="72" font-size="13" font-weight="800" fill="#991b1b" text-anchor="middle">과거: 폐쇄형 기지국</text>
+          <text x="210" y="96" font-size="11.5" fill="#7f1d1d" text-anchor="middle">RU+DU+CU를 한 회사가 통째로</text>
+          <text x="210" y="118" font-size="11.5" fill="#7f1d1d" text-anchor="middle">에릭슨·노키아·삼성만 가능</text>
+          <text x="210" y="142" font-size="11.5" fill="#991b1b" text-anchor="middle" font-weight="700">중소업체 진입 불가</text>
+
+          <rect x="450" y="46" width="360" height="120" rx="12" fill="#e0f2fe" stroke="#0284c7"/>
+          <text x="630" y="72" font-size="13" font-weight="800" fill="#0369a1" text-anchor="middle">현재: 오픈랜(개방형)</text>
+          <text x="630" y="96" font-size="11.5" fill="#075985" text-anchor="middle">규격 표준화 → 부분 공급 가능</text>
+          <text x="630" y="118" font-size="11.5" fill="#075985" text-anchor="middle">예: RU만, DU만 공급해도 됨</text>
+          <text x="630" y="142" font-size="11.5" fill="#0369a1" text-anchor="middle" font-weight="700">HFR 같은 전문업체에 진입로</text>
+
+          <path d="M395,106 L445,106" stroke="#0f172a" stroke-width="3" marker-end="url(#a)"/>
+          <defs><marker id="a" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto">
+            <path d="M0,0 L6,3 L0,6 Z" fill="#0f172a"/></marker></defs>
+
+          <text x="420" y="192" font-size="10.5" fill="#94a3b8" text-anchor="middle">개인 정리 도식</text>
+        </g>
+      </svg>
+    </div>
+    <figcaption>그림 2. 오픈랜이 규격을 개방하면서 중소 전문업체에 진입로가 열렸다. (개인 정리 도식)</figcaption>
+  </figure>
+  <p>
+    에치에프알은 오픈랜 기반 가상화 5G 솔루션 <b>'my5G'</b>를 앞세워, 미국 <b>디시네트워크(Dish)</b>에
+    RU 관련 장비를 공급하며 오픈랜 시장에 진출을 추진해 왔다. 그리고 2026년 <b>과기부 AI-RAN 실증사업</b>에
+    삼성·에릭슨·노키아와 <b>나란히 선정</b>되며 AI RAN 무대에 올랐다.
+  </p>
+  <div class="callout">
+    <b>🎯 하나증권 노트의 핵심 논리 (요약)</b><br>
+    "AI RAN은 엔비디아-노키아의 <b>AI-and-RAN</b>만 있는 게 아니다. 피지컬 AI엔 <b>AI-for-RAN·AI-on-RAN</b>이 필수인데,
+    여기선 <b>통신사 선택</b>이 중요하고 오픈랜 흐름이 강해 <b>HFR도 기회</b>가 있다."<br><br>
+    이 논리의 <b>개념적 타당성과 검증 포인트</b>는 <a href="https://tryingpig.github.io/study/260720_AIRAN_개념설명리포트.html">AI RAN 개념 리포트 9장</a>에서
+    중립적으로 다뤘다. 요지: <b>논리는 성립하나, "실증 → 상용 매출" 전환은 확인이 필요</b>하다.
+  </div>
+
+  <!-- 8 -->
+  <h2>8. 돈 버는 구조</h2>
+  <figure>
+    <div class="svgbox">
+      <svg viewBox="0 0 840 200" width="100%" role="img" aria-label="수익 구조">
+        <g font-family="Segoe UI, sans-serif">
+          <text x="16" y="24" font-size="14.5" font-weight="800">통신장비 = 수주 산업 + 높은 영업 레버리지</text>
+          <rect x="30" y="44" width="250" height="60" rx="10" fill="#e0f2fe" stroke="#7dd3fc"/>
+          <text x="155" y="70" font-size="12.5" font-weight="700" text-anchor="middle">통신사 투자(CAPEX)</text>
+          <text x="155" y="90" font-size="11" fill="#075985" text-anchor="middle">에 따라 수주가 결정</text>
+
+          <rect x="300" y="44" width="250" height="60" rx="10" fill="#e0f2fe" stroke="#7dd3fc"/>
+          <text x="425" y="70" font-size="12.5" font-weight="700" text-anchor="middle">장비 납품·매출</text>
+          <text x="425" y="90" font-size="11" fill="#075985" text-anchor="middle">프로젝트 단위</text>
+
+          <rect x="570" y="44" width="240" height="60" rx="10" fill="#0369a1"/>
+          <text x="690" y="70" font-size="12.5" font-weight="700" fill="#fff" text-anchor="middle">고정비 넘으면</text>
+          <text x="690" y="90" font-size="11" fill="#bae6fd" text-anchor="middle">이익 급증(레버리지)</text>
+
+          <rect x="30" y="124" width="780" height="56" rx="10" fill="#f2f8fb" stroke="#7dd3fc"/>
+          <text x="420" y="148" font-size="12.5" font-weight="800" fill="#0369a1" text-anchor="middle">
+            💡 핵심: 통신장비는 원가에서 고정비 비중이 커, 매출이 일정 수준을 넘으면 이익이 크게 튄다</text>
+          <text x="420" y="168" font-size="11.5" fill="#155e75" text-anchor="middle">
+            2025년 흑자전환·2026년 영업이익 급증 전망이 이 구조 — 반대로 수주가 줄면 적자 (개인 정리 도식)</text>
+        </g>
+      </svg>
+    </div>
+    <figcaption>그림 3. 통신장비의 수익 구조 — 영업 레버리지가 크다. (개인 정리 도식)</figcaption>
+  </figure>
+  <p>
+    하나증권 노트가 <b>"작은 M/S 확보로도 큰 폭의 이익 증가"</b>라고 한 근거가 이것이다.
+    미국처럼 큰 시장에서 <b>작은 점유율만 따내도</b>, 고정비를 넘긴 매출이라 <b>이익이 크게 늘 수 있다</b>는 논리다.
+    <b>단, 이는 수주가 실제로 났을 때의 이야기</b>다.
+  </p>
+
+  <!-- 9 -->
+  <h2>9. 왜 지금 주목받나</h2>
+  <ol>
+    <li><b>AI RAN 테마.</b> 과기부 AI-RAN 실증에 대형사와 나란히 선정 → "국내 AI RAN 플레이어"로 부각</li>
+    <li><b>미국 수혜.</b> AT&amp;T C-RAN 전환 프론트홀 수요, 어퍼 C밴드 경매 등</li>
+    <li><b>턴어라운드.</b> 2024년 적자 → 2025년 흑자 전환 → 2026년 이익 급증 전망</li>
+    <li><b>오픈랜 성장.</b> 오픈랜 시장 2030년까지 연 42%, 글로벌 특화망 연 43% 성장 전망(업계)</li>
+    <li><b>End-to-End 역량.</b> 5G 특화망을 통째로 공급 가능한 국내 유일 사업자 평가</li>
+  </ol>
+  <p class="src">(출처: 하나증권·미래에셋 리포트, 머니투데이, SKT 뉴스룸, 디일렉)</p>
+
+  <!-- 10 -->
+  <h2>10. 기초 실적 스냅샷</h2>
+  <div class="kpi">
+    <div class="box"><div class="num">약 30억</div><div class="lab">2025 영업이익(흑자전환)</div></div>
+    <div class="box"><div class="num">약 1,419억</div><div class="lab">2025 매출(추정·YoY -9.6%)</div></div>
+    <div class="box"><div class="num">약 1,517억</div><div class="lab">2026E 매출(+6.9%)</div></div>
+    <div class="box"><div class="num">약 132억</div><div class="lab">2026E 영업이익</div></div>
+    <div class="box"><div class="num">약 1,212억</div><div class="lab">2026E 브로드밴드 매출</div></div>
+    <div class="box"><div class="num">약 305억</div><div class="lab">2026E 모바일 매출</div></div>
+    <div class="box"><div class="num">34,000원</div><div class="lab">주가(보도 시점)</div></div>
+    <div class="box"><div class="num">37,500~50,000</div><div class="lab">증권사 목표주가 범위</div></div>
+  </div>
+  <p class="sub">
+    ※ 2025~2026 수치는 <b>증권사·언론 추정치</b>이며 기관마다 편차가 있다. 목표주가는 <b>해당 기관 견해</b>일 뿐이다.
+    영업이익 급증(30억 → 132억 전망)은 통신장비 특유의 <b>영업 레버리지</b> 때문 — 그만큼 <b>변동성도 크다</b>.
+    상세 분석은 <a href="https://tryingpig.github.io/study/260720_에치에프알_2_투자안내서.html">② 투자안내서</a> 참조.
+    <span class="src">(출처: 하나증권 2026.04, 미래에셋, FnGuide, 콕스톡)</span>
+  </p>
+  <div class="callout">
+    <b>⚠️ 티커 혼동 주의</b><br>
+    에치에프알(HFR)의 종목코드는 <b>230240</b>이다. 유사 번호와 헷갈리지 않도록 주의.
+    또한 이 회사는 소형주라 <b>거래량·변동성이 크고 자료가 제한적</b>일 수 있다.
+  </div>
+
+  <!-- FAQ -->
+  <h2>FAQ</h2>
+  <h4>Q. AI RAN 수혜주라던데, 지금 AI RAN으로 돈을 버나요?</h4>
+  <p>아직은 <b>대부분 본업(유선 브로드밴드·광전송)</b>에서 법니다. AI RAN·이음5G는 <b>미래 성장 카드이자 실증 단계</b>입니다.
+  "AI RAN이 실적을 만든다"가 아니라 "AI RAN 기대가 주가 모멘텀을 만든다"에 가깝습니다.
+  <b>실증이 상용 수주로 전환되는지</b>가 핵심 확인 사항입니다.</p>
+  <h4>Q. 엔비디아-노키아가 AI RAN을 다 먹는 것 아닌가요?</h4>
+  <p>엔비디아-노키아는 주로 <b>AI-and-RAN</b> 방식입니다. 하나증권 논리는 "피지컬 AI엔 AI-for/on-RAN이 필수이고
+  오픈랜 흐름상 HFR도 기회가 있다"는 것입니다. 이 논리의 타당성과 한계는
+  <a href="https://tryingpig.github.io/study/260720_AIRAN_개념설명리포트.html">AI RAN 개념 리포트</a>에서 중립적으로 다뤘습니다.</p>
+  <h4>Q. 왜 실적 변동성이 크나요?</h4>
+  <p>통신장비는 <b>수주 산업</b>이고 <b>고정비 비중이 큽니다.</b> 통신사 투자(CAPEX)에 따라 매출이 출렁이고,
+  매출이 고정비를 넘으면 이익이 크게 늘지만 반대로 줄면 빠르게 적자가 됩니다.
+  2024년 적자 → 2025년 흑자가 그 예입니다.</p>
+  <h4>Q. 경쟁사는 누구인가요?</h4>
+  <p>국내 5G 장비 중소·중견사로 <b>쏠리드·에프알텍</b> 등이, 대형으로는 <b>삼성전자</b>가 있습니다.
+  글로벌 오픈랜에서는 에릭슨·노키아 등과 무대를 공유합니다. 자세한 구도는
+  <a href="https://tryingpig.github.io/study/260720_에치에프알_3_밸류체인.html">③ 밸류체인</a>에서 다룹니다.</p>
+  <h4>Q. 가장 중요한 지표 하나는?</h4>
+  <p><b>미국·해외 수주(수출)</b>입니다. 국내 유선이 실적을 받치는 가운데, 성장 스토리는
+  미국 오픈랜·AI RAN 수주에 달려 있습니다. <b>실증이 아니라 실제 수주 공시</b>를 봐야 합니다.</p>
+
+  <!-- glossary -->
+  <h2>용어 사전</h2>
+  <table>
+    <tbody>
+      <tr><td><b>광전송</b></td><td>통신 신호를 광섬유(빛)로 실어 나르는 것. 에치에프알의 뿌리 사업.</td></tr>
+      <tr><td><b>프론트홀</b></td><td>기지국의 RU(안테나)와 DU(신호처리) 사이 구간. 대용량 광전송 필요.</td></tr>
+      <tr><td><b>DAS</b></td><td>Distributed Antenna System. 분산안테나시스템. 건물 내부 전파 음영 해소.</td></tr>
+      <tr><td><b>FTTH/GPON</b></td><td>광가입자망. 집·건물까지 들어오는 광인터넷.</td></tr>
+      <tr><td><b>ONU</b></td><td>Optical Network Unit. 광가입자망 단말장치.</td></tr>
+      <tr><td><b>이음5G</b></td><td>특정 기업·공간의 전용 5G망(Private 5G). 2021년 과기부 명명.</td></tr>
+      <tr><td><b>vRAN / vCore</b></td><td>가상화된 기지국/코어망. 전용 하드웨어 대신 소프트웨어로 구현.</td></tr>
+      <tr><td><b>RU</b></td><td>Radio Unit. 기지국 안테나(무선장치).</td></tr>
+      <tr><td><b>오픈랜(O-RAN)</b></td><td>기지국 구성 규격을 개방·표준화해 다사 장비 혼용 가능. 중소업체 진입로.</td></tr>
+      <tr><td><b>C-RAN</b></td><td>Centralized RAN. 신호처리를 중앙에 모으는 기지국 구조. 프론트홀 수요 유발.</td></tr>
+      <tr><td><b>my5G</b></td><td>에치에프알의 오픈랜 기반 가상화 5G 솔루션.</td></tr>
+      <tr><td><b>영업 레버리지</b></td><td>고정비가 큰 구조에서 매출이 늘 때 이익이 더 크게 늘어나는 효과.</td></tr>
+      <tr><td><b>End-to-End</b></td><td>기지국~코어망까지 전 구간을 한 회사가 공급하는 것.</td></tr>
+    </tbody>
+  </table>
+
+  <h2>출처</h2>
+  <p class="src">
+    • 하나증권, "에치에프알 (230240) 저도 미국 시장 수혜주입니다" (2026.04.28) — https://file.hanaw.com/download/research/FileServer/WEB/industry/enterprise/2026/04/28/HFR_final_0428.pdf<br>
+    • 미래에셋증권, "에치에프알 — 세대 전환의 최대 수혜주. 턴어라운드 시작" — https://securities.miraeasset.com/bbs/download/2144829.pdf<br>
+    • 비즈니스포스트, "[Who Is ?] 정종민 에치에프알 대표이사" — https://www.businesspost.co.kr/BP?command=article_view&num=363422<br>
+    • 디지털데일리, "[통신장비 기업분석④] 에치에프알, 상반기 어닝 서프라이즈" — http://m.ddaily.co.kr/m/m_article/?no=245839<br>
+    • 디일렉, "HFR, 새해 美디시네트워크 통해 오픈랜 시장 진출" — https://www.thelec.kr/news/articleView.html?idxno=10119<br>
+    • 넷매니아스, "5G 장비 수출 10배 늘린 에치에프알(HFR)" — https://netmanias.com/ko/?id=operator_news&m=view&no=15382<br>
+    • 머니투데이, "SKT, 'AI고속도로' 구축 나선다…정부 AI-RAN 실증사업 선정" (2026.07.14) — https://www.mt.co.kr/tech/2026/07/14/2026071408444992024<br>
+    • THE VC, 에치에프알 기업정보 — https://thevc.kr/hfr<br>
+    • FnGuide 에치에프알(A230240) Snapshot — https://comp.fnguide.com/SVO2/ASP/SVD_Main.asp?gicode=A230240<br>
+    • 보안뉴스, "5G 특화망, 앞으로 '이음(e-Um)5G'로 불러 주세요" — https://m.boannews.com/html/detail.html?idx=103740
+  </p>
+
+  <div class="foot">
+    <hr>
+    본 문서는 개인 학습·정리 목적의 비상업 노트입니다. 실적·목표주가는 증권사·언론의 추정·견해이며 본 문서의 의견이 아닙니다.
+    수치는 작성일(2026-07-20) 기준으로 오류가 있을 수 있으며, 소형주 특성상 변동성이 큽니다.
+    투자에 대한 최종 판단과 책임은 전적으로 독자 본인에게 있습니다. © 2026 개인 리서치 라이브러리.
+  </div>
+
+</div>
+</body>
+</html>

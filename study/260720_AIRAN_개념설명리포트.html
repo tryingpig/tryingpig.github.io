@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI RAN 완전 이해 — AI for/on/and RAN, 무엇이 어떻게 다른가</title>
+<style>
+  :root{
+    --accent:#0891b2; --accent2:#06b6d4;
+    --ink:#1f2430; --muted:#5c6472; --line:#e2e8ec; --bg:#fff; --soft:#f2f9fb;
+    --warnbg:#fff7ed; --warnln:#fb923c;
+  }
+  *{box-sizing:border-box;}
+  body{font-family:"Segoe UI","Malgun Gothic","Apple SD Gothic Neo",system-ui,sans-serif;
+    color:var(--ink); background:var(--bg); margin:0; line-height:1.78; font-size:16.5px; letter-spacing:-0.1px;}
+  .wrap{max-width:920px; margin:0 auto; padding:40px 28px 90px;}
+  h1{font-size:29px; line-height:1.32; margin:8px 0 6px; letter-spacing:-0.6px;}
+  h2{font-size:22px; margin:50px 0 12px; padding-top:14px; border-top:3px solid var(--accent); letter-spacing:-0.4px;}
+  h3{font-size:18.5px; margin:30px 0 8px; color:#2b3242;}
+  h4{font-size:16px; margin:18px 0 6px; color:var(--accent);}
+  p{margin:10px 0;} a{color:var(--accent); text-decoration:none;} a:hover{text-decoration:underline;}
+  .sub{color:var(--muted); font-size:15px;} .lead{font-size:17.5px; color:#333a49;}
+  .kicker{display:inline-block; font-size:13px; font-weight:700; letter-spacing:1.5px;
+    color:#fff; background:var(--accent); padding:5px 12px; border-radius:999px;}
+  .warn{background:var(--warnbg); border:1px solid var(--warnln); border-left:6px solid var(--warnln);
+    border-radius:10px; padding:16px 18px; margin:22px 0; font-size:15px;}
+  .note{background:var(--soft); border:1px solid var(--line); border-radius:10px; padding:16px 18px; margin:18px 0;}
+  .callout{background:#ecfeff; border:1px solid #a5f3fc; border-left:6px solid var(--accent);
+    border-radius:10px; padding:16px 18px; margin:20px 0;}
+  .dark{background:#0c2b33; color:#d9f2f7; border-radius:10px; padding:16px 18px; margin:20px 0;}
+  .dark b{color:#fff;}
+  .big{font-size:19px; font-weight:800; color:var(--accent); line-height:1.5;}
+  .grid2{display:grid; grid-template-columns:1fr 1fr; gap:16px;}
+  .grid3{display:grid; grid-template-columns:repeat(3,1fr); gap:14px;}
+  .card{border:1px solid var(--line); border-radius:12px; padding:16px 18px; background:#fff;}
+  table{width:100%; border-collapse:collapse; margin:18px 0; font-size:14.5px;}
+  th,td{border:1px solid var(--line); padding:9px 11px; text-align:left; vertical-align:top;}
+  th{background:var(--soft); font-weight:700;} td.c,th.c{text-align:center;}
+  figure{margin:24px 0; text-align:center;} figcaption{font-size:13px; color:var(--muted); margin-top:8px;}
+  .svgbox{border:1px solid var(--line); border-radius:12px; padding:14px; background:#fff;}
+  ul,ol{margin:10px 0 10px 4px; padding-left:22px;} li{margin:6px 0;}
+  .toc{background:var(--soft); border:1px solid var(--line); border-radius:12px; padding:18px 22px; margin:26px 0;}
+  .toc ol{columns:2; column-gap:34px;}
+  .src{font-size:13px; color:var(--muted); word-break:break-all;}
+  .good{color:#059669; font-weight:700;} .bad{color:#dc2626; font-weight:700;} .mid{color:#b45309; font-weight:700;}
+  hr{border:none; border-top:1px solid var(--line); margin:34px 0;}
+  .foot{color:var(--muted); font-size:13px; margin-top:40px;}
+  @media (max-width:680px){.grid2,.grid3{grid-template-columns:1fr;} .toc ol{columns:1;} h1{font-size:24px;}}
+  @media print{body{font-size:11.5pt;} .wrap{max-width:100%; padding:0;} h2{break-after:avoid;}
+    figure,table,.card{break-inside:avoid;} a{color:#000;} .warn,.callout,.note,.dark{break-inside:avoid;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <span class="kicker">개념 설명 · 통신 인프라</span>
+  <h1>AI RAN 완전 이해<br>— AI for / on / and RAN, 무엇이 어떻게 다른가</h1>
+  <p class="sub">작성일 2026-07-20 · 개인 리서치 노트 · 하나증권 HFR 리포트에서 출발</p>
+
+  <div class="warn">
+    <b>⚠️ 투자 권유가 아닙니다.</b> 이 문서는 <b>'AI RAN'이라는 개념을 이해하기 위한 개인 학습 노트</b>이며
+    특정 종목의 매수·매도 추천이 아닙니다. 기술 개념을 쉽게 설명하기 위해 <b>일부를 단순화</b>했습니다.
+    시장·일정 수치는 작성일 기준 공개 자료로, 추정치가 포함되어 있고 실제와 다를 수 있습니다.
+    모든 투자 판단과 그 책임은 전적으로 본인에게 있습니다.
+  </div>
+
+  <div class="note">
+    <b>📄 이 리포트의 출발점</b><br>
+    하나증권 리포트("HFR — AI RAN에는 엔비디아만 있는 것이 아닙니다")에서 <b>AI RAN을 3종으로 구분</b>하는 대목이
+    나온다. 그런데 이 3종 구분이 왜 중요하고 무엇이 다른지 제대로 알아야 그 논리를 판단할 수 있다.
+    이 글은 <b>AI RAN 개념 자체를 처음부터</b> 풀어쓴 것이고, 그 위에서 리포트의 핵심 주장도 검증한다.
+    이어지는 <b>HFR 입문세트</b>의 예습편 역할도 한다.
+  </div>
+
+  <div class="callout">
+    <span class="big">🧭 한 문장 정의 세 개</span>
+    <ul style="margin-bottom:0; list-style:none; padding-left:0;">
+      <li>🔧 <b>AI for RAN</b> = "AI로 <b>통신 품질을 좋게</b> 한다" (전파 신호처리에 AI 적용)</li>
+      <li>📱 <b>AI on RAN</b> = "기지국을 <b>AI 서비스 서버로도</b> 쓴다" (엣지에서 AI 앱 구동)</li>
+      <li>🖥️ <b>AI and RAN</b> = "기지국 <b>GPU를 통신·AI가 나눠</b> 쓴다" (공용 인프라, = 리포트의 'AI with RAN')</li>
+    </ul>
+  </div>
+
+  <div class="toc">
+    <b>목차</b>
+    <ol>
+      <li>왜 지금 'AI RAN'인가</li>
+      <li>기초 — RAN(기지국)이 대체 뭔가</li>
+      <li>Layer 1이라는 핵심 무대</li>
+      <li>AI RAN 3종 지도 (한 장 요약)</li>
+      <li>① AI for RAN — 통신을 똑똑하게</li>
+      <li>② AI on RAN — 기지국을 서버로</li>
+      <li>③ AI and RAN — GPU를 나눠 쓴다</li>
+      <li>세 방식 비교표</li>
+      <li>🔍 하나증권 논리 검증</li>
+      <li>생태계 — AI-RAN Alliance와 오픈랜</li>
+      <li>시장 규모와 일정</li>
+      <li>투자 관점 — 누가 어디서 버나</li>
+      <li>FAQ · 용어사전 · 출처</li>
+    </ol>
+  </div>
+
+  <!-- 1 -->
+  <h2>1. 왜 지금 'AI RAN'인가</h2>
+  <p class="lead">
+    AI RAN을 이해하려면 먼저 <b>두 개의 흐름이 충돌하고 있다</b>는 걸 알아야 한다.
+  </p>
+  <div class="grid2">
+    <div class="card">
+      <h4>흐름 ① 트래픽·연산 폭증</h4>
+      <p><b>피지컬 AI</b>(로봇·자율주행·드론·휴머노이드)가 늘면서, 기기들이 <b>실시간으로 대용량 데이터</b>를
+      주고받고 <b>즉각적인 AI 연산</b>을 요구한다.</p>
+      <p class="sub" style="margin:0;">→ "빠른 통신 + 낮은 지연 + 가까운 곳의 연산"이 동시에 필요해졌다.</p>
+    </div>
+    <div class="card">
+      <h4>흐름 ② 주파수·비용의 한계</h4>
+      <p>주파수(스펙트럼)는 <b>한정된 자원</b>이고 경매로 비싸게 산다. 기지국 장비·전기료도 통신사엔 큰 부담이다.</p>
+      <p class="sub" style="margin:0;">→ "같은 주파수로 더 많이, 같은 장비로 더 싸게"가 절실해졌다.</p>
+    </div>
+  </div>
+  <div class="callout">
+    <b>💡 AI RAN은 이 충돌의 해법으로 등장했다</b><br>
+    <b>"통신망(RAN)에 AI를 결합하면"</b> — ①주파수를 더 효율적으로 쓰고(용량↑), ②지연을 줄이고,
+    ③남는 연산자원으로 새 돈을 벌 수 있다는 것.<br><br>
+    하나증권 노트가 언급한 <b>"미국 어퍼 C밴드 경매"</b>도 이 맥락이다. 좋은 주파수를 확보했지만,
+    <b>주파수만으론 부족하고 AI RAN이 함께 가야 피지컬 AI를 감당한다</b>는 논리다.
+  </div>
+
+  <!-- 2 -->
+  <h2>2. 기초 — RAN(기지국)이 대체 뭔가</h2>
+  <p>
+    <b>RAN</b>은 <b>R</b>adio <b>A</b>ccess <b>N</b>etwork, 우리말로 <b>무선 접속망</b>이다.
+    쉽게 말해 <b>"내 휴대폰과 통신사 코어망을 이어주는 기지국 시스템 전체"</b>다.
+  </p>
+  <figure>
+    <div class="svgbox">
+      <svg viewBox="0 0 860 250" width="100%" role="img" aria-label="RAN 기본 구조">
+        <g font-family="Segoe UI, sans-serif">
+          <text x="16" y="26" font-size="15" font-weight="800">휴대폰에서 인터넷까지 — RAN의 위치</text>
+
+          <rect x="24" y="60" width="120" height="60" rx="10" fill="#f1f5f9" stroke="#cbd5e1"/>
+          <text x="84" y="86" font-size="12" text-anchor="middle">📱 단말</text>
+          <text x="84" y="104" font-size="10.5" fill="#5c6472" text-anchor="middle">폰·로봇·차량</text>
+
+          <rect x="180" y="46" width="420" height="90" rx="12" fill="#ecfeff" stroke="#0891b2" stroke-width="2"/>
+          <text x="390" y="70" font-size="13.5" font-weight="800" fill="#0891b2" text-anchor="middle">RAN (무선 접속망) = 기지국 시스템</text>
+          <rect x="198" y="84" width="118" height="38" rx="7" fill="#fff" stroke="#67e8f9"/>
+          <text x="257" y="102" font-size="11" text-anchor="middle" font-weight="700">RU (안테나)</text>
+          <text x="257" y="116" font-size="9.5" fill="#5c6472" text-anchor="middle">전파 송수신</text>
+          <rect x="326" y="84" width="118" height="38" rx="7" fill="#fff" stroke="#67e8f9"/>
+          <text x="385" y="102" font-size="11" text-anchor="middle" font-weight="700">DU (분산장치)</text>
+          <text x="385" y="116" font-size="9.5" fill="#5c6472" text-anchor="middle">실시간 신호처리</text>
+          <rect x="454" y="84" width="128" height="38" rx="7" fill="#fff" stroke="#67e8f9"/>
+          <text x="518" y="102" font-size="11" text-anchor="middle" font-weight="700">CU (중앙장치)</text>
+          <text x="518" y="116" font-size="9.5" fill="#5c6472" text-anchor="middle">상위 제어</text>
+
+          <rect x="636" y="60" width="120" height="60" rx="10" fill="#f1f5f9" stroke="#cbd5e1"/>
+          <text x="696" y="86" font-size="12" text-anchor="middle">🌐 코어망</text>
+          <text x="696" y="104" font-size="10.5" fill="#5c6472" text-anchor="middle">→ 인터넷</text>
+
+          <g stroke="#0891b2" stroke-width="2" fill="none">
+            <path d="M144,90 L176,90" marker-end="url(#a)"/>
+            <path d="M600,90 L632,90" marker-end="url(#a)"/>
+          </g>
+          <defs><marker id="a" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+            <path d="M0,0 L6,3 L0,6 Z" fill="#0891b2"/></marker></defs>
+
+          <rect x="24" y="160" width="732" height="70" rx="11" fill="#f2f9fb" stroke="#a5f3fc"/>
+          <text x="390" y="184" font-size="12.5" font-weight="800" fill="#0e7490" text-anchor="middle">
+            💡 RAN은 통신 투자비의 가장 큰 덩어리 (전체 통신망 CAPEX의 상당 부분)</text>
+          <text x="390" y="206" font-size="11.5" fill="#155e75" text-anchor="middle">
+            그래서 "RAN을 더 효율적으로"가 통신사에게 곧 돈이다 — 여기에 AI가 들어온다</text>
+          <text x="390" y="222" font-size="10.5" fill="#5c6472" text-anchor="middle">개인 정리 도식</text>
+        </g>
+      </svg>
+    </div>
+    <figcaption>그림 1. RAN은 단말과 코어망 사이의 기지국 시스템. RU/DU/CU로 나뉜다. (개인 정리 도식)</figcaption>
+  </figure>
+  <table>
+    <thead><tr><th>구성</th><th>역할</th><th>비유</th></tr></thead>
+    <tbody>
+      <tr><td><b>RU</b> (Radio Unit)</td><td>안테나. 전파를 실제로 쏘고 받음</td><td>귀와 입</td></tr>
+      <tr><td><b>DU</b> (Distributed Unit)</td><td><b>실시간 신호처리</b>. 전파 ↔ 디지털 변환·오류정정</td><td><b>반사신경(척수)</b></td></tr>
+      <tr><td><b>CU</b> (Centralized Unit)</td><td>상위 제어·세션 관리</td><td>판단(뇌)</td></tr>
+    </tbody>
+  </table>
+  <div class="note">
+    <b>오픈랜(O-RAN)이 왜 중요한지 여기서 나온다</b><br>
+    전통 기지국은 RU·DU·CU를 <b>한 회사(에릭슨·노키아·삼성) 장비로 통째로</b> 사야 했다(폐쇄형).
+    <b>오픈랜</b>은 이 사이의 규격을 <b>개방·표준화</b>해서, <b>서로 다른 회사 장비를 섞어 쓸 수 있게</b> 한 것이다.<br><br>
+    → 이게 <b>HFR 같은 중소 전문업체에게 기회</b>가 되는 구조다. 통째 계약이 아니라 <b>부분(예: DU)만으로도 진입</b>할 수 있으니까.
+  </div>
+
+  <!-- 3 -->
+  <h2>3. Layer 1이라는 핵심 무대</h2>
+  <p class="lead">
+    AI RAN, 특히 'AI for RAN'을 이해하려면 <b>Layer 1(L1, 물리계층)</b>이라는 단어를 알아야 한다.
+    이게 AI가 들어가는 핵심 무대다.
+  </p>
+  <div class="callout">
+    <b>📡 Layer 1(물리계층)이란</b><br>
+    무선통신은 여러 층(Layer)으로 나뉘는데, <b>Layer 1은 가장 아래 — 전파 그 자체를 다루는 층</b>이다.
+    <ul style="margin-bottom:0;">
+      <li><b>채널 추정</b> — 지금 전파 환경(방해물·거리)이 어떤지 파악</li>
+      <li><b>빔포밍(Beamforming)</b> — 전파를 특정 방향으로 모아 쏘기</li>
+      <li><b>스케줄링</b> — 누구에게 언제 얼마의 주파수를 줄지 배분</li>
+      <li><b>오류정정</b> — 깨진 신호 복원</li>
+    </ul>
+  </div>
+  <p>
+    이 L1 연산은 <b>극도로 무겁고, 극도로 빨라야 한다</b>(밀리초 단위). 전통적으로는 <b>전용 칩(ASIC/DSP)</b>이 처리했다.
+    그런데 <b>GPU로 이 연산을 하면서 AI를 얹으면</b> — 더 똑똑하게, 소프트웨어로 유연하게 처리할 수 있다는 게
+    엔비디아·노키아가 미는 방향이다. (뒤의 AI-and-RAN에서 다시 다룬다)
+  </p>
+
+  <!-- 4 -->
+  <h2>4. AI RAN 3종 지도 (한 장 요약)</h2>
+  <p>이제 핵심이다. <b>AI-RAN Alliance</b>(2024년 결성)가 공식적으로 나눈 3가지 형태를 한 그림에 담았다.</p>
+  <figure>
+    <div class="svgbox">
+      <svg viewBox="0 0 860 420" width="100%" role="img" aria-label="AI RAN 3종 지도">
+        <g font-family="Segoe UI, sans-serif">
+          <text x="16" y="26" font-size="15" font-weight="800">AI RAN 3종 — "AI와 통신망을 어떻게 결합하나"</text>
+
+          <!-- base station box -->
+          <rect x="20" y="44" width="820" height="330" rx="14" fill="#f8fafc" stroke="#cbd5e1"/>
+          <text x="40" y="68" font-size="12.5" font-weight="700" fill="#5c6472">🏗️ 하나의 기지국 (GPU가 탑재된 AI RAN 장비)</text>
+
+          <!-- for RAN -->
+          <rect x="44" y="84" width="792" height="86" rx="12" fill="#ecfeff" stroke="#0891b2" stroke-width="2"/>
+          <text x="60" y="110" font-size="14" font-weight="800" fill="#0891b2">🔧 ① AI for RAN — 통신 자체를 똑똑하게</text>
+          <text x="60" y="132" font-size="11.5" fill="#155e75">AI가 <b>Layer 1</b>에 들어가 채널추정·빔포밍·스케줄링을 최적화 → <b>같은 주파수로 더 많은 용량</b></text>
+          <text x="60" y="152" font-size="11.5" fill="#155e75">목적: <b>스펙트럼 효율(용량) 개선</b> · 수혜: 통신사(주파수 절약)</text>
+
+          <!-- on RAN -->
+          <rect x="44" y="180" width="792" height="86" rx="12" fill="#f0fdf4" stroke="#16a34a" stroke-width="2"/>
+          <text x="60" y="206" font-size="14" font-weight="800" fill="#16a34a">📱 ② AI on RAN — 기지국을 AI 서비스 서버로</text>
+          <text x="60" y="228" font-size="11.5" fill="#14532d">기지국의 컴퓨팅으로 <b>엣지 AI 앱</b> 구동(영상분석·드론관제·로봇제어) → <b>초저지연 AI 서비스</b></text>
+          <text x="60" y="248" font-size="11.5" fill="#14532d">목적: <b>새 서비스·매출</b> · 수혜: 통신사(신규 수익) + 피지컬 AI</text>
+
+          <!-- and RAN -->
+          <rect x="44" y="276" width="792" height="86" rx="12" fill="#fef2f2" stroke="#dc2626" stroke-width="2"/>
+          <text x="60" y="302" font-size="14" font-weight="800" fill="#dc2626">🖥️ ③ AI and RAN — GPU를 통신·AI가 나눠 쓴다 (= 리포트의 'AI with RAN')</text>
+          <text x="60" y="324" font-size="11.5" fill="#7f1d1d">통신이 GPU를 안 쓸 때 <b>남는 자원으로 외부 AI 연산</b>을 돌려 판매 → <b>기지국 = 미니 데이터센터</b></text>
+          <text x="60" y="344" font-size="11.5" fill="#7f1d1d">목적: <b>유휴자원 수익화(TCO 절감)</b> · 주도: <b>엔비디아 + 노키아</b></text>
+        </g>
+      </svg>
+    </div>
+    <figcaption>그림 2. AI RAN 3종. 위에서 아래로 갈수록 "통신 개선 → 서비스 → 인프라 공유"로 성격이 이동. (개인 정리 도식)</figcaption>
+  </figure>
+  <div class="note">
+    <b>⚠️ 용어 주의 — 'AI and RAN' = 'AI with RAN'</b><br>
+    AI-RAN Alliance 공식 명칭은 <b>AI-and-RAN</b>이다. 하나증권 노트의 <b>"AI with RAN"</b>은 이것과 같은 개념을 가리킨다.
+    (엔비디아 자료에서도 AI-and-RAN으로 표기) 이 리포트에서는 <b>둘을 같은 것으로</b> 다룬다.
+  </div>
+
+  <!-- 5 -->
+  <h2>5. ① AI for RAN — 통신을 똑똑하게</h2>
+  <p class="lead">
+    가장 <b>본질적</b>인 AI RAN. "AI로 <b>통신 품질과 용량 자체</b>를 끌어올린다."
+  </p>
+  <h3>구체적으로 무엇을 하나</h3>
+  <table>
+    <thead><tr><th>기능</th><th>기존 방식</th><th>AI 적용 시</th></tr></thead>
+    <tbody>
+      <tr><td><b>채널 추정</b></td><td>수학 공식으로 근사</td><td>AI가 전파 환경을 학습해 더 정확히 예측</td></tr>
+      <tr><td><b>빔포밍</b></td><td>제로포싱 등 고정 알고리즘</td><td>AI 빔포밍 — 보도상 <b>최대 1.62배 처리량</b> 사례</td></tr>
+      <tr><td><b>스케줄링</b></td><td>규칙 기반 배분</td><td>수요를 예측해 동적으로 최적 배분</td></tr>
+      <tr><td><b>AI 수신기</b></td><td>고정 신호처리</td><td>보도상 <b>5~10% 스펙트럼 효율</b> 개선 사례</td></tr>
+    </tbody>
+  </table>
+  <div class="callout">
+    <b>💰 왜 이게 통신사에게 돈인가</b><br>
+    주파수는 <b>경매로 수조 원</b>에 사는 자원이다. <b>같은 주파수로 통신 용량을 10% 더 짜내면</b>,
+    그만큼의 주파수를 <b>공짜로 얻은 것</b>과 같다. 노키아·엔비디아는 2028년까지 <b>100% 이상 효율 개선</b>(용량 2배)을
+    목표로 내걸었다.<br><br>
+    <b>→ AI for RAN은 "주파수 값을 아껴준다"는 명확한 경제적 이유가 있어, 통신사 도입 유인이 크다.</b>
+    하나증권 노트가 <b>"피지컬 AI엔 for/on이 필수"</b>라고 한 근거의 절반이 여기 있다.
+  </div>
+
+  <!-- 6 -->
+  <h2>6. ② AI on RAN — 기지국을 서버로</h2>
+  <p class="lead">
+    기지국의 컴퓨팅 파워를 <b>통신이 아니라 'AI 서비스'에 쓰는</b> 것. 기지국을 <b>동네 엣지 데이터센터</b>처럼 활용한다.
+  </p>
+  <div class="note">
+    <b>🤖 왜 '기지국'에서 AI를 돌리나 — 지연(latency) 때문</b><br>
+    자율주행차·순찰로봇·드론은 <b>0.01초</b>의 지연도 사고로 이어질 수 있다. 그런데 데이터를
+    <b>멀리 있는 클라우드까지</b> 보냈다 받으면 지연이 크다.<br><br>
+    <b>기지국은 사용자와 가장 가깝다.</b> 여기서 AI 연산을 처리하면 <b>왕복 거리가 짧아 지연이 최소</b>가 된다.
+    이것이 <b>엣지 컴퓨팅</b>이고, AI on RAN의 핵심 논리다.
+  </div>
+  <h3>실제 사례 (과기부 실증사업)</h3>
+  <p>
+    한국의 <b>과기정통부·NIA 'AI-RAN 실증사업'</b>에서 검증하는 3종 서비스가 정확히 AI on RAN의 예다:
+  </p>
+  <div class="grid3">
+    <div class="card"><h4>🐕 사족보행 순찰로봇</h4><p class="sub" style="margin:0;">공장 위험지역을 실시간 감시. 영상분석 AI를 기지국에서 처리.</p></div>
+    <div class="card"><h4>📦 무인 자율이송</h4><p class="sub" style="margin:0;">디지털 트윈 기반 물류 자동화. 저지연 제어가 핵심.</p></div>
+    <div class="card"><h4>🤖 휴머노이드 저전력</h4><p class="sub" style="margin:0;"><b>AI 연산을 네트워크로 분산</b>해 로봇 배터리를 아낀다.</p></div>
+  </div>
+  <div class="callout">
+    <b>💡 휴머노이드 사례가 핵심을 보여준다</b><br>
+    로봇이 무거운 AI 연산을 <b>자기 몸(배터리)으로</b> 하면 금방 방전된다. 대신 그 연산을
+    <b>가까운 기지국(AI on RAN)에 넘기면</b> 로봇은 가벼워지고 오래 간다.
+    <b>"연산을 몸 밖 네트워크로 오프로딩"</b> — 이게 피지컬 AI 시대에 AI on RAN이 필수라는 논리의 핵심이다.
+  </div>
+
+  <!-- 7 -->
+  <h2>7. ③ AI and RAN — GPU를 나눠 쓴다</h2>
+  <p class="lead">
+    <b>엔비디아-노키아가 미는 방식.</b> 하나증권 노트의 <b>'AI with RAN'</b>이 바로 이것이다.
+  </p>
+  <div class="dark">
+    <b>🖥️ 핵심 아이디어</b><br><br>
+    기지국에 <b>GPU</b>를 넣으면, 그 GPU는 <b>통신 신호처리(RAN)</b>에 쓰인다.
+    그런데 <b>통신 부하는 시간대별로 들쭉날쭉</b>하다(새벽엔 한산). 그럼 <b>GPU가 노는 시간</b>이 생긴다.<br><br>
+    <b>"그 남는 GPU로 외부 AI 연산을 돌려 팔자"</b> — 기지국을 <b>통신 장비이자 동시에 AI 데이터센터</b>로
+    이중 활용하는 것. 통신사 입장에선 <b>비싼 GPU의 본전을 뽑고(TCO 절감) 새 수익</b>도 낸다.
+  </div>
+  <figure>
+    <div class="svgbox">
+      <svg viewBox="0 0 840 200" width="100%" role="img" aria-label="AI and RAN 자원 공유">
+        <g font-family="Segoe UI, sans-serif">
+          <text x="16" y="24" font-size="14.5" font-weight="800">하나의 GPU, 시간대별로 나눠 쓰기 (AI and RAN)</text>
+          <text x="30" y="60" font-size="11.5" fill="#5c6472">낮 (통신 붐빔)</text>
+          <rect x="150" y="46" width="300" height="26" fill="#0891b2"/>
+          <text x="300" y="64" font-size="11" fill="#fff" text-anchor="middle">RAN(통신) 80%</text>
+          <rect x="450" y="46" width="90" height="26" fill="#dc2626"/>
+          <text x="495" y="64" font-size="10.5" fill="#fff" text-anchor="middle">AI 20%</text>
+
+          <text x="30" y="110" font-size="11.5" fill="#5c6472">새벽 (통신 한산)</text>
+          <rect x="150" y="96" width="90" height="26" fill="#0891b2"/>
+          <text x="195" y="114" font-size="10.5" fill="#fff" text-anchor="middle">RAN 20%</text>
+          <rect x="240" y="96" width="300" height="26" fill="#dc2626"/>
+          <text x="390" y="114" font-size="11" fill="#fff" text-anchor="middle">AI 연산 판매 80%</text>
+
+          <rect x="150" y="146" width="540" height="40" rx="9" fill="#fef2f2" stroke="#fca5a5"/>
+          <text x="420" y="171" font-size="12" fill="#991b1b" text-anchor="middle" font-weight="700">
+            → GPU를 놀리지 않고 꽉 채워 쓴다 = 비싼 장비의 본전 회수 (개인 정리 도식)</text>
+        </g>
+      </svg>
+    </div>
+    <figcaption>그림 3. AI and RAN — 통신 유휴 시간에 GPU로 AI 연산을 팔아 수익화. (개인 정리 도식)</figcaption>
+  </figure>
+  <div class="note">
+    <b>왜 엔비디아가 이 방식을 미는가 — 이해관계</b><br>
+    이 방식의 전제는 <b>"기지국에 GPU를 넣는 것"</b>이다. 그리고 GPU는 <b>엔비디아의 핵심 사업</b>이다.
+    즉 <b>AI and RAN이 표준이 되면 기지국마다 GPU가 팔린다.</b> 엔비디아가 노키아와 손잡고
+    이 방식을 강하게 미는 <b>구조적 이유</b>가 여기 있다.<br><br>
+    <b>→ 하나증권 노트의 반론이 파고드는 지점이 정확히 이것이다</b>(9장).
+  </div>
+
+  <!-- 8 -->
+  <h2>8. 세 방식 비교표</h2>
+  <table>
+    <thead><tr><th></th><th class="c">🔧 AI for RAN</th><th class="c">📱 AI on RAN</th><th class="c">🖥️ AI and RAN</th></tr></thead>
+    <tbody>
+      <tr><td><b>한 줄 정의</b></td><td class="c">통신을 똑똑하게</td><td class="c">기지국을 AI 서버로</td><td class="c">GPU를 나눠 쓴다</td></tr>
+      <tr><td><b>AI가 하는 일</b></td><td class="c">신호처리 최적화</td><td class="c">엣지 AI 앱 구동</td><td class="c">유휴자원으로 외부 연산</td></tr>
+      <tr><td><b>주 목적</b></td><td class="c">스펙트럼 효율↑</td><td class="c">신규 서비스·저지연</td><td class="c">TCO 절감·유휴 수익</td></tr>
+      <tr><td><b>1차 수혜</b></td><td class="c">통신사(주파수 절약)</td><td class="c">통신사+피지컬 AI</td><td class="c">통신사(부수입)+<b>엔비디아</b></td></tr>
+      <tr><td><b>GPU 필수?</b></td><td class="c mid">유리하나 필수는 아님*</td><td class="c mid">경우에 따라</td><td class="c bad"><b>사실상 전제</b></td></tr>
+      <tr><td><b>주도 진영</b></td><td class="c">다양(삼성·에릭슨·노키아·HFR 등)</td><td class="c">다양</td><td class="c"><b>엔비디아-노키아</b></td></tr>
+      <tr><td><b>피지컬 AI 필수도</b><br><span class="sub">(하나證 관점)</span></td><td class="c good">필수</td><td class="c good">필수</td><td class="c bad">비필수</td></tr>
+    </tbody>
+  </table>
+  <p class="sub">
+    * AI for RAN은 GPU로 하면 유연하지만, 전용칩(ASIC)으로도 구현 가능하다. 이 점이 9장 논쟁의 핵심 중 하나다.
+  </p>
+
+  <!-- 9 -->
+  <h2>9. 🔍 하나증권 논리 검증</h2>
+  <p class="lead">
+    이제 개념을 알았으니, 하나증권 노트의 핵심 주장을 <b>중립적으로</b> 뜯어보자.
+    (아래는 노트 논리의 구조 분석이지, 매수 의견에 대한 지지·반대가 아니다.)
+  </p>
+
+  <div class="callout">
+    <b>📌 노트의 핵심 주장 3단</b>
+    <ol style="margin-bottom:0;">
+      <li>엔비디아-노키아 방식은 <b>AI and RAN(with RAN)</b>이다.</li>
+      <li>그런데 피지컬 AI엔 <b>AI for RAN·AI on RAN이 필수</b>이고 <b>AI and RAN은 비필수</b>다.</li>
+      <li>따라서 <b>"AI RAN = 엔비디아 독점"이 아니며</b>, HFR 같은 업체도 진출 가능하다.</li>
+    </ol>
+  </div>
+
+  <h3>주장을 지지하는 근거 (타당한 부분)</h3>
+  <div class="grid2">
+    <div class="card">
+      <h4>🟢 논리적으로 성립하는 지점</h4>
+      <ul style="margin-bottom:0;">
+        <li>AI RAN이 <b>3종으로 나뉜다는 건 사실</b>(AI-RAN Alliance 공식 분류)</li>
+        <li>엔비디아-노키아가 <b>AI and RAN 중심</b>인 것도 사실</li>
+        <li>따라서 <b>"AI RAN 전체 = 엔비디아"는 과장</b>이라는 지적은 논리적으로 타당</li>
+        <li>과기부 실증에 HFR이 <b>삼성·에릭슨·노키아와 나란히 선정</b>된 것도 사실</li>
+        <li>오픈랜은 실제로 <b>중소 전문업체에 진입로</b>를 열어줌</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4>🟠 검증·유의가 필요한 지점</h4>
+      <ul style="margin-bottom:0;">
+        <li><b>"AI and RAN이 비효율·비필수"</b>는 <b>강한 주장</b> — 업계 컨센서스인지, 강세론자 해석인지 확인 필요</li>
+        <li>노키아-엔비디아는 <b>9개 대형 통신사</b>가 관여한다고 발표 → "필요성 회의적"과 배치되는 정황</li>
+        <li>HFR이 실제로 <b>AI RAN 매출</b>을 냈는지, 아직 <b>실증 단계</b>인지 구분 필요</li>
+        <li>"작은 M/S로도 큰 이익"은 <b>가정</b> — 실제 수주·단가 확인 전엔 미검증</li>
+        <li>세 방식은 <b>배타적이 아니라 함께 갈 수도</b> 있음(엔비디아도 셋 다 제공 주장)</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="dark">
+    <b>🎯 균형 잡힌 결론</b><br><br>
+    노트의 <b>구조적 논리("AI RAN ≠ 엔비디아 독점")는 개념적으로 타당</b>하다.
+    AI RAN은 실제로 3종이고, HFR이 노릴 수 있는 for/on 영역이 분명히 존재한다.<br><br>
+    다만 <b>"AI and RAN은 비필수"라는 단정</b>은 한 발 물러서서 봐야 한다.
+    엔비디아-노키아 진영이 <b>9개 대형 통신사</b>와 함께 가고 있다는 사실은, 시장이 아직
+    <b>"어느 방식이 이길지 정해지지 않은 초기"</b>임을 시사한다.<br><br>
+    <b>즉 진짜 관전 포인트는:</b> "엔비디아가 독점하냐 아니냐"의 이분법이 아니라,
+    <b>"세 방식이 각각 얼마나 크고, HFR이 for/on에서 실제 매출을 내는가"</b>이다.
+    이건 <b>실증 → 상용 → 수주</b>로 이어지는지를 시간을 두고 확인해야 할 문제다.
+  </div>
+
+  <!-- 10 -->
+  <h2>10. 생태계 — AI-RAN Alliance와 오픈랜</h2>
+  <table>
+    <thead><tr><th>주체</th><th>내용</th></tr></thead>
+    <tbody>
+      <tr><td><b>AI-RAN Alliance</b></td><td>2024년 2월 결성. 창립멤버: Arm, DeepSig, Ericsson, Microsoft, Nokia, Northeastern Univ, <b>NVIDIA, Samsung, SoftBank, T-Mobile</b>, Univ of Tokyo</td></tr>
+      <tr><td><b>엔비디아-노키아</b></td><td>2026.7.15 <b>GPU 기반 AI-RAN 플랫폼</b> 발표. 2028년까지 스펙트럼 효율 100%+ 개선 목표. 파일럿 2026말, 상용 2027</td></tr>
+      <tr><td><b>관여 통신사(노키아 발표)</b></td><td>T-Mobile US, Vodafone, BT, Orange, Deutsche Telekom, SoftBank, NTT DOCOMO, Elisa, Indosat</td></tr>
+      <tr><td><b>한국(과기부)</b></td><td><b>SKT 주관</b> 'AI-RAN 선도망' 실증. 삼성·<b>HFR</b>·에릭슨·노키아 4개 제조사 장비 동시 실증</td></tr>
+      <tr><td><b>오픈랜(O-RAN)</b></td><td>RU/DU/CU 규격 개방. 중소·전문업체 진입로. HFR의 my5G가 대표 사례</td></tr>
+    </tbody>
+  </table>
+  <div class="note">
+    <b>🔗 이미 다룬 주제와의 연결</b><br>
+    이 명단에 <b>삼성·에릭슨·노키아</b>가 다 있다는 점을 주목하자. 앞서 만든 보안 시리즈에서 본
+    <b>"플랫폼 통합 전쟁"</b>과 비슷하게, AI RAN도 <b>거인들(엔비디아·노키아·삼성)과 전문업체(HFR)가
+    같은 무대에 서는 국면</b>이다. 하나증권 노트의 포인트도 결국 <b>"작은 회사가 거인들 틈에서 한 조각을 먹을 수 있는가"</b>다.
+  </div>
+
+  <!-- 11 -->
+  <h2>11. 시장 규모와 일정</h2>
+  <div class="grid2">
+    <div class="card">
+      <h4>📅 일정 (노키아-엔비디아 기준)</h4>
+      <ul style="margin-bottom:0;">
+        <li><b>2026년 말</b> — 파일럿 배포 시작</li>
+        <li><b>2027년</b> — 상용화</li>
+        <li><b>2028년</b> — 스펙트럼 효율 100%+ 목표</li>
+        <li>한국: 과기부 실증사업 <b>진행 중</b></li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4>📊 시장 성격</h4>
+      <ul style="margin-bottom:0;">
+        <li>아직 <b>초기·형성 단계</b> (상용 전)</li>
+        <li>6G(2030년경)로 가는 길목의 핵심 테마</li>
+        <li>통신장비는 <b>원가 구조상 소량 수주로도 이익 레버리지</b>가 큼(노트 논리)</li>
+        <li>단, <b>실증 ≠ 매출</b> — 상용 수주 전환이 관건</li>
+      </ul>
+    </div>
+  </div>
+  <div class="warn">
+    <b>⚠️ 숫자 주의</b> — AI RAN은 <b>상용화 이전 단계</b>라 신뢰할 만한 시장 규모 추정치가 기관마다 크게 다르다.
+    "곧 큰 시장이 열린다"는 기대와 "아직 실증 단계"라는 현실을 <b>함께</b> 봐야 한다.
+    이 노트는 특정 시장 규모 수치를 단정하지 않는다.
+  </div>
+
+  <!-- 12 -->
+  <h2>12. 투자 관점 — 누가 어디서 버나</h2>
+  <p>AI RAN을 <b>돈의 관점</b>으로 다시 보면, 방식마다 수혜자가 다르다.</p>
+  <table>
+    <thead><tr><th>계층</th><th>누가</th><th>무엇으로</th></tr></thead>
+    <tbody>
+      <tr><td><b>연산 칩</b></td><td>엔비디아(GPU), 전용칩 업체</td><td>AI and RAN이 커지면 GPU 판매</td></tr>
+      <tr><td><b>장비(RU/DU/CU)</b></td><td>삼성·에릭슨·노키아 + <b>HFR</b> 등</td><td>AI RAN 장비 공급</td></tr>
+      <tr><td><b>소프트웨어</b></td><td>vRAN·AI 알고리즘 업체</td><td>가상화·AI for RAN SW</td></tr>
+      <tr><td><b>통신사</b></td><td>SKT·T-Mobile 등</td><td>효율↑·신규 AI 서비스 수익</td></tr>
+      <tr><td><b>서비스</b></td><td>피지컬 AI 기업(로봇·자율주행)</td><td>저지연 AI 인프라 활용</td></tr>
+    </tbody>
+  </table>
+  <div class="callout">
+    <b>🔎 HFR의 자리 (다음 리포트 예고)</b><br>
+    HFR(에치에프알, KOSDAQ 232680)은 <b>오픈랜 기반 가상화 5G 기지국(my5G)</b>을 만드는 <b>장비·SW 업체</b>다.
+    하나증권 논리에서 HFR의 위치는 <b>"AI for RAN·AI on RAN 계열의 장비를, 오픈랜을 발판으로 공급"</b>하는 것.<br><br>
+    <b>검증할 것:</b> ①실제 AI RAN 매출 유무 ②과기부 실증의 상용 전환 ③미국 등 해외 수주 가능성
+    ④통신장비 원가구조상 "작은 M/S로 큰 이익"이 실제인지. → <b>이건 HFR 입문세트에서 본격적으로 파헤친다.</b>
+  </div>
+
+  <!-- FAQ -->
+  <h2>FAQ</h2>
+  <h4>Q. AI RAN 세 개 중 하나만 골라야 하나요?</h4>
+  <p>아닙니다. <b>함께 갈 수 있습니다.</b> 엔비디아도 셋 다 제공한다고 주장하고, 노키아 'Project Aura'는
+  AI for RAN과 AI on RAN을 한 아키텍처에 합칩니다. 다만 <b>업체마다 강조점이 다르고</b>,
+  그 차이가 경쟁 구도(와 하나증권 논리)를 만듭니다.</p>
+  <h4>Q. 왜 엔비디아 GPU 얘기가 계속 나오나요?</h4>
+  <p>AI 연산에 GPU가 강하기 때문입니다. 특히 <b>AI and RAN</b>은 "기지국에 GPU를 넣는다"가 전제라
+  엔비디아에 직접 유리합니다. 반대로 <b>AI for RAN</b>은 전용칩(ASIC)으로도 가능해서,
+  "꼭 GPU여야 하냐"가 하나증권 논쟁의 핵심입니다.</p>
+  <h4>Q. 오픈랜이 왜 HFR에 유리한가요?</h4>
+  <p>전통 기지국은 한 회사 장비를 <b>통째로</b> 사야 했습니다. 오픈랜은 규격을 개방해
+  <b>부분(예: DU)만 공급해도</b> 되게 만들었습니다. 그래서 <b>중소 전문업체가 거인들 틈에 진입</b>할 수 있습니다.</p>
+  <h4>Q. 피지컬 AI가 왜 AI RAN을 필요로 하나요?</h4>
+  <p>로봇·자율주행은 <b>대용량 데이터 + 초저지연 + 이동 중 연산</b>이 동시에 필요합니다.
+  이걸 감당하려면 통신망이 똑똑해지고(for RAN), 기지국이 연산을 대신 해주고(on RAN),
+  로봇이 연산을 네트워크로 넘길 수 있어야(오프로딩) 합니다.</p>
+  <h4>Q. 지금 투자하기 이른가요?</h4>
+  <p>이 노트는 그 판단을 내리지 않습니다. 다만 <b>사실</b>은 "AI RAN은 상용화 이전, 실증 단계"라는 것입니다.
+  <b>실증이 상용 수주로 전환되는지</b>가 투자 관점의 핵심 확인 사항입니다.</p>
+
+  <!-- glossary -->
+  <h2>용어 사전</h2>
+  <table>
+    <tbody>
+      <tr><td><b>RAN</b></td><td>Radio Access Network. 무선 접속망. 단말과 코어망을 잇는 기지국 시스템.</td></tr>
+      <tr><td><b>RU/DU/CU</b></td><td>Radio/Distributed/Centralized Unit. 기지국을 안테나·신호처리·제어로 나눈 구성.</td></tr>
+      <tr><td><b>Layer 1(L1)</b></td><td>물리계층. 전파 신호 자체를 다루는 최하위 층. AI for RAN의 무대.</td></tr>
+      <tr><td><b>AI for RAN</b></td><td>AI로 신호처리(채널추정·빔포밍 등)를 최적화해 통신 용량을 높이는 것.</td></tr>
+      <tr><td><b>AI on RAN</b></td><td>기지국 컴퓨팅으로 엣지 AI 앱을 구동하는 것.</td></tr>
+      <tr><td><b>AI and RAN</b></td><td>기지국 GPU를 통신·AI가 공유해 유휴자원을 수익화(=AI with RAN).</td></tr>
+      <tr><td><b>스펙트럼 효율</b></td><td>같은 주파수로 얼마나 많은 데이터를 전송하는가. AI for RAN의 핵심 지표.</td></tr>
+      <tr><td><b>빔포밍</b></td><td>전파를 특정 방향으로 모아 쏘는 기술.</td></tr>
+      <tr><td><b>엣지 컴퓨팅</b></td><td>사용자 가까운 곳(기지국)에서 연산해 지연을 줄이는 방식.</td></tr>
+      <tr><td><b>오프로딩</b></td><td>기기가 무거운 연산을 외부(네트워크)로 넘기는 것.</td></tr>
+      <tr><td><b>오픈랜(O-RAN)</b></td><td>기지국 구성요소 규격을 개방·표준화해 다사 장비를 혼용 가능하게 한 것.</td></tr>
+      <tr><td><b>vRAN</b></td><td>가상화 RAN. 전용 하드웨어 대신 소프트웨어로 기지국 기능 구현.</td></tr>
+      <tr><td><b>TCO</b></td><td>Total Cost of Ownership. 총소유비용.</td></tr>
+      <tr><td><b>피지컬 AI</b></td><td>로봇·자율주행·드론 등 물리 세계에서 작동하는 AI.</td></tr>
+      <tr><td><b>어퍼 C밴드</b></td><td>중대역 주파수의 일종. 미국이 경매로 배분. 5G/AI RAN의 핵심 주파수.</td></tr>
+    </tbody>
+  </table>
+
+  <h2>출처</h2>
+  <p class="src">
+    • NVIDIA Glossary, "AI-RAN: What it is and why it matters" — https://www.nvidia.com/en-us/glossary/ai-ran/<br>
+    • NVIDIA, "AI-RAN for 5G and 6G Cellular Networks" — https://www.nvidia.com/en-us/industries/telecommunications/ai-ran/<br>
+    • NVIDIA/Research, "AI-RAN: Transforming RAN with AI-driven Computing Infrastructure" (arXiv 2501.09007) — https://arxiv.org/pdf/2501.09007<br>
+    • NVIDIA Technical Blog, "Maximize Spectral Efficiency with AI-Native RAN and NVIDIA AI Aerial" — https://developer.nvidia.com/blog/maximize-spectral-efficiency-with-ai-native-ran-and-nvidia-ai-aerial<br>
+    • Nokia, "AI-RAN: Bringing software-speed innovation into the radio network" — https://www.nokia.com/blog/ai-ran-bringing-software-speed-innovation-into-the-radio-network/<br>
+    • Nokia Newsroom, "Nokia accelerates AI-RAN momentum with new partnerships (MWC26)" — https://www.nokia.com/newsroom/nokia-accelerates-ai-ran-momentum-with-new-partnerships-driving-path-to-ai-native-6g-mwc26/<br>
+    • TechTimes, "Nokia and NVIDIA Launch First GPU-Based AI-RAN, Targeting Double Spectrum Capacity" (2026.07.16) — https://www.techtimes.com/articles/320768/20260716/<br>
+    • Ericsson, "AI receivers and spectral efficiency gains" — https://www.ericsson.com/en/blog/2026/3/ai-powered-receivers<br>
+    • Samsung Research, "AI-Driven Modem Innovations for Shaping the Future RAN" — https://research.samsung.com/blog/AI-Driven-Modem-Innovations-for-Shaping-the-Future-RAN<br>
+    • Grokipedia / Samsung Newsroom, "AI-RAN Alliance" 창립멤버 — https://news.samsung.com/ca/samsung-electronics-joins-ai-ran-alliance-as-a-founding-member<br>
+    • 머니투데이, "SKT, 'AI고속도로' 구축 나선다…정부 AI-RAN 실증사업 선정" (2026.07.14) — https://www.mt.co.kr/tech/2026/07/14/2026071408444992024<br>
+    • SK텔레콤 뉴스룸, "'AI고속도로' 핵심 'AI-RAN 선도망' 구축 사업 착수" — https://news.sktelecom.com/227797<br>
+    • HFR 공식/보도자료 — https://www.hfr-mobile.com/board/board.php?bo_table=press&idx=42
+  </p>
+
+  <div class="foot">
+    <hr>
+    본 문서는 개인 학습·정리 목적의 비상업 노트입니다. 기술 개념은 쉬운 이해를 위해 일부 단순화했으며,
+    9장의 논리 검증은 특정 증권사 견해에 대한 지지·반대가 아니라 논리 구조 분석입니다.
+    수치·일정은 작성일(2026-07-20) 기준 공개 자료로 오류가 있을 수 있습니다.
+    투자에 대한 최종 판단과 책임은 전적으로 독자 본인에게 있습니다. © 2026 개인 리서치 라이브러리.
+  </div>
+
+</div>
+</body>
+</html>

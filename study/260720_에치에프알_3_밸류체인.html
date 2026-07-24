@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>에치에프알 밸류체인 — 통신장비·오픈랜·AI RAN 산업 지도</title>
+<style>
+  :root{
+    --accent:#0369a1; --accent2:#0284c7;
+    --ink:#1f2430; --muted:#5c6472; --line:#e2e8ec; --bg:#fff; --soft:#f2f8fb;
+    --warnbg:#fff7ed; --warnln:#fb923c;
+  }
+  *{box-sizing:border-box;}
+  body{font-family:"Segoe UI","Malgun Gothic","Apple SD Gothic Neo",system-ui,sans-serif;
+    color:var(--ink); background:var(--bg); margin:0; line-height:1.78; font-size:16.5px; letter-spacing:-0.1px;}
+  .wrap{max-width:920px; margin:0 auto; padding:40px 28px 90px;}
+  h1{font-size:29px; line-height:1.32; margin:8px 0 6px; letter-spacing:-0.6px;}
+  h2{font-size:22px; margin:50px 0 12px; padding-top:14px; border-top:3px solid var(--accent); letter-spacing:-0.4px;}
+  h3{font-size:18.5px; margin:30px 0 8px; color:#2b3242;}
+  h4{font-size:16px; margin:18px 0 6px; color:var(--accent);}
+  p{margin:10px 0;} a{color:var(--accent); text-decoration:none;} a:hover{text-decoration:underline;}
+  .sub{color:var(--muted); font-size:15px;} .lead{font-size:17.5px; color:#333a49;}
+  .kicker{display:inline-block; font-size:13px; font-weight:700; letter-spacing:1.5px;
+    color:#fff; background:var(--accent); padding:5px 12px; border-radius:999px;}
+  .warn{background:var(--warnbg); border:1px solid var(--warnln); border-left:6px solid var(--warnln);
+    border-radius:10px; padding:16px 18px; margin:22px 0; font-size:15px;}
+  .note{background:var(--soft); border:1px solid var(--line); border-radius:10px; padding:16px 18px; margin:18px 0;}
+  .callout{background:#e0f2fe; border:1px solid #7dd3fc; border-left:6px solid var(--accent);
+    border-radius:10px; padding:16px 18px; margin:20px 0;}
+  .dark{background:#082f49; color:#e0f2fe; border-radius:10px; padding:16px 18px; margin:20px 0;}
+  .dark b{color:#fff;}
+  .big{font-size:19px; font-weight:800; color:var(--accent); line-height:1.5;}
+  .grid2{display:grid; grid-template-columns:1fr 1fr; gap:16px;}
+  .grid3{display:grid; grid-template-columns:repeat(3,1fr); gap:14px;}
+  .card{border:1px solid var(--line); border-radius:12px; padding:16px 18px; background:#fff;}
+  table{width:100%; border-collapse:collapse; margin:18px 0; font-size:14.5px;}
+  th,td{border:1px solid var(--line); padding:9px 11px; text-align:left; vertical-align:top;}
+  th{background:var(--soft); font-weight:700;} td.c,th.c{text-align:center;}
+  figure{margin:24px 0; text-align:center;} figcaption{font-size:13px; color:var(--muted); margin-top:8px;}
+  .svgbox{border:1px solid var(--line); border-radius:12px; padding:14px; background:#fff;}
+  ul,ol{margin:10px 0 10px 4px; padding-left:22px;} li{margin:6px 0;}
+  .toc{background:var(--soft); border:1px solid var(--line); border-radius:12px; padding:18px 22px; margin:26px 0;}
+  .toc ol{columns:2; column-gap:34px;}
+  .src{font-size:13px; color:var(--muted); word-break:break-all;}
+  .seriesnav{background:#e0f2fe; border:1px solid #7dd3fc; border-radius:10px; padding:14px 18px; margin:20px 0; font-size:14.5px;}
+  .good{color:#059669; font-weight:700;} .bad{color:#dc2626; font-weight:700;} .mid{color:#b45309; font-weight:700;}
+  hr{border:none; border-top:1px solid var(--line); margin:34px 0;}
+  .foot{color:var(--muted); font-size:13px; margin-top:40px;}
+  @media (max-width:680px){.grid2,.grid3{grid-template-columns:1fr;} .toc ol{columns:1;} h1{font-size:24px;}}
+  @media print{body{font-size:11.5pt;} .wrap{max-width:100%; padding:0;} h2{break-after:avoid;}
+    figure,table,.card{break-inside:avoid;} a{color:#000;} .warn,.callout,.note,.dark{break-inside:avoid;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <span class="kicker">에치에프알(HFR) · ③ 밸류체인</span>
+  <h1>에치에프알 밸류체인<br>— 통신장비·오픈랜·AI RAN 산업 지도</h1>
+  <p class="sub">작성일 2026-07-20 · KOSDAQ 230240 · 개인 리서치 노트 · 입문세트 3/3</p>
+
+  <div class="warn">
+    <b>⚠️ 투자 권유가 아닙니다.</b> 이 문서는 공개 정보를 정리한 <b>개인 학습 노트</b>이며 매수·매도 추천이 아닙니다.
+    시장 규모·점유율은 조사기관마다 정의가 달라 <b>편차가 매우 큽니다.</b>
+    언급된 기업명은 산업 구조 설명용이며 투자 대상 추천이 아닙니다.
+    모든 투자 판단과 그 책임은 전적으로 본인에게 있습니다.
+  </div>
+
+  <div class="seriesnav">
+    <b>📡 입문세트 구성</b> — <a href="https://tryingpig.github.io/study/260720_에치에프알_1_입문가이드.html">① 입문가이드</a> ·
+    <a href="https://tryingpig.github.io/study/260720_에치에프알_2_투자안내서.html">② 투자안내서</a> ·
+    ③ <b>밸류체인(현재 글)</b><br>
+    <span class="sub">📶 <a href="https://tryingpig.github.io/study/260720_AIRAN_개념설명리포트.html">AI RAN 개념 리포트</a>와 함께 보면 이 밸류체인의 상단(AI RAN)이 완성됩니다.</span>
+  </div>
+
+  <div class="callout">
+    <span class="big">🧭 한 장 요약</span>
+    <ol style="margin-bottom:0;">
+      <li><b>통신장비 밸류체인은 "통신사 CAPEX → 장비사 → 부품"으로 흐른다.</b> 갑(甲)은 통신사다.</li>
+      <li><b>에치에프알은 '장비사' 계층</b>에 있다 — 광전송·프론트홀·유선장비·5G 특화망.</li>
+      <li><b>오픈랜이 이 밸류체인의 '문'을 열었다.</b> 폐쇄형에선 못 들어가던 중소사가 부분 공급으로 진입.</li>
+      <li><b>AI RAN은 이 밸류체인 위에 얹히는 새 층.</b> 여기서 거인(엔비디아·노키아·삼성)과 무대를 공유.</li>
+      <li><b>에치에프알의 자리:</b> 거인들의 틈새(오픈랜 부분·특화망·프론트홀)에서 <b>작은 조각</b>을 노리는 포지션.</li>
+      <li><b>후방(부품)은 남에게 의존</b>하고, 전방(통신사)에 종속된 <b>'낀 위치'</b>가 구조적 특징.</li>
+    </ol>
+  </div>
+
+  <div class="toc">
+    <b>목차</b>
+    <ol>
+      <li>큰 그림 — 통신장비 밸류체인</li>
+      <li>밸류체인 전체 지도</li>
+      <li>전방 — 통신사(갑)</li>
+      <li>중간 — 장비사 경쟁 구도</li>
+      <li>후방 — 부품·칩 의존</li>
+      <li>오픈랜이 연 '문'</li>
+      <li>AI RAN이라는 새 층</li>
+      <li>에치에프알의 좌표</li>
+      <li>국내외 경쟁사 지형</li>
+      <li>시장 규모와 성장률</li>
+      <li>강약점과 병목 · 용어 · 출처</li>
+    </ol>
+  </div>
+
+  <!-- 1 -->
+  <h2>1. 큰 그림 — 통신장비 밸류체인</h2>
+  <p class="lead">
+    통신장비 산업은 <b>흐름이 명확하다.</b> 돈이 위(통신사)에서 아래(부품)로 흐르고,
+    <b>통신사의 투자 결정(CAPEX)이 모든 것을 좌우</b>한다.
+  </p>
+  <div class="note">
+    <b>🔑 이 산업의 제1원칙 — "갑은 통신사"</b><br>
+    장비 기술이 아무리 좋아도 <b>통신사가 사주지 않으면 매출이 0</b>이다.
+    하나증권 노트가 <b>"기술이 아무리 좋아도 통신사가 선택하지 않으면 무용지물"</b>이라고 한 것이 이 원칙이다.<br><br>
+    그래서 통신장비주 분석의 출발점은 <b>"어느 통신사가, 언제, 무엇에 투자하는가"</b>다.
+    에치에프알의 미국 스토리도 결국 <b>AT&amp;T·디시가 투자하느냐</b>에 달려 있다.
+  </div>
+
+  <!-- 2 -->
+  <h2>2. 밸류체인 전체 지도</h2>
+  <figure>
+    <div class="svgbox">
+      <svg viewBox="0 0 860 420" width="100%" role="img" aria-label="통신장비 밸류체인 지도">
+        <g font-family="Segoe UI, sans-serif">
+          <text x="16" y="26" font-size="15" font-weight="800">통신장비 밸류체인 — 위(수요)에서 아래(부품)로</text>
+
+          <!-- 전방 통신사 -->
+          <rect x="20" y="44" width="820" height="66" rx="12" fill="#dcfce7" stroke="#86efac"/>
+          <text x="36" y="68" font-size="13.5" font-weight="800" fill="#166534">전방 · 통신사 (갑 · 지갑을 쥔 쪽)</text>
+          <text x="36" y="90" font-size="11.5" fill="#14532d">국내: SKT·KT·LGU+ / 미국: AT&amp;T·Verizon·T-Mobile·Dish / 일본: NTT도코모 …</text>
+          <text x="36" y="106" font-size="11" fill="#166534">→ 이들의 CAPEX·구조전환(C-RAN/오픈랜)이 장비 수요를 결정</text>
+
+          <!-- AI RAN 새 층 -->
+          <rect x="20" y="120" width="820" height="58" rx="12" fill="#fff7ed" stroke="#fdba74"/>
+          <text x="36" y="143" font-size="13" font-weight="800" fill="#9a3412">＋ AI RAN 새 층 (거인들의 무대)</text>
+          <text x="36" y="164" font-size="11.5" fill="#7c2d12">엔비디아(GPU) · 노키아·에릭슨·삼성 + AI-RAN Alliance — 에치에프알도 실증으로 진입</text>
+
+          <!-- 중간 장비사 -->
+          <rect x="20" y="188" width="820" height="96" rx="12" fill="#0369a1"/>
+          <text x="36" y="212" font-size="13.5" font-weight="800" fill="#fff">중간 · 장비사 (에치에프알의 자리)</text>
+          <g font-size="11">
+            <rect x="40" y="222" width="150" height="46" rx="7" fill="#fff"/>
+            <text x="115" y="241" text-anchor="middle" font-weight="800" fill="#0369a1">에치에프알</text>
+            <text x="115" y="257" text-anchor="middle" fill="#5c6472">광전송·프론트홀·특화망</text>
+            <rect x="202" y="222" width="150" height="46" rx="7" fill="#e0f2fe"/>
+            <text x="277" y="241" text-anchor="middle" font-weight="700">삼성전자</text>
+            <text x="277" y="257" text-anchor="middle" fill="#5c6472">종합 RAN 대형</text>
+            <rect x="364" y="222" width="150" height="46" rx="7" fill="#e0f2fe"/>
+            <text x="439" y="241" text-anchor="middle" font-weight="700">에릭슨·노키아</text>
+            <text x="439" y="257" text-anchor="middle" fill="#5c6472">글로벌 RAN</text>
+            <rect x="526" y="222" width="150" height="46" rx="7" fill="#e0f2fe"/>
+            <text x="601" y="241" text-anchor="middle" font-weight="700">쏠리드·에프알텍</text>
+            <text x="601" y="257" text-anchor="middle" fill="#5c6472">국내 중소</text>
+            <rect x="688" y="222" width="132" height="46" rx="7" fill="#e0f2fe"/>
+            <text x="754" y="241" text-anchor="middle" font-weight="700">기타</text>
+            <text x="754" y="257" text-anchor="middle" fill="#5c6472">vRAN SW 등</text>
+          </g>
+
+          <!-- 후방 부품 -->
+          <rect x="20" y="294" width="820" height="70" rx="12" fill="#f1f5f9" stroke="#cbd5e1"/>
+          <text x="36" y="318" font-size="13.5" font-weight="800" fill="#334155">후방 · 부품·칩 (남에게 의존)</text>
+          <text x="36" y="340" font-size="11.5" fill="#475569">GPU(엔비디아) · 통신칩·FPGA · 광모듈·광부품 · 메모리 · 광섬유 …</text>
+          <text x="36" y="356" font-size="11" fill="#64748b">→ 장비사는 이 부품을 사서 조립·SW를 얹어 판다 (원가·수급 노출)</text>
+
+          <!-- arrows -->
+          <g stroke="#94a3b8" stroke-width="2" fill="none">
+            <path d="M430,110 L430,118" marker-end="url(#a)"/>
+            <path d="M430,178 L430,186" marker-end="url(#a)"/>
+            <path d="M430,284 L430,292" marker-end="url(#a)"/>
+          </g>
+          <defs><marker id="a" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+            <path d="M0,0 L6,3 L0,6 Z" fill="#94a3b8"/></marker></defs>
+          <text x="430" y="384" font-size="10.5" fill="#94a3b8" text-anchor="middle">개인 정리 도식</text>
+        </g>
+      </svg>
+    </div>
+    <figcaption>그림 1. 통신장비 밸류체인. 에치에프알은 '장비사'에 있고, 위로 AI RAN 새 층이 얹힌다. (개인 정리 도식)</figcaption>
+  </figure>
+
+  <!-- 3 -->
+  <h2>3. 전방 — 통신사(갑)</h2>
+  <table>
+    <thead><tr><th>지역</th><th>주요 통신사</th><th>에치에프알 연결</th></tr></thead>
+    <tbody>
+      <tr><td><b>미국</b></td><td>AT&amp;T · Verizon · T-Mobile · Dish</td><td class="good">AT&amp;T 프론트홀·디시 오픈랜 — 성장 핵심</td></tr>
+      <tr><td><b>한국</b></td><td>SKT · KT · LGU+</td><td>SKT AI-RAN 실증 참여</td></tr>
+      <tr><td><b>일본</b></td><td>NTT도코모 등</td><td>기존 고객</td></tr>
+    </tbody>
+  </table>
+  <div class="callout">
+    <b>💡 왜 통신사가 결정적인가 — 하나증권 논리의 핵심</b><br>
+    하나증권 노트의 관전 포인트는 <b>"통신사 역학"</b>이었다:
+    <ul style="margin-bottom:0;">
+      <li>미국 3사 중 <b>노키아 장비 주류는 T-Mobile뿐</b></li>
+      <li>AT&amp;T는 2023년 노키아→에릭슨으로 <b>교체</b></li>
+      <li>통신사들이 <b>오픈랜을 밀고</b> 있어, 특정 벤더 독점을 원치 않음</li>
+    </ul>
+    → 이 <b>"통신사가 오픈랜·멀티벤더를 선호한다"</b>는 흐름이 에치에프알 같은 중소사에 기회라는 논리다.
+    다만 이 역시 <b>"통신사가 실제로 HFR을 선택하느냐"</b>는 별개의 확인 문제다.
+  </div>
+
+  <!-- 4 -->
+  <h2>4. 중간 — 장비사 경쟁 구도</h2>
+  <p>장비사 계층은 <b>규모로 3층</b>으로 나뉜다.</p>
+  <div class="grid3">
+    <div class="card">
+      <h4>🏔️ 글로벌 대형</h4>
+      <p><b>에릭슨·노키아·화웨이·삼성전자</b></p>
+      <p class="sub" style="margin:0;">종합 RAN(RU+DU+CU) 통째 공급. 통신사 메인 벤더. AI RAN도 주도.</p>
+    </div>
+    <div class="card">
+      <h4>🏕️ 전문·중견</h4>
+      <p><b>에치에프알</b>, Mavenir 등</p>
+      <p class="sub" style="margin:0;">오픈랜·특화망·특정 장비(프론트홀 등) 전문. 틈새 공략.</p>
+    </div>
+    <div class="card">
+      <h4>⛺ 국내 중소</h4>
+      <p><b>쏠리드·에프알텍</b> 등</p>
+      <p class="sub" style="margin:0;">중계기·특정 장비. 해외 진출 추진.</p>
+    </div>
+  </div>
+  <div class="dark">
+    <b>⚔️ 에치에프알의 경쟁 딜레마</b><br><br>
+    에치에프알은 <b>대형(삼성·에릭슨·노키아)과 같은 무대</b>에 서지만 <b>규모는 훨씬 작다.</b><br>
+    <b>정면 승부</b>로는 이기기 어렵다. 그래서 전략은 <b>"거인이 안 하거나, 통신사가 멀티벤더를 원하는 틈새"</b>를
+    파는 것 — 오픈랜 부분 공급, 특화망 End-to-End, 프론트홀 전문성.<br><br>
+    <b>하나증권 논리의 핵심이 여기다:</b> "통신사가 오픈랜·멀티벤더를 밀면, 작은 회사도 한 조각을 먹을 수 있다."
+    <b>맞는 논리이나, 그 조각이 얼마나 큰지는 수주로만 확인된다.</b>
+  </div>
+
+  <!-- 5 -->
+  <h2>5. 후방 — 부품·칩 의존</h2>
+  <p>장비사는 <b>부품을 사서 조립·소프트웨어를 얹어</b> 판다. 즉 <b>후방에 종속</b>되어 있다.</p>
+  <table>
+    <thead><tr><th>부품</th><th>역할</th><th class="c">의존도</th></tr></thead>
+    <tbody>
+      <tr><td><b>GPU</b>(엔비디아)</td><td>AI RAN 연산(특히 AI-and-RAN)</td><td class="c bad">높음(AI RAN 시)</td></tr>
+      <tr><td><b>통신칩·FPGA</b></td><td>신호처리(L1)</td><td class="c mid">중</td></tr>
+      <tr><td><b>광모듈·광부품</b></td><td>광전송의 핵심</td><td class="c mid">중</td></tr>
+      <tr><td><b>메모리·수동부품</b></td><td>장비 구성</td><td class="c mid">중</td></tr>
+    </tbody>
+  </table>
+  <div class="note">
+    <b>🔗 역설 하나 — AI RAN이 커지면 엔비디아가 먼저 웃는다</b><br>
+    AI-and-RAN이 확산되면 <b>기지국마다 GPU가 필요</b>하다. 그 GPU는 엔비디아 것이다.
+    즉 <b>장비사(에치에프알 포함)가 AI RAN 매출을 내도, 그 원가의 상당 부분이 엔비디아로 흘러간다.</b><br><br>
+    이것이 하나증권 노트가 <b>"AI-and-RAN보다 AI-for/on-RAN"</b>을 강조한 또 다른 이유일 수 있다 —
+    <b>GPU 의존이 덜한 방식일수록 장비사의 부가가치가 커진다.</b>
+    (AI RAN 3종 차이는 <a href="https://tryingpig.github.io/study/260720_AIRAN_개념설명리포트.html">AI RAN 리포트</a> 참조)
+  </div>
+
+  <!-- 6 -->
+  <h2>6. 오픈랜이 연 '문'</h2>
+  <figure>
+    <div class="svgbox">
+      <svg viewBox="0 0 840 200" width="100%" role="img" aria-label="오픈랜 진입 구조">
+        <g font-family="Segoe UI, sans-serif">
+          <text x="16" y="24" font-size="14.5" font-weight="800">밸류체인 관점에서 오픈랜의 의미</text>
+          <rect x="30" y="44" width="360" height="120" rx="12" fill="#fef2f2" stroke="#fca5a5"/>
+          <text x="210" y="70" font-size="13" font-weight="800" fill="#991b1b" text-anchor="middle">폐쇄형 = 통짜 계약</text>
+          <text x="210" y="94" font-size="11.5" fill="#7f1d1d" text-anchor="middle">RU+DU+CU를 한 벤더가</text>
+          <text x="210" y="114" font-size="11.5" fill="#7f1d1d" text-anchor="middle">중소사는 밸류체인 밖</text>
+          <text x="210" y="140" font-size="11.5" fill="#991b1b" text-anchor="middle" font-weight="700">진입 불가</text>
+
+          <rect x="450" y="44" width="360" height="120" rx="12" fill="#e0f2fe" stroke="#7dd3fc"/>
+          <text x="630" y="70" font-size="13" font-weight="800" fill="#0369a1" text-anchor="middle">오픈랜 = 부분 진입</text>
+          <text x="630" y="94" font-size="11.5" fill="#075985" text-anchor="middle">규격 개방 → 부분 공급 가능</text>
+          <text x="630" y="114" font-size="11.5" fill="#075985" text-anchor="middle">중소사가 밸류체인 안으로</text>
+          <text x="630" y="140" font-size="11.5" fill="#0369a1" text-anchor="middle" font-weight="700">에치에프알의 기회</text>
+
+          <path d="M395,104 L445,104" stroke="#0f172a" stroke-width="3" marker-end="url(#a)"/>
+          <defs><marker id="a" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto">
+            <path d="M0,0 L6,3 L0,6 Z" fill="#0f172a"/></marker></defs>
+        </g>
+      </svg>
+    </div>
+    <figcaption>그림 2. 오픈랜은 밸류체인의 문을 열어 중소사에 진입로를 줬다. (개인 정리 도식)</figcaption>
+  </figure>
+  <div class="callout">
+    <b>⚖️ 다만 오픈랜의 양면</b><br>
+    <b>기회:</b> 중소사가 특정 장비(RU·DU·프론트홀)만으로 진입 가능.<br>
+    <b>함정:</b> 문이 열렸다는 건 <b>경쟁자도 많이 들어온다</b>는 뜻. 전 세계 오픈랜 업체가 같은 문으로 진입한다.
+    또 오픈랜은 <b>통합·성능 검증이 까다로워</b> 실제 대규모 상용까지 시간이 걸린다.<br><br>
+    <b>→ "오픈랜 = 자동 수혜"가 아니다.</b> 그 안에서 <b>실제 수주를 따내는 실력</b>이 관건이다.
+  </div>
+
+  <!-- 7 -->
+  <h2>7. AI RAN이라는 새 층</h2>
+  <p>
+    밸류체인 위에 <b>AI RAN</b>이라는 새 층이 얹히고 있다. 이 층에서 에치에프알의 위치를 AI RAN 3종으로 보면:
+  </p>
+  <table>
+    <thead><tr><th>AI RAN 유형</th><th>주도</th><th class="c">에치에프알 관련성</th></tr></thead>
+    <tbody>
+      <tr><td><b>AI-and-RAN</b><br><span class="sub">(=AI with RAN)</span></td><td>엔비디아-노키아</td><td class="c bad">GPU 종속 커 상대적 불리</td></tr>
+      <tr><td><b>AI-for-RAN</b></td><td>다양(삼성·에릭슨·전문사)</td><td class="c mid">vRAN·신호처리 역량으로 참여 여지</td></tr>
+      <tr><td><b>AI-on-RAN</b></td><td>다양</td><td class="c mid">특화망·엣지 결합으로 참여 여지</td></tr>
+    </tbody>
+  </table>
+  <div class="dark">
+    <b>🎯 밸류체인 관점의 핵심</b><br><br>
+    하나증권 논리를 밸류체인 언어로 옮기면:<br>
+    "엔비디아가 지배하는 건 <b>AI-and-RAN(GPU 층)</b>이다. 하지만 밸류체인에는
+    <b>AI-for-RAN·AI-on-RAN(장비·SW 층)</b>도 있고, 여기선 <b>통신사 선택과 오픈랜</b>이 변수라
+    에치에프알 같은 장비사도 한 조각을 노릴 수 있다."<br><br>
+    <b>이 논리의 타당성:</b> 밸류체인에 여러 층이 있는 건 사실 → 개념적으로 성립.<br>
+    <b>이 논리의 한계:</b> "장비사 층이 얼마나 크고, HFR이 그중 얼마를 먹느냐"는
+    <b>아직 실증 단계</b>라 미확정.
+  </div>
+
+  <!-- 8 -->
+  <h2>8. 에치에프알의 좌표</h2>
+  <figure>
+    <div class="svgbox">
+      <svg viewBox="0 0 840 290" width="100%" role="img" aria-label="포지셔닝 맵">
+        <g font-family="Segoe UI, sans-serif">
+          <text x="16" y="24" font-size="14.5" font-weight="800">포지셔닝 — 규모(세로) × 사업 폭(가로)</text>
+          <line x1="70" y1="240" x2="800" y2="240" stroke="#e2e8ec" stroke-width="1.5"/>
+          <line x1="70" y1="45" x2="70" y2="240" stroke="#e2e8ec" stroke-width="1.5"/>
+          <text x="435" y="268" font-size="12" fill="#5c6472" text-anchor="middle">사업 폭(단일 장비 → End-to-End) →</text>
+          <text x="28" y="150" font-size="12" fill="#5c6472" transform="rotate(-90 28,150)" text-anchor="middle">기업 규모 →</text>
+
+          <circle cx="600" cy="80" r="42" fill="#dbeafe" stroke="#2563eb"/>
+          <text x="600" y="76" font-size="12" text-anchor="middle" font-weight="800">삼성전자</text>
+          <text x="600" y="92" font-size="9.5" text-anchor="middle" fill="#5c6472">종합 RAN</text>
+
+          <circle cx="680" cy="120" r="36" fill="#dbeafe" stroke="#2563eb"/>
+          <text x="680" y="118" font-size="11" text-anchor="middle" font-weight="700">에릭슨·노키아</text>
+
+          <circle cx="470" cy="190" r="40" fill="#0369a1"/>
+          <text x="470" y="186" font-size="12.5" text-anchor="middle" font-weight="800" fill="#fff">에치에프알</text>
+          <text x="470" y="203" font-size="9.5" text-anchor="middle" fill="#bae6fd">특화망 End-to-End</text>
+
+          <circle cx="230" cy="205" r="30" fill="#f1f5f9" stroke="#94a3b8"/>
+          <text x="230" y="203" font-size="10.5" text-anchor="middle" font-weight="700">쏠리드·에프알텍</text>
+          <text x="230" y="217" font-size="9" text-anchor="middle" fill="#5c6472">단일 장비</text>
+
+          <text x="500" y="150" font-size="11.5" fill="#0369a1" font-weight="700">← 규모는 작지만 사업 폭은 넓은 편</text>
+          <text x="90" y="282" font-size="10.5" fill="#94a3b8">※ 상대 위치를 개념적으로 표현한 도식(정량 아님). 개인 정리.</text>
+        </g>
+      </svg>
+    </div>
+    <figcaption>그림 3. 에치에프알은 '작지만 End-to-End 폭을 가진' 독특한 위치. (개념 도식)</figcaption>
+  </figure>
+  <div class="callout">
+    <b>💡 에치에프알의 차별점 — '작은데 넓다'</b><br>
+    대형사는 크고 넓다. 국내 중소사는 작고 좁다(단일 장비). 에치에프알은 <b>작지만 5G 특화망을
+    End-to-End(코어~RU)로 공급할 수 있는</b> 드문 위치라는 평가를 받는다.<br><br>
+    <b>이게 강점:</b> 특화망·오픈랜에서 "통째로 맡길 국내 파트너"가 될 수 있음.<br>
+    <b>이게 부담:</b> 여러 영역을 다 하려면 <b>R&amp;D 자원이 분산</b>되고, 각 영역에서 전문 강자·대형사와 부딪힘.
+  </div>
+
+  <!-- 9 -->
+  <h2>9. 국내외 경쟁사 지형</h2>
+  <table>
+    <thead><tr><th>기업</th><th>구분</th><th>주력</th><th class="c">에치에프알과 관계</th></tr></thead>
+    <tbody>
+      <tr><td><b>에치에프알</b></td><td>국내 중견</td><td>광전송·프론트홀·특화망 End-to-End</td><td class="c">—</td></tr>
+      <tr><td>삼성전자</td><td>대형</td><td>종합 RAN·AI RAN</td><td class="c bad">대형 경쟁(무대 공유)</td></tr>
+      <tr><td>에릭슨·노키아</td><td>글로벌 대형</td><td>종합 RAN·AI RAN</td><td class="c bad">대형 경쟁</td></tr>
+      <tr><td>쏠리드</td><td>국내 중소</td><td>중계기·전송</td><td class="c mid">부분 경쟁</td></tr>
+      <tr><td>에프알텍</td><td>국내 중소</td><td>5G 장비</td><td class="c mid">부분 경쟁</td></tr>
+      <tr><td>Mavenir 등</td><td>해외 전문</td><td>오픈랜 SW·vRAN</td><td class="c mid">오픈랜 경쟁</td></tr>
+      <tr><td>엔비디아</td><td>칩</td><td>GPU</td><td class="c good">부품 공급(AI RAN 시)</td></tr>
+    </tbody>
+  </table>
+  <div class="note">
+    <b>🔗 보안 시리즈와 같은 구조</b><br>
+    앞서 만든 보안 3부작(팔로알토·클라우드스트라이크·지스케일러)에서 본 것과 비슷하다 —
+    <b>거인과 전문업체가 같은 무대에서 경쟁</b>하는 국면. 다만 통신장비는 보안 SW와 달리
+    <b>①통신사(갑)의 힘이 절대적이고 ②하드웨어·부품 의존이 크며 ③수주 변동성이 크다</b>는 점이 다르다.
+  </div>
+
+  <!-- 10 -->
+  <h2>10. 시장 규모와 성장률</h2>
+  <table>
+    <thead><tr><th>시장</th><th class="c">성장 전망(업계)</th><th>메모</th></tr></thead>
+    <tbody>
+      <tr><td><b>오픈랜(O-RAN)</b></td><td class="c good">2030년까지 연평균 약 42%</td><td>고성장. 단 상용 확산은 초기</td></tr>
+      <tr><td><b>글로벌 특화망(Private 5G)</b></td><td class="c good">2025~2033 연평균 약 43%</td><td>에치에프알 이음5G 관련</td></tr>
+      <tr><td><b>AI RAN</b></td><td class="c mid">상용화 2027~ (형성 단계)</td><td>노키아-엔비디아 기준</td></tr>
+    </tbody>
+  </table>
+  <div class="warn">
+    <b>⚠️ 성장률 숫자 주의</b><br>
+    "연 42~43% 성장"은 <b>기저가 작은 초기 시장의 고성장률</b>이라는 점을 감안해야 한다.
+    <b>시장이 빠르게 큰다 ≠ 특정 회사가 그만큼 성장한다.</b> 또 오픈랜·AI RAN 모두 <b>아직 상용 초기</b>라
+    추정치의 편차가 크다. 이 노트는 특정 수치를 단정하지 않는다.
+  </div>
+  <div class="callout">
+    <b>📐 냉정한 관점 — 시장 성장과 회사 실적의 시차</b><br>
+    시장(오픈랜·특화망·AI RAN)이 <b>구조적으로 성장하는 것은 사실</b>이다. 그러나
+    <b>①에치에프알이 그 성장의 몇 %를 가져오는지 ②언제 매출로 잡히는지</b>는 별개다.<br><br>
+    ②투자안내서에서 강조했듯, <b>지금 실적은 미국 본업(유선·프론트홀)</b>이 만들고 AI RAN은 아직 기대다.
+    시장 성장률에 취해 <b>"곧 폭발"</b>을 단정하기보다, <b>실증→상용 전환의 실제 속도</b>를 지켜봐야 한다.
+  </div>
+
+  <!-- 11 -->
+  <h2>11. 강약점과 병목 지점</h2>
+  <div class="grid2">
+    <div class="card">
+      <h4>🟢 구조적 강점</h4>
+      <ul style="margin-bottom:0;">
+        <li><b>End-to-End 역량</b> — 5G 특화망 통째 공급(국내 드묾)</li>
+        <li><b>광전송 뿌리 기술</b> — 프론트홀 전문성</li>
+        <li><b>미국 레퍼런스</b> — AT&amp;T·디시·버라이즌 등</li>
+        <li><b>오픈랜 진입로</b> — my5G로 부분 공급 가능</li>
+        <li><b>AI RAN 무대 진입</b> — 과기부 실증 선정</li>
+        <li><b>영업 레버리지</b> — 수주 시 이익 급증</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4>🟠 구조적 약점·병목</h4>
+      <ul style="margin-bottom:0;">
+        <li><b>통신사 종속</b> — 갑의 CAPEX에 실적이 좌우</li>
+        <li><b>규모 열위</b> — 대형사와 같은 무대, 다른 체급</li>
+        <li><b>부품 의존</b> — GPU·칩·광부품을 남에게</li>
+        <li><b>수주 변동성</b> — 실적이 계단식 출렁</li>
+        <li><b>고객 집중</b> — 특정 대형 고객 의존</li>
+        <li><b>테마-실적 괴리</b> — AI RAN은 아직 기대</li>
+        <li><b>자원 분산</b> — 넓은 사업폭 유지 부담</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="callout">
+    <b>📌 밸류체인 관점의 결론</b><br>
+    에치에프알은 <b>"통신사(갑)와 부품(을) 사이에 낀 장비사"</b>이고, 그 안에서 <b>"작지만 폭넓은
+    특화망·오픈랜 전문사"</b>라는 독특한 자리를 가진다.<br><br>
+    <b>통제 가능한 변수:</b> ①오픈랜·특화망 제품 경쟁력 ②미국 영업·수주 실행 ③AI RAN 실증→상용 전환<br>
+    <b>통제 불가능한 변수:</b> 통신사 CAPEX, 대형사 경쟁, 부품 수급, 환율, AI RAN 표준 향방<br><br>
+    투자자로서는 <b>"통제 가능한 3가지가 수주로 확인되는가"</b>를 추적하고,
+    <b>"통제 불가능한 변수가 언제 뒤집히는가"</b>를 경계하는 것이 기본이다.
+    특히 이 종목은 <b>"뉴스가 아니라 수주 공시"</b>를 봐야 한다는 점을 세 편 내내 강조했다.
+  </div>
+
+  <h2>용어 사전</h2>
+  <table>
+    <tbody>
+      <tr><td><b>CAPEX</b></td><td>자본적 지출. 통신사의 설비 투자. 장비 수요를 결정하는 최상위 변수.</td></tr>
+      <tr><td><b>RAN</b></td><td>Radio Access Network. 무선 접속망(기지국 시스템).</td></tr>
+      <tr><td><b>RU/DU/CU</b></td><td>기지국을 안테나·신호처리·제어로 나눈 구성.</td></tr>
+      <tr><td><b>프론트홀</b></td><td>RU와 DU 사이 구간. 대용량 광전송 필요.</td></tr>
+      <tr><td><b>C-RAN</b></td><td>신호처리를 중앙에 모으는 기지국 구조. 프론트홀 수요 유발.</td></tr>
+      <tr><td><b>오픈랜(O-RAN)</b></td><td>기지국 규격 개방·표준화. 중소사 진입로.</td></tr>
+      <tr><td><b>vRAN</b></td><td>가상화 RAN. SW로 기지국 구현.</td></tr>
+      <tr><td><b>특화망(Private 5G)</b></td><td>특정 기업·공간 전용 5G망. 한국은 '이음5G'.</td></tr>
+      <tr><td><b>AI RAN</b></td><td>통신망에 AI를 결합. for/on/and 3종(별도 리포트 참조).</td></tr>
+      <tr><td><b>End-to-End</b></td><td>코어망~RU까지 전 구간 공급.</td></tr>
+      <tr><td><b>영업 레버리지</b></td><td>고정비 구조에서 매출 증감이 이익을 증폭.</td></tr>
+    </tbody>
+  </table>
+
+  <h2>출처</h2>
+  <p class="src">
+    • 하나증권, "에치에프알 (230240) 저도 미국 시장 수혜주입니다" (2026.04.28) — https://file.hanaw.com/download/research/FileServer/WEB/industry/enterprise/2026/04/28/HFR_final_0428.pdf<br>
+    • 하나증권 텔레콤, "HFR — AI RAN에는 엔비디아만 있는 것이 아닙니다" (2026.07)<br>
+    • 미래에셋증권, "에치에프알 — 세대 전환의 최대 수혜주" — https://securities.miraeasset.com/bbs/download/2144829.pdf<br>
+    • 머니투데이, "SKT, 정부 AI-RAN 실증사업 선정" (2026.07.14) — https://www.mt.co.kr/tech/2026/07/14/2026071408444992024<br>
+    • SK텔레콤 뉴스룸, "AI-RAN 선도망 구축 사업 착수" — https://news.sktelecom.com/227797<br>
+    • 디일렉, "HFR, 美디시네트워크 통해 오픈랜 시장 진출" — https://www.thelec.kr/news/articleView.html?idxno=10119<br>
+    • NVIDIA / Nokia AI-RAN 자료 (AI RAN 3종·생태계) — https://www.nvidia.com/en-us/glossary/ai-ran/<br>
+    • 넷매니아스, "5G 장비 수출 10배 늘린 에치에프알(HFR)" — https://netmanias.com/ko/?id=operator_news&m=view&no=15382<br>
+    • THE VC 에치에프알 기업정보 — https://thevc.kr/hfr<br>
+    • 보안뉴스, "5G 특화망 '이음(e-Um)5G'" — https://m.boannews.com/html/detail.html?idx=103740
+  </p>
+
+  <div class="foot">
+    <hr>
+    본 문서는 개인 학습·정리 목적의 비상업 노트입니다. 시장규모·성장률은 조사기관별 정의 차이로 편차가 크며 추정치입니다.
+    언급된 기업명은 산업 구조 설명 목적이며 투자 추천이 아닙니다.
+    투자에 대한 최종 판단과 책임은 전적으로 독자 본인에게 있습니다. © 2026 개인 리서치 라이브러리.
+  </div>
+
+</div>
+</body>
+</html>

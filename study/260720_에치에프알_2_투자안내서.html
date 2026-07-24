@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>에치에프알 투자 안내서 — 본업과 테마 사이, 무엇이 실적인가</title>
+<style>
+  :root{
+    --accent:#0369a1; --accent2:#0284c7;
+    --ink:#1f2430; --muted:#5c6472; --line:#e2e8ec; --bg:#fff; --soft:#f2f8fb;
+    --warnbg:#fff7ed; --warnln:#fb923c;
+  }
+  *{box-sizing:border-box;}
+  body{font-family:"Segoe UI","Malgun Gothic","Apple SD Gothic Neo",system-ui,sans-serif;
+    color:var(--ink); background:var(--bg); margin:0; line-height:1.78; font-size:16.5px; letter-spacing:-0.1px;}
+  .wrap{max-width:920px; margin:0 auto; padding:40px 28px 90px;}
+  h1{font-size:29px; line-height:1.32; margin:8px 0 6px; letter-spacing:-0.6px;}
+  h2{font-size:22px; margin:50px 0 12px; padding-top:14px; border-top:3px solid var(--accent); letter-spacing:-0.4px;}
+  h3{font-size:18.5px; margin:30px 0 8px; color:#2b3242;}
+  h4{font-size:16px; margin:18px 0 6px; color:var(--accent);}
+  p{margin:10px 0;} a{color:var(--accent); text-decoration:none;} a:hover{text-decoration:underline;}
+  .sub{color:var(--muted); font-size:15px;} .lead{font-size:17.5px; color:#333a49;}
+  .kicker{display:inline-block; font-size:13px; font-weight:700; letter-spacing:1.5px;
+    color:#fff; background:var(--accent); padding:5px 12px; border-radius:999px;}
+  .warn{background:var(--warnbg); border:1px solid var(--warnln); border-left:6px solid var(--warnln);
+    border-radius:10px; padding:16px 18px; margin:22px 0; font-size:15px;}
+  .note{background:var(--soft); border:1px solid var(--line); border-radius:10px; padding:16px 18px; margin:18px 0;}
+  .callout{background:#e0f2fe; border:1px solid #7dd3fc; border-left:6px solid var(--accent);
+    border-radius:10px; padding:16px 18px; margin:20px 0;}
+  .bust{background:#082f49; color:#e0f2fe; border-radius:10px; padding:16px 18px; margin:20px 0;}
+  .bust b{color:#fff;}
+  .big{font-size:19px; font-weight:800; color:var(--accent); line-height:1.5;}
+  .grid2{display:grid; grid-template-columns:1fr 1fr; gap:16px;}
+  .card{border:1px solid var(--line); border-radius:12px; padding:16px 18px; background:#fff;}
+  table{width:100%; border-collapse:collapse; margin:18px 0; font-size:14.5px;}
+  th,td{border:1px solid var(--line); padding:9px 11px; text-align:left; vertical-align:top;}
+  th{background:var(--soft); font-weight:700;} td.c,th.c{text-align:center;}
+  figure{margin:24px 0; text-align:center;} figcaption{font-size:13px; color:var(--muted); margin-top:8px;}
+  .svgbox{border:1px solid var(--line); border-radius:12px; padding:14px; background:#fff;}
+  ul,ol{margin:10px 0 10px 4px; padding-left:22px;} li{margin:6px 0;}
+  .kpi{display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin:20px 0;}
+  .kpi .box{border:1px solid var(--line); border-radius:12px; padding:14px; text-align:center; background:var(--soft);}
+  .kpi .num{font-size:20px; font-weight:800; color:var(--accent); letter-spacing:-0.5px;}
+  .kpi .lab{font-size:12.5px; color:var(--muted); margin-top:3px;}
+  .toc{background:var(--soft); border:1px solid var(--line); border-radius:12px; padding:18px 22px; margin:26px 0;}
+  .toc ol{columns:2; column-gap:34px;}
+  .src{font-size:13px; color:var(--muted); word-break:break-all;}
+  .seriesnav{background:#e0f2fe; border:1px solid #7dd3fc; border-radius:10px; padding:14px 18px; margin:20px 0; font-size:14.5px;}
+  .good{color:#059669; font-weight:700;} .bad{color:#dc2626; font-weight:700;} .mid{color:#b45309; font-weight:700;}
+  hr{border:none; border-top:1px solid var(--line); margin:34px 0;}
+  .foot{color:var(--muted); font-size:13px; margin-top:40px;}
+  @media (max-width:680px){.grid2,.kpi{grid-template-columns:1fr;} .toc ol{columns:1;} h1{font-size:24px;}}
+  @media print{body{font-size:11.5pt;} .wrap{max-width:100%; padding:0;} h2{break-after:avoid;}
+    figure,table,.card{break-inside:avoid;} a{color:#000;} .warn,.callout,.note,.bust{break-inside:avoid;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <span class="kicker">에치에프알(HFR) · ② 투자 안내서</span>
+  <h1>에치에프알 투자 안내서<br>— 본업과 테마 사이, 무엇이 '실적'인가</h1>
+  <p class="sub">작성일 2026-07-20 · KOSDAQ 230240 · 개인 리서치 노트 · 입문세트 2/3</p>
+
+  <div class="warn">
+    <b>⚠️ 투자 권유가 아닙니다.</b> 이 문서는 공개 정보와 <b>증권사 추정치</b>를 정리한 개인 학습 노트이며 매수·매도 추천이 아닙니다.
+    목표주가·전망치는 <b>해당 기관의 견해</b>일 뿐 본 문서의 판단이 아닙니다. 시나리오는 예측이 아니라 <b>가정 대입</b>입니다.
+    소형주 특성상 변동성이 크고 자료가 제한적입니다. 모든 투자 판단과 책임은 전적으로 본인에게 있습니다.
+  </div>
+
+  <div class="seriesnav">
+    <b>📡 입문세트 구성</b> — <a href="https://tryingpig.github.io/study/260720_에치에프알_1_입문가이드.html">① 입문가이드</a> ·
+    ② <b>투자안내서(현재 글)</b> ·
+    <a href="https://tryingpig.github.io/study/260720_에치에프알_3_밸류체인.html">③ 밸류체인</a><br>
+    <span class="sub">회사·사업부문·오픈랜 기초는 ①에서, AI RAN 개념은
+    <a href="https://tryingpig.github.io/study/260720_AIRAN_개념설명리포트.html">AI RAN 리포트</a>에서 다뤘습니다. 여기서는 <b>숫자와 쟁점</b>에 집중합니다.</span>
+  </div>
+
+  <div class="callout">
+    <b>🧭 이 글의 논지 한 장 요약</b>
+    <ol style="margin-bottom:0;">
+      <li><b>턴어라운드는 사실이다.</b> 2024년 적자 → 2025년 흑자(영업이익 약 30억) → 2026년 급증 전망(약 132억).</li>
+      <li><b>그런데 이익 급증의 동력은 AI RAN이 아니다.</b> 지금은 <b>유선(브로드밴드)+미국 프론트홀</b>이 실적을 만든다.</li>
+      <li><b>AI RAN·이음5G는 '기대(모멘텀)'이지 아직 '실적'이 아니다.</b> 이 둘을 섞으면 안 된다.</li>
+      <li><b>영업 레버리지가 양날의 검.</b> 매출 조금에 이익이 크게 튀지만, 반대로 꺾이면 급히 적자.</li>
+      <li><b>핵심 질문:</b> "AI RAN 실증이 <b>상용 수주</b>로 전환되는가"와 "미국 본업 수주가 <b>지속</b>되는가".</li>
+    </ol>
+  </div>
+
+  <div class="toc">
+    <b>목차</b>
+    <ol>
+      <li>실적 추이 — 턴어라운드의 실체</li>
+      <li>이익 급증의 진짜 동력</li>
+      <li>쟁점 ① 테마 vs 실적</li>
+      <li>쟁점 ② 영업 레버리지의 양면</li>
+      <li>쟁점 ③ "작은 M/S로 큰 이익" 검증</li>
+      <li>미국 시장 노출 해부</li>
+      <li>KPI 대시보드</li>
+      <li>시나리오 3종</li>
+      <li>리스크 매트릭스</li>
+      <li>촉매 캘린더</li>
+      <li>밸류에이션 참고 · 체크리스트 · FAQ</li>
+    </ol>
+  </div>
+
+  <!-- 1 -->
+  <h2>1. 실적 추이 — 턴어라운드의 실체</h2>
+  <table>
+    <thead><tr><th class="c">구분</th><th class="c">매출</th><th class="c">영업이익</th><th>메모</th></tr></thead>
+    <tbody>
+      <tr><td class="c">2024</td><td class="c">—</td><td class="c bad">적자</td><td>업황 부진·수주 공백</td></tr>
+      <tr><td class="c">2025</td><td class="c">약 1,419억<br><span class="sub">(YoY -9.6%)</span></td><td class="c good">약 30억<br>(흑자전환)</td><td>매출은 줄었지만 <b>흑자 전환</b>. 적자·순손실 대폭 축소</td></tr>
+      <tr><td class="c">2026(E)</td><td class="c">약 1,517억<br><span class="good">(+6.9%)</span></td><td class="c good">약 132억<br><span class="good">(약 4배↑)</span></td><td>영업이익률 약 8.7%. 미국 수혜 본격화 전망</td></tr>
+    </tbody>
+  </table>
+
+  <figure>
+    <div class="svgbox">
+      <svg viewBox="0 0 840 260" width="100%" role="img" aria-label="실적 추이">
+        <g font-family="Segoe UI, sans-serif">
+          <text x="16" y="24" font-size="14.5" font-weight="800">영업이익 추이 (억 원) — 매출은 완만, 이익은 급증 전망</text>
+          <line x1="70" y1="210" x2="800" y2="210" stroke="#e2e8ec" stroke-width="1.5"/>
+          <line x1="70" y1="50" x2="70" y2="210" stroke="#e2e8ec" stroke-width="1.5"/>
+
+          <rect x="150" y="205" width="90" height="5" fill="#fca5a5"/>
+          <text x="195" y="230" font-size="11.5" text-anchor="middle">2024</text>
+          <text x="195" y="198" font-size="11" fill="#dc2626" text-anchor="middle">적자</text>
+
+          <rect x="360" y="188" width="90" height="22" fill="#7dd3fc"/>
+          <text x="405" y="230" font-size="11.5" text-anchor="middle">2025</text>
+          <text x="405" y="180" font-size="11" text-anchor="middle">약 30</text>
+
+          <rect x="570" y="112" width="90" height="98" fill="#0369a1"/>
+          <text x="615" y="230" font-size="11.5" text-anchor="middle">2026(E)</text>
+          <text x="615" y="104" font-size="12.5" text-anchor="middle" font-weight="800">약 132</text>
+
+          <path d="M240,200 C300,195 300,192 356,190" fill="none" stroke="#0369a1" stroke-width="2" marker-end="url(#a)"/>
+          <path d="M450,185 C500,160 510,125 566,118" fill="none" stroke="#0369a1" stroke-width="2.5" marker-end="url(#a)"/>
+          <defs><marker id="a" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+            <path d="M0,0 L6,3 L0,6 Z" fill="#0369a1"/></marker></defs>
+          <text x="700" y="140" font-size="12" fill="#0369a1" font-weight="700">약 4배 증가 전망</text>
+          <text x="80" y="252" font-size="11" fill="#5c6472">※ 2026년은 증권사 추정치. 실제와 다를 수 있음. 개인 정리 도식.</text>
+        </g>
+      </svg>
+    </div>
+    <figcaption>그림 1. 매출은 완만한데 영업이익은 급증 전망 — 영업 레버리지의 전형. (개인 정리 도식)</figcaption>
+  </figure>
+  <p class="sub">
+    ※ 수치는 <b>증권사 추정치</b>이며 기관마다 편차가 있다. 특히 2025년은 <b>매출이 줄었는데(-9.6%) 흑자 전환</b>한 점이 특이 —
+    <b>비용 구조 개선(적자 사업 축소·믹스 변화)</b>이 작용했다는 뜻이다.
+    <span class="src">(출처: 하나증권 2026.04, 미래에셋, FnGuide, 콕스톡)</span>
+  </p>
+
+  <!-- 2 -->
+  <h2>2. 이익 급증의 진짜 동력</h2>
+  <p class="lead">
+    2026년 영업이익이 30억 → 132억으로 <b>4배</b> 뛴다는 전망. 이게 <b>어디서 나오는지</b>가 핵심이다.
+  </p>
+  <table>
+    <thead><tr><th>부문</th><th class="c">2026E 매출</th><th class="c">비중</th><th>동력</th></tr></thead>
+    <tbody>
+      <tr><td><b>브로드밴드(유선)</b></td><td class="c">약 1,212억<br><span class="good">+8.3%</span></td><td class="c">약 80%</td><td>미국 수요 + FTTH/스위치</td></tr>
+      <tr><td><b>모바일(무선)</b></td><td class="c">약 305억<br><span class="good">+13.1%</span></td><td class="c">약 20%</td><td><b>미국 AT&amp;T C-RAN 프론트홀</b></td></tr>
+      <tr><td><b>이음5G/특화망</b></td><td class="c">(소규모)</td><td class="c">작음</td><td>미래 카드. AI RAN 연결</td></tr>
+    </tbody>
+  </table>
+  <div class="bust">
+    <b>🔴 이 리포트에서 가장 중요한 사실</b><br><br>
+    2026년 이익 급증의 동력은 <b>AI RAN이 아니다.</b><br>
+    실제 동력은 <b>①유선(브로드밴드)의 미국 수요와 ②모바일의 미국 AT&amp;T 프론트홀</b>이다.<br><br>
+    <b>AI RAN·이음5G는 이 숫자에 거의 안 들어가 있다.</b> 아직 실증·초기 단계이기 때문이다.<br>
+    → 즉 <b>"실적은 미국 본업이 만들고, AI RAN은 주가 기대를 만든다"</b>는 구조를 정확히 인지해야 한다.
+  </div>
+
+  <!-- 3 -->
+  <h2>3. 쟁점 ① 테마 vs 실적</h2>
+  <figure>
+    <div class="svgbox">
+      <svg viewBox="0 0 840 230" width="100%" role="img" aria-label="테마와 실적의 분리">
+        <g font-family="Segoe UI, sans-serif">
+          <text x="16" y="24" font-size="15" font-weight="800">주가를 움직이는 것 vs 실적을 만드는 것</text>
+
+          <rect x="30" y="46" width="360" height="130" rx="12" fill="#e0f2fe" stroke="#7dd3fc"/>
+          <text x="210" y="72" font-size="13.5" font-weight="800" fill="#0369a1" text-anchor="middle">🚀 주가 모멘텀 (기대)</text>
+          <text x="210" y="98" font-size="11.5" fill="#075985" text-anchor="middle">• AI RAN 실증 선정</text>
+          <text x="210" y="118" font-size="11.5" fill="#075985" text-anchor="middle">• 어퍼 C밴드·피지컬 AI 테마</text>
+          <text x="210" y="138" font-size="11.5" fill="#075985" text-anchor="middle">• 통신특화 LLM 개발</text>
+          <text x="210" y="162" font-size="11.5" fill="#0369a1" text-anchor="middle" font-weight="700">→ 아직 매출 기여 미미</text>
+
+          <rect x="450" y="46" width="360" height="130" rx="12" fill="#f0fdf4" stroke="#86efac"/>
+          <text x="630" y="72" font-size="13.5" font-weight="800" fill="#166534" text-anchor="middle">💵 실제 실적 (현재)</text>
+          <text x="630" y="98" font-size="11.5" fill="#14532d" text-anchor="middle">• 유선 브로드밴드(미국)</text>
+          <text x="630" y="118" font-size="11.5" fill="#14532d" text-anchor="middle">• 모바일 프론트홀(AT&amp;T)</text>
+          <text x="630" y="138" font-size="11.5" fill="#14532d" text-anchor="middle">• 광전송 본업</text>
+          <text x="630" y="162" font-size="11.5" fill="#166534" text-anchor="middle" font-weight="700">→ 흑자·이익 급증의 실체</text>
+
+          <text x="420" y="205" font-size="12" fill="#5c6472" text-anchor="middle">
+            ⚠️ 이 둘의 <b>불일치</b>를 인지하는 것이 투자 판단의 출발점 (개인 정리 도식)</text>
+        </g>
+      </svg>
+    </div>
+    <figcaption>그림 2. 주가를 움직이는 것(테마)과 실적을 만드는 것(본업)이 다르다. (개인 정리 도식)</figcaption>
+  </figure>
+  <div class="callout">
+    <b>💡 이 불일치를 어떻게 활용하나</b><br>
+    앞서 만든 <a href="https://tryingpig.github.io/study/260720_국산AI반도체DSP_수혜리포트.html">국산 AI반도체 DSP 리포트</a>에서도
+    같은 교훈이 나왔다 — <b>"뉴스가 아니라 공시를 보라."</b><br><br>
+    에치에프알도 마찬가지다. <b>AI RAN 뉴스는 주가를 움직이지만, 실적은 미국 본업이 만든다.</b>
+    투자자로서 추적할 것은 <b>①미국 본업 수주의 지속성</b>(실적 방어)과 <b>②AI RAN의 상용 전환</b>(테마의 실현)이다.
+    이 둘이 <b>다른 시계(時界)로 움직인다</b>는 걸 알아야 한다.
+  </div>
+
+  <!-- 4 -->
+  <h2>4. 쟁점 ② 영업 레버리지의 양면</h2>
+  <p class="lead">
+    2026년 영업이익 <b>4배</b> 전망의 비밀은 <b>영업 레버리지</b>다. 이게 이 회사의 매력이자 리스크다.
+  </p>
+  <div class="grid2">
+    <div class="card">
+      <h4>🟢 위로 작동할 때</h4>
+      <p>통신장비는 <b>고정비(R&amp;D·인건비·설비)</b>가 크다. 매출이 이 고정비를 넘어서면,
+      추가 매출의 상당 부분이 <b>그대로 이익</b>이 된다.</p>
+      <p class="sub" style="margin:0;">→ 매출 +6.9%인데 영업이익 +약 340% 전망이 이 효과.</p>
+    </div>
+    <div class="card">
+      <h4>🔴 아래로 작동할 때</h4>
+      <p>반대로 수주가 줄면 <b>고정비는 그대로인데 매출이 빠져</b> 이익이 급감하거나 적자가 된다.</p>
+      <p class="sub" style="margin:0;">→ 2024년 적자가 바로 이 모습. <b>변동성이 크다.</b></p>
+    </div>
+  </div>
+  <div class="note">
+    <b>⚠️ 소형 통신장비주의 숙명</b><br>
+    이 구조 때문에 통신장비 소형주는 <b>실적이 계단식으로 출렁</b>인다. 좋을 때 매우 좋고, 나쁠 때 적자.
+    2022년 상반기에 <b>어닝 서프라이즈</b>를 낸 적도 있고(당시 매출 급증), 이후 부진으로 적자를 겪기도 했다.<br><br>
+    <b>→ "이번 이익이 얼마나 지속되는 구조인가"</b>를 항상 물어야 한다. 한 번의 대형 수주로 튄 이익은
+    다음 해에 반납될 수 있다.
+  </div>
+
+  <!-- 5 -->
+  <h2>5. 쟁점 ③ "작은 M/S로 큰 이익" 검증</h2>
+  <p>
+    하나증권 노트의 핵심 주장 중 하나 — <b>"미국 시장 규모와 원가 구조 감안 시, 작은 점유율로도 큰 이익"</b>.
+    이걸 뜯어보자.
+  </p>
+  <table>
+    <thead><tr><th>주장의 구성요소</th><th class="c">타당성</th><th>검증 포인트</th></tr></thead>
+    <tbody>
+      <tr><td>미국 시장이 크다</td><td class="c good">사실</td><td>AT&amp;T·디시 등 대형 통신사 존재</td></tr>
+      <tr><td>고정비 구조라 레버리지 큼</td><td class="c good">사실</td><td>통신장비 공통 특성(4장)</td></tr>
+      <tr><td>작은 M/S로도 큰 이익</td><td class="c mid">조건부</td><td><b>실제 수주가 나야</b> 성립. 미실현 시 무의미</td></tr>
+      <tr><td>HFR이 그 M/S를 딴다</td><td class="c bad">미검증</td><td>실증 ≠ 상용. <b>수주 공시가 근거</b></td></tr>
+    </tbody>
+  </table>
+  <div class="bust">
+    <b>🔴 논리의 급소</b><br><br>
+    "작은 M/S로 큰 이익"은 <b>수학적으로 맞다.</b> 고정비를 넘긴 매출은 이익률이 높으니까.<br><br>
+    문제는 그 앞 단계 — <b>"HFR이 실제로 그 M/S를 확보하는가"</b>다.
+    과기부 실증 선정은 <b>"무대에 올랐다"</b>는 뜻이지 <b>"수주를 땄다"</b>는 뜻이 아니다.<br><br>
+    <b>→ 이 주장은 "만약 수주가 나면"이라는 조건부다.</b> 투자자는 이 조건이 충족되는지를
+    <b>실제 수주 공시로</b> 확인해야 한다. 조건 없이 결론만 받아들이면 위험하다.
+  </div>
+
+  <!-- 6 -->
+  <h2>6. 미국 시장 노출 해부</h2>
+  <table>
+    <thead><tr><th>고객/기회</th><th>내용</th><th class="c">단계</th></tr></thead>
+    <tbody>
+      <tr><td><b>AT&amp;T</b></td><td>C-RAN 전환에 따른 <b>프론트홀 장비 공급</b></td><td class="c good">실적 기여 중</td></tr>
+      <tr><td><b>디시네트워크(Dish)</b></td><td>오픈랜 RU 관련 장비 공급 추진</td><td class="c mid">진출 단계</td></tr>
+      <tr><td><b>버라이즌·NTT도코모</b></td><td>기존 고객사</td><td class="c mid">관계 유지</td></tr>
+      <tr><td><b>어퍼 C밴드·AI RAN</b></td><td>미국 주파수 경매·AI RAN 개화</td><td class="c bad">기대 단계</td></tr>
+    </tbody>
+  </table>
+  <div class="callout">
+    <b>💡 미국 노출의 두 얼굴</b><br>
+    <b>기회:</b> 미국은 통신 투자 규모가 크고, AT&amp;T 프론트홀처럼 <b>이미 실적으로 잡히는</b> 건이 있다.<br>
+    <b>리스크:</b> 미국 매출은 <b>환율·관세·통신사 CAPEX 사이클·현지 경쟁</b>에 노출된다.
+    특정 대형 고객 의존도가 높으면 <b>그 고객의 투자 축소가 곧 실적 타격</b>이다.<br><br>
+    <b>→ "미국 수혜주"라는 말은 양방향이다.</b> 미국이 좋을 때 좋고, 미국이 흔들리면 흔들린다.
+  </div>
+
+  <!-- 7 -->
+  <h2>7. KPI 대시보드 — 무엇을 추적할까</h2>
+  <table>
+    <thead><tr><th class="c">순위</th><th>KPI</th><th>왜 중요한가</th><th class="c">신호</th></tr></thead>
+    <tbody>
+      <tr><td class="c">1</td><td><b>미국·해외 수주 공시</b></td><td>성장 스토리의 실체. 테마→실적 전환</td><td class="c">공시 = 긍정</td></tr>
+      <tr><td class="c">2</td><td><b>AI RAN 상용 전환</b></td><td>실증이 매출로 이어지는가</td><td class="c">지연 = 경고</td></tr>
+      <tr><td class="c">3</td><td><b>분기 영업이익률</b></td><td>레버리지 방향</td><td class="c">하락 = 주의</td></tr>
+      <tr><td class="c">4</td><td><b>부문별 매출 믹스</b></td><td>이음5G/AI RAN 비중이 실제 오르는지</td><td class="c">상승 = 긍정</td></tr>
+      <tr><td class="c">5</td><td><b>AT&amp;T·디시 CAPEX</b></td><td>본업 수주의 선행지표</td><td class="c">축소 = 경고</td></tr>
+      <tr><td class="c">6</td><td><b>수주잔고</b></td><td>미래 매출 가시성</td><td class="c">증가 = 긍정</td></tr>
+      <tr><td class="c">7</td><td><b>환율(원/달러)</b></td><td>미국 매출 비중 큼</td><td class="c">변동 주의</td></tr>
+    </tbody>
+  </table>
+
+  <!-- 8 -->
+  <h2>8. 시나리오 3종 (가정 대입 · 예측 아님)</h2>
+  <div class="warn">
+    아래는 <b>변수 조합에 따라 그림이 어떻게 달라지는가</b>를 보기 위한 사고실험이며,
+    특정 결과를 전망하거나 권유하는 것이 아닙니다.
+  </div>
+  <table>
+    <thead><tr><th></th><th class="c">🟢 낙관</th><th class="c">🟡 중립</th><th class="c">🔴 비관</th></tr></thead>
+    <tbody>
+      <tr><td><b>미국 본업</b></td><td class="c">AT&amp;T·디시 수주 확대</td><td class="c">현 수준 유지</td><td class="c">CAPEX 축소로 감소</td></tr>
+      <tr><td><b>AI RAN</b></td><td class="c">실증→상용 수주 전환</td><td class="c">실증 지속, 상용 지연</td><td class="c">테마 소멸</td></tr>
+      <tr><td><b>영업이익</b></td><td class="c good">레버리지 상방 극대화</td><td class="c mid">전망치 부근</td><td class="c bad">수주 공백 시 재악화</td></tr>
+      <tr><td><b>이음5G</b></td><td class="c">특화망 확산</td><td class="c">완만</td><td class="c">정체</td></tr>
+      <tr><td><b>주가</b></td><td class="c good">실적+테마 동반</td><td class="c mid">테마 프리미엄 유지</td><td class="c bad">테마 소멸+실적 둔화</td></tr>
+    </tbody>
+  </table>
+  <div class="callout">
+    <b>이 표의 쓸모:</b> 이 종목의 최고 리스크는 <b>"테마 프리미엄 소멸 + 수주 공백"이 겹치는 것</b>이다.
+    소형 테마주는 기대가 빠질 때 낙폭이 크다. 반대로 <b>미국 수주가 실제로 확대되면</b> 실적이 테마를 뒷받침한다.
+    <b>수주 공시</b> 한 줄만 꾸준히 추적해도 방향을 크게 놓치지 않는다.
+  </div>
+
+  <!-- 9 -->
+  <h2>9. 리스크 매트릭스</h2>
+  <table>
+    <thead><tr><th>리스크</th><th class="c">가능성</th><th class="c">영향</th><th>설명</th></tr></thead>
+    <tbody>
+      <tr><td><b>테마-실적 괴리</b></td><td class="c bad">높음</td><td class="c bad">큼</td><td>AI RAN 기대가 주가를 끌지만 실적은 본업. 기대 소멸 시 낙폭</td></tr>
+      <tr><td><b>수주 변동성</b></td><td class="c bad">상시</td><td class="c bad">큼</td><td>통신장비 수주 산업. 한 건에 실적 출렁</td></tr>
+      <tr><td><b>고객 집중</b></td><td class="c mid">중</td><td class="c bad">큼</td><td>AT&amp;T 등 대형 고객 의존. CAPEX 축소 시 타격</td></tr>
+      <tr><td><b>AI RAN 상용 지연</b></td><td class="c mid">중</td><td class="c mid">중</td><td>실증이 매출로 안 이어질 수 있음</td></tr>
+      <tr><td><b>대형사와 경쟁</b></td><td class="c bad">높음</td><td class="c mid">중</td><td>삼성·에릭슨·노키아와 같은 무대. 규모 열위</td></tr>
+      <tr><td><b>환율</b></td><td class="c mid">상시</td><td class="c mid">중</td><td>미국 매출 비중 커 원/달러에 노출</td></tr>
+      <tr><td><b>소형주 유동성</b></td><td class="c mid">상시</td><td class="c mid">중</td><td>변동성·수급 리스크</td></tr>
+      <tr><td><b>선반영</b></td><td class="c bad">높음</td><td class="c bad">큼</td><td>AI RAN 기대가 주가에 이미 반영됐을 가능성</td></tr>
+    </tbody>
+  </table>
+
+  <!-- 10 -->
+  <h2>10. 촉매 캘린더</h2>
+  <table>
+    <thead><tr><th>시점/이벤트</th><th>확인할 것</th></tr></thead>
+    <tbody>
+      <tr><td>매 분기 실적</td><td>영업이익률, <b>부문별 믹스</b>, 수주잔고</td></tr>
+      <tr><td>수시 공시</td><td><b>미국·해외 수주 계약</b> — 가장 중요한 트리거</td></tr>
+      <tr><td>과기부 AI-RAN 실증 진행</td><td>실증 결과, <b>상용 전환 로드맵</b></td></tr>
+      <tr><td>AT&amp;T·디시 발표</td><td>C-RAN·오픈랜 투자 계획 (선행지표)</td></tr>
+      <tr><td>미국 어퍼 C밴드 후속</td><td>주파수 활용·AI RAN 관련 발주</td></tr>
+      <tr><td>MWC 등 전시회</td><td>my5G·AI RAN 신제품·파트너십</td></tr>
+    </tbody>
+  </table>
+
+  <!-- 11 -->
+  <h2>11. 밸류에이션 참고</h2>
+  <div class="kpi">
+    <div class="box"><div class="num">34,000원</div><div class="lab">주가(보도 시점)</div></div>
+    <div class="box"><div class="num">37,500~50,000</div><div class="lab">증권사 목표주가 범위</div></div>
+    <div class="box"><div class="num">약 132억</div><div class="lab">2026E 영업이익</div></div>
+    <div class="box"><div class="num">약 8.7%</div><div class="lab">2026E 영업이익률(개략)</div></div>
+  </div>
+  <div class="warn">
+    <b>⚠️ 해석 주의</b> — 목표주가(하나증권 5만원 등)는 <b>매수 의견을 낸 기관의 견해</b>이며,
+    <b>"AI RAN 수주가 실현된다"는 전제</b>가 상당 부분 깔려 있습니다. 실증이 상용으로 이어지지 않으면
+    그 전제가 무너집니다. 또 소형 테마주는 <b>기대가 주가에 선반영</b>되는 경향이 있어, 실적이 기대에 못 미치면
+    조정 폭이 큽니다. 이 노트는 특정 목표가의 타당성을 판단하지 않습니다.
+  </div>
+
+  <h2>투자 전 체크리스트</h2>
+  <div class="note">
+    <ul style="margin-bottom:0;">
+      <li>□ <b>현재 실적은 AI RAN이 아니라 미국 본업</b>이 만든다는 것을 이해했는가?</li>
+      <li>□ <b>영업 레버리지</b>가 양방향(이익 급증/급감)이라는 것을 아는가?</li>
+      <li>□ "작은 M/S로 큰 이익"이 <b>"수주가 나면"이라는 조건부</b>임을 인지했는가?</li>
+      <li>□ <b>실증 ≠ 상용 매출</b>이라는 구분을 하고 있는가?</li>
+      <li>□ <b>고객 집중·환율·소형주 유동성</b> 리스크를 감안했는가?</li>
+      <li>□ 목표주가가 <b>매수 의견 기관의 전제</b>에 달려 있음을 아는가?</li>
+      <li>□ 내가 추적할 <b>KPI 1~2개</b>(수주 공시·부문 믹스)를 정했는가?</li>
+      <li>□ 비관 시나리오(테마 소멸+수주 공백)에서 <b>감당 가능한 손실</b>을 정했는가?</li>
+    </ul>
+  </div>
+
+  <h2>FAQ</h2>
+  <h4>Q. 하나증권이 목표가 5만원을 줬는데 믿어도 되나요?</h4>
+  <p>목표주가는 <b>참고 정보이지 보장이 아닙니다.</b> 그 안에는 "AI RAN·미국 수주가 실현된다"는 전제가 들어 있습니다.
+  전제가 맞으면 근거가 되고, 틀리면 무너집니다. <b>목표가 자체보다 그 근거(수주)가 실현되는지</b>를 보세요.</p>
+  <h4>Q. 실적이 4배 는다는데 왜 조심스럽나요?</h4>
+  <p><b>영업 레버리지</b> 때문입니다. 매출이 조금 늘어도 이익이 크게 튀는 구조는, 반대로 매출이 조금 빠지면
+  이익이 급감하는 구조이기도 합니다. 2024년 적자가 그 증거입니다. <b>지속성</b>을 봐야 합니다.</p>
+  <h4>Q. AI RAN이 실제로 매출이 되려면 얼마나 걸리나요?</h4>
+  <p>정확히 말하기 어렵습니다. 노키아-엔비디아조차 상용화를 <b>2027년</b>으로 봅니다
+  (<a href="https://tryingpig.github.io/study/260720_AIRAN_개념설명리포트.html">AI RAN 리포트</a> 참조).
+  HFR의 AI RAN도 <b>실증 단계</b>이므로, 유의미한 매출까지는 시간이 필요할 수 있습니다.</p>
+  <h4>Q. 가장 중요한 지표 하나만 고르면?</h4>
+  <p><b>미국·해외 수주 공시</b>입니다. 이 회사의 성장은 미국에 달려 있고, 테마가 실적으로 전환되는지는
+  수주로만 확인됩니다. 뉴스가 아니라 <b>공시</b>를 보세요.</p>
+
+  <h2>출처</h2>
+  <p class="src">
+    • 하나증권, "에치에프알 (230240) 저도 미국 시장 수혜주입니다" (2026.04.28) — https://file.hanaw.com/download/research/FileServer/WEB/industry/enterprise/2026/04/28/HFR_final_0428.pdf<br>
+    • 하나증권 텔레콤, "HFR — AI RAN에는 엔비디아만 있는 것이 아닙니다" (2026.07, 텔레그램)<br>
+    • 미래에셋증권, "에치에프알 — 세대 전환의 최대 수혜주. 턴어라운드 시작" — https://securities.miraeasset.com/bbs/download/2144829.pdf<br>
+    • 머니투데이, "SKT, 정부 AI-RAN 실증사업 선정" (2026.07.14) — https://www.mt.co.kr/tech/2026/07/14/2026071408444992024<br>
+    • 디일렉, "HFR, 美디시네트워크 통해 오픈랜 시장 진출" — https://www.thelec.kr/news/articleView.html?idxno=10119<br>
+    • 디지털데일리, "에치에프알, 상반기 어닝 서프라이즈" — http://m.ddaily.co.kr/m/m_article/?no=245839<br>
+    • FnGuide 에치에프알(A230240) — https://comp.fnguide.com/SVO2/ASP/SVD_Main.asp?gicode=A230240<br>
+    • 콕스톡 에치에프알(230240) — https://www.kokstock.com/stock/item.asp?item_cd=230240<br>
+    • 알파스퀘어 에치에프알 주가 — https://alphasquare.co.kr/home/stock-summary?code=230240
+  </p>
+
+  <div class="foot">
+    <hr>
+    본 문서는 개인 학습·정리 목적의 비상업 노트입니다. 전망치·목표주가는 해당 증권사의 견해이며 본 문서의 의견이 아닙니다.
+    수치는 작성일(2026-07-20) 기준 추정으로 오류가 있을 수 있으며, 소형주 특성상 변동성이 큽니다.
+    투자에 대한 최종 판단과 책임은 전적으로 독자 본인에게 있습니다. © 2026 개인 리서치 라이브러리.
+  </div>
+
+</div>
+</body>
+</html>

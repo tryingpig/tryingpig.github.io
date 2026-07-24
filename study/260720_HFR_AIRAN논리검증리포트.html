@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HFR AI RAN 논리 검증 — 하나증권 리포트를 팩트체크하다</title>
+<style>
+  :root{
+    --accent:#b45309; --accent2:#d97706;
+    --ink:#1f2430; --muted:#5c6472; --line:#ece5da; --bg:#fff; --soft:#fdf9f2;
+    --warnbg:#fff7ed; --warnln:#fb923c;
+  }
+  *{box-sizing:border-box;}
+  body{font-family:"Segoe UI","Malgun Gothic","Apple SD Gothic Neo",system-ui,sans-serif;
+    color:var(--ink); background:var(--bg); margin:0; line-height:1.78; font-size:16.5px; letter-spacing:-0.1px;}
+  .wrap{max-width:920px; margin:0 auto; padding:40px 28px 90px;}
+  h1{font-size:29px; line-height:1.32; margin:8px 0 6px; letter-spacing:-0.6px;}
+  h2{font-size:22px; margin:50px 0 12px; padding-top:14px; border-top:3px solid var(--accent); letter-spacing:-0.4px;}
+  h3{font-size:18.5px; margin:30px 0 8px; color:#2b3242;}
+  h4{font-size:16px; margin:18px 0 6px; color:var(--accent);}
+  p{margin:10px 0;} a{color:var(--accent); text-decoration:none;} a:hover{text-decoration:underline;}
+  .sub{color:var(--muted); font-size:15px;} .lead{font-size:17.5px; color:#333a49;}
+  .kicker{display:inline-block; font-size:13px; font-weight:700; letter-spacing:1.5px;
+    color:#fff; background:var(--accent); padding:5px 12px; border-radius:999px;}
+  .warn{background:var(--warnbg); border:1px solid var(--warnln); border-left:6px solid var(--warnln);
+    border-radius:10px; padding:16px 18px; margin:22px 0; font-size:15px;}
+  .note{background:var(--soft); border:1px solid var(--line); border-radius:10px; padding:16px 18px; margin:18px 0;}
+  .callout{background:#fef3c7; border:1px solid #fcd34d; border-left:6px solid var(--accent);
+    border-radius:10px; padding:16px 18px; margin:20px 0;}
+  .dark{background:#292018; color:#f5e9da; border-radius:10px; padding:16px 18px; margin:20px 0;}
+  .dark b{color:#fff;}
+  .big{font-size:19px; font-weight:800; color:var(--accent); line-height:1.5;}
+  .grid2{display:grid; grid-template-columns:1fr 1fr; gap:16px;}
+  .card{border:1px solid var(--line); border-radius:12px; padding:16px 18px; background:#fff;}
+  table{width:100%; border-collapse:collapse; margin:18px 0; font-size:14.5px;}
+  th,td{border:1px solid var(--line); padding:9px 11px; text-align:left; vertical-align:top;}
+  th{background:var(--soft); font-weight:700;} td.c,th.c{text-align:center;}
+  figure{margin:24px 0; text-align:center;} figcaption{font-size:13px; color:var(--muted); margin-top:8px;}
+  .svgbox{border:1px solid var(--line); border-radius:12px; padding:14px; background:#fff;}
+  ul,ol{margin:10px 0 10px 4px; padding-left:22px;} li{margin:6px 0;}
+  .toc{background:var(--soft); border:1px solid var(--line); border-radius:12px; padding:18px 22px; margin:26px 0;}
+  .toc ol{columns:2; column-gap:34px;}
+  .src{font-size:13px; color:var(--muted); word-break:break-all;}
+  .good{color:#059669; font-weight:700;} .bad{color:#dc2626; font-weight:700;} .mid{color:#b45309; font-weight:700;}
+  .vd{display:inline-block; min-width:74px; text-align:center; font-weight:800; padding:2px 8px; border-radius:6px; font-size:13px;}
+  .v-o{background:#dcfce7; color:#166534;} .v-x{background:#fee2e2; color:#991b1b;}
+  .v-m{background:#fef9c3; color:#854d0e;} .v-u{background:#e2e8f0; color:#334155;}
+  hr{border:none; border-top:1px solid var(--line); margin:34px 0;}
+  .foot{color:var(--muted); font-size:13px; margin-top:40px;}
+  @media (max-width:680px){.grid2{grid-template-columns:1fr;} .toc ol{columns:1;} h1{font-size:24px;}}
+  @media print{body{font-size:11.5pt;} .wrap{max-width:100%; padding:0;} h2{break-after:avoid;}
+    figure,table,.card{break-inside:avoid;} a{color:#000;} .warn,.callout,.note,.dark{break-inside:avoid;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <span class="kicker">가설 검증 · 팩트체크</span>
+  <h1>HFR AI RAN 논리 검증<br>— 하나증권 리포트를 팩트체크하다</h1>
+  <p class="sub">작성일 2026-07-20 · 개인 리서치 노트 · 하나증권 "HFR — AI RAN에는 엔비디아만 있는 것이 아닙니다" 검증</p>
+
+  <div class="warn">
+    <b>⚠️ 투자 권유가 아닙니다.</b> 이 문서는 <b>특정 증권사 리포트의 논리를 공개 정보로 교차검증</b>한 개인 학습 노트입니다.
+    <b>매수·매도 추천이 아니며</b>, 해당 리포트(매수·목표가 5만원)에 대한 지지·반대 의견도 아닙니다.
+    <b>"각 주장이 사실로 뒷받침되는가"만 판정</b>합니다. 수치·일정은 작성일 기준 공개 자료로 추정·오류가 있을 수 있습니다.
+    모든 투자 판단과 그 책임은 전적으로 본인에게 있습니다.
+  </div>
+
+  <div class="note">
+    <b>📄 검증 대상</b><br>
+    하나증권(김홍식) 리포트 <b>"HFR — AI RAN에는 엔비디아만 있는 것이 아닙니다"</b> (투자의견 매수, 목표가 5만원).<br>
+    <b>선행 학습 자료:</b> <a href="https://tryingpig.github.io/study/260720_AIRAN_개념설명리포트.html">AI RAN 개념 설명 리포트</a> ·
+    <a href="https://tryingpig.github.io/study/260720_에치에프알_1_입문가이드.html">에치에프알 입문세트</a>(①②③).
+    개념·회사 기초는 그쪽에서 다뤘고, <b>이 글은 오직 '논리 검증'에 집중</b>한다.
+  </div>
+
+  <div class="callout">
+    <span class="big">🧭 검증 결과 한눈에</span>
+    <ul style="margin-bottom:0; list-style:none; padding-left:0;">
+      <li><span class="vd v-o">사실</span> AI RAN 3종 분류 · 엔비디아=AI-and-RAN 중심 · 과기부 실증 선정 · 통신사 오픈랜 선호</li>
+      <li><span class="vd v-m">부분참</span> "작은 M/S로 큰 이익"(조건부) · "AI-and-RAN 비필수"(강한 주장)</li>
+      <li><span class="vd v-x">과장·주의</span> "경매 확정 → 곧 개화"(경매는 2027년 예정) · 실증=매출 오인 소지</li>
+      <li><span class="vd v-u">미확인</span> HFR "통신특화 LLM" 개발 (공개 출처로 확인 못 함)</li>
+    </ul>
+    <b style="display:block; margin-top:10px;">종합: 큰 그림 논리("AI RAN ≠ 엔비디아 독점")는 타당. 그러나 <span class="bad">시간축과 실현 조건</span>이 낙관적으로 압축돼 있어, "곧 실적"으로 읽으면 위험.</b>
+  </div>
+
+  <div class="toc">
+    <b>목차</b>
+    <ol>
+      <li>검증 방법 — 어떻게 판정했나</li>
+      <li>리포트 논리 구조 분해</li>
+      <li>주장 ① 어퍼 C밴드 → AI RAN 개화</li>
+      <li>주장 ② AI RAN 3종 & '엔비디아 독점 아님'</li>
+      <li>주장 ③ AI-and-RAN은 비필수</li>
+      <li>주장 ④ 통신사 역학이 HFR에 유리</li>
+      <li>주장 ⑤ 통신특화 LLM</li>
+      <li>주장 ⑥ 작은 M/S로 큰 이익</li>
+      <li>주장 ⑦ 과기부 실증 = 글로벌 무대</li>
+      <li>종합 판정표</li>
+      <li>진짜 관전 포인트 · 리스크</li>
+      <li>FAQ · 출처</li>
+    </ol>
+  </div>
+
+  <!-- 1 -->
+  <h2>1. 검증 방법 — 어떻게 판정했나</h2>
+  <p>
+    각 주장을 <b>공개 자료(뉴스·기업 IR·규제기관 발표)</b>와 대조해 4단계로 판정한다.
+  </p>
+  <table>
+    <thead><tr><th class="c">판정</th><th>의미</th></tr></thead>
+    <tbody>
+      <tr><td class="c"><span class="vd v-o">사실</span></td><td>공개 자료로 명확히 뒷받침됨</td></tr>
+      <tr><td class="c"><span class="vd v-m">부분참</span></td><td>방향은 맞으나 조건·단서가 붙거나 해석 여지 있음</td></tr>
+      <tr><td class="c"><span class="vd v-x">과장·주의</span></td><td>사실이나 <b>시간축·강도가 과장</b>되거나 오인 소지</td></tr>
+      <tr><td class="c"><span class="vd v-u">미확인</span></td><td>공개 자료로 <b>검증하지 못함</b>(사실이 아니라는 뜻은 아님)</td></tr>
+    </tbody>
+  </table>
+  <div class="note">
+    <b>공정성 원칙:</b> 이 검증은 <b>"틀렸다"를 찾는 게 목적이 아니다.</b> 애널리스트의 논리에는 합리적 근거가 많다.
+    다만 <b>매수 리포트는 낙관 쪽으로 프레이밍</b>되는 경향이 있으므로, 독자가 <b>어디가 확정이고 어디가 기대인지</b>
+    구분할 수 있게 돕는 것이 목적이다.
+  </div>
+
+  <!-- 2 -->
+  <h2>2. 리포트 논리 구조 분해</h2>
+  <figure>
+    <div class="svgbox">
+      <svg viewBox="0 0 860 280" width="100%" role="img" aria-label="논리 구조">
+        <g font-family="Segoe UI, sans-serif">
+          <text x="16" y="26" font-size="15" font-weight="800">하나증권 논리의 사슬 — 어디가 튼튼하고 어디가 약한가</text>
+
+          <rect x="20" y="44" width="200" height="58" rx="10" fill="#dcfce7" stroke="#86efac"/>
+          <text x="120" y="66" font-size="11.5" font-weight="700" text-anchor="middle">① 어퍼 C밴드 경매</text>
+          <text x="120" y="84" font-size="10" fill="#166534" text-anchor="middle">→ 피지컬 AI → AI RAN</text>
+          <text x="120" y="96" font-size="9.5" fill="#991b1b" text-anchor="middle">단, 경매는 2027 예정</text>
+
+          <rect x="240" y="44" width="200" height="58" rx="10" fill="#dcfce7" stroke="#86efac"/>
+          <text x="340" y="66" font-size="11.5" font-weight="700" text-anchor="middle">② AI RAN 3종 분류</text>
+          <text x="340" y="84" font-size="10" fill="#166534" text-anchor="middle">엔비디아=and-RAN</text>
+          <text x="340" y="96" font-size="9.5" fill="#166534" text-anchor="middle">✅ 사실</text>
+
+          <rect x="460" y="44" width="200" height="58" rx="10" fill="#fef9c3" stroke="#fcd34d"/>
+          <text x="560" y="66" font-size="11.5" font-weight="700" text-anchor="middle">③ and-RAN 비필수</text>
+          <text x="560" y="84" font-size="10" fill="#854d0e" text-anchor="middle">for/on이 필수</text>
+          <text x="560" y="96" font-size="9.5" fill="#854d0e" text-anchor="middle">⚠️ 강한 주장</text>
+
+          <rect x="680" y="44" width="160" height="58" rx="10" fill="#dcfce7" stroke="#86efac"/>
+          <text x="760" y="66" font-size="11.5" font-weight="700" text-anchor="middle">④ 통신사 역학</text>
+          <text x="760" y="84" font-size="10" fill="#166534" text-anchor="middle">오픈랜 선호</text>
+          <text x="760" y="96" font-size="9.5" fill="#166534" text-anchor="middle">✅ 대체로 사실</text>
+
+          <rect x="140" y="130" width="200" height="58" rx="10" fill="#e2e8f0" stroke="#cbd5e1"/>
+          <text x="240" y="152" font-size="11.5" font-weight="700" text-anchor="middle">⑤ 통신특화 LLM</text>
+          <text x="240" y="170" font-size="10" fill="#334155" text-anchor="middle">HFR 개발 주장</text>
+          <text x="240" y="182" font-size="9.5" fill="#334155" text-anchor="middle">❔ 미확인</text>
+
+          <rect x="360" y="130" width="200" height="58" rx="10" fill="#fef9c3" stroke="#fcd34d"/>
+          <text x="460" y="152" font-size="11.5" font-weight="700" text-anchor="middle">⑥ 작은 M/S 큰 이익</text>
+          <text x="460" y="170" font-size="10" fill="#854d0e" text-anchor="middle">수주 나야 성립</text>
+          <text x="460" y="182" font-size="9.5" fill="#854d0e" text-anchor="middle">△ 조건부</text>
+
+          <rect x="580" y="130" width="200" height="58" rx="10" fill="#dcfce7" stroke="#86efac"/>
+          <text x="680" y="152" font-size="11.5" font-weight="700" text-anchor="middle">⑦ 과기부 실증</text>
+          <text x="680" y="170" font-size="10" fill="#166534" text-anchor="middle">글로벌사와 무대</text>
+          <text x="680" y="182" font-size="9.5" fill="#166534" text-anchor="middle">✅ 사실(단 ≠매출)</text>
+
+          <rect x="140" y="212" width="640" height="52" rx="10" fill="#292018"/>
+          <text x="460" y="235" font-size="12.5" font-weight="800" fill="#fff" text-anchor="middle">
+            결론: 사슬의 '개념' 고리(②④⑦)는 튼튼, '시간·실현' 고리(①⑥)와 '단정'(③)·'미확인'(⑤)이 약점</text>
+          <text x="460" y="254" font-size="10.5" fill="#d6c9b8" text-anchor="middle">개인 정리 도식</text>
+        </g>
+      </svg>
+    </div>
+    <figcaption>그림 1. 논리 사슬의 강약 지도. 개념은 튼튼, 시간축·실현·미확인이 약점. (개인 정리 도식)</figcaption>
+  </figure>
+
+  <!-- 3 -->
+  <h2>3. 주장 ① 어퍼 C밴드 → AI RAN 개화 <span class="vd v-x">과장·주의</span></h2>
+  <div class="callout">
+    <b>📌 리포트 주장</b><br>
+    "미국 <b>어퍼 C밴드 경매가 확정</b>됐는데, 피지컬 AI 연계를 위해 곧 <b>AI RAN 산업 개화</b>로 이어질 것."
+  </div>
+  <h3>팩트체크</h3>
+  <table>
+    <thead><tr><th>확인 사항</th><th>사실관계</th></tr></thead>
+    <tbody>
+      <tr><td>경매가 '확정'됐나?</td><td>FCC가 2026년 7월 <b>경매 '규칙'을 확정</b>(160MHz)한 것. <b>경매 자체는 미실시</b></td></tr>
+      <tr><td>경매는 언제?</td><td class="bad"><b>2027년 7월</b> 예정 (법정 시한)</td></tr>
+      <tr><td>규모 전망</td><td>300억~750억 달러 추정. Verizon·AT&amp;T·T-Mobile이 주 입찰 예상</td></tr>
+      <tr><td>AI RAN 개화 시점</td><td>노키아-엔비디아조차 상용화를 <b>2027년</b>으로 제시</td></tr>
+    </tbody>
+  </table>
+  <div class="dark">
+    <b>🔴 검증 결과 — 방향은 맞지만 '곧'이 과장</b><br><br>
+    경매 <b>규칙</b>이 확정된 건 사실이다. 그러나 <b>실제 경매는 2027년 7월 예정</b>이고,
+    주파수 확보 → 망 구축 → AI RAN 적용까지는 <b>추가로 수년</b>이 걸린다.<br><br>
+    즉 "경매 확정 → <b>곧</b> AI RAN 개화 → HFR <b>큰 호재</b>"라는 사슬은
+    <b>시간축이 상당히 압축</b>돼 있다. 방향성은 타당하나 <b>"곧"과 "큰 호재"를 단기 실적으로 읽으면 위험</b>하다.
+    <span class="src">(출처: FCC / TechTimes 2026.07.03, Phillips Lytle, NewscastStudio 2026.07.22)</span>
+  </div>
+
+  <!-- 4 -->
+  <h2>4. 주장 ② AI RAN 3종 & '엔비디아 독점 아님' <span class="vd v-o">사실</span></h2>
+  <div class="callout">
+    <b>📌 리포트 주장</b><br>
+    "AI RAN은 <b>AI for RAN / AI on RAN / AI with RAN</b> 3종. 엔비디아-노키아 방식은 <b>AI with RAN</b>이다.
+    따라서 AI RAN = 엔비디아 독점이 아니다."
+  </div>
+  <h3>팩트체크</h3>
+  <ul>
+    <li><b>3종 분류는 사실.</b> AI-RAN Alliance 공식 분류가 <b>AI-for-RAN / AI-on-RAN / AI-and-RAN</b>이다.
+      (리포트의 'AI with RAN' = 공식 명칭 'AI-and-RAN')</li>
+    <li><b>엔비디아=and-RAN 중심도 사실.</b> 엔비디아-노키아 GPU 기반 플랫폼은 AI-and-RAN이 핵심.
+      (엔비디아는 셋 다 제공한다고 주장하지만, GPU 공유 모델이 대표 방식)</li>
+    <li><b>따라서 "3종이 있으니 엔비디아 독점이 아니다"는 논리적으로 성립.</b></li>
+  </ul>
+  <div class="callout">
+    <b>✅ 검증 결과 — 개념적으로 타당</b><br>
+    이 부분은 리포트에서 가장 튼튼한 고리다. AI RAN이 3종이라는 것, 엔비디아가 특정 방식(and-RAN)에 강하다는 것,
+    따라서 다른 방식(for/on)에는 진입 여지가 있다는 것 — <b>모두 사실에 부합</b>한다.<br>
+    (상세 개념은 <a href="https://tryingpig.github.io/study/260720_AIRAN_개념설명리포트.html">AI RAN 개념 리포트</a> 참조)
+  </div>
+
+  <!-- 5 -->
+  <h2>5. 주장 ③ AI-and-RAN은 비필수 <span class="vd v-m">부분참(강한 주장)</span></h2>
+  <div class="callout">
+    <b>📌 리포트 주장</b><br>
+    "피지컬 AI의 대용량 연산·초고속 통신을 감안하면 <b>AI for RAN과 AI on RAN이 필수</b>이지
+    <b>AI with RAN은 필수적이지 않다.</b> 오히려 대규모 모델 구동에 비효율. 자체칩이 GPU보다 효율적."
+  </div>
+  <h3>팩트체크 — 양쪽 근거</h3>
+  <div class="grid2">
+    <div class="card">
+      <h4>🟢 주장을 지지하는 근거</h4>
+      <ul style="margin-bottom:0;">
+        <li>for RAN(스펙트럼 효율)·on RAN(엣지 저지연)은 피지컬 AI에 직접적으로 유용 — 타당</li>
+        <li>기지국에서 <b>소규모 로컬 모델</b>만 돌린다면 전용칩이 전력효율에서 유리할 수 있음 — 일리 있음</li>
+        <li>GPU 공유(and-RAN)는 통신사에 <b>추가 GPU 투자 부담</b>이라는 지적도 사실</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4>🟠 반대 정황 (주의)</h4>
+      <ul style="margin-bottom:0;">
+        <li>노키아-엔비디아 AI-and-RAN에 <b>9개 대형 통신사</b>가 관여(T-Mobile·보다폰·DT·NTT도코모 등)</li>
+        <li>"비필수·비효율"이라면 이만한 통신사가 붙을 이유 설명 필요</li>
+        <li>엔비디아는 <b>Project Aura</b>로 for/on/and를 <b>한 아키텍처에 통합</b>한다고 주장 — 배타적이지 않을 수 있음</li>
+        <li>"자체칩이 낫다"는 <b>워크로드에 따라</b> 다름 — 단정하기 이름</li>
+      </ul>
+    </div>
+  </div>
+  <div class="dark">
+    <b>🟡 검증 결과 — "필수/비필수" 이분법이 강하다</b><br><br>
+    for/on RAN이 피지컬 AI에 유용하다는 건 맞다. 그러나 <b>"and-RAN은 비필수"라는 단정</b>은
+    <b>9개 대형 통신사가 and-RAN에 참여 중</b>이라는 정황과 충돌한다.<br><br>
+    더 정확한 표현은 <b>"세 방식은 배타적이 아니라 상호보완적이며, 어느 것이 주류가 될지는 아직 미정"</b>이다.
+    리포트의 논리는 <b>HFR에 유리한 방식(for/on)을 필수로, 불리한 방식(and)을 비필수로</b> 프레이밍한 측면이 있다.
+    <span class="src">(출처: Nokia MWC26 발표, NVIDIA AI-RAN 자료, AI RAN 개념 리포트 9장)</span>
+  </div>
+
+  <!-- 6 -->
+  <h2>6. 주장 ④ 통신사 역학이 HFR에 유리 <span class="vd v-o">대체로 사실</span></h2>
+  <div class="callout">
+    <b>📌 리포트 주장</b><br>
+    "장비 선택은 통신사 권한. 미국 3사 중 노키아 주류는 T-Mobile뿐, AT&amp;T는 2023년 노키아→에릭슨 교체.
+    통신사들이 <b>오픈랜을 밀고</b> 있어 엔비디아 주도 and-RAN에 회의적. → HFR 기회."
+  </div>
+  <h3>팩트체크</h3>
+  <ul>
+    <li><b>"통신사가 장비를 선택한다"</b> — 명백한 사실. 통신장비의 제1원칙(갑=통신사).</li>
+    <li><b>"AT&amp;T가 노키아→에릭슨 교체"</b> — 널리 보도된 사실.</li>
+    <li><b>"통신사가 오픈랜을 민다"</b> — 대체로 사실. 멀티벤더·특정 벤더 종속 회피 흐름은 실재.</li>
+    <li><b>"and-RAN에 회의적"</b> — <b>부분참.</b> 위 ③에서 봤듯 <b>9개 통신사가 노키아-엔비디아에 관여</b>하는 정황과는 결이 다름.
+      "회의적인 통신사도 있다"가 정확.</li>
+  </ul>
+  <div class="callout">
+    <b>✅ 검증 결과 — 구조는 타당, 강도는 조정 필요</b><br>
+    "통신사가 오픈랜·멀티벤더를 선호 → 중소사에 기회"라는 <b>구조적 논리는 타당</b>하다.
+    다만 <b>"통신사가 유리한 선택을 해준다"와 "HFR을 실제로 선택한다"는 다르다.</b>
+    리포트도 이 점을 인정하며 <b>"기술이 좋아도 통신사가 선택 안 하면 무용지물"</b>이라고 스스로 단서를 달았다 — 공정한 서술.
+  </div>
+
+  <!-- 7 -->
+  <h2>7. 주장 ⑤ 통신특화 LLM <span class="vd v-u">미확인</span></h2>
+  <div class="callout">
+    <b>📌 리포트 주장</b><br>
+    "HFR은 <b>통신장비 특화 LLM을 개발</b>하여 통신사 피지컬 AI 니즈에 부합."
+  </div>
+  <div class="dark">
+    <b>❔ 검증 결과 — 공개 출처로 확인하지 못함</b><br><br>
+    이 조사에서 <b>HFR의 '통신특화 LLM' 개발을 독립적으로 확인할 수 있는 공개 자료를 찾지 못했다.</b><br>
+    HFR이 <b>my5G·특화망·AI RAN 실증</b>에 참여하는 것은 여러 매체로 확인되지만,
+    <b>"통신특화 LLM"이라는 구체적 산출물</b>은 리포트 외 출처에서 교차검증되지 않았다.<br><br>
+    <b>⚠️ 이것이 사실이 아니라는 뜻은 아니다.</b> 다만 <b>투자 판단 시 회사 IR·공시·보도자료로 직접 확인</b>이 필요한
+    항목이다. 검증 안 된 주장을 근거로 삼는 것은 위험하다.
+  </div>
+
+  <!-- 8 -->
+  <h2>8. 주장 ⑥ 작은 M/S로 큰 이익 <span class="vd v-m">부분참(조건부)</span></h2>
+  <div class="callout">
+    <b>📌 리포트 주장</b><br>
+    "미국 시장 규모와 장비산업 원가 구조 감안 시, <b>작은 M/S 확보로도 큰 폭의 이익 증가 및 주가 상승</b>."
+  </div>
+  <h3>팩트체크 — 조건을 분해</h3>
+  <table>
+    <thead><tr><th>구성요소</th><th class="c">판정</th><th>근거</th></tr></thead>
+    <tbody>
+      <tr><td>미국 시장이 크다</td><td class="c"><span class="vd v-o">사실</span></td><td>AT&amp;T·Verizon·T-Mobile·Dish 등</td></tr>
+      <tr><td>고정비 구조 → 영업 레버리지</td><td class="c"><span class="vd v-o">사실</span></td><td>통신장비 공통 특성</td></tr>
+      <tr><td>작은 M/S로 큰 이익</td><td class="c"><span class="vd v-m">조건부</span></td><td><b>실제 수주가 나야</b> 성립하는 수학</td></tr>
+      <tr><td>HFR이 그 M/S 확보</td><td class="c"><span class="vd v-u">미검증</span></td><td>실증 ≠ 상용 수주</td></tr>
+    </tbody>
+  </table>
+  <div class="dark">
+    <b>🟡 검증 결과 — "만약 수주가 나면" 성립하는 조건문</b><br><br>
+    영업 레버리지 논리(고정비 넘긴 매출은 이익률↑)는 <b>수학적으로 옳다.</b>
+    하지만 이 문장의 진짜 무게는 앞 단계 — <b>"HFR이 미국에서 실제 수주를 따느냐"</b>에 있다.<br><br>
+    <b>이건 결론이 아니라 조건문</b>이다. "수주가 나면 이익이 크게 는다"는 맞지만,
+    "수주가 난다"는 아직 증명되지 않았다. → <b>실제 수주 공시로만 확인 가능.</b>
+    (에치에프알 <a href="https://tryingpig.github.io/study/260720_에치에프알_2_투자안내서.html">투자안내서 5장</a>에서 상세)
+  </div>
+
+  <!-- 9 -->
+  <h2>9. 주장 ⑦ 과기부 실증 = 글로벌 무대 <span class="vd v-o">사실(단, ≠매출)</span></h2>
+  <div class="callout">
+    <b>📌 리포트 주장</b><br>
+    "과기부 실증사업을 통해 <b>글로벌 SI와 동일한 무대</b>에 올랐다."
+  </div>
+  <h3>팩트체크</h3>
+  <ul>
+    <li><b>사실.</b> SKT 주관 'AI-RAN 선도망' 실증에 <b>삼성·에릭슨·노키아·HFR 4개 제조사</b>가 함께 선정됨.</li>
+    <li>피지컬 AI 서비스 3종(순찰로봇·무인이송·휴머노이드) 실증. HFR이 에릭슨코리아와 함께 장비 고도화 담당.</li>
+    <li><b>즉 "대형사와 나란히 무대에 올랐다"는 명백한 사실</b>이며, 레퍼런스 가치가 있다.</li>
+  </ul>
+  <div class="dark">
+    <b>✅ 검증 결과 — 사실이나, '무대'와 '매출'은 다르다</b><br><br>
+    과기부 실증 선정은 <b>사실이고 의미 있는 레퍼런스</b>다. 대형사와 같은 사업에 이름을 올린 것은
+    중소사에겐 값진 일이다.<br><br>
+    <b>다만 실증(PoC)은 "기술을 검증하는 단계"이지 "매출을 내는 단계"가 아니다.</b>
+    실증이 <b>상용 발주로 전환</b>되어야 실적이 된다. 이 전환은 <b>보장되지 않으며 시간이 걸린다.</b>
+    "무대에 올랐다"를 "돈을 번다"로 읽으면 안 된다.
+    <span class="src">(출처: 머니투데이·전자신문 2026.07.14, SKT 뉴스룸)</span>
+  </div>
+
+  <!-- 10 -->
+  <h2>10. 종합 판정표</h2>
+  <table>
+    <thead><tr><th class="c">#</th><th>주장</th><th class="c">판정</th><th>핵심 코멘트</th></tr></thead>
+    <tbody>
+      <tr><td class="c">①</td><td>어퍼 C밴드 → 곧 AI RAN 개화</td><td class="c"><span class="vd v-x">과장·주의</span></td><td>경매는 <b>2027년 예정</b>. '곧'이 압축됨</td></tr>
+      <tr><td class="c">②</td><td>AI RAN 3종 · 엔비디아 독점 아님</td><td class="c"><span class="vd v-o">사실</span></td><td>가장 튼튼한 고리</td></tr>
+      <tr><td class="c">③</td><td>AI-and-RAN은 비필수</td><td class="c"><span class="vd v-m">부분참</span></td><td>9개 통신사 참여와 배치. 이분법 강함</td></tr>
+      <tr><td class="c">④</td><td>통신사 역학이 HFR에 유리</td><td class="c"><span class="vd v-o">사실</span></td><td>구조 타당. 선택은 별개</td></tr>
+      <tr><td class="c">⑤</td><td>통신특화 LLM 개발</td><td class="c"><span class="vd v-u">미확인</span></td><td>공개 출처로 검증 못 함</td></tr>
+      <tr><td class="c">⑥</td><td>작은 M/S로 큰 이익</td><td class="c"><span class="vd v-m">조건부</span></td><td>"수주 나면" 성립하는 조건문</td></tr>
+      <tr><td class="c">⑦</td><td>과기부 실증 = 글로벌 무대</td><td class="c"><span class="vd v-o">사실</span></td><td>단, 실증 ≠ 매출</td></tr>
+    </tbody>
+  </table>
+
+  <div class="dark">
+    <b>🎯 종합 결론</b><br><br>
+    하나증권 리포트의 <b>'큰 그림' 논리는 타당</b>하다:
+    "AI RAN은 3종이고, 엔비디아가 지배하는 건 그중 하나(and-RAN)이며,
+    통신사의 오픈랜 선호를 감안하면 HFR도 for/on 영역에서 기회가 있다."
+    이 뼈대(②④⑦)는 사실로 뒷받침된다.<br><br>
+    <b>그러나 매수 논리를 완성하는 고리들이 낙관적으로 압축</b>되어 있다:
+    <ul style="margin-bottom:0;">
+      <li><b>시간축(①):</b> 경매는 2027년, AI RAN 상용도 2027년~ → "곧"이 아니다</li>
+      <li><b>단정(③):</b> "and-RAN 비필수"는 9개 통신사 참여와 충돌하는 강한 주장</li>
+      <li><b>미확인(⑤):</b> 통신특화 LLM은 교차검증 안 됨</li>
+      <li><b>조건부(⑥):</b> 큰 이익은 "실제 수주"라는 미증명 전제 위에 있음</li>
+      <li><b>실증≠매출(⑦):</b> 무대에 오른 것과 돈 버는 것은 다름</li>
+    </ul>
+    <br>
+    <b>→ 한 문장으로:</b> <b>"논리의 방향은 맞다. 그러나 '곧 큰 실적'으로 읽으면 위험하다.
+    이건 2027년 이후를 내다본 조건부 스토리이지, 당장의 실적 근거가 아니다."</b>
+  </div>
+
+  <!-- 11 -->
+  <h2>11. 진짜 관전 포인트 · 리스크</h2>
+  <div class="grid2">
+    <div class="card">
+      <h4>🟢 스토리가 실현되는 신호</h4>
+      <ul style="margin-bottom:0;">
+        <li>과기부 실증 → <b>상용 발주</b> 전환 발표</li>
+        <li>미국 <b>AT&amp;T·디시 실제 수주 공시</b></li>
+        <li>통신특화 LLM의 <b>구체적 상용 사례</b></li>
+        <li>AI RAN 매출이 <b>부문 실적에 잡히기</b> 시작</li>
+        <li>2027 어퍼 C밴드 경매 후 <b>망 투자 본격화</b></li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4>🔴 스토리가 흔들리는 신호</h4>
+      <ul style="margin-bottom:0;">
+        <li>실증이 <b>상용으로 이어지지 않고</b> 종료</li>
+        <li>and-RAN(엔비디아-노키아)이 <b>표준으로 굳어짐</b></li>
+        <li>미국 통신사 CAPEX <b>축소·지연</b></li>
+        <li>대형사가 오픈랜 영역까지 <b>흡수</b></li>
+        <li>AI RAN 기대만 빠지고 <b>본업 수주도 둔화</b></li>
+      </ul>
+    </div>
+  </div>
+  <div class="callout">
+    <b>💡 앞선 리포트들과 같은 교훈</b><br>
+    <a href="https://tryingpig.github.io/study/260720_국산AI반도체DSP_수혜리포트.html">국산 AI반도체 DSP 리포트</a>와
+    <a href="https://tryingpig.github.io/study/260720_에치에프알_2_투자안내서.html">에치에프알 투자안내서</a>에서 반복된 결론이 여기서도 나온다:<br><br>
+    <b>"테마 뉴스가 아니라 수주 공시를 보라."</b> AI RAN·어퍼 C밴드·피지컬 AI는 매력적인 <b>스토리</b>지만,
+    HFR의 실적은 결국 <b>실제 계약</b>에서 나온다. 검증 대상 리포트의 논리도 <b>"실증→상용→수주"가 확인될 때</b>
+    비로소 완성된다.
+  </div>
+
+  <!-- FAQ -->
+  <h2>FAQ</h2>
+  <h4>Q. 그럼 하나증권 리포트가 틀렸다는 건가요?</h4>
+  <p>아닙니다. <b>큰 그림 논리(AI RAN ≠ 엔비디아 독점)는 타당</b>합니다. 다만 <b>매수 리포트 특성상 낙관적으로 압축</b>된
+  부분(시간축·실현 조건·미확인 항목)이 있어, 독자가 <b>"확정"과 "기대"를 구분</b>하도록 돕는 것이 이 검증의 목적입니다.</p>
+  <h4>Q. 목표주가 5만원은 타당한가요?</h4>
+  <p>이 노트는 목표가의 타당성을 판단하지 않습니다. 다만 목표가에는 <b>"AI RAN 수주가 실현된다"는 전제</b>가
+  상당 부분 깔려 있고, 그 전제는 <b>아직 조건부·미확인</b>이라는 점을 짚었습니다. 전제가 충족되는지를 직접 추적하세요.</p>
+  <h4>Q. 가장 조심해야 할 주장은?</h4>
+  <p><b>①(경매→곧 개화)과 ⑤(통신특화 LLM)</b>입니다. ①은 시간축이 2027년으로 멀고, ⑤는 공개 검증이 안 됐습니다.
+  이 둘을 근거로 <b>단기 실적</b>을 기대하면 실망할 수 있습니다.</p>
+  <h4>Q. 그래서 지금 확인해야 할 한 가지는?</h4>
+  <p><b>"실증이 상용 수주로 전환되는가"</b>입니다. 과기부 실증·미국 진출이 <b>실제 계약(공시)</b>으로 이어지는지가
+  이 스토리 전체의 진위를 가릅니다.</p>
+
+  <!-- sources -->
+  <h2>출처</h2>
+  <p class="src">
+    • 하나증권(김홍식), "HFR — AI RAN에는 엔비디아만 있는 것이 아닙니다" (2026.07, 텔레그램)<br>
+    • 하나증권, "에치에프알 (230240) 저도 미국 시장 수혜주입니다" (2026.04.28) — https://file.hanaw.com/download/research/FileServer/WEB/industry/enterprise/2026/04/28/HFR_final_0428.pdf<br>
+    • TechTimes, "FCC Sets Rules for $30B–$75B C-Band Auction" (2026.07.03) — https://www.techtimes.com/articles/319643/20260703/<br>
+    • Phillips Lytle, "FCC Advances Upper C-Band Auction… July 4, 2027" — https://phillipslytle.com/fcc-advances-upper-c-band-auction-under-tight-statutory-timeline-july-4-2027/<br>
+    • NewscastStudio, "FCC adopts rules for upper C-band auction" (2026.07.22) — https://www.newscaststudio.com/2026/07/22/fcc-adopts-rules-for-upper-c-band-auction-sets-stage-for-440-mhz-super-band/<br>
+    • NVIDIA Glossary / Nokia MWC26, AI-RAN 3종·생태계 — https://www.nvidia.com/en-us/glossary/ai-ran/<br>
+    • Nokia Newsroom, AI-RAN 파트너십(9개 통신사) — https://www.nokia.com/newsroom/nokia-accelerates-ai-ran-momentum-with-new-partnerships-driving-path-to-ai-native-6g-mwc26/<br>
+    • 머니투데이, "SKT, 정부 AI-RAN 실증사업 선정" (2026.07.14) — https://www.mt.co.kr/tech/2026/07/14/2026071408444992024<br>
+    • 전자신문, "공장에 '피지컬 AI' 실현할 지능망 깐다…SKT·KT, 하이퍼 AI 네트워크 실증" (2026.07.14) — https://www.etnews.com/20260714000209<br>
+    • 아이티데일리, "[기업탐방] HFR, 피지컬 AI 시대 '마이5G'로 특화망 시장 공략" — http://www.itdaily.kr/news/articleView.html?idxno=239979<br>
+    • 컴퓨터월드, "특화망 솔루션 '마이5G'로 피지컬 AI 적용" — https://www.comworld.co.kr/news/articleView.html?idxno=52086<br>
+    • 본 시리즈: <a href="https://tryingpig.github.io/study/260720_AIRAN_개념설명리포트.html">AI RAN 개념 설명 리포트</a> · <a href="https://tryingpig.github.io/study/260720_에치에프알_2_투자안내서.html">에치에프알 투자안내서</a>
+  </p>
+
+  <div class="foot">
+    <hr>
+    본 문서는 개인 학습·정리 목적의 비상업 노트입니다. 특정 증권사 리포트의 논리를 공개 자료로 교차검증한 것이며,
+    해당 리포트나 종목에 대한 매수·매도 의견이 아닙니다. '미확인' 판정은 "사실이 아니다"가 아니라
+    "공개 자료로 확인하지 못했다"는 뜻입니다. 수치·일정은 작성일(2026-07-20) 기준으로 오류가 있을 수 있습니다.
+    투자에 대한 최종 판단과 책임은 전적으로 독자 본인에게 있습니다. © 2026 개인 리서치 라이브러리.
+  </div>
+
+</div>
+</body>
+</html>

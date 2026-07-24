@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import type { Post } from '../lib/posts';
 import '../styles/postlist.css';
 
@@ -19,6 +19,25 @@ export default function PostList({ posts, perPage: initialPerPage = 10 }: Props)
   const [query, setQuery] = useState('');
   const [page, setPage] = useState(1);
   const [perPage, setPerPage] = useState(initialPerPage);
+  const [ppOpen, setPpOpen] = useState(false);
+  const ppRef = useRef<HTMLDivElement>(null);
+
+  // 드롭다운: 바깥 클릭 / Esc 로 닫는다
+  useEffect(() => {
+    if (!ppOpen) return;
+    const onDown = (e: MouseEvent) => {
+      if (!ppRef.current?.contains(e.target as Node)) setPpOpen(false);
+    };
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setPpOpen(false);
+    };
+    document.addEventListener('mousedown', onDown);
+    document.addEventListener('keydown', onKey);
+    return () => {
+      document.removeEventListener('mousedown', onDown);
+      document.removeEventListener('keydown', onKey);
+    };
+  }, [ppOpen]);
 
   // 검색 대상 문자열을 미리 만들어둔다 (제목 + 파일명, 기존 동작과 동일)
   const indexed = useMemo(
@@ -57,20 +76,35 @@ export default function PostList({ posts, perPage: initialPerPage = 10 }: Props)
           />
         </div>
 
-        {/* 한 페이지에 몇 개씩 뿌릴지. 바꾸면 첫 페이지로 되돌린다 */}
-        <div className="per-page" role="group" aria-label="페이지당 글 수">
-          <span className="pp-label">show</span>
-          {PER_PAGE_OPTIONS.map((n) => (
-            <button
-              key={n}
-              type="button"
-              className={n === perPage ? 'active' : ''}
-              aria-pressed={n === perPage}
-              onClick={() => { setPerPage(n); setPage(1); }}
-            >
-              {n}
-            </button>
-          ))}
+        {/* 한 페이지에 몇 개씩 뿌릴지 — 드롭다운. 바꾸면 첫 페이지로 되돌린다 */}
+        <div className={`per-page${ppOpen ? ' open' : ''}`} ref={ppRef}>
+          <button
+            type="button"
+            className="pp-trigger"
+            aria-haspopup="listbox"
+            aria-expanded={ppOpen}
+            aria-label={`페이지당 글 수, 현재 ${perPage}개`}
+            onClick={() => setPpOpen((v) => !v)}
+          >
+            <span className="pp-label">show</span>
+            <span className="pp-value">{perPage}</span>
+            <svg className="pp-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <path d="m6 9 6 6 6-6" />
+            </svg>
+          </button>
+          <ul className="pp-menu" role="listbox" aria-label="페이지당 글 수">
+            {PER_PAGE_OPTIONS.map((n) => (
+              <li key={n} role="option" aria-selected={n === perPage}>
+                <button
+                  type="button"
+                  className={n === perPage ? 'active' : ''}
+                  onClick={() => { setPerPage(n); setPage(1); setPpOpen(false); }}
+                >
+                  {n}
+                </button>
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
 

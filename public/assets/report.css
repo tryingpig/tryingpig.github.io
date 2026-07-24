@@ -192,6 +192,10 @@ figcaption { font-size: 13px; color: var(--muted); margin-top: 8px; }
   border: 1px solid var(--line); border-radius: 12px; padding: 14px;
   background: var(--card); overflow-x: auto;
 }
+/* 도표 안에서 fill 을 지정하지 않은 글자는 검정으로 그려진다 → 다크에서 안 보인다.
+   fill 이 명시된 글자(색칠된 상자 위의 라벨 등)는 의도된 색이므로 건드리지 않는다. */
+.svgbox text:not([fill]) { fill: var(--ink); }
+.svgbox text { font-family: var(--sans); }
 
 /* ── 목차 ──
    report.js 가 h2 에 id 를 붙이고 목차 항목을 링크로 바꿔준다. */

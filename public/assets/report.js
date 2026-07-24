@@ -33,16 +33,25 @@
   if (toc.querySelector('a[href^="#"]')) return;
 
   var items = toc.querySelectorAll('li');
-  if (items.length !== heads.length) {
-    // 목차 줄 수와 h2 개수가 다르면 잘못 연결될 수 있으므로 아무것도 하지 않는다
-    return;
-  }
 
+  // h2 에 먼저 id 를 준다 ("3. 주장 ①…" 처럼 번호로 시작하면 그 번호를 키로 삼는다)
+  var byNumber = {};
   heads.forEach(function (h, i) {
     if (!h.id) h.id = 'sec-' + (i + 1);
-    var li = items[i];
+    var m = (h.textContent || '').trim().match(/^(\d+)\s*[.)]/);
+    if (m) byNumber[m[1]] = h.id;
+  });
+
+  /* 목차 항목 → 헤딩 짝짓기.
+     번호로 맞추는 쪽이 우선이다. 본문에 목차에 없는 h2 가 섞여 있어도(예: 맺음말)
+     순번만 믿고 이으면 한 칸씩 밀려 엉뚱한 곳으로 가기 때문이다.
+     번호를 못 찾았고 개수도 다르면, 잘못 잇느니 그냥 두는 편이 낫다. */
+  var sameCount = items.length === heads.length;
+  items.forEach(function (li, i) {
+    var target = byNumber[String(i + 1)] || (sameCount ? heads[i].id : null);
+    if (!target) return;
     var a = document.createElement('a');
-    a.href = '#' + h.id;
+    a.href = '#' + target;
     while (li.firstChild) a.appendChild(li.firstChild);
     li.appendChild(a);
   });

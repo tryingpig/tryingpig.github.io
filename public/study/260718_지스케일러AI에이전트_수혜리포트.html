@@ -5,96 +5,67 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>지스케일러(Zscaler) — AI Agent 시대 수혜 심층 리포트</title>
 <style>
-  :root{
-    --accent:#1d4ed8;      /* Zscaler blue */
-    --accent2:#0ea5e9;
-    --ink:#0f172a;
-    --muted:#475569;
-    --line:#e2e8f0;
-    --bg:#ffffff;
-    --soft:#f1f5f9;
-    --warn-bg:#fff7ed;
-    --warn-line:#fb923c;
-    --good:#16a34a;
-    --bad:#dc2626;
-    --mid:#d97706;
-  }
-  *{box-sizing:border-box}
-  body{
-    font-family:"Pretendard","Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif;
-    color:var(--ink); background:var(--bg); margin:0; line-height:1.75; font-size:16.5px;
-  }
-  .wrap{max-width:920px; margin:0 auto; padding:44px 22px 100px;}
-  header.hero{
-    background:linear-gradient(135deg,#0b1e46 0%,#1d4ed8 55%,#0ea5e9 100%);
-    color:#fff; border-radius:20px; padding:40px 34px; margin-bottom:30px;
-    box-shadow:0 18px 44px rgba(29,78,216,.28);
-  }
-  header.hero .kicker{font-size:13px; letter-spacing:.14em; text-transform:uppercase; opacity:.85; font-weight:700;}
-  header.hero h1{font-size:33px; line-height:1.28; margin:12px 0 10px; font-weight:800;}
-  header.hero p{margin:0; font-size:15.5px; opacity:.95;}
-  header.hero .meta{margin-top:18px; font-size:13px; opacity:.85; display:flex; gap:16px; flex-wrap:wrap;}
-  header.hero .meta span{background:rgba(255,255,255,.14); padding:5px 12px; border-radius:999px;}
-  h2{font-size:24px; margin:46px 0 14px; padding-bottom:9px; border-bottom:3px solid var(--accent); font-weight:800; display:flex; align-items:center; gap:10px;}
-  h2 .n{background:var(--accent); color:#fff; width:31px; height:31px; border-radius:9px; display:inline-flex; align-items:center; justify-content:center; font-size:16px;}
-  h3{font-size:19px; margin:30px 0 10px; color:#132a63; font-weight:750;}
-  h4{font-size:16.5px; margin:20px 0 6px; color:#1e3a8a;}
-  p{margin:11px 0;}
-  strong{color:#0b1e46;}
-  a{color:var(--accent); word-break:break-all;}
-  .lead{font-size:17.5px; color:#1e293b;}
-  .warn{background:var(--warn-bg); border:1px solid var(--warn-line); border-left:6px solid var(--warn-line);
-    border-radius:12px; padding:16px 20px; margin:22px 0; font-size:14.5px; color:#7c2d12;}
-  .warn b{color:#9a3412;}
-  .box{background:var(--soft); border:1px solid var(--line); border-radius:14px; padding:20px 22px; margin:20px 0;}
-  .box.accent{border-left:6px solid var(--accent); background:#eff5ff;}
-  .box.tip{border-left:6px solid var(--good); background:#f0fdf4;}
-  .grid2{display:grid; grid-template-columns:1fr 1fr; gap:16px;}
-  .card{border:1px solid var(--line); border-radius:14px; padding:18px 20px; background:#fff;}
-  .card h4{margin-top:0;}
-  table{border-collapse:collapse; width:100%; margin:18px 0; font-size:14px;}
-  th,td{border:1px solid var(--line); padding:10px 12px; text-align:left; vertical-align:top;}
-  th{background:#0b1e46; color:#fff; font-weight:700;}
-  tr:nth-child(even) td{background:#f8fafc;}
-  .tag{display:inline-block; padding:3px 10px; border-radius:999px; font-size:12px; font-weight:700;}
-  .t-good{background:#dcfce7; color:#166534;}
-  .t-mid{background:#fef3c7; color:#92400e;}
-  .t-bad{background:#fee2e2; color:#991b1b;}
-  figure{margin:24px 0; text-align:center;}
-  figure svg{max-width:100%; height:auto;}
-  figcaption{font-size:12.5px; color:var(--muted); margin-top:8px;}
-  .src{font-size:12px; color:#64748b;}
-  ul,ol{margin:11px 0; padding-left:22px;}
-  li{margin:6px 0;}
-  .kpi-row{display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin:20px 0;}
-  .kpi{background:linear-gradient(160deg,#eff5ff,#dbeafe); border:1px solid #bfdbfe; border-radius:14px; padding:16px; text-align:center;}
-  .kpi .v{font-size:24px; font-weight:800; color:var(--accent);}
-  .kpi .l{font-size:12.5px; color:#334155; margin-top:4px;}
-  .timeline{border-left:3px solid var(--accent); margin:20px 0; padding-left:22px;}
-  .timeline .ev{margin-bottom:18px; position:relative;}
-  .timeline .ev::before{content:''; position:absolute; left:-30px; top:5px; width:13px; height:13px; border-radius:50%; background:var(--accent); border:3px solid #fff; box-shadow:0 0 0 2px var(--accent);}
-  .timeline .d{font-weight:800; color:var(--accent); font-size:14px;}
-  .faq{border:1px solid var(--line); border-radius:12px; padding:6px 18px; margin:12px 0; background:#fff;}
-  .faq summary{font-weight:700; cursor:pointer; padding:12px 0; color:#132a63;}
-  .faq p{margin:4px 0 14px;}
-  .pill{display:inline-block; background:var(--accent); color:#fff; font-size:12px; font-weight:700; padding:4px 11px; border-radius:999px; margin:0 4px 4px 0;}
-  .footnote{font-size:13px; color:var(--muted); border-top:1px solid var(--line); margin-top:40px; padding-top:18px;}
-  .matrix td:first-child{font-weight:700;}
-  @media (max-width:680px){
-    .grid2,.kpi-row{grid-template-columns:1fr;}
-    header.hero h1{font-size:26px;}
-    .wrap{padding:24px 14px 70px;}
-  }
-  @media print{
-    header.hero{box-shadow:none;}
-    h2{page-break-after:avoid;}
-    figure,table,.box,.card{page-break-inside:avoid;}
-    .faq{page-break-inside:avoid;}
-    a{color:#1d4ed8;}
-  }
+  /* 이 리포트에만 있는 규칙. 공통 스타일은 /assets/report.css 에 있다 */
+  header.hero { background:linear-gradient(135deg,#0b1e46 0%,#1d4ed8 55%,#0ea5e9 100%); color:#fff; border-radius:20px; padding:40px 34px; margin-bottom:30px; box-shadow:0 18px 44px rgba(29,78,216,.28); }
+  header.hero .kicker { font-size:13px; letter-spacing:.14em; text-transform:uppercase; opacity:.85; font-weight:700; }
+  header.hero h1 { font-size:33px; line-height:1.28; margin:12px 0 10px; font-weight:800; }
+  header.hero p { margin:0; font-size:15.5px; opacity:.95; }
+  header.hero .meta { margin-top:18px; font-size:13px; opacity:.85; display:flex; gap:16px; flex-wrap:wrap; }
+  header.hero .meta span { background:rgba(255,255,255,.14); padding:5px 12px; border-radius:999px; }
+  h2 .n { background:var(--accent); color:#fff; width:31px; height:31px; border-radius:9px; display:inline-flex; align-items:center; justify-content:center; font-size:16px; }
+  strong { color:#0b1e46; }
+  .warn b { color:#9a3412; }
+  .box { background:var(--soft); border:1px solid var(--line); border-radius:14px; padding:20px 22px; margin:20px 0; }
+  .box.accent { border-left:6px solid var(--accent); background:#eff5ff; }
+  .box.tip { border-left:6px solid var(--good); background:#f0fdf4; }
+  .card h4 { margin-top:0; }
+  tr:nth-child(even) td { background:#f8fafc; }
+  .tag { display:inline-block; padding:3px 10px; border-radius:999px; font-size:12px; font-weight:700; }
+  .t-good { background:#dcfce7; color:#166534; }
+  .t-bad { background:#fee2e2; color:#991b1b; }
+  figure svg { max-width:100%; height:auto; }
+  .kpi-row { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin:20px 0; }
+  .kpi .v { font-size:24px; font-weight:800; color:var(--accent); }
+  .kpi .l { font-size:12.5px; color:#334155; margin-top:4px; }
+  .timeline { border-left:3px solid var(--accent); margin:20px 0; padding-left:22px; }
+  .timeline .ev { margin-bottom:18px; position:relative; }
+  .timeline .ev::before { content:''; position:absolute; left:-30px; top:5px; width:13px; height:13px; border-radius:50%; background:var(--accent); border:3px solid #fff; box-shadow:0 0 0 2px var(--accent); }
+  .timeline .d { font-weight:800; color:var(--accent); font-size:14px; }
+  .faq { border:1px solid var(--line); border-radius:12px; padding:6px 18px; margin:12px 0; background:#fff; }
+  .faq summary { font-weight:700; cursor:pointer; padding:12px 0; color:#132a63; }
+  .faq p { margin:4px 0 14px; }
+  .pill { display:inline-block; background:var(--accent); color:#fff; font-size:12px; font-weight:700; padding:4px 11px; border-radius:999px; margin:0 4px 4px 0; }
+  .footnote { font-size:13px; color:var(--muted); border-top:1px solid var(--line); margin-top:40px; padding-top:18px; }
+  .matrix td:first-child { font-weight:700; }
+  @media (max-width:680px) { .grid2,.kpi-row { grid-template-columns:1fr; } }
+  @media (max-width:680px) { header.hero h1 { font-size:26px; } }
 </style>
+
+<link rel="stylesheet" href="/assets/report.css">
+<script src="/assets/report.js" defer></script>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<script>
+  /* 초기 테마 즉시 적용 - 인라인이어야 흰 화면이 번쩍이지 않는다 */
+  (function () {
+    try {
+      var t = localStorage.getItem('theme');
+      if (!t) t = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      if (t === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+    } catch (e) {}
+  })();
+</script>
 </head>
-<body>
+<body data-topic="invest">
+<div class="topbar">
+  <div class="topbar-in">
+    <a class="back" href="/#study">← 학습공간</a>
+    <span class="crumb">지스케일러(Zscaler) — AI Agent 시대 수혜 심층 리포트</span>
+    <button class="theme-toggle" type="button" aria-label="다크/라이트 전환" title="다크/라이트 전환">
+      <svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      <svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+    </button>
+  </div>
+</div>
 <div class="wrap">
 
 <header class="hero">

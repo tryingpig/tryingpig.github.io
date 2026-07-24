@@ -64,6 +64,34 @@
 :root[data-theme="dark"] [data-topic="market"]  { --accent: #5b72fd; }
 :root[data-theme="dark"] [data-topic="culture"] { --accent: #d425e5; }
 
+/* ── 예전 리포트가 쓰던 변수 이름들 ──
+   리포트 64개가 저마다 <style> 안에 --gray, --soft, --accent-dark 같은 이름을 정의해 썼다.
+   그 <style> 을 걷어내면 참조가 끊기므로 여기서 새 토큰으로 이어준다.
+   :root 가 아니라 body 에 두는 이유 — --accent 는 body 의 data-topic 이 정하므로,
+   :root 에서 var(--accent) 를 읽으면 주제색이 아니라 기본색이 잡힌다. */
+body {
+  --accent-dark: var(--accent);
+  --accent2: var(--accent);
+  --gray: var(--muted);
+  --soft: var(--card);
+  --light: var(--bg-2);
+  --light2: var(--bg-2);
+  --warn: var(--accent);
+  --warnln: var(--accent);
+  --warn-line: var(--accent);
+  --warnbg: color-mix(in srgb, var(--accent) 9%, var(--bg));
+  --warn-bg: color-mix(in srgb, var(--accent) 9%, var(--bg));
+  --kr: #3949ab;
+  --good: #047857;
+  --bad: #b91c1c;
+  --mid: var(--accent);
+}
+:root[data-theme="dark"] body {
+  --kr: #5b72fd;
+  --good: #6ee7b7;
+  --bad: #fca5a5;
+}
+
 /* ── 베이스 ── */
 * { box-sizing: border-box; }
 body {
@@ -82,16 +110,22 @@ a:hover { text-decoration: underline; }
    그리드 구조는 남겨둔다 — 나중에 특정 블록만 넓히고 싶으면 --w-wide 만 키우면
    .wide/figure/table 이 그만큼 넘치고, 값이 같으면 아무 일도 일어나지 않는다.
    음수 마진 대신 그리드를 쓰므로 좁은 화면에서 가로 스크롤이 생기지 않는다. */
-.wrap {
+/* 컨테이너 이름이 둘로 갈려 있다 — .page 41개 / .wrap 23개. 둘을 같게 취급한다.
+   (.page 는 예전에 흰 종이 느낌의 그림자 박스였는데, 포털의 평평한 크림 톤에 맞춰 걷어냈다) */
+.wrap, .page {
   display: grid;
   grid-template-columns: 1fr min(var(--w-text), 100% - 44px) 1fr;
   padding: 34px 0 90px;
+  margin: 0;
+  max-width: none;
+  background: none;
+  box-shadow: none;
 }
-.wrap > * { grid-column: 2; }
-.wrap > figure,
-.wrap > table,
-.wrap > .wide,
-.wrap > .tablewrap {
+.wrap > *, .page > * { grid-column: 2; }
+.wrap > figure, .page > figure,
+.wrap > table, .page > table,
+.wrap > .wide, .page > .wide,
+.wrap > .tablewrap, .page > .tablewrap {
   grid-column: 1 / -1;
   width: min(var(--w-wide), 100% - 44px);
   margin-inline: auto;
@@ -178,6 +212,49 @@ hr { border: none; border-top: 1px solid var(--line); margin: 34px 0; }
 :root[data-theme="dark"] .dark { background: var(--bg-2); color: var(--ink); border: 1px solid var(--line); }
 
 .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+
+/* ── 리포트 64개가 이미 반복해서 쓰던 조각들 ──
+   .cover 41개, .kpi 17개, .refimg 16개처럼 사실상 공용이 된 것들을 여기로 올렸다.
+   파일마다 값이 조금씩 달랐으므로 가장 흔한 정의를 기준으로 통일했다. */
+.cover { text-align: center; padding: 96px 0 72px; }
+.cover .big { font-size: 2.15rem; font-weight: 800; color: var(--accent); line-height: 1.3; }
+.cover .sub { font-size: 1.12rem; color: var(--ink-soft); margin-top: 14px; }
+.cover .sub2 { font-size: 1rem; color: var(--muted); margin-top: 22px; }
+.cover .date { font-family: var(--mono); font-size: .88rem; color: var(--muted); margin-top: 50px; }
+.cover .tag { font-size: .95rem; color: var(--muted); font-style: italic; margin-top: 64px; }
+
+.em { color: var(--accent); font-weight: 700; }
+.muted { color: var(--muted); font-size: .9rem; }
+.kr { color: var(--kr); font-weight: 700; }
+
+.kpi { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 20px 0; }
+.kpi .box {
+  border: 1px solid var(--line); border-radius: 12px;
+  padding: 14px; text-align: center; background: var(--card);
+}
+.kpi .num { font-size: 21px; font-weight: 800; color: var(--accent); letter-spacing: -0.5px; }
+.kpi .lab { font-size: 12.5px; color: var(--muted); margin-top: 3px; }
+
+.refimg {
+  display: block; max-width: 100%; height: auto; margin: 0 auto;
+  border: 1px solid var(--line); border-radius: 6px;
+}
+
+/* 시리즈 리포트(①②③) 사이를 오가는 안내 박스 */
+.seriesnav {
+  background: color-mix(in srgb, var(--accent) 8%, var(--bg));
+  border: 1px solid color-mix(in srgb, var(--accent) 32%, var(--bg));
+  border-radius: 10px; padding: 14px 18px; margin: 20px 0; font-size: 14.5px;
+}
+
+/* 등급 라벨 */
+.t-hi { color: var(--good); font-weight: 700; }
+.t-mid { color: var(--accent); font-weight: 700; }
+.t-low { color: var(--bad); font-weight: 700; }
+
+/* 표 줄무늬 — 41개 파일이 전부 같은 정의로 쓰고 있었다 */
+tbody tr:nth-child(even) td { background: var(--bg-2); }
 
 /* ── 표 ──
    좁은 화면에서 표가 화면을 밀지 않도록 .tablewrap 으로 감싸는 것을 권장한다. */
@@ -235,7 +312,10 @@ figcaption { font-size: 13px; color: var(--muted); margin-top: 8px; }
 /* ── 반응형 ── */
 @media (max-width: 680px) {
   body { font-size: 16px; }
-  .grid2 { grid-template-columns: 1fr; }
+  .grid2, .grid3 { grid-template-columns: 1fr; }
+  .kpi { grid-template-columns: repeat(2, 1fr); }
+  .cover { padding: 56px 0 44px; }
+  .cover .big { font-size: 1.72rem; }
   .toc ol { columns: 1; }
   h1 { font-size: 24px; }
   h2 { font-size: 20px; }
@@ -254,8 +334,9 @@ figcaption { font-size: 13px; color: var(--muted); margin-top: 8px; }
   :root { --bg: #fff; --ink: #000; --card: #fff; --line: #ccc; }
   body { font-size: 11.5pt; background: #fff; color: #000; }
   .topbar, .theme-toggle { display: none; }
-  .wrap { display: block; padding: 0; max-width: 100%; }
-  .wrap > figure, .wrap > table, .wrap > .wide, .wrap > .tablewrap { width: 100%; }
+  .wrap, .page { display: block; padding: 0; max-width: 100%; }
+  .wrap > figure, .wrap > table, .wrap > .wide, .wrap > .tablewrap,
+  .page > figure, .page > table, .page > .wide, .page > .tablewrap { width: 100%; }
   h2 { break-after: avoid; }
   figure, table, .card, .warn, .callout, .note, .dark { break-inside: avoid; }
   a { color: #000; }

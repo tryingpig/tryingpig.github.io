@@ -1,17 +1,69 @@
 ---
 import ThemeToggle from './ThemeToggle.astro';
+import { loadProjects } from '../lib/posts';
+
+// 프로젝트 목록은 빌드 타임에 읽어 메뉴로 굽는다 (홈 본문에서는 카드 섹션을 걷어냈다)
+const projects = loadProjects();
 ---
 
 <header class="nav">
   <div class="wrap nav-inner">
     <a href="#top" class="brand">tryingpig<span class="dot">.log</span></a>
     <nav class="nav-links">
-      <a href="#projects">Projects</a>
+      <div class="nav-item" id="projMenu">
+        <button type="button" class="nav-trigger" aria-haspopup="true" aria-expanded="false" aria-controls="projMenuList">
+          Projects
+          <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <div class="menu" id="projMenuList" role="menu">
+          {projects.length === 0 ? (
+            <div class="m-empty">등록된 프로젝트가 없습니다.</div>
+          ) : projects.map((p) => (
+            <a class="m-row" href={p.url} target="_blank" rel="noopener" role="menuitem">
+              <span class="m-emoji">{p.emoji || '🔗'}</span>
+              <span class="m-body">
+                <span class="m-ko">{p.name_ko || p.name_en}</span>
+                {p.name_en && p.name_ko && <span class="m-en">{p.name_en}</span>}
+              </span>
+              <span class="m-go">↗</span>
+            </a>
+          ))}
+        </div>
+      </div>
       <a href="#study">Study</a>
       <ThemeToggle />
     </nav>
   </div>
 </header>
+
+<script>
+  /* 데스크톱은 CSS :hover 로 열린다. 이 스크립트는 그게 안 통하는 경우만 담당한다.
+     - 터치 기기: hover 가 없으므로 탭으로 토글
+     - 키보드: Enter/Space 로 열고 Esc 로 닫기 (:focus-within 은 CSS 가 처리) */
+  const item = document.getElementById('projMenu');
+  const trigger = item?.querySelector('.nav-trigger');
+  if (item && trigger) {
+    const setOpen = (open) => {
+      item.classList.toggle('open', open);
+      trigger.setAttribute('aria-expanded', String(open));
+    };
+    trigger.addEventListener('click', (e) => {
+      e.preventDefault();
+      setOpen(!item.classList.contains('open'));
+    });
+    document.addEventListener('click', (e) => {
+      if (!item.contains(e.target)) setOpen(false);
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && item.classList.contains('open')) {
+        setOpen(false);
+        trigger.focus();
+      }
+    });
+    // 메뉴에서 링크를 고르면 닫는다 (새 탭으로 열리므로 페이지는 그대로 남는다)
+    item.querySelectorAll('.m-row').forEach((a) => a.addEventListener('click', () => setOpen(false)));
+  }
+</script>
 
 <style>
   header.nav {
@@ -23,10 +75,80 @@ import ThemeToggle from './ThemeToggle.astro';
   .brand { font-family: var(--mono); font-weight: 700; font-size: 15px; letter-spacing: -0.3px; }
   .brand .dot { color: var(--muted); }
   .nav-links { display: flex; align-items: center; gap: 22px; }
-  .nav-links a {
+
+  /* 최상위 항목만 대문자 링크 스타일. 드롭다운 안쪽 링크에는 상속되면 안 되므로 > 로 한정 */
+  .nav-links > a,
+  .nav-trigger {
     font-family: var(--mono); font-size: 11.5px; letter-spacing: 1.5px;
     text-transform: uppercase; color: var(--ink-soft);
   }
-  .nav-links a:hover { color: var(--ink); }
-  @media (max-width: 600px) { .nav-links .hide-sm { display: none; } }
+  .nav-links > a:hover { color: var(--ink); }
+
+  /* ── Projects 드롭다운 ── */
+  .nav-item { position: relative; }
+  .nav-trigger {
+    display: inline-flex; align-items: center; gap: 5px;
+    background: none; border: none; padding: 0; cursor: pointer;
+    line-height: inherit; transition: color .15s;
+  }
+  .nav-trigger .chev { width: 11px; height: 11px; opacity: .65; transition: transform .18s; }
+  .nav-item:hover .nav-trigger,
+  .nav-item:focus-within .nav-trigger,
+  .nav-item.open .nav-trigger { color: var(--ink); }
+  .nav-item:hover .chev,
+  .nav-item:focus-within .chev,
+  .nav-item.open .chev { transform: rotate(180deg); opacity: 1; }
+
+  .menu {
+    position: absolute; top: 100%; right: 0;
+    /* 트리거와 메뉴 사이 간격을 padding 으로 둔다 — margin 으로 띄우면 그 틈에서 hover 가 끊긴다 */
+    padding-top: 12px;
+    width: min(340px, calc(100vw - 44px));
+    opacity: 0; visibility: hidden; transform: translateY(-6px);
+    transition: opacity .16s ease, transform .16s ease, visibility .16s;
+  }
+  .nav-item:hover .menu,
+  .nav-item:focus-within .menu,
+  .nav-item.open .menu { opacity: 1; visibility: visible; transform: none; }
+
+  .menu > * {
+    background: var(--card);
+    border-left: 1px solid var(--line); border-right: 1px solid var(--line);
+  }
+  .menu > :first-child { border-top: 1px solid var(--line); border-radius: 12px 12px 0 0; }
+  .menu > :last-child {
+    border-bottom: 1px solid var(--line); border-radius: 0 0 12px 12px;
+    box-shadow: 0 14px 34px var(--card-shadow);
+  }
+
+  .m-row {
+    display: flex; align-items: center; gap: 11px; padding: 11px 14px;
+    transition: background .12s;
+  }
+  .m-row + .m-row { border-top: 1px solid var(--line-soft); }
+  .m-row:hover { background: var(--bg-2); }
+  .m-emoji { font-size: 17px; flex: none; line-height: 1; }
+  .m-body { min-width: 0; display: flex; flex-direction: column; gap: 2px; flex: 1; }
+  .m-ko { font-size: 13px; color: var(--ink); line-height: 1.35; }
+  .m-en {
+    font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.2px;
+    color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  .m-go { font-family: var(--mono); font-size: 13px; color: var(--muted); flex: none; }
+  .m-row:hover .m-go { color: var(--ink); }
+  .m-empty { font-family: var(--mono); font-size: 12px; color: var(--muted); padding: 14px; }
+
+  /* 좁은 화면에서는 트리거 기준(right:0)으로 붙이면 메뉴가 화면 왼쪽으로 잘려나간다.
+     → 뷰포트 기준으로 바꿔 헤더 아래 좌우 여백(.wrap 의 22px)에 맞춘다. */
+  @media (max-width: 600px) {
+    .menu {
+      position: fixed; top: 60px; left: 22px; right: 22px;
+      width: auto; padding-top: 8px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .menu { transition: none; }
+    .nav-trigger .chev { transition: none; }
+  }
 </style>

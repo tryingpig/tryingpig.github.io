@@ -2,15 +2,14 @@
 import '../styles/tokens.css';
 import Nav from '../components/Nav.astro';
 import Hero from '../components/Hero.astro';
-import ProjectCard from '../components/ProjectCard.astro';
 // 유일한 React 아일랜드. 검색·페이저만 클라이언트에서 살아 움직인다.
 import PostList from '../components/PostList.tsx';
 import Footer from '../components/Footer.astro';
-import { loadPosts, loadProjects } from '../lib/posts';
+import { loadPosts } from '../lib/posts';
 
 // ★ 빌드 타임에 딱 한 번 실행된다. 브라우저는 이 코드를 절대 받지 않는다.
+// 프로젝트 목록은 본문에서 빠지고 Nav 의 드롭다운으로 들어갔다.
 const posts = loadPosts();
-const projects = loadProjects();
 const pad = (n: number) => String(n).padStart(2, '0');
 ---
 
@@ -43,16 +42,6 @@ const pad = (n: number) => String(n).padStart(2, '0');
   <main id="top">
     <Hero />
 
-    <section id="projects" class="sec wrap reveal">
-      <div class="sec-head">
-        <h2>Projects</h2>
-        <span class="count">{pad(projects.length)}</span>
-      </div>
-      {projects.length === 0
-        ? <div class="empty">아직 등록된 프로젝트가 없습니다.</div>
-        : <div class="cards">{projects.map((p) => <ProjectCard project={p} />)}</div>}
-    </section>
-
     <section id="study" class="sec wrap reveal">
       <div class="sec-head">
         <h2>Study &amp; Writings</h2>
@@ -79,5 +68,6 @@ const pad = (n: number) => String(n).padStart(2, '0');
 </html>
 
 <style>
-  .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 12px; }
+  /* 프로젝트 섹션이 빠져 STUDY 가 첫 섹션이 됐다 — 히어로와 너무 붙지 않게 위쪽만 조금 띄운다 */
+  #study { padding-top: 12px; }
 </style>

@@ -155,7 +155,7 @@
       transition: background .12s, padding-left .12s;
     }
     ul.posts li a:hover { background: var(--bg-2); padding-left: 12px; }
-    /* 픽셀 썸네일 — 주제어 해시로 즉석 생성(autoIcon). 손으로 그리는 아이콘 없음 */
+    /* 픽셀 썸네일 — assets/px/*.svg (pixel-icon 스킬로 생성) */
     ul.posts .p-thumb {
       flex: none; width: 62px; height: 62px; border-radius: 10px;
       border: 1px solid var(--line); background: var(--bg-2);
@@ -340,18 +340,41 @@
       render();
     }
 
-    /* ── 썸네일: 주제어 해시로 즉석 생성 (손그림 매핑 없음) ──
-       주제어 = 파일명 `YYMMDD_주제_...` 의 두 번째 토막. 같은 주제의 3부작
-       (입문가이드/투자안내서/밸류체인)은 주제어가 같으니 자동으로 같은 타일을 갖는다.
-       새 글을 올려도 손댈 게 없다. */
-    function topicSeed(file) {
-      const base = (file || '').split('/').pop().replace(/\.html?$/i, '');
-      const parts = base.split('_');
-      return (parts.length > 1 ? parts[1] : base).toLowerCase();
-    }
+    /* ── 주제별 픽셀 아이콘 매핑 ──
+       파일명으로 주제를 찾는다. 위에서부터 먼저 걸리는 규칙이 이김.
+       새 주제를 추가하려면 assets/px/icons.json에 아이콘을 그려 pixel-icon 스킬로 뽑고
+       여기에 한 줄 추가하면 된다. 못 찾으면 note(기본 문서 아이콘). */
+    const TOPIC_ICONS = [
+      [/보툴리눔톡신/, 'toxin'],
+      [/휴젤/, 'hugel'],
+      [/인텍플러스/, 'intekplus'],
+      [/전력공조냉각/, 'cooling'],
+      [/FCBGA/i, 'fcbga'],
+      [/유리기판/, 'glass'],
+      [/MLCC/i, 'mlcc'],
+      [/삼성전기/, 'samsungsem'],
+      [/SKT|데이터센터/i, 'datacenter'],
+      [/효성중공업|SST/i, 'transformer'],
+      [/메가프로젝트/, 'mega'],
+      [/리밸런싱/, 'rebalance'],
+      [/800VDC/i, 'vdc800'],
+      [/_hbs_/i, 'hbs'],
+      [/_hbf_/i, 'hbf'],
+      [/_cpo_/i, 'cpo'],
+      [/지스케일러|zscaler/i, 'zscaler'],
+      [/AI에이전트/, 'aiagent'],
+      [/대덕전자/, 'daeduk'],
+      [/AI반도체|DSP|NPU/i, 'npu'],
+      [/동국제약|마데카솔|더마코스메틱/, 'dongkook'],
+      [/행동주의|타깃스크리닝|월가의암살자|위임장/i, 'proxycard'],
+      [/클라우드스트라이크|크라우드스트라이크|crowdstrike/i, 'crowdstrike'],
+      [/팔로알토|palo\s*alto|PANW/i, 'paloalto'],
+      [/AIRAN|AI[_ ]?RAN/i, 'celltower'],
+      [/에치에프알|HFR/i, 'opticalfiber'],
+    ];
 
-    /* 주제어 해시로 색과 무늬가 정해지는 픽셀 타일.
-       좌우 대칭이라 아이덴티콘처럼 보이고, 주제마다 색이 달라 회색 문서가 줄줄이 서지 않는다. */
+    /* 매칭되는 주제가 없을 때 — 파일명 해시로 색과 무늬가 정해지는 픽셀 타일을 즉석 생성.
+       좌우 대칭이라 아이덴티콘처럼 보이고, 글마다 색이 달라 회색 문서가 줄줄이 서지 않는다. */
     function autoIcon(seed) {
       let h = 2166136261;
       for (let i = 0; i < seed.length; i++) { h = Math.imul(h ^ seed.charCodeAt(i), 16777619); }
@@ -359,16 +382,13 @@
       const rnd = () => (r = Math.imul(r ^ (r >>> 15), 2246822507) >>> 0) / 4294967296;
       const hue = (h >>> 0) % 360;
       const fg = `hsl(${(hue + 8) % 360},70%,70%)`;
-      const fg2 = `hsl(${(hue + 40) % 360},88%,85%)`;   // 일부 칸만 밝은 톤 → 납작해 보이지 않게
 
-      let cells = '', cells2 = '';
+      let cells = '';
       for (let y = 3; y <= 12; y++) {
         for (let x = 3; x <= 7; x++) {
-          const v = rnd();
-          if (v > 0.45) {
-            const pair = `<rect x="${x}" y="${y}" width="1" height="1"/>`
-                       + `<rect x="${15 - x}" y="${y}" width="1" height="1"/>`;
-            if (v > 0.84) cells2 += pair; else cells += pair;
+          if (rnd() > 0.45) {
+            cells += `<rect x="${x}" y="${y}" width="1" height="1"/>`
+                  +  `<rect x="${15 - x}" y="${y}" width="1" height="1"/>`;
           }
         }
       }
@@ -376,13 +396,14 @@
         + `<defs><linearGradient id="b" x1="0" y1="0" x2="1" y2="1">`
         + `<stop offset="0" stop-color="hsl(${hue},42%,13%)"/>`
         + `<stop offset="1" stop-color="hsl(${(hue + 28) % 360},46%,26%)"/></linearGradient></defs>`
-        + `<rect width="16" height="16" fill="url(#b)"/>`
-        + `<g fill="${fg}">${cells}</g><g fill="${fg2}">${cells2}</g></svg>`;
+        + `<rect width="16" height="16" fill="url(#b)"/><g fill="${fg}">${cells}</g></svg>`;
       return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
     }
 
     function decorate(post) {
-      post.icon = autoIcon(topicSeed(post.file));
+      const f = post.file;
+      const hit = TOPIC_ICONS.find(([re]) => re.test(f));
+      post.icon = hit ? `assets/px/${hit[1]}.svg` : autoIcon(f);
     }
 
     (async function loadPosts() {

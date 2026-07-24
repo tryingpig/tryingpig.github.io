@@ -71,6 +71,8 @@ export function loadPosts(): Post[] {
 
 export type Project = {
   emoji?: string; name_en?: string; name_ko?: string; desc?: string; tag?: string; url: string;
+  /** '/assets/px/proj/xxx.svg' — 없으면 emoji 로 폴백한다 */
+  icon?: string;
 };
 
 export function loadProjects(): Project[] {

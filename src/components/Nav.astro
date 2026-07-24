@@ -20,7 +20,11 @@ const projects = loadProjects();
             <div class="m-empty">등록된 프로젝트가 없습니다.</div>
           ) : projects.map((p) => (
             <a class="m-row" href={p.url} target="_blank" rel="noopener" role="menuitem">
-              <span class="m-emoji">{p.emoji || '🔗'}</span>
+              {/* 이모지는 기기마다 모양이 달라 직접 그린 픽셀 아이콘을 쓴다.
+                  projects.json 에 icon 이 없는 항목만 이모지로 폴백 */}
+              {p.icon
+                ? <img class="m-icon" src={p.icon} alt="" width={22} height={22} loading="lazy" />
+                : <span class="m-emoji">{p.emoji || '🔗'}</span>}
               <span class="m-body">
                 <span class="m-ko">{p.name_ko || p.name_en}</span>
                 {p.name_en && p.name_ko && <span class="m-en">{p.name_en}</span>}
@@ -130,6 +134,10 @@ const projects = loadProjects();
   .m-row + .m-row { border-top: 1px solid var(--line-soft); }
   .m-row:hover { background: var(--bg-2); }
   .m-emoji { font-size: 17px; flex: none; line-height: 1; }
+  .m-icon {
+    flex: none; width: 22px; height: 22px; border-radius: 5px;
+    border: 1px solid var(--line); image-rendering: pixelated; display: block;
+  }
   .m-body { min-width: 0; display: flex; flex-direction: column; gap: 2px; flex: 1; }
   .m-ko { font-size: 13px; color: var(--ink); line-height: 1.35; }
   .m-en {

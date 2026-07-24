@@ -1,10 +1,27 @@
 ---
+import { loadProjects } from '../lib/posts';
+
+/* 프로젝트는 Nav 드롭다운 안에만 있어서 첫 방문자는 존재를 알기 어렵다.
+   카드 섹션을 되살리는 대신, 히어로 아래에 이름만 한 줄로 흘려 발견 경로를 만든다. */
+const projects = loadProjects();
 ---
 
 <section class="hero wrap reveal">
   <div class="eyebrow">study log &amp; projects</div>
   <h1>study,<br />build,<br /><span class="accent">repeat.</span></h1>
   <p class="lead">노력하는뚱땡이의 학습공간 — 투자·개발을 공부하며 남긴 기록과, 직접 만들어 운영 중인 프로젝트들을 모아둔 곳입니다.</p>
+
+  {projects.length > 0 && (
+    <div class="proj-line">
+      <span class="pl-label">만든 것</span>
+      {projects.map((p, i) => (
+        <>
+          {i > 0 && <span class="sep">·</span>}
+          <a href={p.url} target="_blank" rel="noopener">{p.name_ko || p.name_en}</a>
+        </>
+      ))}
+    </div>
+  )}
 </section>
 
 <style>
@@ -23,4 +40,13 @@
   @media (max-width: 940px) {
     .hero p.lead { white-space: normal; font-size: 15px; max-width: 540px; }
   }
+
+  .proj-line { margin-top: 18px; font-family: var(--mono); font-size: 12px; line-height: 1.9; }
+  .pl-label {
+    font-size: 10.5px; letter-spacing: 1.5px; text-transform: uppercase;
+    color: var(--muted); margin-right: 10px;
+  }
+  .proj-line a { color: var(--ink-soft); text-decoration: underline; text-underline-offset: 3px; }
+  .proj-line a:hover { color: var(--ink); }
+  .proj-line .sep { color: var(--muted); margin: 0 7px; }
 </style>

@@ -2,19 +2,23 @@ import { useMemo, useState } from 'react';
 import type { Post } from '../lib/posts';
 import '../styles/postlist.css';
 
-/* 아일랜드 ② — 검색 + 페이지네이션.
-   Astro 가 이 컴포넌트를 빌드 타임에 한 번 렌더해 HTML 로 굽고(= 첫 화면엔 이미 글이 다 있음),
+/* 아일랜드 ② — 검색 + 페이지당 개수 + 페이지네이션.
+   Astro 가 이 컴포넌트를 빌드 타임에 한 번 렌더해 HTML 로 굽고(= 첫 화면엔 이미 글이 들어있음),
    브라우저에서 hydrate 해 검색/페이저를 살린다. 데이터는 props 로 들어오므로 fetch 가 없다.
-   Hero·ProjectCard·Nav 는 client: 지시어가 없어 React 가 아예 실려 나가지 않는다. */
+   Hero·Nav·Footer 는 client: 지시어가 없어 React 가 아예 실려 나가지 않는다. */
+
+const PER_PAGE_OPTIONS = [10, 20, 50, 100];
 
 interface Props {
   posts: Post[];
+  /** 처음 보여줄 개수. 사용자가 우상단에서 바꿀 수 있다. */
   perPage?: number;
 }
 
-export default function PostList({ posts, perPage = 20 }: Props) {
+export default function PostList({ posts, perPage: initialPerPage = 10 }: Props) {
   const [query, setQuery] = useState('');
   const [page, setPage] = useState(1);
+  const [perPage, setPerPage] = useState(initialPerPage);
 
   // 검색 대상 문자열을 미리 만들어둔다 (제목 + 파일명, 기존 동작과 동일)
   const indexed = useMemo(
@@ -38,7 +42,7 @@ export default function PostList({ posts, perPage = 20 }: Props) {
 
   return (
     <>
-      <div className="search-row">
+      <div className="list-controls">
         <div className="search-box">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
             <circle cx="11" cy="11" r="7" />
@@ -51,6 +55,22 @@ export default function PostList({ posts, perPage = 20 }: Props) {
             value={query}
             onChange={(e) => { setQuery(e.target.value); setPage(1); }}
           />
+        </div>
+
+        {/* 한 페이지에 몇 개씩 뿌릴지. 바꾸면 첫 페이지로 되돌린다 */}
+        <div className="per-page" role="group" aria-label="페이지당 글 수">
+          <span className="pp-label">show</span>
+          {PER_PAGE_OPTIONS.map((n) => (
+            <button
+              key={n}
+              type="button"
+              className={n === perPage ? 'active' : ''}
+              aria-pressed={n === perPage}
+              onClick={() => { setPerPage(n); setPage(1); }}
+            >
+              {n}
+            </button>
+          ))}
         </div>
       </div>
 

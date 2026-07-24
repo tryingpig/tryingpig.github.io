@@ -49,7 +49,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
       </div>
       {posts.length === 0
         ? <div class="empty">아직 글이 없습니다.</div>
-        : <PostList posts={posts} perPage={20} client:load />}
+        : <PostList posts={posts} perPage={10} client:load />}
     </section>
   </main>
 

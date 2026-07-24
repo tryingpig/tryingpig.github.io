@@ -1,0 +1,78 @@
+---
+import { loadProjects } from '../lib/posts';
+
+/* 프로젝트 카드 — 히어로 아래 작은 카드 그리드.
+   드롭다운에만 두니 첫 방문자가 존재를 몰랐고, 이름만 한 줄로 흘렸더니 그것도 눈에 안 들어왔다.
+   예전 ProjectCard 의 카드 형태를 되살리되 설명문을 빼고 한 줄 높이로 눌렀다. */
+const projects = loadProjects();
+---
+
+{projects.length > 0 && (
+  <section id="projects" class="sec wrap reveal">
+    <div class="sec-head">
+      <h2>Projects</h2>
+      <span class="count">{String(projects.length).padStart(2, '0')}</span>
+    </div>
+
+    <div class="p-grid">
+      {projects.map((p) => (
+        <a class="p-card" href={p.url} target="_blank" rel="noopener">
+          {p.icon
+            ? <img class="p-ico" src={p.icon} alt="" width={30} height={30} loading="lazy" />
+            : <span class="p-emoji">{p.emoji || '🔗'}</span>}
+          <span class="p-body">
+            <span class="p-ko">{p.name_ko || p.name_en}</span>
+            {p.name_en && p.name_ko && <span class="p-en">{p.name_en}</span>}
+          </span>
+          <span class="p-go" aria-hidden="true">↗</span>
+        </a>
+      ))}
+    </div>
+  </section>
+)}
+
+<style>
+  /* 카드가 너무 넓어지면 아이콘과 글자 사이가 벌어져 허전하다 → 최대 폭을 묶는다 */
+  .p-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(232px, 1fr));
+    gap: 10px;
+  }
+
+  .p-card {
+    display: flex; align-items: center; gap: 11px;
+    background: var(--card); border: 1px solid var(--line); border-radius: 12px;
+    padding: 11px 13px; min-width: 0;
+    transition: transform .16s, box-shadow .16s, border-color .16s;
+  }
+  .p-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 24px var(--card-shadow);
+    border-color: var(--muted);
+  }
+
+  .p-ico {
+    flex: none; width: 30px; height: 30px; border-radius: 7px;
+    border: 1px solid var(--line); image-rendering: pixelated; display: block;
+  }
+  .p-emoji { flex: none; font-size: 21px; line-height: 1; }
+
+  .p-body { min-width: 0; display: flex; flex-direction: column; gap: 2px; flex: 1; }
+  .p-ko {
+    font-size: 13px; color: var(--ink); line-height: 1.35;
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  .p-en {
+    font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.2px; color: var(--muted);
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  .p-go { flex: none; font-family: var(--mono); font-size: 13px; color: var(--muted); }
+  .p-card:hover .p-go { color: var(--ink); }
+
+  @media (max-width: 520px) {
+    .p-grid { grid-template-columns: 1fr; }
+  }
+  @media (pointer: coarse) {
+    .p-card { min-height: 56px; }
+  }
+</style>

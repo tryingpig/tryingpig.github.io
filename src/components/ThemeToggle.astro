@@ -30,6 +30,11 @@
     transition: color .15s, border-color .15s, background .15s;
   }
   .theme-toggle:hover { color: var(--ink); border-color: var(--muted); background: var(--bg-2); }
+  /* 터치 기기에서만 탭 영역 확보 (원의 크기는 그대로, 눌리는 범위만 넓힌다) */
+  @media (pointer: coarse) {
+    .theme-toggle { width: 44px; height: 44px; }
+    .theme-toggle svg { width: 17px; height: 17px; }
+  }
   .theme-toggle svg { width: 16px; height: 16px; }
   .theme-toggle .i-sun { display: none; }
   /* :root 는 이 컴포넌트 밖 요소라 Astro 스코핑 대상이 아니다 → :global() 로 감싼다 */

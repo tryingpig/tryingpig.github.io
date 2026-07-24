@@ -11,6 +11,10 @@ import { loadPosts } from '../lib/posts';
 // 프로젝트 목록은 본문에서 빠지고 Nav 의 드롭다운으로 들어갔다.
 const posts = loadPosts();
 const pad = (n: number) => String(n).padStart(2, '0');
+
+// og:image·canonical 은 상대경로가 통하지 않아 절대 URL 이 필요하다 (끝의 / 유지)
+const SITE = 'https://tryingpig.github.io/';
+const desc = '노력하는뚱땡이의 학습공간 — 투자·개발 학습 기록과 직접 만든 프로젝트 모음.';
 ---
 
 <!DOCTYPE html>
@@ -19,7 +23,28 @@ const pad = (n: number) => String(n).padStart(2, '0');
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>노력하는뚱땡이의 학습공간</title>
-  <meta name="description" content="노력하는뚱땡이의 학습공간 — 투자·개발 학습 기록과 직접 만든 프로젝트 모음." />
+  <meta name="description" content={desc} />
+  <link rel="canonical" href={SITE} />
+
+  <!-- 파비콘: SVG 우선(픽셀 그대로 선명), iOS 홈화면은 PNG 만 받는다 -->
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+  <!-- 텔레그램·카카오톡·슬랙 링크 미리보기. og:image 는 절대경로여야 하고,
+       크롤러가 head 만 읽고 끊는 경우가 있어 상단에 둔다. -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="노력하는뚱땡이의 학습공간" />
+  <meta property="og:title" content="노력하는뚱땡이의 학습공간" />
+  <meta property="og:description" content={desc} />
+  <meta property="og:url" content={SITE} />
+  <meta property="og:image" content={SITE + 'og.png'} />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="노력하는뚱땡이의 학습공간" />
+  <meta name="twitter:description" content={desc} />
+  <meta name="twitter:image" content={SITE + 'og.png'} />
   <script is:inline>
     /* 초기 테마 즉시 적용 (화면 깜빡임 방지). 저장값 없으면 시스템 설정 따름.
        is:inline — 번들로 빼면 실행이 늦어져 깜빡임이 생기므로 반드시 인라인 유지 */
@@ -33,6 +58,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
   </script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
 </head>

@@ -147,6 +147,13 @@ const projects = loadProjects();
     }
   }
 
+  /* 터치 기기: 헤더 항목들의 탭 영역을 44px 로 (헤더 높이 60px 안에서 소화된다) */
+  @media (pointer: coarse) {
+    .nav-links > a,
+    .nav-trigger { display: inline-flex; align-items: center; min-height: 44px; }
+    .m-row { min-height: 44px; }
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .menu { transition: none; }
     .nav-trigger .chev { transition: none; }

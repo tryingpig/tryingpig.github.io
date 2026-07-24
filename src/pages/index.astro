@@ -1,0 +1,83 @@
+---
+import '../styles/tokens.css';
+import Nav from '../components/Nav.astro';
+import Hero from '../components/Hero.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+// 유일한 React 아일랜드. 검색·페이저만 클라이언트에서 살아 움직인다.
+import PostList from '../components/PostList.tsx';
+import Footer from '../components/Footer.astro';
+import { loadPosts, loadProjects } from '../lib/posts';
+
+// ★ 빌드 타임에 딱 한 번 실행된다. 브라우저는 이 코드를 절대 받지 않는다.
+const posts = loadPosts();
+const projects = loadProjects();
+const pad = (n: number) => String(n).padStart(2, '0');
+---
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>노력하는뚱땡이의 학습공간</title>
+  <meta name="description" content="노력하는뚱땡이의 학습공간 — 투자·개발 학습 기록과 직접 만든 프로젝트 모음." />
+  <script is:inline>
+    /* 초기 테마 즉시 적용 (화면 깜빡임 방지). 저장값 없으면 시스템 설정 따름.
+       is:inline — 번들로 빼면 실행이 늦어져 깜빡임이 생기므로 반드시 인라인 유지 */
+    (function () {
+      try {
+        var t = localStorage.getItem('theme');
+        if (!t) t = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        if (t === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+      } catch (e) {}
+    })();
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+</head>
+<body>
+  <Nav />
+
+  <main id="top">
+    <Hero />
+
+    <section id="projects" class="sec wrap reveal">
+      <div class="sec-head">
+        <h2>Projects</h2>
+        <span class="count">{pad(projects.length)}</span>
+      </div>
+      {projects.length === 0
+        ? <div class="empty">아직 등록된 프로젝트가 없습니다.</div>
+        : <div class="cards">{projects.map((p) => <ProjectCard project={p} />)}</div>}
+    </section>
+
+    <section id="study" class="sec wrap reveal">
+      <div class="sec-head">
+        <h2>Study &amp; Writings</h2>
+        <span class="count">{pad(posts.length)}</span>
+      </div>
+      {posts.length === 0
+        ? <div class="empty">아직 글이 없습니다.</div>
+        : <PostList posts={posts} perPage={20} client:load />}
+    </section>
+  </main>
+
+  <Footer />
+
+  <script>
+    /* 아일랜드 #3 — 스크롤 리빌 */
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((en) => {
+        if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); }
+      });
+    }, { threshold: 0.08 });
+    document.querySelectorAll('.reveal').forEach((el) => io.observe(el));
+  </script>
+</body>
+</html>
+
+<style>
+  .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 12px; }
+</style>

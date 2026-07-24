@@ -1,0 +1,32 @@
+---
+import ThemeToggle from './ThemeToggle.astro';
+---
+
+<header class="nav">
+  <div class="wrap nav-inner">
+    <a href="#top" class="brand">tryingpig<span class="dot">.log</span></a>
+    <nav class="nav-links">
+      <a href="#projects">Projects</a>
+      <a href="#study">Study</a>
+      <ThemeToggle />
+    </nav>
+  </div>
+</header>
+
+<style>
+  header.nav {
+    position: sticky; top: 0; z-index: 50;
+    background: var(--nav-bg); backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line-soft);
+  }
+  .nav-inner { display: flex; align-items: center; justify-content: space-between; height: 60px; }
+  .brand { font-family: var(--mono); font-weight: 700; font-size: 15px; letter-spacing: -0.3px; }
+  .brand .dot { color: var(--muted); }
+  .nav-links { display: flex; align-items: center; gap: 22px; }
+  .nav-links a {
+    font-family: var(--mono); font-size: 11.5px; letter-spacing: 1.5px;
+    text-transform: uppercase; color: var(--ink-soft);
+  }
+  .nav-links a:hover { color: var(--ink); }
+  @media (max-width: 600px) { .nav-links .hide-sm { display: none; } }
+</style>

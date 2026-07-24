@@ -1,0 +1,70 @@
+/* 디자인 토큰 + 전역 베이스 — 기존 index.html 의 :root 블록을 그대로 옮겨왔다.
+   사이트 정체성이 여기 다 들어있으므로 값은 손대지 않았다. */
+:root {
+  --bg: #f4f1ea;
+  --bg-2: #efebe1;
+  --card: #faf8f2;
+  --ink: #1c1a17;
+  --ink-soft: #5c574d;
+  --muted: #918b7d;
+  --line: #ddd6c6;
+  --line-soft: #e7e1d3;
+  --accent: #1c1a17;
+  --nav-bg: rgba(244, 241, 234, 0.82);
+  --card-shadow: rgba(28, 26, 23, 0.08);
+  --mono: "JetBrains Mono", "D2Coding", ui-monospace, SFMono-Regular, Menlo, monospace;
+  --sans: "Pretendard", -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", sans-serif;
+  color-scheme: light;
+}
+
+/* 다크 팔레트 — 따뜻한 차콜톤으로 라이트 감성 유지 */
+:root[data-theme="dark"] {
+  --bg: #17150f;
+  --bg-2: #1e1b14;
+  --card: #201d16;
+  --ink: #ece7db;
+  --ink-soft: #b8b0a0;
+  --muted: #8b8372;
+  --line: #37322a;
+  --line-soft: #2b2721;
+  --accent: #ece7db;
+  --nav-bg: rgba(23, 21, 15, 0.82);
+  --card-shadow: rgba(0, 0, 0, 0.38);
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--sans);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  transition: background .3s ease, color .3s ease;
+}
+a { color: inherit; text-decoration: none; }
+.mono { font-family: var(--mono); }
+.wrap { max-width: 920px; margin: 0 auto; padding: 0 22px; }
+
+/* 세로 패딩만 지정 (좌우 패딩은 .wrap 22px 유지 — 단축 padding 은 좌우를 0으로 덮어써
+   모바일에서 본문이 화면 끝에 붙는 버그) */
+.sec { padding-top: 40px; padding-bottom: 40px; }
+.sec-head {
+  display: flex; align-items: baseline; justify-content: space-between;
+  margin-bottom: 24px; border-bottom: 1px solid var(--line); padding-bottom: 12px;
+}
+.sec-head h2 {
+  font-family: var(--mono); font-size: 13px; letter-spacing: 2.5px;
+  text-transform: uppercase; margin: 0; font-weight: 700;
+}
+.sec-head .count { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+.empty { font-family: var(--mono); font-size: 13px; color: var(--muted); padding: 8px 0; }
+
+/* 스크롤 리빌 */
+.reveal { opacity: 0; transform: translateY(16px); transition: opacity .6s ease, transform .6s ease; }
+.reveal.in { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1; transform: none; transition: none; }
+}

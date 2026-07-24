@@ -24,12 +24,22 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v5
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - name: Install
+        run: npm ci
+      # 빌드 실패 시 여기서 멈춘다 → 배포는 일어나지 않고 직전 배포본이 그대로 유지된다
+      - name: Build (Astro)
+        run: npm run build
       - name: Setup Pages
         uses: actions/configure-pages@v5
-      - name: Upload artifact (전체 저장소를 정적으로)
+      - name: Upload artifact (빌드 결과물만)
         uses: actions/upload-pages-artifact@v3
         with:
-          path: '.'
+          path: 'dist'
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4

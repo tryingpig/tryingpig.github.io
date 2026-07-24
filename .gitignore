@@ -1,3 +1,8 @@
 .claude/
 test.txt
 posts.index.json
+
+# Astro
+node_modules/
+dist/
+.astro/

@@ -30,6 +30,7 @@ export const TOPIC_ICONS: [RegExp, string][] = [
   [/AIRAN|AI[_ ]?RAN/i, 'celltower'],
   [/에치에프알|HFR/i, 'opticalfiber'],
   [/OCI|태양광|밸류체인|폴리실리콘/i, 'solarpanel'],
+  [/SK이터닉스|이터닉스/i, 'windturbine'],
 ];
 
 /* 매칭되는 주제가 없을 때 — 파일명 해시로 색과 무늬가 정해지는 픽셀 타일.

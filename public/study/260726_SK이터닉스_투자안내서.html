@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SK이터닉스 투자 안내서 — 실적·투자포인트·부채구조·KKR</title>
+<link rel="stylesheet" href="/assets/report.css">
+<script src="/assets/report.js" defer></script>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<script>
+  (function () {
+    try {
+      var t = localStorage.getItem('theme');
+      if (!t) t = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      if (t === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+    } catch (e) {}
+  })();
+</script>
+</head>
+<body data-topic="invest">
+<div class="topbar">
+  <div class="topbar-in">
+    <a class="back" href="/#study">학습공간</a>
+    <span class="crumb">SK이터닉스 투자 안내서</span>
+    <button class="theme-toggle" type="button" aria-label="다크/라이트 전환" title="다크/라이트 전환">
+      <svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      <svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+    </button>
+  </div>
+</div>
+<div class="wrap">
+
+  <span class="kicker">SK이터닉스 입문세트 · ② 투자안내서</span>
+  <h1>SK이터닉스 투자 안내서<br>— 실적·투자포인트·부채구조·KKR</h1>
+  <p class="sub">작성일 2026-07-26 · 개인 리서치 노트 · DART 공시 기반 정리</p>
+
+  <div class="warn">
+    <b>⚠️ 투자 권유가 아닙니다.</b> 이 문서는 <b>DART 공시</b>와 공개 자료를 정리한 <b>개인 학습 노트</b>이며 매수·매도 추천이 아닙니다.
+    비율은 DART 원본값을 <b>자체 계산</b>한 것, 일부는 <b>보도 인용</b>으로 공시 재현이 안 됨을 명시했습니다.
+    투자 판단과 책임은 전적으로 본인에게 있습니다.
+  </div>
+
+  <div class="note">
+    <b>📦 입문세트 ② 투자안내서입니다.</b>
+    ① <a href="https://tryingpig.github.io/study/260726_SK이터닉스_입문가이드.html">입문가이드</a>(회사가 뭐 하는 곳) →
+    ② <b>투자안내서(이 글)</b> →
+    ③ <a href="https://tryingpig.github.io/study/260726_SK이터닉스_밸류체인.html">밸류체인</a>.
+    이 회사는 신생 상장사(2024년 분할)라 <b>공시 데이터가 2년치</b>뿐입니다. 그 한계 안에서 정리합니다.
+  </div>
+
+  <div class="toc"><b>목차</b>
+    <ol>
+      <li>3분 투자 요약 — 강점·약점 한눈에</li>
+      <li>실적 스냅샷 — 신생 성장주</li>
+      <li>부채구조 — 이 회사의 핵심 논쟁</li>
+      <li>투자 포인트 4가지</li>
+      <li>KKR 최대주주 변경 — 무엇이 달라지나</li>
+      <li>리스크 4가지</li>
+      <li>밸류에이션을 볼 때 주의할 점</li>
+      <li>요약 · 체크리스트 · FAQ</li>
+    </ol>
+  </div>
+
+  <h2>1. 3분 투자 요약 — 강점·약점 한눈에</h2>
+  <div class="grid2">
+    <div class="card"><b>💪 강점</b>
+      <ul>
+        <li><b>국내 최대급 민간 신재생 디벨로퍼</b> 지향(육상풍력 등)</li>
+        <li><b>대형 해상풍력 파이프라인</b>(1.3GW+) — 성장 잠재력</li>
+        <li><b>4개 사업 분산</b>(태양광·풍력·ESS·연료전지)</li>
+        <li>2025년 <b>매출·이익 두 자릿수 성장</b>, 두 자릿수 영업이익률</li>
+        <li><b>KKR 인수</b>로 대규모 자금·해외 확장 기대</li>
+      </ul>
+    </div>
+    <div class="card"><b>⚠️ 약점·불확실성</b>
+      <ul>
+        <li><b>매우 높은 부채비율</b>(2025년 382%)</li>
+        <li>파이프라인은 <b>계획</b> — 인허가·자금·지연 위험</li>
+        <li>개발·용역 매출 <b>분기 변동성</b>(2026 1Q 순손실)</li>
+        <li><b>금리 민감</b> — 프로젝트 대출 비용</li>
+        <li>공시 이력 짧음(2년) — 추세 판단 데이터 부족</li>
+      </ul>
+    </div>
+  </div>
+
+  <h2>2. 실적 스냅샷 — 신생 성장주</h2>
+  <p>SK이터닉스 <b>연결 기준</b> 실적입니다(단위: 억 원). 분할 이후 2년치이지만 <b>성장 방향</b>은 뚜렷합니다.</p>
+  <div class="tablewrap">
+  <table>
+    <thead><tr><th>연도</th><th>매출</th><th>영업이익</th><th>순이익</th><th>영업이익률</th><th>ROE</th><th>부채비율</th></tr></thead>
+    <tbody>
+      <tr><td>2024</td><td>3,322</td><td>376</td><td>224</td><td>11.3%</td><td>—</td><td>202.4%</td></tr>
+      <tr><td class="good">2025</td><td>3,856</td><td>530</td><td>307</td><td class="good">13.7%</td><td>11.9%</td><td class="bad">382.4%</td></tr>
+      <tr><td>2026 1Q</td><td>275</td><td class="good">49</td><td class="bad">-51</td><td>17.8%</td><td>—</td><td>—</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p class="src">출처: DART OpenAPI, SK이터닉스(475150) 연결, 조회 2026-07-26. 매출·이익·자본은 ① 공시 원본, 비율은 ② 자체 계산.
+  2026 1Q 영업이익률은 자체 계산(49/275). 2026 1Q 순손실은 영업외(금융비용 등) 영향으로 추정되나 세부는 분기보고서 확인 필요.</p>
+
+  <div class="callout"><b>읽는 법</b> — 매출 +16%, 영업이익 +41%로 <b>성장 중</b>이고 영업이익률도 11.3%→13.7%로 개선됐습니다.
+  다만 <b>①공시 2년치</b>라 "추세"라 부르기엔 짧고, <b>②2026 1Q 순손실</b>은 개발·용역 매출의 분기 변동성과 금융비용을 보여줍니다.
+  "성장은 맞지만 분기별 편차와 재무부담을 함께 봐야 하는" 신생 성장주입니다.</div>
+
+  <h2>3. 부채구조 — 이 회사의 핵심 논쟁</h2>
+  <p>SK이터닉스 투자에서 가장 뜨거운 지점은 <b>부채비율 382%</b>입니다. 이게 위험한지 정상인지 나눠 봅니다.</p>
+  <figure>
+    <div class="svgbox">
+    <svg viewBox="0 0 920 200" role="img" aria-label="부채비율 추이">
+      <text x="10" y="22" font-size="14" font-weight="700" fill="#0f172a">SK이터닉스 부채비율 (%) — 자체 계산</text>
+      <line x1="70" y1="160" x2="880" y2="160" stroke="#94a3b8"/>
+      <g font-size="12" font-weight="700" fill="#fff" text-anchor="middle">
+        <!-- 2024 202.4% scale: 400% over 120px(160->40). h=202.4/400*120=60.7 y=99 -->
+        <rect x="220" y="99" width="140" height="61" rx="4" fill="#f59e0b"/><text x="290" y="121" fill="#7c2d12">202%</text>
+        <!-- 2025 382.4% h=114.7 y=45 -->
+        <rect x="560" y="45" width="140" height="115" rx="4" fill="#dc2626"/><text x="630" y="67">382%</text>
+      </g>
+      <g font-size="12" fill="#334155" text-anchor="middle">
+        <text x="290" y="182">2024</text><text x="630" y="182">2025</text>
+      </g>
+      <line x1="70" y1="115" x2="880" y2="115" stroke="#94a3b8" stroke-dasharray="4 4"/>
+      <text x="80" y="110" font-size="10" fill="#64748b">참고: 일반 제조업 통상 100~150%</text>
+    </svg>
+    </div>
+    <figcaption>그림 1. 부채비율 202%→382% 상승. 출처: DART 원본값 기준 자체 계산.</figcaption>
+  </figure>
+  <div class="grid2">
+    <div class="card"><b>🟢 "업종 특성이다" 관점</b><br>
+    발전소는 <b>프로젝트 파이낸싱(PF)</b>으로 짓습니다. 완공되면 그 발전소가 20년간 안정적으로 전기를 팔아 대출을 갚습니다.
+    즉 부채는 <b>미래 현금흐름이 딸린 자산</b>과 연결돼 있어, 단순 제조업 부채와 성격이 다릅니다.</div>
+    <div class="card"><b>🔴 "그래도 리스크다" 관점</b><br>
+    부채가 많으면 <b>금리 상승</b>에 취약하고, 프로젝트가 <b>지연·무산</b>되면 대출은 남습니다. 특히 해상풍력처럼
+    자금이 큰 사업은 자금조달 자체가 리스크입니다. 382%는 <b>절대 수준이 낮지 않습니다.</b></div>
+  </div>
+  <div class="note"><b>결론</b> — "업종상 높은 게 당연"과 "그래도 높으면 위험"은 <b>둘 다 맞습니다.</b> 핵심은
+  <b>부채의 질</b>(완공·운영 자산에 딸린 PF인지, 미완공 개발 리스크인지)과 <b>금리·상환 스케줄</b>입니다.
+  KKR의 대규모 자금 투입이 이 부담을 덜어줄 수 있다는 기대가 있습니다(5장).</div>
+
+  <h2>4. 투자 포인트 4가지</h2>
+  <table>
+    <thead><tr><th>포인트</th><th>내용</th><th>확인 신호</th></tr></thead>
+    <tbody>
+      <tr><td><b>① 해상풍력 파이프라인</b></td><td>신안우이(390MW)·굴업도(755MW) 등 1.3GW+ 개발</td><td>인허가·PF 조달·착공 진척</td></tr>
+      <tr><td><b>② 육상풍력 최대급</b></td><td>의성 황학산(99MW) 준공 시 257MW로 국내 최대 민간 육상풍력 지향</td><td>준공·가동 개시</td></tr>
+      <tr><td><b>③ 안정 캐시 (연료전지·운영)</b></td><td>연료전지·운영 발전소의 날씨 무관 꾸준한 수익</td><td>운영 용량 확대(200MW)</td></tr>
+      <tr><td><b>④ KKR 자금·해외</b></td><td>글로벌 PEF 자금으로 대형 프로젝트·해외 확장 여력</td><td>인수 종결·투자 집행</td></tr>
+    </tbody>
+  </table>
+
+  <h2>5. KKR 최대주주 변경 — 무엇이 달라지나</h2>
+  <div class="callout"><b>딜 요약</b><br>
+  · 2026.2 KKR 우선협상자 선정 → 2026.3 SK디스커버리 보유 전량(약 30.98%) 매각 계약, 종결 예정 <b>2026.6.30</b>.<br>
+  · 한앤컴퍼니 보유분(12.52%)도 함께 매각 → KKR이 총 약 <b>3,479억 원</b>에 <b>지분 43.49%</b> 확보, <b>최대주주 등극</b>.<br>
+  · SK그룹의 <b>신재생 사업재편(약 2.5조 패키지, SK이노베이션 E&S·SK에코플랜트 재생에너지 포함)의 일부</b>.
+  <span class="src">출처: ZDNet Korea·CBC뉴스·시사저널e·한경(2026.02~03). 최종 종결·지분율은 공시로 확인 필요.</span></div>
+
+  <table>
+    <thead><tr><th>관점</th><th>기대</th><th>주의</th></tr></thead>
+    <tbody>
+      <tr><td>자금</td><td>대규모 실탄으로 해상풍력·해외 확장 가속</td><td>실제 투자 집행은 지켜봐야</td></tr>
+      <tr><td>지배구조</td><td>글로벌 운영 노하우 이식 기대</td><td>SK 브랜드·계열 시너지 약화 가능</td></tr>
+      <tr><td>중장기</td><td>기업가치 제고 유인</td><td>PEF는 <b>회수(엑시트)</b>가 목적 — 향후 재매각 가능</td></tr>
+    </tbody>
+  </table>
+
+  <h2>6. 리스크 4가지</h2>
+  <table>
+    <thead><tr><th>리스크</th><th>내용</th></tr></thead>
+    <tbody>
+      <tr><td><b>재무·금리</b></td><td>부채비율 382%. 금리 상승 시 이자부담↑, PF 조달 난이도↑</td></tr>
+      <tr><td><b>프로젝트 지연</b></td><td>해상풍력은 인허가·주민수용성·계통연계에 수년. 지연·무산 시 파이프라인 훼손</td></tr>
+      <tr><td><b>정책 의존</b></td><td>신재생은 RPS·REC 가격·PPA 제도·정부 목표에 민감</td></tr>
+      <tr><td><b>실적 변동성</b></td><td>개발·용역 매출의 인식 시점 편차. 분기 순손익 출렁임(2026 1Q 순손실)</td></tr>
+    </tbody>
+  </table>
+
+  <h2>7. 밸류에이션을 볼 때 주의할 점</h2>
+  <div class="warn"><b>디벨로퍼의 특수성.</b> SK이터닉스는 제조업처럼 단순 PER로 보기 어렵습니다.
+  발전 자산의 가치는 "앞으로 20년간 벌 현금"에 달려 있어, <b>파이프라인의 실현 가능성</b>이 밸류를 좌우합니다.</p></div>
+  <ul>
+    <li><b>파이프라인 → 실적 전환율</b>이 핵심. "1.3GW 개발 중"이 몇 %나 실제 가동·수익으로 이어질지.</li>
+    <li><b>부채·이자비용을 반영한 순이익·현금흐름</b>을 봐야 함(영업이익만 보면 안 됨 — 2026 1Q 순손실 사례).</li>
+    <li><b>KKR 인수가</b>(지분 43.49%에 3,479억)는 시장이 평가한 하나의 기준점으로 참고 가능.</li>
+  </ul>
+  <p class="src">시가총액·목표주가·컨센서스는 ③ 보도·증권사 인용 영역이며 DART 공시로 재현되지 않아 구체 수치를 제시하지 않습니다. 최신 시세·증권사 리포트를 직접 확인하세요.</p>
+
+  <h2>8. 요약 · 체크리스트 · FAQ</h2>
+  <div class="callout">
+    <b>투자안내서 한 장 요약</b>
+    <ul>
+      <li>실적: 2025년 매출 3,856억(+16%)·영업이익 530억(+41%), 영업이익률 13.7% — <b>성장 중</b>.</li>
+      <li>재무: <b>부채비율 382%</b> — 업종 특성 + 리스크 양면. 부채의 질·금리가 관건.</li>
+      <li>성장: <b>해상풍력 1.3GW+ 파이프라인</b>이 핵심. 단, 계획≠실적.</li>
+      <li>지배구조: <b>KKR이 43.49% 최대주주</b>로(2026). 자금 기대 vs 엑시트 성격.</li>
+      <li>밸류: 제조업식 PER로 보면 안 됨 — <b>파이프라인 실현율·순현금흐름</b>으로.</li>
+    </ul>
+  </div>
+
+  <h3>투자 전 체크리스트 (분기·이벤트마다)</h3>
+  <table>
+    <tbody>
+      <tr><td>□ 해상풍력(신안우이·굴업도) 인허가·PF·착공 진척은</td></tr>
+      <tr><td>□ 육상풍력(의성 황학산 99MW) 준공·가동 여부</td></tr>
+      <tr><td>□ 부채비율·이자비용·PF 상환 스케줄</td></tr>
+      <tr><td>□ 분기 순이익(영업이익만 아니라 순손익)</td></tr>
+      <tr><td>□ KKR 인수 종결·투자 집행·전략 변화</td></tr>
+      <tr><td>□ 신재생 정책(REC 가격·PPA·해상풍력 입찰) 변화</td></tr>
+    </tbody>
+  </table>
+
+  <h3>FAQ</h3>
+  <p><b>Q. 성장하는데 왜 1분기 순손실이 났나요?</b><br>
+  A. 개발·용역 매출은 프로젝트 인식 시점에 몰려 분기 편차가 큽니다. 여기에 부채가 많아 <b>금융비용(이자)</b>이 순이익을 깎습니다.
+  그래서 이 회사는 연간 흐름과 순손익을 함께 봐야 합니다.</p>
+  <p><b>Q. KKR이 사면 주주에게 좋은 건가요?</b><br>
+  A. 자금·확장 기대는 긍정이지만, PEF는 결국 <b>되파는 것</b>이 목적이라 중장기 지배구조 변화 가능성도 있습니다. 좋다/나쁘다 단정보다
+  "무엇이 달라지는지"를 추적하는 게 맞습니다.</p>
+  <p><b>Q. OCI와 둘 중 뭐가 낫나요?</b><br>
+  A. 이 리포트는 우열·추천을 하지 않습니다. 둘은 밸류체인 위치가 정반대(소재 제조 vs 발전 운영)라 성격이 다릅니다 —
+  비교 지도는 <a href="https://tryingpig.github.io/study/260726_SK이터닉스_밸류체인.html">③밸류체인편</a>에 있습니다.</p>
+
+  <div class="note"><b>▶ 다음</b> — <a href="https://tryingpig.github.io/study/260726_SK이터닉스_밸류체인.html">입문세트 ③ 밸류체인</a>에서
+  신재생 산업 지도와 OCI(소재)와의 대비, 파이프라인 지도를 정리합니다.</div>
+
+  <div class="foot">
+    © 2026 노력하는뚱땡이 리서치 라이브러리.<br>
+    본 문서는 개인 학습용 정보 정리이며 투자 권유가 아닙니다. 재무 수치는 DART 공식 공시(조회 2026-07-26, 연결) 기준, 비율은 자체 계산, KKR 딜·용량은 보도 인용으로 공시 재현이 안 됨을 명시했습니다.
+  </div>
+
+</div>
+</body>
+</html>

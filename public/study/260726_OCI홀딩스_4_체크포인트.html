@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OCI홀딩스 공부 ④ — 앞으로 확인할 체크포인트</title>
+<link rel="stylesheet" href="/assets/report.css">
+<script src="/assets/report.js" defer></script>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<script>
+  (function () {
+    try {
+      var t = localStorage.getItem('theme');
+      if (!t) t = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      if (t === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+    } catch (e) {}
+  })();
+</script>
+</head>
+<body data-topic="invest">
+<div class="topbar">
+  <div class="topbar-in">
+    <a class="back" href="/#study">학습공간</a>
+    <span class="crumb">OCI홀딩스 공부 ④ — 체크포인트</span>
+    <button class="theme-toggle" type="button" aria-label="다크/라이트 전환" title="다크/라이트 전환">
+      <svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      <svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+    </button>
+  </div>
+</div>
+<div class="wrap">
+
+  <span class="kicker">OCI홀딩스 공부 시리즈 · ④ 체크포인트편(완결)</span>
+  <h1>OCI홀딩스 공부 ④<br>— 앞으로 확인할 체크포인트</h1>
+  <p class="sub">작성일 2026-07-26 · 개인 리서치 노트 · CAPEX · 미국 설치량 · 고객집중도 · 촉매 캘린더</p>
+
+  <div class="warn">
+    <b>⚠️ 투자 권유가 아닙니다.</b> 이 문서는 공개 정보를 정리한 <b>개인 학습 노트</b>이며 매수·매도 추천이 아닙니다.
+    아래 시나리오·촉매는 <b>가정</b>이며 예측이 아닙니다. 모든 투자 판단과 그 책임은 전적으로 본인에게 있습니다.
+  </div>
+
+  <div class="note">
+    <b>시리즈 완결편입니다.</b>
+    <a href="https://tryingpig.github.io/study/260726_OCI홀딩스_1_밸류체인기초.html">① 밸류체인·지주구조</a> ·
+    <a href="https://tryingpig.github.io/study/260726_OCI홀딩스_2_미국정책.html">② 미국 정책 3종</a> ·
+    <a href="https://tryingpig.github.io/study/260726_OCI홀딩스_3_실적검증.html">③ 실적 검증</a> 에 이어,
+    마지막으로 <b>"그래서 앞으로 무엇을 지켜봐야 하나"</b>를 체크리스트로 정리합니다.
+    블로그(<a href="https://blog.naver.com/doctordk/224355734577" target="_blank" rel="noopener">뜯어보기 #2</a>)가
+    스스로 남긴 숙제 3개가 이 편의 뼈대입니다.
+  </div>
+
+  <div class="callout"><b>블로그가 남긴 3대 숙제</b>
+    <ul>
+      <li>① <b>웨이퍼 CAPEX 규모</b> — 아직 미공개. 5,000억+ 가능성</li>
+      <li>② <b>미국 실제 태양광 설치량</b> — 100GW면 현 계획으로 충분, 200GW면 추가증설</li>
+      <li>③ <b>고객 집중도</b> — 1~2개 고객만으로 Sold-out = 의존도 높음. 다변화 여부</li>
+    </ul>
+    여기에 이 시리즈에서 나온 변수(232조 결과·계약부채 잔액·마진 변동성)를 더해 완성합니다.</div>
+
+  <div class="toc"><b>목차</b>
+    <ol>
+      <li>체크포인트 ① 웨이퍼 CAPEX와 자금조달</li>
+      <li>체크포인트 ② 미국 설치량 — 100GW냐 200GW냐</li>
+      <li>체크포인트 ③ 고객 집중도와 다변화</li>
+      <li>체크포인트 ④ 정책 — Section 232 결과</li>
+      <li>체크포인트 ⑤ 체질변화의 증거 — 재무로 추적</li>
+      <li>촉매 캘린더</li>
+      <li>리스크 매트릭스</li>
+      <li>시나리오 — 낙관·중립·비관</li>
+      <li>KPI 대시보드 · 시리즈 총정리</li>
+    </ol>
+  </div>
+
+  <h2>1. 체크포인트 ① 웨이퍼 CAPEX와 자금조달</h2>
+  <p>1편에서 봤듯 OCI는 폴리실리콘(말레이시아)에서 웨이퍼(베트남)로 내려가는 중입니다. 문제는 <b>웨이퍼 공장에도 큰 돈이
+  든다</b>는 것입니다. 블로그는 웨이퍼 CAPEX가 <b>미공개이며 5,000억 원 이상</b>이 될 수 있다고 지적했습니다.</p>
+
+  <p>3편에서 본 재무 상황을 떠올리면 이건 중요한 긴장입니다 — <b>2025년 적자, 배당 축소 중인 회사</b>가 <b>대규모 투자</b>를
+  집행해야 하는 상황입니다. 그래서 <b>"돈을 어떻게 대느냐"</b>가 핵심입니다.</p>
+
+  <table>
+    <thead><tr><th>자금조달 방식</th><th>주주 관점 함의</th></tr></thead>
+    <tbody>
+      <tr><td><b>선수금</b>으로 (고객이 대준 돈)</td><td><span class="good">가장 우호적</span> — 블로그가 강조한 "선수금 충분하면 증설" 방식. 자기 돈·빚 없이 투자</td></tr>
+      <tr><td>보유 현금·영업현금흐름으로</td><td>중립 — 곳간이 버티는 한 무난</td></tr>
+      <tr><td>차입(대출·회사채)</td><td>주의 — 부채비율 상승. 3편 기준 지주 66%, 사업회사 95%대</td></tr>
+      <tr><td>유상증자</td><td><span class="bad">주주가치 희석</span> — 가장 경계할 시나리오</td></tr>
+    </tbody>
+  </table>
+  <div class="callout"><b>지켜볼 것</b> — CAPEX 발표 시 <b>규모</b>뿐 아니라 <b>재원(선수금 비중)</b>을 함께 봐야 합니다.
+  "선수금이 CAPEX를 상당 부분 커버"라면 블로그의 계약-선수금-증설 선순환이 실증되는 것이고, "차입/증자 위주"라면
+  재무 부담이 커집니다. 3편에서 본 부채비율(사업회사 95.4%)이 이미 낮지 않다는 점도 함께 고려해야 합니다.</div>
+
+  <h2>2. 체크포인트 ② 미국 설치량 — 100GW냐 200GW냐</h2>
+  <p>OCI 수요의 최종 뿌리는 <b>미국이 태양광을 얼마나 까느냐</b>입니다. 블로그에 따르면 경영진은
+  <b>"연 100GW 정도면 현재 계획으로 충분, 200GW면 추가 증설 필요"</b>라고 언급했습니다. 즉 설치량이
+  <b>증설 규모를 결정하는 다이얼</b>입니다.</p>
+
+  <figure>
+    <div class="svgbox">
+    <svg viewBox="0 0 920 180" role="img" aria-label="미국 설치량과 OCI 증설 관계">
+      <text x="10" y="24" font-size="14" font-weight="700" fill="#0f172a">미국 연간 태양광 설치량이 OCI 증설을 정한다</text>
+      <line x1="60" y1="120" x2="880" y2="120" stroke="#94a3b8" stroke-width="2"/>
+      <g font-size="12" fill="#334155" text-anchor="middle">
+        <circle cx="300" cy="120" r="6" fill="#16a34a"/><text x="300" y="150">100GW</text>
+        <text x="300" y="100" font-size="11" fill="#166534">현 계획으로 충분</text>
+        <circle cx="640" cy="120" r="6" fill="#d97706"/><text x="640" y="150">200GW</text>
+        <text x="640" y="100" font-size="11" fill="#92400e">추가 증설 필요</text>
+      </g>
+      <rect x="60" y="112" width="240" height="16" fill="#dcfce7" opacity="0.6"/>
+      <rect x="300" y="112" width="340" height="16" fill="#fef3c7" opacity="0.6"/>
+      <rect x="640" y="112" width="240" height="16" fill="#fee2e2" opacity="0.6"/>
+      <text x="460" y="170" text-anchor="middle" font-size="11" fill="#64748b">설치량이 빠르게 늘수록 OCI 증설·매출 여력↑ (단, 보조금·금리 영향)</text>
+    </svg>
+    </div>
+    <figcaption>그림 1. 미국 설치량 시나리오와 OCI 증설 관계(블로그 인용 경영진 발언 기반). 출처: 블로그 #2 요약을 필자 도식화.</figcaption>
+  </figure>
+
+  <div class="note"><b>주의할 역설</b> — 2편에서 본 <b>OBBBA</b>는 태양광 <b>제조(45X)</b>에는 우호적이지만,
+  프로젝트 단계의 <b>투자·발전 세액공제</b>는 축소·조기종료하는 방향도 있었습니다. 즉 "제조는 밀어주되 설치 수요는
+  둔화될 수 있는" 엇갈린 힘이 존재합니다. 따라서 <b>미국 연간 설치량 실측치</b>를 별도로 추적해야 하며,
+  정책 우호 ≠ 설치량 증가일 수 있음을 유념해야 합니다.</div>
+
+  <h2>3. 체크포인트 ③ 고객 집중도와 다변화</h2>
+  <p>블로그는 "1~2개 고객만으로 Sold-out"이라는 강점이 <b>동시에 약점</b>이라고 짚었습니다 — <b>특정 고객 의존도</b>가 높다는 뜻이니까요.
+  실제로 OCI TerraSus(말레이시아)는 신규 미국 고객과의 LTA로 연 3.5만 톤 생산능력을 사실상 소진했습니다.</p>
+
+  <table>
+    <thead><tr><th>관점</th><th>지금 상태</th><th>확인 포인트</th></tr></thead>
+    <tbody>
+      <tr><td>긍정</td><td>소수 대형 고객과 장기·Take-or-Pay 계약 → 매출 가시성↑</td><td>계약 기간·물량·가격 공개 여부</td></tr>
+      <tr><td>부정</td><td>고객 1~2곳에 집중 → 한 곳 이탈 시 타격 큼</td><td>고객사 수 증가(다변화)</td></tr>
+    </tbody>
+  </table>
+  <div class="callout"><b>지켜볼 것</b> — 향후 <b>고객사 수가 늘어나는지</b>가 관건입니다. 블로그 표현대로 "고객 다변화가 확인되면
+  할인 요인이 줄어들 수 있다"는 것 — 즉 집중도 리스크가 해소되면 시장이 더 후하게 평가할 여지가 생깁니다.
+  반대로 소수 고객에 계속 묶여 있으면 협상력·리스크 양면에서 약점으로 남습니다.</div>
+
+  <h2>4. 체크포인트 ④ 정책 — Section 232 결과</h2>
+  <p>2편에서 다룬 <b>Section 232</b>가 이 시리즈 전체의 최대 단일 변수입니다. 2025년 7월 14일 조사 개시, 최대 270일(2026년 3월경),
+  행정부는 더 빠르게 갈 뜻을 밝혔습니다. 결과에 따라 "비중국 프리미엄"의 크기가 정해집니다.</p>
+  <table>
+    <thead><tr><th>232조 시나리오</th><th>OCI 함의</th></tr></thead>
+    <tbody>
+      <tr><td>중국·중국우회에 강한 관세, 비중국 예외</td><td><span class="good">최상</span> — 비중국 프리미엄 확대, 계약 인도 가속</td></tr>
+      <tr><td>일괄 관세(비중국 물량도 일부 포함)</td><td><span class="mid">혼재</span> — 프리미엄과 비용 상승이 상쇄</td></tr>
+      <tr><td>약한 관세·장기 지연</td><td><span class="bad">약화</span> — 프리미엄 논리 희석, 계약 인도 지연</td></tr>
+    </tbody>
+  </table>
+
+  <h2>5. 체크포인트 ⑤ 체질변화의 증거 — 재무로 추적</h2>
+  <p>3편에서 "체질변화는 아직 미확인"이라 했습니다. 그게 진짜인지 확인할 <b>재무 신호 3종</b>입니다.</p>
+  <ul>
+    <li><b>계약부채(선수금) 잔액 증가</b> — 고객이 미래를 돈으로 예약하는 증거. 분기 재무제표 주석에서 추적.</li>
+    <li><b>웨이퍼 매출 비중 상승</b> — "폴리→웨이퍼" 전환의 실물 증거. IR 자료·부문 공시.</li>
+    <li><b>마진 변동성 축소</b> — Take-or-Pay가 작동하면 폴리 스팟가가 출렁여도 마진이 예전만큼 안 흔들려야. 여러 분기 관찰.</li>
+  </ul>
+
+  <h2>6. 촉매 캘린더</h2>
+  <div class="tablewrap">
+  <table>
+    <thead><tr><th>시점</th><th>이벤트</th><th>왜 중요</th></tr></thead>
+    <tbody>
+      <tr><td>2026 상반기</td><td>미국 텍사스 셀(1GW) 상업생산 목표</td><td>미국 내 밸류체인 진입 실증</td></tr>
+      <tr><td>2026 상반기</td><td><b>Section 232 조사 결과</b></td><td>비중국 프리미엄 크기 확정 — 최대 변수</td></tr>
+      <tr><td>분기마다</td><td>실적 발표 (매출·마진·계약부채)</td><td>흑자전환 지속·체질변화 신호 확인</td></tr>
+      <tr><td>미정</td><td>웨이퍼 CAPEX 규모·재원 발표</td><td>선수금 vs 차입/증자 — 재무부담 판별</td></tr>
+      <tr><td>2029</td><td>OTSM 반도체급 폴리(8천톤) 가동 목표</td><td>사이클 완화·신사업 다각화</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h2>7. 리스크 매트릭스</h2>
+  <div class="tablewrap">
+  <table>
+    <thead><tr><th>리스크</th><th>발생 가능성</th><th>영향</th><th>조기경보 신호</th></tr></thead>
+    <tbody>
+      <tr><td>Section 232 약하게/지연</td><td>중</td><td>높음</td><td>상무부 발표·예외 규정</td></tr>
+      <tr><td>폴리 가격 추가 하락(중국 증설)</td><td>중</td><td>높음</td><td>중국 증설·재고 뉴스, 스팟가</td></tr>
+      <tr><td>미국 설치량 둔화</td><td>중</td><td>중~높음</td><td>분기 설치 GW, 개발사 취소</td></tr>
+      <tr><td>웨이퍼 CAPEX 차입/증자 조달</td><td>중</td><td>중</td><td>CAPEX 발표 시 재원 구조</td></tr>
+      <tr><td>고객 집중 → 한 곳 이탈</td><td>낮~중</td><td>높음</td><td>계약 변경·고객 수 정체</td></tr>
+      <tr><td>정치지형 변화(정책 완화)</td><td>낮~중</td><td>높음</td><td>선거·의회·행정명령</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p class="src">발생 가능성·영향은 필자의 정성 판단이며 정량 근거가 아닙니다. 참고용입니다.</p>
+
+  <h2>8. 시나리오 — 낙관·중립·비관</h2>
+  <div class="grid2">
+    <div class="card"><b>🟢 낙관</b><br>
+    232조가 비중국에 유리하게 확정 → 프리미엄 확대. 미국 설치량 200GW 방향 → 증설. 웨이퍼 CAPEX를 선수금으로 커버.
+    계약부채 잔액·웨이퍼 매출 상승, 마진 변동성 축소. <b>"사이클 회사 → 계약 기반 회사"로 재정의</b>.</div>
+    <div class="card"><b>🟡 중립</b><br>
+    232조 혼재, 설치량 100GW대 유지 → 현 계획으로 충분. 흑자는 이어지나 폭발적 재평가는 지연. 체질변화는 서서히,
+    데이터가 쌓이며 확인.</div>
+  </div>
+  <div class="card"><b>🔴 비관</b><br>
+  232조 약하거나 장기 지연, 중국 증설로 폴리 가격 재하락, 미국 설치량 둔화. 웨이퍼 CAPEX를 차입/증자로 조달해 재무 부담↑.
+  고객 집중 리스크 현실화. <b>"체질변화 스토리는 있었으나 사이클을 못 벗어남"</b>으로 귀결.</div>
+
+  <h2>9. KPI 대시보드 · 시리즈 총정리</h2>
+  <div class="callout">
+    <b>분기마다 볼 KPI 6종</b>
+    <ol>
+      <li><b>영업이익률</b> — 흑자 지속 & 변동성 축소 여부 (3편 기준선: 2025년 -1.7% → 2026 1Q 흑자)</li>
+      <li><b>계약부채(선수금) 잔액</b> — 증가 = "계약된 미래" 축적</li>
+      <li><b>웨이퍼 매출 비중</b> — 상승 = 체질변화 실증</li>
+      <li><b>부채비율</b> — CAPEX 재원 건전성 (3편: 지주 66%·사업회사 95%)</li>
+      <li><b>고객사 수</b> — 다변화 = 집중 리스크 완화</li>
+      <li><b>미국 연간 설치량(GW)</b> — 수요의 뿌리, 100/200GW 다이얼</li>
+    </ol>
+  </div>
+
+  <div class="dark">
+    <b>4부작 시리즈 총정리</b><br>
+    ① OCI는 <b>폴리실리콘(소재)에서 웨이퍼(가공)로</b> 내려가는 지주회사이며, 말레이시아·베트남·미국의 비중국 공급망을 갖췄다.<br>
+    ② 그 공급망을 값지게 만드는 건 <b>미국 정책 3종(관세·UFLPA·FEOC)</b>이지만, 해자는 규제가 만든 것이라 조건부다.<br>
+    ③ DART 숫자는 <b>"태양광=사이클"을 증명</b>(2025년 적자)했고, <b>2026 1Q 흑자전환</b>은 긍정 신호이나 체질변화 확증엔 이르다.<br>
+    ④ 앞으로는 <b>232조 결과·CAPEX 재원·계약부채·웨이퍼 매출·고객 다변화·미국 설치량</b>을 지켜보면 된다.
+  </div>
+
+  <div class="warn"><b>마지막으로.</b> 이 시리즈는 블로그 두 편에서 출발해 <b>사실을 정리하고 검증 범위를 구분</b>하는 데 목적이 있습니다.
+  "사라"도 "팔라"도 아닙니다. OCI홀딩스의 이야기는 <b>매력적인 가설(계약 기반 재정의)과 확인되지 않은 변수(232조·체질변화 지속)</b>가
+  공존하는 상태입니다. 판단과 책임은 온전히 투자자 본인의 몫입니다.</div>
+
+  <div class="foot">
+    © 2026 노력하는뚱땡이 리서치 라이브러리.<br>
+    본 문서는 개인 학습용 정보 정리이며 투자 권유가 아닙니다. 시나리오·촉매·리스크 평가는 가정이며 예측이 아닙니다.
+  </div>
+
+</div>
+</body>
+</html>

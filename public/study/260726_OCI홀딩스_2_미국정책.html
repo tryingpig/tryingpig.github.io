@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OCI홀딩스 공부 ② — 미국 태양광 정책 3종 세트</title>
+<link rel="stylesheet" href="/assets/report.css">
+<script src="/assets/report.js" defer></script>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<script>
+  (function () {
+    try {
+      var t = localStorage.getItem('theme');
+      if (!t) t = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      if (t === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+    } catch (e) {}
+  })();
+</script>
+</head>
+<body data-topic="invest">
+<div class="topbar">
+  <div class="topbar-in">
+    <a class="back" href="/#study">학습공간</a>
+    <span class="crumb">OCI홀딩스 공부 ② — 미국 정책 3종</span>
+    <button class="theme-toggle" type="button" aria-label="다크/라이트 전환" title="다크/라이트 전환">
+      <svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      <svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+    </button>
+  </div>
+</div>
+<div class="wrap">
+
+  <span class="kicker">OCI홀딩스 공부 시리즈 · ② 정책편</span>
+  <h1>OCI홀딩스 공부 ②<br>— 미국 태양광 정책 3종 세트</h1>
+  <p class="sub">작성일 2026-07-26 · 개인 리서치 노트 · Section 232 · UFLPA · IRA/OBBBA(FEOC)</p>
+
+  <div class="warn">
+    <b>⚠️ 투자 권유가 아닙니다.</b> 이 문서는 공개 정보(정부 발표·로펌 해설·언론)를 정리한 <b>개인 학습 노트</b>이며,
+    특정 종목의 매수·매도 추천이 아닙니다. 정책은 계속 바뀌고 해석이 갈릴 수 있으니, 실제 판단 전에는 반드시 원문·전문가 자문을 확인하세요.
+    모든 투자 판단과 그 책임은 전적으로 본인에게 있습니다.
+  </div>
+
+  <div class="note">
+    <b>이어지는 글입니다.</b> 1편에서 OCI의 밸류체인 위치와 <b>말레이시아→베트남→미국</b> 비중국 공급망을 정리했습니다
+    (<a href="https://tryingpig.github.io/study/260726_OCI홀딩스_1_밸류체인기초.html">① 밸류체인·지주구조</a>).
+    이번 2편은 그 비중국 공급망을 <b>값지게 만들어주는 미국 정책</b>의 정체를 뜯어봅니다. 블로그가
+    "가장 큰 해자는 미국 공급망"이라고 한 그 말의 근거입니다.
+  </div>
+
+  <div class="callout"><b>한 줄 지도</b> — 미국은 세 겹의 규제로 <b>중국산 태양광 소재를 밀어내고</b> 있습니다.
+  ① 관세(Section 301·232), ② 강제노동 금수(UFLPA), ③ 보조금 자격 제한(IRA/OBBBA의 FEOC).
+  이 셋이 겹치면 "중국 밖에서 만든 폴리실리콘·웨이퍼"의 값이 올라갑니다. OCI가 그 몇 안 되는 공급자입니다.</div>
+
+  <div class="toc"><b>목차</b>
+    <ol>
+      <li>큰 그림 — 미국은 왜 중국 태양광을 밀어내나</li>
+      <li>정책 ① 관세 — Section 301과 Section 232</li>
+      <li>정책 ② UFLPA — 강제노동 금수라는 벽</li>
+      <li>정책 ③ IRA·OBBBA와 FEOC — 보조금 자격의 문</li>
+      <li>세 정책이 겹치면 OCI에 무슨 일이</li>
+      <li>반대편 — 이 해자가 흔들릴 수 있는 지점</li>
+      <li>2편 요약 · 용어사전 · FAQ</li>
+    </ol>
+  </div>
+
+  <h2>1. 큰 그림 — 미국은 왜 중국 태양광을 밀어내나</h2>
+
+  <p>세계 폴리실리콘·웨이퍼의 <b>대부분은 중국</b>이 만듭니다. 값싼 전기와 대규모 증설로 원가를 압도적으로 낮췄기 때문입니다.
+  그런데 미국은 두 가지 이유로 이 구조를 바꾸려 합니다.</p>
+  <ul>
+    <li><b>안보·공급망</b> — 태양광이 전력 인프라의 핵심이 되는데, 그 소재를 한 나라(중국)에 의존하는 건 위험하다는 판단.</li>
+    <li><b>인권·강제노동</b> — 중국 신장(위구르) 지역 강제노동 우려. 이 지역이 세계 폴리실리콘 생산의 큰 비중을 차지합니다.</li>
+  </ul>
+  <p>그래서 미국은 <b>"중국산은 비싸게 만들거나(관세) · 아예 못 들어오게 하거나(금수) · 보조금을 못 받게(자격 제한)"</b>
+  라는 세 방향으로 규제를 쌓았습니다. 이 세 겹이 OCI 이야기의 배경입니다.</p>
+
+  <figure>
+    <div class="svgbox">
+    <svg viewBox="0 0 920 250" role="img" aria-label="미국 태양광 규제 3종">
+      <text x="10" y="24" font-size="14" font-weight="700" fill="#0f172a">중국산 태양광을 막는 세 겹의 벽</text>
+      <g font-size="13" font-weight="700">
+        <rect x="20"  y="55" width="270" height="150" rx="12" fill="#fee2e2" stroke="#dc2626"/>
+        <text x="155" y="82"  text-anchor="middle" fill="#991b1b">① 관세 (가격을 올린다)</text>
+        <text x="155" y="108" text-anchor="middle" font-size="11" font-weight="400" fill="#991b1b">Section 301: 중국 폴리 50%</text>
+        <text x="155" y="128" text-anchor="middle" font-size="11" font-weight="400" fill="#991b1b">Section 232: 안보 관세(조사중)</text>
+        <text x="155" y="148" text-anchor="middle" font-size="11" font-weight="400" fill="#991b1b">AD/CVD: 반덤핑·상계관세</text>
+        <text x="155" y="176" text-anchor="middle" font-size="11" font-weight="400" fill="#991b1b">→ 중국·동남아산이 비싸진다</text>
+
+        <rect x="325" y="55" width="270" height="150" rx="12" fill="#fef3c7" stroke="#d97706"/>
+        <text x="460" y="82"  text-anchor="middle" fill="#92400e">② UFLPA (아예 막는다)</text>
+        <text x="460" y="108" text-anchor="middle" font-size="11" font-weight="400" fill="#92400e">위구르 강제노동방지법</text>
+        <text x="460" y="128" text-anchor="middle" font-size="11" font-weight="400" fill="#92400e">신장 연관 제품 통관 보류</text>
+        <text x="460" y="148" text-anchor="middle" font-size="11" font-weight="400" fill="#92400e">2021년~ 시행</text>
+        <text x="460" y="176" text-anchor="middle" font-size="11" font-weight="400" fill="#92400e">→ 중국 폴리 사실상 차단</text>
+
+        <rect x="630" y="55" width="270" height="150" rx="12" fill="#dbeafe" stroke="#2563eb"/>
+        <text x="765" y="82"  text-anchor="middle" fill="#1d4ed8">③ FEOC (보조금을 막는다)</text>
+        <text x="765" y="108" text-anchor="middle" font-size="11" font-weight="400" fill="#1d4ed8">IRA 45X 제조세액공제</text>
+        <text x="765" y="128" text-anchor="middle" font-size="11" font-weight="400" fill="#1d4ed8">OBBBA(2025)로 FEOC 확대</text>
+        <text x="765" y="148" text-anchor="middle" font-size="11" font-weight="400" fill="#1d4ed8">중국 소재 쓰면 세액공제 불가</text>
+        <text x="765" y="176" text-anchor="middle" font-size="11" font-weight="400" fill="#1d4ed8">→ 비중국 소재를 써야 보조금</text>
+      </g>
+      <text x="460" y="232" text-anchor="middle" font-size="12" font-weight="700" fill="#334155">세 겹이 겹칠수록 "중국 밖 폴리실리콘"의 값이 올라간다 → OCI 수혜 논리</text>
+    </svg>
+    </div>
+    <figcaption>그림 1. 미국이 중국산 태양광을 밀어내는 세 겹의 규제. 출처: 각 정책 원문·로펌 해설을 필자 정리(세부는 아래 각 장).</figcaption>
+  </figure>
+
+  <h2>2. 정책 ① 관세 — Section 301과 Section 232</h2>
+
+  <h3>2-1. Section 301 (이미 시행 중)</h3>
+  <p>중국을 겨냥한 통상법 301조 관세로, <b>2025년 1월 1일부터 중국산 폴리실리콘에 50% 관세</b>가 부과됩니다.
+  여기에 별도의 IEEPA(펜타닐 관련) 관세가 추가로 얹힐 수 있습니다. 이미 발효돼 있어 <b>중국산 폴리의 미국 도착가</b>를
+  구조적으로 높여둔 상태입니다. <span class="src">출처: SIA 등 업계 의견서(2025).</span></p>
+
+  <h3>2-2. Section 232 (조사 진행 중, 이번 시리즈의 핵심 변수)</h3>
+  <p><b>무역확장법 232조</b>는 대통령이 "특정 수입품이 <b>국가안보</b>를 위협한다"고 판단하면 관세·수량제한을 걸 수 있게 한
+  강력한 도구입니다(자동차·철강에도 쓰였습니다). 트럼프 행정부의 상무부(BIS)는 <b>2025년 7월 14일 폴리실리콘과 그 파생품에
+  대한 Section 232 조사를 개시</b>했습니다.</p>
+
+  <table>
+    <thead><tr><th>항목</th><th>내용</th></tr></thead>
+    <tbody>
+      <tr><td>개시일</td><td>2025년 7월 14일 (상무부 BIS)</td></tr>
+      <tr><td>대상 범위</td><td><b>폴리실리콘 + 파생품</b> — 웨이퍼·셀·모듈까지 (밸류체인 전 단계)</td></tr>
+      <tr><td>절차 기한</td><td>232조 조사는 최대 270일 (→ 2026년 3월경 마감 가능). 행정부는 더 빠르게 갈 뜻을 시사</td></tr>
+      <tr><td>예상 효과</td><td>단계별로 관세를 얹는 '누진' 구조 가능. 추정상 <b>모듈에 와트당 최대 ~15센트</b> 수준 추가 가능성</td></tr>
+    </tbody>
+  </table>
+  <p class="src">출처: White &amp; Case 인사이트, pv-tech, solarbe 등 보도(2025.07~). 관세율·범위·시점은 <b>미확정</b>이며 이 표는 조사 개시 시점의 예상 시나리오입니다.</p>
+
+  <div class="callout"><b>왜 232조가 OCI에게 중요한가</b><br>
+  블로그가 인용한 경영진 발언 — <b>"Section 232 불확실성이 해소되면 신규 계약 물량 인도가 가속된다"</b> — 의 배경이 여기입니다.
+  232조가 <b>어떻게, 얼마나</b> 관세를 매기느냐에 따라 "중국 밖 폴리실리콘"의 프리미엄 크기가 정해집니다.
+  <b>단, 이건 아직 결과가 안 나온 진행형 변수</b>입니다. 232조가 예상보다 약하게 나오거나, 말레이시아산에도 일부 관세가
+  걸리면 논리가 달라질 수 있습니다(6장·4편 리스크 참조).</p></div>
+
+  <h3>2-3. AD/CVD (반덤핑·상계관세)</h3>
+  <p>별도로 미국은 중국 우회수출 통로였던 <b>동남아 4개국(캄보디아·말레이시아·태국·베트남)</b>산 태양광 셀·모듈에
+  반덤핑(AD)·상계관세(CVD)를 부과해 왔습니다. 여기서 주의할 점 — <b>말레이시아·베트남도 이 조사의 대상이 된 적이 있다</b>는
+  것입니다. 다만 이는 주로 <b>중국계 기업의 우회생산</b>을 겨냥한 것으로, OCI처럼 <b>실제 자체 폴리실리콘·웨이퍼를 만드는
+  비중국 기업</b>과는 성격이 다릅니다. 그래도 "동남아 = 무조건 안전"이 아니라는 점은 기억해둘 필요가 있습니다.</p>
+
+  <h2>3. 정책 ② UFLPA — 강제노동 금수라는 벽</h2>
+
+  <p><b>UFLPA(위구르 강제노동방지법, Uyghur Forced Labor Prevention Act)</b>는 2021년 제정돼 <b>신장(위구르) 지역과
+  연관된 제품의 미국 수입을 원칙적으로 금지</b>합니다. 수입자가 "강제노동과 무관함"을 강하게 입증하지 못하면 <b>통관이 보류</b>됩니다.</p>
+
+  <p>이게 태양광에 결정적인 이유 — <b>세계 폴리실리콘 생산의 상당 부분이 신장 지역에 몰려 있기</b> 때문입니다.
+  즉 UFLPA는 사실상 <b>중국 폴리실리콘의 미국행을 크게 막는 실효적 장벽</b>으로 작동해 왔습니다. 관세(301·232)가 "비싸게
+  만드는" 벽이라면, UFLPA는 "아예 못 들어오게 하는" 벽입니다.</p>
+
+  <div class="note"><b>OCI에게 UFLPA의 의미</b> — OCI의 말레이시아산 폴리실리콘은 <b>신장과 무관한 공급원</b>을 증빙할 수 있어
+  UFLPA 벽을 넘습니다. 미국 고객 입장에서는 "통관 리스크 없는 폴리실리콘"이라는 것 자체가 프리미엄입니다.
+  블로그가 말한 "비중국 공급망 해자"의 절반은 이 UFLPA에서 나옵니다.</div>
+
+  <h2>4. 정책 ③ IRA·OBBBA와 FEOC — 보조금 자격의 문</h2>
+
+  <p>세 번째 벽은 "돈(보조금)을 주는 조건"입니다. 미국은 <b>IRA(인플레이션감축법, 2022)</b>로 자국 내 태양광 제조에
+  <b>45X 첨단제조 생산세액공제</b>를 주기 시작했습니다. 그런데 2025년 트럼프 행정부 아래 <b>OBBBA(One Big Beautiful Bill Act,
+  2025년 7월 4일 서명)</b>가 이 판을 크게 손봤습니다.</p>
+
+  <table>
+    <thead><tr><th>항목</th><th>내용</th><th>OCI에 함의</th></tr></thead>
+    <tbody>
+      <tr><td><b>45X 제조세액공제</b></td><td>태양광·배터리 등 부품을 미국에서 생산하면 단위당 공제. 태양광·저장 부품의 단계적 축소 일정은 (풍력과 달리) <b>대체로 유지</b></td><td>미국 내 제조(텍사스 셀 등)에 우호적</td></tr>
+      <tr><td><b>Domestic Content(국내산 비중)</b></td><td>같은 시설 생산·비특수관계자 판매·<b>비용 기준 65% 이상 국내산</b> 등 요건</td><td>공급망을 미국·비중국으로 짜야 유리</td></tr>
+      <tr><td><b>FEOC(우려 대상국 기업) 제한</b></td><td>2025.7.4 이후 과세연도부터, <b>'금지된 외국기업'으로부터 material assistance(중요 지원·소재)</b>를 받으면 45X 자격 상실. 중·러·이란·북한이 대상</td><td><span class="good">핵심 수혜 포인트</span> — 중국 소재를 쓰면 보조금 불가 → 비중국(OCI) 소재 수요↑</td></tr>
+      <tr><td><b>착공 시점 기준</b></td><td>2025.12.31 이후 착공 프로젝트는 "중·러 등 우려국 부품·영향 없음"을 <b>인증</b>해야</td><td>비중국 공급망 조달을 사실상 강제</td></tr>
+    </tbody>
+  </table>
+  <p class="src">출처: Kirkland &amp; Ellis, Sidley, Stoel Rives 등 로펌 해설(2025). FEOC 세부 기준(지분율·소재 비중·'material assistance' 정의)은 시행규칙에서 구체화되며 해석이 계속 다듬어지는 중입니다.</p>
+
+  <div class="callout"><b>FEOC가 OCI에게 왜 결정적인가</b><br>
+  FEOC는 관세·금수와 성격이 다릅니다. <b>"중국 소재를 쓴 태양광 제품은 미국 보조금을 못 받는다"</b>는 규정이라,
+  미국 안에서 태양광을 짓는 개발사·제조사가 <b>스스로 중국 소재를 피하도록</b> 만듭니다. 그 결과 <b>비중국 폴리실리콘·웨이퍼를
+  '돈 주고서라도' 확보하려는 수요</b>가 생깁니다. 블로그가 말한 "고객이 먼저 나타나 장기계약을 맺고 선수금을 냈다"는 현상의
+  <b>제도적 뿌리</b>가 바로 이 FEOC입니다.</div>
+
+  <h2>5. 세 정책이 겹치면 OCI에 무슨 일이</h2>
+
+  <p>세 벽을 한 문장으로 이으면 이렇게 됩니다.</p>
+  <div class="dark">
+    관세(301·232)로 중국산이 <b>비싸지고</b> → UFLPA로 중국산이 <b>아예 막히고</b> → FEOC로 중국산을 쓰면 <b>보조금을 잃는다</b>.
+    그 결과 미국 고객은 <b>"중국 밖에서 만든, 통관·보조금 문제없는 폴리실리콘·웨이퍼"</b>를 찾게 되고,
+    그런 물량을 가진 몇 안 되는 회사가 <b>OCI(말레이시아·베트남)</b>다.
+  </div>
+
+  <p>그리고 이 희소성이 <b>가격</b>으로 나타난 게 바로 <b>"비중국 폴리실리콘 프리미엄"</b>입니다.
+  실제로 OCI는 비중국산 폴리실리콘의 프리미엄이 커지고 있다고 언급했고, 시장 데이터로도
+  세계 평균 폴리실리콘 가격은 낮은 수준(2026년 7월 세계 평균 약 <b>$4.82/kg</b>)인 반면, <b>미국 인도 비중국 물량은
+  별도의 높은 가격대</b>가 형성되는 이원화가 진행됐습니다. <span class="src">출처: Argus Media, imarcgroup 등(2025~2026). 구체적 프리미엄 폭은 3편에서 가격 데이터로 다시 다룹니다.</span></p>
+
+  <div class="callout"><b>정리</b> — 블로그의 "미국 공급망이 가장 큰 해자"는 <b>세 정책이 만든 인위적 희소성</b>을 가리킵니다.
+  OCI의 해자는 기술 독점이 아니라 <b>"규제가 만들어준 자리"</b>에 가깝습니다. 이게 강점이자 동시에 약점입니다(다음 장).</div>
+
+  <h2>6. 반대편 — 이 해자가 흔들릴 수 있는 지점</h2>
+
+  <p>규제가 만든 해자는 <b>규제가 바뀌면 함께 흔들립니다.</b> 블로그도 "정책이 유지된다면"이라는 전제를 달았습니다.
+  그 전제가 깨질 수 있는 지점을 균형 있게 적어둡니다.</p>
+
+  <table>
+    <thead><tr><th>리스크</th><th>내용</th><th>지켜볼 신호</th></tr></thead>
+    <tbody>
+      <tr><td>Section 232 결과 자체</td><td>관세율·범위·시점 모두 미확정. 약하게 나오거나 지연되면 프리미엄 논리 약화</td><td>2026년 상반기 상무부 발표</td></tr>
+      <tr><td>말레이시아산도 타깃될 위험</td><td>232조가 '폴리 파생품 전반'이라 <b>비중국 물량에도 일부 관세</b>가 걸릴 소지</td><td>232조 국가·품목별 예외 규정</td></tr>
+      <tr><td>정치 지형 변화</td><td>미국 행정부·의회 기조가 바뀌면 IRA·FEOC·관세가 완화·강화 어느 쪽으로도 튈 수 있음</td><td>선거·의회 표결·행정명령</td></tr>
+      <tr><td>수요(설치량) 자체 둔화</td><td>보조금 축소·금리 등으로 미국 태양광 설치가 예상보다 느리면 프리미엄 수요도 줄어듦</td><td>연간 설치량 GW (4편에서 상술)</td></tr>
+      <tr><td>중국의 우회·대응</td><td>중국이 제3국 생산·원가 인하로 우회하면 비중국 프리미엄 압박</td><td>중국 증설·제3국 공장 뉴스</td></tr>
+    </tbody>
+  </table>
+
+  <div class="warn"><b>균형 잡기.</b> 이 편의 논리는 "정책이 OCI에 유리하게 작동한다"는 <b>조건부</b> 이야기입니다.
+  정책은 정치의 산물이라 방향이 바뀔 수 있고, 특히 232조는 <b>아직 결과가 안 나온 진행형</b>입니다.
+  "해자가 있다"가 아니라 "해자가 <b>만들어지는 중이고, 그 크기는 정책 결과에 달려 있다</b>"로 이해하는 게 정확합니다.</div>
+
+  <h2>7. 2편 요약 · 용어사전 · FAQ</h2>
+
+  <div class="callout">
+    <b>2편 한 장 요약</b>
+    <ul>
+      <li>미국은 세 겹으로 중국 태양광을 밀어낸다 — <b>관세(301·232)·금수(UFLPA)·보조금 자격(FEOC)</b>.</li>
+      <li>Section 232는 2025.7.14 조사 개시, 밸류체인 전 단계 대상, 2026년 결과 예상 — <b>이번 시리즈 최대 변수</b>.</li>
+      <li>OBBBA(2025.7.4)의 <b>FEOC</b>가 "중국 소재 쓰면 보조금 불가"를 만들어 <b>비중국 소재 수요</b>를 창출.</li>
+      <li>이 셋이 겹쳐 "중국 밖 폴리실리콘"의 프리미엄이 생겼고, OCI가 그 희소 공급자.</li>
+      <li>단, 해자는 <b>규제가 만든 것</b>이라 규제 변화·232조 결과에 흔들릴 수 있다 — 조건부 논리.</li>
+    </ul>
+  </div>
+
+  <h3>용어사전</h3>
+  <table>
+    <tbody>
+      <tr><td><b>Section 301</b></td><td>중국 겨냥 통상법 관세. 중국 폴리에 50%(2025~)</td></tr>
+      <tr><td><b>Section 232</b></td><td>무역확장법 232조. 안보 위협 시 관세. 폴리 조사 2025.7 개시</td></tr>
+      <tr><td><b>AD/CVD</b></td><td>반덤핑·상계관세. 동남아 우회수출 겨냥</td></tr>
+      <tr><td><b>UFLPA</b></td><td>위구르 강제노동방지법(2021). 신장 연관 제품 수입 금지</td></tr>
+      <tr><td><b>IRA / 45X</b></td><td>인플레이션감축법(2022) / 미국 내 제조 생산세액공제</td></tr>
+      <tr><td><b>OBBBA</b></td><td>One Big Beautiful Bill Act(2025.7.4 서명). IRA를 손봄</td></tr>
+      <tr><td><b>FEOC</b></td><td>우려대상국(중·러·이란·북한) 기업·소재. 이걸 쓰면 세액공제 자격 상실</td></tr>
+    </tbody>
+  </table>
+
+  <h3>FAQ</h3>
+  <p><b>Q. 정책이 이렇게 유리하면 OCI는 무조건 좋은 거 아닌가요?</b><br>
+  A. 아닙니다. ① 232조 결과가 아직 안 나왔고, ② 규제는 정치로 바뀌며, ③ 유리한 정책이 있어도 <b>실적으로 이어지는지는 별개</b>입니다.
+  실제 숫자 검증은 3편, 확인 포인트는 4편에서 다룹니다.</p>
+  <p><b>Q. 말레이시아산도 관세를 맞을 수 있다면서요?</b><br>
+  A. 가능성은 열려 있습니다. 232조가 '폴리 파생품 전반'을 보고 있어 비중국 물량에도 일부 영향이 갈 소지가 있습니다.
+  다만 정책 취지가 '중국 배제'라 비중국 자체생산과 중국 우회생산은 구분될 가능성이 큽니다 — 확정 전까지는 리스크로 남깁니다.</p>
+  <p><b>Q. 이 정책들은 언제 확정되나요?</b><br>
+  A. UFLPA·301·FEOC는 이미 시행 중이고, <b>Section 232는 2026년 상반기</b>가 분수령입니다. 4편 촉매 캘린더에 정리합니다.</p>
+
+  <div class="note">
+    <b>▶ 다음 편 예고 — ③ 실적 검증</b><br>
+    이제 정책 이야기를 <b>숫자</b>로 내립니다. DART 5개년 실적으로 "태양광은 사이클 산업"이라는 말을 눈으로 확인하고,
+    2022년 정점 → 2025년 적자 → 2026년 1분기 흑자전환의 궤적을 봅니다. 그리고 블로그가 말한 Take-or-Pay·선수금이
+    재무제표 어디에 잡히는지, '체질 변화'가 진짜 숫자로 나타나는지 검증합니다.
+  </div>
+
+  <div class="foot">
+    © 2026 노력하는뚱땡이 리서치 라이브러리.<br>
+    본 문서는 개인 학습용 정보 정리이며 투자 권유가 아닙니다. 정책 관련 내용은 정부·로펌·언론 자료를 조회 시점 기준으로 정리했으며, 세부 규정은 변동·확정 과정에 있어 원문 확인이 필요합니다.
+  </div>
+
+</div>
+</body>
+</html>

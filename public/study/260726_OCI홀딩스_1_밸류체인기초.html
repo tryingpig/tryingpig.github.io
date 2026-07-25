@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OCI홀딩스 공부 ① — 태양광 밸류체인과 지주구조</title>
+<link rel="stylesheet" href="/assets/report.css">
+<script src="/assets/report.js" defer></script>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<script>
+  (function () {
+    try {
+      var t = localStorage.getItem('theme');
+      if (!t) t = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      if (t === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+    } catch (e) {}
+  })();
+</script>
+</head>
+<body data-topic="invest">
+<div class="topbar">
+  <div class="topbar-in">
+    <a class="back" href="/#study">학습공간</a>
+    <span class="crumb">OCI홀딩스 공부 ① — 밸류체인·지주구조</span>
+    <button class="theme-toggle" type="button" aria-label="다크/라이트 전환" title="다크/라이트 전환">
+      <svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      <svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+    </button>
+  </div>
+</div>
+<div class="wrap">
+
+  <span class="kicker">OCI홀딩스 공부 시리즈 · ① 기초편</span>
+  <h1>OCI홀딩스 공부 ①<br>— 태양광 밸류체인과 OCI의 위치, 그리고 지주구조</h1>
+  <p class="sub">작성일 2026-07-26 · 개인 리서치 노트 · 블로그 "OCI홀딩스 실적발표 뜯어보기 #1·#2"에서 출발한 4부작 시리즈의 1편</p>
+
+  <div class="warn">
+    <b>⚠️ 투자 권유가 아닙니다.</b> 이 문서는 공개 정보와 <b>DART 공시·언론·IR 자료</b>를 정리한 <b>개인 학습 노트</b>이며,
+    특정 종목의 매수·매도 추천이 아닙니다. 언급된 기업명은 산업 구조 설명을 위한 것입니다.
+    수치는 조회 시점 기준이며 실제와 다를 수 있습니다. 모든 투자 판단과 그 책임은 전적으로 본인에게 있습니다.
+  </div>
+
+  <div class="note">
+    <b>📚 이 시리즈는 왜 시작됐나</b><br>
+    군포금융치료센터('의교창') 블로그의 두 글
+    — <a href="https://blog.naver.com/doctordk/224355730918" target="_blank" rel="noopener">OCI홀딩스 실적발표 뜯어보기 #1</a>,
+    <a href="https://blog.naver.com/doctordk/224355734577" target="_blank" rel="noopener">#2</a> —
+    을 읽고 "OCI홀딩스를 처음부터 공부해보자"에서 출발했습니다. 블로그의 핵심 주장은
+    <b>"이번 실적발표의 본질은 증설 규모가 아니라 계약 구조의 변화 — 계약을 먼저 확보하고(Sold-out·Take-or-Pay·선수금),
+    폴리실리콘 회사에서 웨이퍼 회사로 체질을 바꾸고 있다"</b>는 것이었습니다.<br><br>
+    이 주장을 제대로 이해·검증하려면 먼저 <b>바탕이 되는 그림</b>이 필요합니다. 이 1편은 그 바탕 —
+    ① 태양광이 어떤 단계를 거쳐 만들어지는지, ② 그 안에서 OCI가 어디에 서 있고 어디로 가려 하는지,
+    ③ OCI홀딩스라는 회사가 어떤 지배구조로 짜여 있는지 — 를 정리합니다.
+  </div>
+
+  <div class="callout">
+    <b>이 시리즈 4부작 지도</b>
+    <ul>
+      <li><b>① 밸류체인·지주구조 (이 글)</b> — 태양광 5단계, OCI의 위치, 지주구조와 말레이시아·베트남 거점</li>
+      <li>② 미국 정책 3종 — Section 232 · UFLPA · IRA/OBBBA(FEOC). 블로그가 말한 '해자'의 정체</li>
+      <li>③ 실적 검증 — DART 5개년 숫자로 사이클 산업의 민낯과 '체질 변화' 확인</li>
+      <li>④ 체크포인트 — CAPEX·미국 설치량·고객집중도, 앞으로 지켜볼 것</li>
+    </ul>
+  </div>
+
+  <div class="toc"><b>목차</b>
+    <ol>
+      <li>태양광은 어떻게 만들어지나 — 5단계 밸류체인</li>
+      <li>OCI는 밸류체인 어디에 있나 — 폴리실리콘에서 웨이퍼로</li>
+      <li>폴리실리콘이란 무엇이고 어떻게 만드나</li>
+      <li>OCI홀딩스라는 회사 — 역사와 지주사 전환</li>
+      <li>지주구조 뜯어보기 — 누가 무엇을 얼마나 들고 있나</li>
+      <li>왜 말레이시아·베트남인가 — 지리가 곧 전략</li>
+      <li>OCI의 사업 부문 지도</li>
+      <li>1편 요약 · 용어사전 · FAQ</li>
+    </ol>
+  </div>
+
+  <h2>1. 태양광은 어떻게 만들어지나 — 5단계 밸류체인</h2>
+
+  <p>태양광 패널(모듈) 하나가 우리 눈앞에 오기까지는 <b>모래(규석)에서 출발해 다섯 단계</b>를 거칩니다.
+  이 순서를 머릿속에 넣어두면 OCI가 어디서 돈을 벌고, 어디로 사업을 넓히려는지가 한눈에 들어옵니다.</p>
+
+  <figure>
+    <div class="svgbox">
+    <svg viewBox="0 0 920 240" role="img" aria-label="태양광 밸류체인 5단계">
+      <defs>
+        <marker id="arr" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto">
+          <path d="M0,0 L7,3 L0,6 Z" fill="#64748b"/>
+        </marker>
+      </defs>
+      <text x="10" y="24" font-size="14" font-weight="700" fill="#0f172a">모래(규석) → 태양광 패널까지</text>
+      <!-- boxes -->
+      <g font-size="13" font-weight="700">
+        <rect x="10"  y="60" width="150" height="90" rx="10" fill="#e0e7ff" stroke="#6366f1"/>
+        <text x="85"  y="92"  text-anchor="middle" fill="#3730a3">① 폴리실리콘</text>
+        <text x="85"  y="112" text-anchor="middle" font-size="11" font-weight="400" fill="#3730a3">고순도 규소 덩어리</text>
+        <text x="85"  y="128" text-anchor="middle" font-size="11" font-weight="400" fill="#3730a3">(원재료·소재)</text>
+
+        <rect x="190" y="60" width="150" height="90" rx="10" fill="#ede9fe" stroke="#8b5cf6"/>
+        <text x="265" y="92"  text-anchor="middle" fill="#5b21b6">② 잉곳/웨이퍼</text>
+        <text x="265" y="112" text-anchor="middle" font-size="11" font-weight="400" fill="#5b21b6">기둥으로 녹여 굳혀</text>
+        <text x="265" y="128" text-anchor="middle" font-size="11" font-weight="400" fill="#5b21b6">얇게 자른 판</text>
+
+        <rect x="370" y="60" width="150" height="90" rx="10" fill="#fae8ff" stroke="#c026d3"/>
+        <text x="445" y="92"  text-anchor="middle" fill="#86198f">③ 셀(Cell)</text>
+        <text x="445" y="112" text-anchor="middle" font-size="11" font-weight="400" fill="#86198f">빛→전기 바꾸는</text>
+        <text x="445" y="128" text-anchor="middle" font-size="11" font-weight="400" fill="#86198f">태양전지</text>
+
+        <rect x="550" y="60" width="150" height="90" rx="10" fill="#fef3c7" stroke="#d97706"/>
+        <text x="625" y="92"  text-anchor="middle" fill="#92400e">④ 모듈</text>
+        <text x="625" y="112" text-anchor="middle" font-size="11" font-weight="400" fill="#92400e">셀 여러 장을 이어</text>
+        <text x="625" y="128" text-anchor="middle" font-size="11" font-weight="400" fill="#92400e">붙인 패널</text>
+
+        <rect x="730" y="60" width="180" height="90" rx="10" fill="#dcfce7" stroke="#16a34a"/>
+        <text x="820" y="92"  text-anchor="middle" fill="#166534">⑤ 발전소/설치</text>
+        <text x="820" y="112" text-anchor="middle" font-size="11" font-weight="400" fill="#166534">지붕·발전단지에</text>
+        <text x="820" y="128" text-anchor="middle" font-size="11" font-weight="400" fill="#166534">깔아 전기 생산</text>
+      </g>
+      <!-- arrows -->
+      <g stroke="#64748b" stroke-width="2">
+        <line x1="162" y1="105" x2="186" y2="105" marker-end="url(#arr)"/>
+        <line x1="342" y1="105" x2="366" y2="105" marker-end="url(#arr)"/>
+        <line x1="522" y1="105" x2="546" y2="105" marker-end="url(#arr)"/>
+        <line x1="702" y1="105" x2="726" y2="105" marker-end="url(#arr)"/>
+      </g>
+      <!-- OCI band -->
+      <rect x="10" y="175" width="330" height="46" rx="8" fill="#eff6ff" stroke="#2563eb" stroke-dasharray="5 4"/>
+      <text x="175" y="203" text-anchor="middle" font-size="13" font-weight="700" fill="#1d4ed8">◀ OCI의 주 무대: ① 폴리실리콘 → ② 웨이퍼로 확장 중 ▶</text>
+    </svg>
+    </div>
+    <figcaption>그림 1. 태양광 밸류체인 5단계. OCI는 맨 앞의 소재(폴리실리콘)에서 출발해 한 칸 아래(웨이퍼)로 내려가는 중이다. 출처: 산업 일반 구조를 필자 정리.</figcaption>
+  </figure>
+
+  <p><b>각 단계를 한 줄로</b> 정리하면 이렇습니다.</p>
+  <table>
+    <thead><tr><th>단계</th><th>무엇</th><th>비유</th><th>부가가치 성격</th></tr></thead>
+    <tbody>
+      <tr><td><b>① 폴리실리콘</b></td><td>규석(모래)을 정제한 순도 99.9999...% 고순도 규소 덩어리</td><td>빵으로 치면 '밀가루'</td><td>대규모 장치산업·원가·전기요금 싸움. <span class="mid">사이클성 강함</span></td></tr>
+      <tr><td><b>② 잉곳→웨이퍼</b></td><td>폴리실리콘을 녹여 기둥(잉곳)으로 굳힌 뒤 얇게 썬 판</td><td>'반죽을 밀어 자른 것'</td><td>가공·규격화. 고객이 원하는 형태로 만들어줌 → <span class="good">부가가치·Lock-in ↑</span></td></tr>
+      <tr><td><b>③ 셀</b></td><td>웨이퍼에 전지 구조를 입혀 빛을 전기로 바꾸게 만든 태양전지</td><td>'속을 채운 빵'</td><td>기술 경쟁(효율). TOPCon·HJT 등</td></tr>
+      <tr><td><b>④ 모듈</b></td><td>셀 여러 장을 유리·프레임으로 이어 붙인 최종 패널</td><td>'완성된 빵'</td><td>조립·브랜드. 상대적으로 진입장벽 낮음</td></tr>
+      <tr><td><b>⑤ 발전/설치</b></td><td>모듈을 지붕·발전단지에 설치해 전기를 생산</td><td>'빵을 파는 가게'</td><td>프로젝트·금융. 전력구매계약(PPA)</td></tr>
+    </tbody>
+  </table>
+
+  <div class="note"><b>왜 '앞 단계'가 사이클을 심하게 타나?</b><br>
+  ①폴리실리콘은 거대한 공장을 지어 24시간 돌리는 <b>장치산업</b>입니다. 한 번 지으면 세워두기 아까워 계속 돌리게 되고,
+  여러 회사가 동시에 증설하면 순식간에 공급이 넘쳐 가격이 무너집니다. 반대로 부족하면 가격이 폭등합니다.
+  블로그가 "태양광은 늘 사이클 산업이라는 꼬리표를 달고 있었다"고 한 이유가 바로 이 구조입니다.
+  3편에서 OCI의 실제 실적으로 이 사이클을 눈으로 확인합니다.</div>
+
+  <h2>2. OCI는 밸류체인 어디에 있나 — 폴리실리콘에서 웨이퍼로</h2>
+
+  <p>OCI는 전통적으로 <b>①폴리실리콘</b>을 만들어 파는 <b>소재 회사</b>였습니다. 그런데 블로그가 짚은 이번 발표의 핵심 변화가
+  바로 여기 있습니다 — <b>"폴리실리콘 회사에서 웨이퍼 회사로"</b>. 즉 밸류체인에서 한 칸 아래(②웨이퍼)로 사업을 넓히는 것입니다.</p>
+
+  <div class="grid2">
+    <div class="card">
+      <b>과거: 원재료 판매</b>
+      <p>폴리실리콘(밀가루)을 만들어 고객(웨이퍼·셀 업체)에게 <b>덩어리째</b> 넘겼습니다.
+      범용 소재라 가격이 시황(스팟가)에 그대로 노출되고, 고객을 바꾸기도 쉬워 관계가 얕았습니다.</p>
+    </div>
+    <div class="card">
+      <b>지금: 웨이퍼까지 가공</b>
+      <p>폴리실리콘을 <b>웨이퍼 형태까지 가공해</b> 공급합니다. 부가가치가 높고, 고객이 우리 규격에 맞춰 설비를 세팅하면
+      쉽게 못 바꾸는 <b>Lock-in</b>이 생깁니다. 블로그가 "웨이퍼 비중 70~80%까지"라고 인용한 대목입니다.</p>
+    </div>
+  </div>
+
+  <p>실제 사업 발자국으로도 이 방향이 드러납니다. OCI홀딩스는 <b>2025년 10월 베트남 웨이퍼 공장을 인수</b>했고,
+  <b>2026년 1분기부터 이 공장의 웨이퍼 생산을 시작</b>했습니다. 폴리실리콘(말레이시아)에 이어 웨이퍼(베트남)라는
+  두 번째 단계가 실제로 붙은 것입니다. <span class="src">출처: THE INVESTOR / SurgePV 등 보도, 2025~2026.</span></p>
+
+  <div class="callout"><b>핵심 포인트</b> — 밸류체인에서 "한 칸 아래로 내려간다"는 건 단순히 제품 종류를 늘리는 게 아닙니다.
+  <b>범용 소재 → 고객 맞춤 가공품</b>으로 사업의 성격 자체가 바뀌는 것이고, 이게 블로그가 말한 "정의가 바뀌는 순간"의
+  실체입니다. 이 변화가 숫자로 확인되는지는 3편에서 검증합니다.</div>
+
+  <h2>3. 폴리실리콘이란 무엇이고 어떻게 만드나</h2>
+
+  <p>OCI의 뿌리인 폴리실리콘을 한 문단만 더 파봅니다. <b>폴리실리콘(Polysilicon)</b>은 규석(모래의 주성분, SiO₂)에서
+  산소를 떼어내고 극도로 정제한 <b>고순도 규소</b>입니다. 태양광용은 순도 <b>'6N~9N'</b>(99.9999%~99.9999999%),
+  반도체용은 이보다 훨씬 높은 <b>'11N'</b>급을 요구합니다. 같은 규소라도 순도에 따라 쓰임과 가격이 완전히 다릅니다.</p>
+
+  <table>
+    <thead><tr><th>구분</th><th>태양광용(Solar-grade)</th><th>반도체용(Semi-grade)</th></tr></thead>
+    <tbody>
+      <tr><td>순도</td><td>6N~9N</td><td>11N 이상 (초고순도)</td></tr>
+      <tr><td>수요처</td><td>웨이퍼→셀→모듈</td><td>반도체 웨이퍼</td></tr>
+      <tr><td>가격대</td><td>상대적으로 낮음 (kg당 수 달러)</td><td>훨씬 높음 (부가가치 큼)</td></tr>
+      <tr><td>OCI 위치</td><td>말레이시아에서 대량 생산(주력)</td><td>토쿠야마와 JV(OTSM)로 신규 진입 추진</td></tr>
+    </tbody>
+  </table>
+
+  <p>제조법은 대부분 <b>'개량 지멘스법(Modified Siemens Process)'</b>을 씁니다. 규소를 염화수소와 반응시켜 만든 가스를
+  고온의 봉(rod)에 증착시켜 순도를 끌어올리는 방식으로, <b>엄청난 전력</b>이 듭니다. 그래서 폴리실리콘 공장의 경쟁력은
+  사실상 <b>전기를 얼마나 싸고 깨끗하게 쓰느냐</b>에 달려 있습니다. 이 사실이 6장(왜 말레이시아인가)의 복선입니다.</p>
+
+  <div class="note"><b>💡 반도체용 신사업 (OTSM)</b><br>
+  OCI홀딩스는 2025년 7월 일본 <b>토쿠야마</b>와 합작(OTSM)을 세워 말레이시아 사라왁에 <b>반도체급 폴리실리콘</b> 공장을
+  짓기로 했습니다. 약 <b>4.35억 달러</b> 투자, 연 <b>8,000톤</b>을 2029년부터 <b>수력발전</b> 전기로 생산할 계획입니다.
+  태양광 사이클에만 매여 있던 회사가 더 비싸고 안정적인 반도체 소재로 저변을 넓히려는 시도입니다.
+  <span class="src">출처: The Star / 업계 보도, 2025.07.</span></div>
+
+  <h2>4. OCI홀딩스라는 회사 — 역사와 지주사 전환</h2>
+
+  <p>OCI의 역사는 <b>1959년 동양화학공업</b>으로 거슬러 올라가는, 한국의 대표적 <b>기초화학</b> 회사입니다.
+  소다회·과산화수소·카본블랙·TDI 같은 산업용 화학제품을 만들다가, 2000년대 들어 <b>폴리실리콘</b>에 대규모 투자하며
+  태양광 소재 회사로 변신했습니다. 회사 이름도 동양제철화학 → OCI로 바뀌었습니다.</p>
+
+  <p>지금의 구조가 만들어진 결정적 사건은 <b>2023년 5월 인적분할을 통한 지주사 전환</b>입니다.
+  기존 'OCI'가 <b>지주회사 'OCI홀딩스'</b>와 <b>사업회사 'OCI'</b>로 나뉘었습니다.</p>
+
+  <figure>
+    <div class="svgbox">
+    <svg viewBox="0 0 920 150" role="img" aria-label="OCI 지주사 전환 구조">
+      <rect x="60" y="55" width="200" height="60" rx="10" fill="#e2e8f0" stroke="#64748b"/>
+      <text x="160" y="82" text-anchor="middle" font-size="13" font-weight="700" fill="#0f172a">기존 OCI (2023.5 이전)</text>
+      <text x="160" y="102" text-anchor="middle" font-size="11" fill="#475569">화학+태양광 통합회사</text>
+      <line x1="270" y1="85" x2="360" y2="85" stroke="#64748b" stroke-width="2" marker-end="url(#a2)"/>
+      <defs><marker id="a2" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#64748b"/></marker></defs>
+      <text x="315" y="76" text-anchor="middle" font-size="10" fill="#475569">인적분할</text>
+      <rect x="380" y="25" width="240" height="50" rx="10" fill="#dbeafe" stroke="#2563eb"/>
+      <text x="500" y="47" text-anchor="middle" font-size="13" font-weight="700" fill="#1d4ed8">OCI홀딩스 (지주회사)</text>
+      <text x="500" y="65" text-anchor="middle" font-size="11" fill="#1d4ed8">상장 · 종목코드 010060</text>
+      <rect x="380" y="95" width="240" height="45" rx="10" fill="#e0e7ff" stroke="#6366f1"/>
+      <text x="500" y="122" text-anchor="middle" font-size="13" font-weight="700" fill="#3730a3">OCI (사업회사) · 456040</text>
+      <line x1="500" y1="75" x2="500" y2="93" stroke="#6366f1" stroke-width="2" marker-end="url(#a2)"/>
+      <text x="640" y="122" font-size="11" fill="#475569">지주가 지분 ≈45% 보유</text>
+    </svg>
+    </div>
+    <figcaption>그림 2. 2023년 5월 인적분할로 OCI홀딩스(지주)와 OCI(사업회사)로 분리. 출처: DART 공시 기준 필자 정리.</figcaption>
+  </figure>
+
+  <p>즉 <b>우리가 주식시장에서 사고파는 'OCI홀딩스(010060)'는 직접 폴리실리콘을 만드는 회사가 아니라, 그 회사를
+  자회사로 거느린 지주회사</b>입니다. 실제 폴리실리콘·웨이퍼 사업은 자회사 OCI와 그 해외법인들이 합니다.
+  이 구분을 놓치면 재무제표를 볼 때 헷갈립니다(3편에서 다시 짚습니다).</p>
+
+  <h2>5. 지주구조 뜯어보기 — 누가 무엇을 얼마나 들고 있나</h2>
+
+  <p>DART 공시로 지배구조의 뼈대를 확인했습니다.</p>
+
+  <table>
+    <thead><tr><th>관계</th><th>주체</th><th>지분/위치</th></tr></thead>
+    <tbody>
+      <tr><td>OCI홀딩스 최대주주</td><td>이화영 (오너)</td><td><b>7.87%</b> (특수관계인 합산은 별도)</td></tr>
+      <tr><td>OCI홀딩스 → OCI(사업회사)</td><td>OCI홀딩스</td><td><b>44.97%</b> (최대주주)</td></tr>
+      <tr><td>OCI(사업회사) → 폴리실리콘 생산</td><td>OCI TerraSus Sdn. Bhd. (말레이시아, 구 OCIM)</td><td><b>100%</b></td></tr>
+      <tr><td>OCI → 베트남 웨이퍼</td><td>OCI Vietnam Co., Ltd.</td><td><b>100%</b></td></tr>
+      <tr><td>OCI → 미국 법인</td><td>OCI Enterprise Inc.</td><td><b>100%</b></td></tr>
+    </tbody>
+  </table>
+  <p class="src">출처: 금융감독원 전자공시(DART) OpenAPI, 조회일 2026-07-26. 지분율은 공시 원본값(연결 기준 보고서 기말 지분율).
+  최대주주 개인 지분은 지주 본인 기준이며, 특수관계인·자기주식 등을 포함한 확정 지배력 계산은 사업보고서 원문을 직접 확인해야 합니다.</p>
+
+  <div class="callout"><b>기억할 그림 한 줄</b><br>
+  이화영 오너 → <b>OCI홀딩스</b>(상장 지주) → <b>OCI 사업회사</b>(약 45%) → <b>말레이시아(폴리실리콘·100%)·베트남(웨이퍼·100%)·미국(셀 등)</b>.
+  블로그가 말한 "비중국 공급망"의 실체가 바로 이 <b>말레이시아→베트남→미국</b> 축입니다.</div>
+
+  <div class="note"><b>왜 자회사도 따로 봐야 하나</b><br>
+  지주회사 재무제표(연결)에는 자회사 실적이 합쳐져 들어오지만, <b>폴리실리콘·웨이퍼 사업의 실제 손익</b>은
+  자회사 OCI(456040)에서 더 선명하게 보입니다. 예를 들어 2026년 1분기 영업이익은 지주(OCI홀딩스) 연결 기준 <b>109억</b>,
+  사업회사 OCI 기준 <b>278억</b>으로 차이가 납니다(지주 단계의 다른 비용·손실 때문). 그래서 이 시리즈는 지주와 사업회사 숫자를
+  둘 다 봅니다. <span class="src">출처: DART, 2026 1Q.</span></div>
+
+  <h2>6. 왜 말레이시아·베트남인가 — 지리가 곧 전략</h2>
+
+  <p>3장에서 "폴리실리콘 경쟁력 = 싸고 깨끗한 전기"라고 했습니다. 이 한 줄이 OCI의 생산 지도를 설명합니다.</p>
+
+  <ul>
+    <li><b>말레이시아(폴리실리콘)</b> — OCI는 2010년대 후반 한국(군산)의 태양광용 폴리실리콘 생산을 줄이고
+    말레이시아로 무게중심을 옮겼습니다. 이유는 <b>저렴한 전기요금과 수력 등 재생에너지</b>. 전기 원가가 원가의 큰 부분인
+    폴리실리콘에서 이건 결정적입니다. 게다가 <b>수력(청정) 전기</b>로 만든다는 사실은 뒤에 나올 미국·유럽의 '저탄소·비중국'
+    요구와도 맞아떨어집니다.</li>
+    <li><b>베트남(웨이퍼)</b> — 2025년 인수한 웨이퍼 공장. 폴리실리콘(말레이시아)에서 웨이퍼(베트남)로 이어지는
+    <b>비(非)중국 공급망</b>을 완성하는 조각입니다.</li>
+    <li><b>미국(셀)</b> — 말레이시아산 폴리실리콘을 원료로 <b>텍사스에 연 1GW 태양전지(셀) 공장</b>을 세워
+    2026년 상반기 상업생산을 계획했습니다. 최종 수요처인 미국 안에 발을 들이는 것입니다.
+    <span class="src">출처: The Star, 2025.03 등.</span></li>
+  </ul>
+
+  <div class="callout"><b>지리가 곧 전략인 이유</b> — 중국은 세계 폴리실리콘의 대부분을 만들지만, 미국은 뒤(2편)에서 볼 여러 규제로
+  <b>중국산을 사실상 막고</b> 있습니다. 그 결과 <b>"중국 밖에서 만든 폴리실리콘·웨이퍼"</b>의 희소가치가 커졌고,
+  중국 밖에서 의미 있는 물량을 가진 곳은 독일 바커(Wacker)와 <b>말레이시아의 OCI</b> 정도뿐입니다.
+  OCI의 말레이시아·베트남 거점은 그래서 단순 원가 절감을 넘어 <b>정책이 만들어준 희소성</b> 위에 서 있습니다.</div>
+
+  <h2>7. OCI의 사업 부문 지도</h2>
+
+  <p>OCI홀딩스는 태양광 소재만 하는 회사가 아닙니다. 뿌리인 기초화학 사업도 여전히 큽니다. 크게 세 갈래로 정리됩니다.</p>
+
+  <table>
+    <thead><tr><th>부문</th><th>주요 제품</th><th>성격</th></tr></thead>
+    <tbody>
+      <tr><td><b>베이직케미칼</b></td><td>폴리실리콘, 과산화수소, TDI(과거) 등</td><td>이번 시리즈의 주인공. 태양광 소재</td></tr>
+      <tr><td><b>카본케미칼</b></td><td>카본블랙, 피치, 벤젠 등 (석탄화학)</td><td>타이어·산업 소재. 안정적 캐시카우 성격</td></tr>
+      <tr><td><b>에너지솔루션 등</b></td><td>태양광 발전 프로젝트·에너지 사업</td><td>밸류체인 뒷단(발전·설치)과 연결</td></tr>
+    </tbody>
+  </table>
+  <p class="src">부문 분류는 회사 IR·사업보고서 기준의 개괄이며, 회계상 영업부문 분류와 정확히 일치하지 않을 수 있습니다.
+  <b>부문별 매출 수치는 DART 재무제표로 그대로 재현되지 않으므로</b>(회사 IR 분류와 회계 영업부문 체계가 달라서),
+  이 시리즈에서 부문별 숫자는 다루지 않고 <b>전사 합계 수준</b>까지만 검증합니다(3편 참조).</p>
+
+  <div class="note"><b>왜 이 구조가 중요한가</b> — 태양광 폴리실리콘이 적자를 낼 때도 카본케미칼 등 다른 부문이
+  회사 전체를 어느 정도 받쳐줍니다. 반대로 태양광이 좋을 때는 실적이 크게 튑니다. 그래서 OCI홀딩스를 볼 때는
+  <b>"태양광이 지금 사이클 어디쯤인가"</b>와 <b>"나머지 부문이 얼마나 방어해주나"</b>를 함께 봐야 합니다.</div>
+
+  <h2>8. 1편 요약 · 용어사전 · FAQ</h2>
+
+  <div class="callout">
+    <b>1편 한 장 요약</b>
+    <ul>
+      <li>태양광은 <b>폴리실리콘 → 잉곳/웨이퍼 → 셀 → 모듈 → 발전</b> 5단계. 앞단(폴리)일수록 사이클이 심하다.</li>
+      <li>OCI는 <b>폴리실리콘(소재)</b> 회사에서 <b>웨이퍼(가공)</b> 회사로 한 칸 내려가는 중 — 블로그가 말한 "체질 변화".</li>
+      <li>구조: 이화영 → <b>OCI홀딩스(상장 지주)</b> → OCI 사업회사(45%) → 말레이시아 폴리·베트남 웨이퍼·미국 셀(모두 100%).</li>
+      <li>거점 선택은 <b>싸고 깨끗한 전기 + 비중국</b>이라는 두 조건이 겹치는 자리 — 지리가 곧 전략.</li>
+      <li>다음 편(②)에서는 이 '비중국 공급망'을 값지게 만들어주는 <b>미국 정책 3종</b>을 파고든다.</li>
+    </ul>
+  </div>
+
+  <h3>용어사전</h3>
+  <table>
+    <tbody>
+      <tr><td><b>폴리실리콘</b></td><td>규석을 정제한 고순도 규소. 태양광·반도체의 출발 소재</td></tr>
+      <tr><td><b>웨이퍼</b></td><td>폴리실리콘을 녹여 굳힌 잉곳을 얇게 자른 판. 셀의 재료</td></tr>
+      <tr><td><b>지멘스법</b></td><td>폴리실리콘 주력 제조공정. 전력 소모가 큼</td></tr>
+      <tr><td><b>인적분할</b></td><td>한 회사를 지주+사업회사로 나누는 방식. OCI는 2023.5 시행</td></tr>
+      <tr><td><b>Lock-in</b></td><td>고객이 특정 공급사 규격에 맞춰져 쉽게 못 바꾸게 되는 것</td></tr>
+      <tr><td><b>비중국(Non-China / Non-PFE)</b></td><td>중국 밖에서 만든 공급망. 미국 규제 대응의 핵심</td></tr>
+    </tbody>
+  </table>
+
+  <h3>FAQ</h3>
+  <p><b>Q. OCI홀딩스를 사면 폴리실리콘 회사를 사는 건가요?</b><br>
+  A. 직접은 아닙니다. OCI홀딩스는 지주회사이고, 폴리실리콘은 자회사 OCI와 말레이시아 법인이 만듭니다.
+  다만 지주가 사업회사 지분 약 45%를 갖고 있어 실적이 연결로 반영됩니다.</p>
+  <p><b>Q. 웨이퍼로 가면 뭐가 좋아지나요?</b><br>
+  A. 범용 소재보다 부가가치가 높고, 고객이 우리 규격에 묶이는(Lock-in) 효과가 생겨 관계가 깊어집니다.
+  다만 그만큼 <b>웨이퍼 공장 투자(CAPEX)</b>가 필요합니다 — 이 부담은 4편에서 다룹니다.</p>
+  <p><b>Q. 왜 굳이 말레이시아·베트남인가요?</b><br>
+  A. 싸고 깨끗한 전기(원가·저탄소)와 '중국 밖'이라는 조건이 둘 다 맞기 때문입니다. 2편에서 이 '중국 밖'의 가치를 설명합니다.</p>
+
+  <div class="note">
+    <b>▶ 다음 편 예고 — ② 미국 정책 3종 세트</b><br>
+    블로그가 "가장 큰 해자"라고 한 <b>미국 비중국 공급망 정책</b>의 정체를 뜯어봅니다.
+    Section 232(무역확장법 232조), UFLPA(위구르 강제노동방지법), IRA/OBBBA와 FEOC 규정 —
+    이 셋이 어떻게 OCI의 말레이시아산 폴리실리콘을 '귀한 물건'으로 만드는지, 그리고 그 정책이 <b>얼마나 단단한지</b>를 봅니다.
+  </div>
+
+  <div class="foot">
+    © 2026 노력하는뚱땡이 리서치 라이브러리.<br>
+    본 문서는 개인 학습용 정보 정리이며 투자 권유가 아닙니다. 수치는 DART 공시·언론·IR 자료를 조회 시점 기준으로 정리했으며 오차가 있을 수 있습니다.
+  </div>
+
+</div>
+</body>
+</html>

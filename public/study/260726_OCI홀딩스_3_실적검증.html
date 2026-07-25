@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OCI홀딩스 공부 ③ — 블로그 결론을 숫자로 검증하기</title>
+<link rel="stylesheet" href="/assets/report.css">
+<script src="/assets/report.js" defer></script>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<script>
+  (function () {
+    try {
+      var t = localStorage.getItem('theme');
+      if (!t) t = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      if (t === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+    } catch (e) {}
+  })();
+</script>
+</head>
+<body data-topic="invest">
+<div class="topbar">
+  <div class="topbar-in">
+    <a class="back" href="/#study">학습공간</a>
+    <span class="crumb">OCI홀딩스 공부 ③ — 실적 검증</span>
+    <button class="theme-toggle" type="button" aria-label="다크/라이트 전환" title="다크/라이트 전환">
+      <svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      <svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+    </button>
+  </div>
+</div>
+<div class="wrap">
+
+  <span class="kicker">OCI홀딩스 공부 시리즈 · ③ 검증편</span>
+  <h1>OCI홀딩스 공부 ③<br>— 블로그 결론을 숫자로 검증하기</h1>
+  <p class="sub">작성일 2026-07-26 · 개인 리서치 노트 · DART 공시 5개년 + 폴리실리콘 가격 + 계약구조 재무</p>
+
+  <div class="warn">
+    <b>⚠️ 투자 권유가 아닙니다.</b> 이 문서는 <b>금융감독원 전자공시(DART)</b> 공식 데이터와 공개 자료를 정리한
+    <b>개인 학습 노트</b>이며, 매수·매도 추천이 아닙니다. 비율 지표는 DART 원본값을 <b>자체 계산</b>한 것이고,
+    일부 항목은 보도·IR 인용으로 공시 재현이 안 됨을 각주에 밝혔습니다. 투자 판단과 책임은 전적으로 본인에게 있습니다.
+  </div>
+
+  <div class="note">
+    <b>이어지는 글입니다.</b>
+    <a href="https://tryingpig.github.io/study/260726_OCI홀딩스_1_밸류체인기초.html">① 밸류체인·지주구조</a> /
+    <a href="https://tryingpig.github.io/study/260726_OCI홀딩스_2_미국정책.html">② 미국 정책 3종</a> 에 이어,
+    이번 3편은 블로그(<a href="https://blog.naver.com/doctordk/224355734577" target="_blank" rel="noopener">뜯어보기 #2</a>)의
+    핵심 주장을 <b>숫자로 검증</b>합니다. 주장은 세 가지였습니다 — ⓐ 태양광은 사이클 산업이다, ⓑ Take-or-Pay·선수금·LTA로
+    현금흐름이 안정된다, ⓒ 폴리에서 웨이퍼로 체질이 바뀐다. 이걸 실제 실적으로 하나씩 확인합니다.
+  </div>
+
+  <div class="callout"><b>먼저 결론</b> — DART 5개년 숫자는 블로그의 <b>ⓐ(사이클 산업)를 아주 선명하게 증명</b>합니다.
+  2022년 정점 → 2024~2025년 <b>적자 전환</b>이 뚜렷합니다. ⓑ·ⓒ(계약구조·체질변화)는 <b>2026년 1분기 흑자전환</b>이라는
+  긍정 신호는 있으나, "구조적으로 바뀌었다"를 확증하기엔 <b>아직 데이터가 1~2분기뿐</b>입니다. 즉 <b>사이클은 사실, 체질변화는 진행형 가설</b>.</div>
+
+  <div class="toc"><b>목차</b>
+    <ol>
+      <li>검증 등급 먼저 — 무엇이 '공시'이고 무엇이 '보도'인가</li>
+      <li>매출 5개년 — 롤러코스터의 증거</li>
+      <li>마진 5개년 — 진짜 이야기는 여기 있다</li>
+      <li>왜 이렇게 출렁이나 — 폴리실리콘 가격 사이클</li>
+      <li>2026년 1분기 — 흑자전환은 진짜인가</li>
+      <li>Take-or-Pay·선수금은 재무제표 어디에 잡히나</li>
+      <li>배당 추세 — 오너·주주환원의 온도</li>
+      <li>3편 요약 · FAQ</li>
+    </ol>
+  </div>
+
+  <h2>1. 검증 등급 먼저 — 무엇이 '공시'이고 무엇이 '보도'인가</h2>
+  <p>숫자를 뭉뚱그리면 독자가 전부 검증된 걸로 오해합니다. 이 리포트의 숫자는 세 등급으로 나뉩니다.</p>
+  <table>
+    <thead><tr><th>등급</th><th>해당 항목</th><th>이 리포트에서</th></tr></thead>
+    <tbody>
+      <tr><td>① 공시 원본</td><td>매출·영업이익·순이익·자산·자본·배당·지분율</td><td><b>DART OpenAPI 그대로</b> (조회일 2026-07-26, 연결 기준)</td></tr>
+      <tr><td>② 자체 계산</td><td>GPM·영업이익률·순이익률·ROE·부채비율</td><td>DART <b>원본값으로 필자가 계산</b>(비율은 회사가 준 값 아님)</td></tr>
+      <tr><td>③ 보도·IR 인용</td><td>폴리실리콘 스팟 가격, 부문별 매출, 비중국 프리미엄</td><td><b>보도 기준</b> — 공시로 재현 불가, 표기 명시</td></tr>
+    </tbody>
+  </table>
+
+  <h2>2. 매출 5개년 — 롤러코스터의 증거</h2>
+  <p>OCI홀딩스 <b>연결 기준</b> 매출액입니다(단위: 억 원).</p>
+
+  <figure>
+    <div class="svgbox">
+    <svg viewBox="0 0 920 320" role="img" aria-label="OCI홀딩스 연결 매출 5개년">
+      <text x="10" y="22" font-size="14" font-weight="700" fill="#0f172a">OCI홀딩스 연결 매출액 (억 원)</text>
+      <!-- axis -->
+      <line x1="70" y1="270" x2="890" y2="270" stroke="#94a3b8" stroke-width="1"/>
+      <line x1="70" y1="60"  x2="70"  y2="270" stroke="#94a3b8" stroke-width="1"/>
+      <!-- gridlines -->
+      <g font-size="10" fill="#64748b">
+        <line x1="70" y1="60"  x2="890" y2="60"  stroke="#e2e8f0"/><text x="40" y="64">50,000</text>
+        <line x1="70" y1="123" x2="890" y2="123" stroke="#e2e8f0"/><text x="40" y="127">37,500</text>
+        <line x1="70" y1="186" x2="890" y2="186" stroke="#e2e8f0"/><text x="40" y="190">25,000</text>
+        <line x1="70" y1="228" x2="890" y2="228" stroke="#e2e8f0"/><text x="40" y="232">12,500</text>
+      </g>
+      <!-- bars: scale 50000 over 210px(60->270). y=270 - v/50000*210 -->
+      <g font-size="12" font-weight="700" fill="#fff" text-anchor="middle">
+        <!-- 2021 32440 -> h=136 y=134 -->
+        <rect x="110" y="134" width="110" height="136" rx="4" fill="#6366f1"/>
+        <text x="165" y="156">32,440</text>
+        <!-- 2022 46713 -> h=196 y=74 -->
+        <rect x="270" y="74" width="110" height="196" rx="4" fill="#4f46e5"/>
+        <text x="325" y="96">46,713</text>
+        <!-- 2023 26497 -> h=111 y=159 -->
+        <rect x="430" y="159" width="110" height="111" rx="4" fill="#818cf8"/>
+        <text x="485" y="181">26,497</text>
+        <!-- 2024 35774 -> h=150 y=120 -->
+        <rect x="590" y="120" width="110" height="150" rx="4" fill="#6366f1"/>
+        <text x="645" y="142">35,774</text>
+        <!-- 2025 33801 -> h=142 y=128 -->
+        <rect x="750" y="128" width="110" height="142" rx="4" fill="#6366f1"/>
+        <text x="805" y="150">33,801</text>
+      </g>
+      <g font-size="12" font-weight="700" fill="#334155" text-anchor="middle">
+        <text x="165" y="288">2021</text>
+        <text x="325" y="288">2022</text>
+        <text x="485" y="288">2023</text>
+        <text x="645" y="288">2024</text>
+        <text x="805" y="288">2025</text>
+      </g>
+    </svg>
+    </div>
+    <figcaption>그림 1. OCI홀딩스 연결 매출액 5개년. 출처: DART OpenAPI(조회 2026-07-26). ① 공시 원본.</figcaption>
+  </figure>
+
+  <p>매출만 보면 2022년(4.67조) 정점 후 2023년(2.65조) 반토막 났다가 2024~2025년 3.3~3.6조로 회복한 것처럼 보입니다.
+  그런데 <b>매출 그래프만 보면 진짜 이야기를 놓칩니다.</b> 진짜는 마진에 있습니다(다음 장). 그래서 스킬 규칙대로
+  <b>매출과 마진을 한 그림에 겹치지 않고 따로</b> 그립니다.</p>
+
+  <h2>3. 마진 5개년 — 진짜 이야기는 여기 있다</h2>
+
+  <figure>
+    <div class="svgbox">
+    <svg viewBox="0 0 920 320" role="img" aria-label="OCI홀딩스 영업이익률 5개년">
+      <text x="10" y="22" font-size="14" font-weight="700" fill="#0f172a">OCI홀딩스 연결 영업이익률 (%) — 자체 계산</text>
+      <!-- baseline at 0% -->
+      <line x1="70" y1="220" x2="890" y2="220" stroke="#94a3b8" stroke-width="1.5"/>
+      <text x="40" y="224" font-size="10" fill="#64748b">0%</text>
+      <g font-size="10" fill="#64748b">
+        <line x1="70" y1="90"  x2="890" y2="90"  stroke="#e2e8f0"/><text x="40" y="94">25%</text>
+        <line x1="70" y1="142" x2="890" y2="142" stroke="#e2e8f0"/><text x="40" y="146">15%</text>
+        <line x1="70" y1="194" x2="890" y2="194" stroke="#e2e8f0"/><text x="40" y="198">5%</text>
+        <line x1="70" y1="246" x2="890" y2="246" stroke="#e2e8f0"/><text x="40" y="250">-5%</text>
+      </g>
+      <!-- scale: 0% at y=220, 5% per 52px. y = 220 - pct/5*52 -->
+      <g font-size="12" font-weight="700" fill="#fff" text-anchor="middle">
+        <!-- 2021 19.3% -> y=220-200.7=19.3? compute: 19.3/5*52=200.7 -> y=19.3 ~ clamp min y 70 -->
+        <rect x="110" y="60" width="110" height="160" rx="4" fill="#16a34a"/>
+        <text x="165" y="82">19.3%</text>
+        <!-- 2022 20.9% -> 217->y=3 clamp -> use y=55 -->
+        <rect x="270" y="53" width="110" height="167" rx="4" fill="#15803d"/>
+        <text x="325" y="75">20.9%</text>
+        <!-- 2023 20.1% -->
+        <rect x="430" y="55" width="110" height="165" rx="4" fill="#16a34a"/>
+        <text x="485" y="77">20.1%</text>
+        <!-- 2024 2.8% -> 29px -> y=191 -->
+        <rect x="590" y="191" width="110" height="29" rx="4" fill="#f59e0b"/>
+        <text x="645" y="183" fill="#92400e">2.8%</text>
+        <!-- 2025 -1.7% -> below 0: 17.7px -> y=220 h=17.7 -->
+        <rect x="750" y="220" width="110" height="18" rx="4" fill="#dc2626"/>
+        <text x="805" y="256" fill="#dc2626">-1.7%</text>
+      </g>
+      <g font-size="12" font-weight="700" fill="#334155" text-anchor="middle">
+        <text x="165" y="284">2021</text>
+        <text x="325" y="284">2022</text>
+        <text x="485" y="284">2023</text>
+        <text x="645" y="284">2024</text>
+        <text x="805" y="284">2025</text>
+      </g>
+    </svg>
+    </div>
+    <figcaption>그림 2. OCI홀딩스 연결 영업이익률(자체 계산). 출처: DART 원본값 기준 필자 계산. ② 자체 계산.</figcaption>
+  </figure>
+
+  <p><b>이제 진짜 이야기가 보입니다.</b> 매출은 3.3~3.6조로 비슷해 보였지만, <b>영업이익률은 20% → 2.8% → -1.7%로 무너졌습니다.</b>
+  즉 <b>"매출은 버텼는데 마진이 꺾였다"</b>가 핵심입니다. 이걸 한 그림에 겹쳐 그렸다면 안 보였을 것입니다.</p>
+
+  <div class="tablewrap">
+  <table>
+    <thead><tr><th>연도</th><th>매출(억)</th><th>매출총이익(억)</th><th>영업이익(억)</th><th>순이익(억)</th><th>GPM</th><th>영업이익률</th><th>ROE</th></tr></thead>
+    <tbody>
+      <tr><td>2021</td><td>32,440</td><td>9,061</td><td>6,260</td><td>6,521</td><td>27.9%</td><td>19.3%</td><td>—</td></tr>
+      <tr><td>2022</td><td>46,713</td><td>12,888</td><td>9,767</td><td>8,778</td><td>27.6%</td><td>20.9%</td><td>24.6%</td></tr>
+      <tr><td>2023</td><td>26,497</td><td>7,105</td><td>5,312</td><td>7,103</td><td>26.8%</td><td>20.1%</td><td>18.1%</td></tr>
+      <tr><td class="bad">2024</td><td>35,774</td><td>4,610</td><td>1,015</td><td>1,137</td><td class="bad">12.9%</td><td class="bad">2.8%</td><td class="bad">2.6%</td></tr>
+      <tr><td class="bad">2025</td><td>33,801</td><td>3,395</td><td><b>-576</b></td><td><b>-1,462</b></td><td class="bad">10.0%</td><td class="bad">-1.7%</td><td class="bad">-3.1%</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p class="src">출처: DART OpenAPI, OCI홀딩스(010060) 연결 기준, 조회 2026-07-26. 매출~순이익·자본은 ① 공시 원본, GPM·영업이익률·ROE는 ② 자체 계산.</p>
+
+  <div class="callout"><b>블로그 주장 ⓐ 검증 결과: 사실.</b> GPM이 27%대 → 12.9% → 10.0%로 <b>3년 연속 하락</b>,
+  영업이익은 <b>2025년 적자 전환(-576억)</b>, 순이익도 <b>-1,462억 적자</b>. "태양광은 사이클 산업"이라는 꼬리표는
+  OCI의 실제 숫자에 그대로 찍혀 있습니다. 블로그가 말한 "계약구조로 사이클을 벗어나려 한다"는 시도의 <b>절박한 배경</b>이
+  바로 이 적자입니다.</div>
+
+  <h2>4. 왜 이렇게 출렁이나 — 폴리실리콘 가격 사이클</h2>
+  <p>마진이 무너진 근본 원인은 <b>폴리실리콘 판매가격(ASP)</b>입니다. 2021~2022년은 태양광 붐 + 공급 부족으로 폴리 가격이
+  폭등했고(그래서 OCI 영업이익률 20%대), 이후 <b>중국의 대규모 증설</b>로 공급이 넘치며 가격이 폭락했습니다.</p>
+
+  <table>
+    <thead><tr><th>시점</th><th>폴리실리콘 가격(보도 기준)</th><th>OCI 마진</th></tr></thead>
+    <tbody>
+      <tr><td>2021~2022</td><td>급등 (붐 + 공급부족)</td><td>영업이익률 ~20% 정점</td></tr>
+      <tr><td>2024 (연평균 ASP)</td><td>약 $5.66/kg</td><td>영업이익률 2.8%로 급락</td></tr>
+      <tr><td>2025 (연평균 ASP)</td><td>약 $5.25/kg</td><td>영업이익 적자 전환</td></tr>
+      <tr><td>2026.7 (세계 평균)</td><td>약 $4.82/kg</td><td>—</td></tr>
+    </tbody>
+  </table>
+  <p class="src">③ 보도 기준. 출처: Argus Media, imarcgroup, 업계 컨퍼런스콜 등(2025~2026). 이 가격은 <b>세계/중국 벤치마크 성격</b>이며
+  OCI가 실제 받는 판매가와 다릅니다. OCI의 실제 ASP는 공시에 별도로 나오지 않아 <b>공시로 재현 불가</b>합니다.</p>
+
+  <div class="note"><b>핵심 — '이원화'가 OCI의 반전 카드</b><br>
+  세계 폴리 평균가는 낮지만(공급과잉), 2편에서 본 미국 규제 때문에 <b>"미국 인도 비중국 폴리"</b>는 별도의 높은 가격대가
+  형성됐습니다. OCI는 이 비중국 프리미엄 시장을 겨냥해 <b>Take-or-Pay 장기계약</b>을 맺은 것입니다. 즉
+  <b>"세계 평균가에 휘둘리는 회사"에서 "계약가로 파는 회사"로 옮겨가려는 것</b>이 블로그가 말한 체질 변화의 실체입니다.</div>
+
+  <h2>5. 2026년 1분기 — 흑자전환은 진짜인가</h2>
+  <p>가장 최신 데이터입니다. 2025년 적자를 냈던 회사가 <b>2026년 1분기에 흑자로 돌아섰습니다.</b></p>
+  <table>
+    <thead><tr><th>지표(2026 1Q, 연결)</th><th>OCI홀딩스(지주)</th><th>OCI(사업회사)</th></tr></thead>
+    <tbody>
+      <tr><td>매출</td><td>8,924억</td><td>5,066억</td></tr>
+      <tr><td>영업이익</td><td class="good">109억 (흑자)</td><td class="good">278억 (흑자)</td></tr>
+      <tr><td>순이익</td><td class="good">89억</td><td class="good">248억</td></tr>
+    </tbody>
+  </table>
+  <p class="src">출처: DART OpenAPI, 2026년 1분기. ① 공시 원본. 지주(연결)와 사업회사 수치가 다른 이유는 1편 5장 참조(지주 단계의 별도 비용·손실).</p>
+
+  <div class="callout"><b>블로그 주장 ⓑ·ⓒ 검증 결과: 긍정 신호 있음, 그러나 확증은 이르다.</b>
+  2026년 1분기 흑자전환은 사이클 바닥 통과 + 계약 물량 반영의 초기 신호로 읽을 수 있습니다.
+  <b>다만 흑자 1개 분기</b>만으로 "구조적으로 바뀌었다"를 단정할 수 없습니다. 진짜 체질 변화라면
+  <b>가격 변동성이 줄고(Take-or-Pay 효과), 웨이퍼 매출이 실제로 커지는 것</b>이 <b>여러 분기 연속</b> 확인돼야 합니다.
+  이건 앞으로 지켜볼 일 — 4편 체크포인트로 넘깁니다.</div>
+
+  <div class="note"><b>참고</b> — 언론 보도(The Elec)에 따르면 OCI홀딩스는 최근 분기 영업이익 약 <b>1,080억 원</b>을 기록했다는
+  기사도 있었습니다. 다만 이는 특정 분기·기준의 보도치로, 이 리포트의 흑자전환 판단은 <b>DART 공시 1분기 수치(109억)</b>를
+  기준으로 삼았습니다. <span class="src">③ 보도 참고. 출처: The Elec.</span></div>
+
+  <h2>6. Take-or-Pay·선수금은 재무제표 어디에 잡히나</h2>
+  <p>블로그가 강조한 <b>선수금(先受金)</b>과 <b>Take-or-Pay</b>는 재무제표에서 어떻게 나타날까요? 개념부터 정리합니다.</p>
+
+  <table>
+    <thead><tr><th>용어</th><th>뜻</th><th>재무제표 위치</th></tr></thead>
+    <tbody>
+      <tr><td><b>선수금</b></td><td>물건 주기 전에 고객이 미리 낸 돈</td><td><b>부채</b>의 '계약부채(선수금)'. 부채지만 <b>미래 매출의 예약</b> 성격</td></tr>
+      <tr><td><b>Take-or-Pay</b></td><td>고객이 안 가져가도 약속 금액은 지불</td><td>계약 조건(주석에 서술). 매출 변동성을 낮춤</td></tr>
+      <tr><td><b>LTA(장기공급계약)</b></td><td>여러 해에 걸친 공급 약정</td><td>주석의 계약·약정 항목. 매출 가시성 근거</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout"><b>추적 팁</b> — 앞으로 분기·연간 보고서에서 <b>'계약부채' 또는 '선수금' 잔액이 늘어나는지</b>를 보세요.
+  이게 커진다는 건 <b>고객이 미래 물량을 돈으로 예약하고 있다</b>는 뜻이라, 블로그가 말한 "계약된 미래"가 숫자로 쌓이는
+  증거가 됩니다. 반대로 이 잔액이 정체되면 "선수금 충분치 않으면 증설 안 한다"던 경영진 방침상 증설도 멈춘다는 뜻입니다.</div>
+
+  <div class="warn"><b>주의.</b> 이번 조회 데이터셋에는 계약부채/선수금의 <b>구체 잔액 시계열이 포함되지 않았습니다.</b>
+  따라서 이 장은 <b>"어디를 봐야 하는가"</b>를 알려주는 안내이며, 실제 잔액 수치는 사업보고서 재무제표 주석에서
+  직접 확인해야 합니다. 추정으로 메우지 않습니다.</div>
+
+  <h2>7. 배당 추세 — 오너·주주환원의 온도</h2>
+  <p>숫자는 '얼마'보다 '어디로 가는가'가 중요합니다. 배당의 <b>방향</b>을 봅니다.</p>
+  <table>
+    <thead><tr><th>구분</th><th>전전기</th><th>전기</th><th>당기</th></tr></thead>
+    <tbody>
+      <tr><td>주당 현금배당금</td><td>3,300원</td><td>2,200원</td><td><b>1,000원</b></td></tr>
+      <tr><td>현금배당성향</td><td>9.05%</td><td>42.28%</td><td><b>-20.77%</b></td></tr>
+      <tr><td>당기순이익(백만원)</td><td>713,510</td><td>97,671</td><td><b>-89,880</b></td></tr>
+    </tbody>
+  </table>
+  <p class="src">출처: DART 공시 원본(OCI홀딩스). '당기'는 최근 적자 사업연도 기준. 배당성향이 음수인 것은 순이익이 적자인데 배당은 지급했기 때문(성향 = 배당/순이익).</p>
+
+  <div class="note"><b>읽는 법</b> — 주당배당금이 <b>3,300 → 2,200 → 1,000원으로 계속 줄었습니다.</b> 실적 하락에 맞춰 배당을 축소한
+  것으로, 사이클 저점에서의 방어적 자본 배분입니다. 다만 <b>적자에도 배당은 지급</b>(성향 -20.77%)해 최소한의 주주환원은
+  유지했습니다. 4편에서 볼 '웨이퍼 CAPEX'와 이 배당 여력은 서로 자금을 두고 경쟁하는 관계라 함께 지켜봐야 합니다.</div>
+
+  <h2>8. 3편 요약 · FAQ</h2>
+  <div class="callout">
+    <b>3편 한 장 요약 — 블로그 주장 채점표</b>
+    <table>
+      <thead><tr><th>주장</th><th>검증</th><th>근거</th></tr></thead>
+      <tbody>
+        <tr><td>ⓐ 태양광은 사이클 산업</td><td><span class="vd v-o">사실</span></td><td>영업이익률 20%→2.8%→-1.7%, 2025년 적자</td></tr>
+        <tr><td>ⓑ 계약구조로 현금흐름 안정</td><td><span class="vd v-m">부분참·진행형</span></td><td>개념·1Q 흑자전환은 긍정, 잔액 시계열 확인 필요</td></tr>
+        <tr><td>ⓒ 폴리→웨이퍼 체질변화</td><td><span class="vd v-u">미확인</span></td><td>방향(베트남 웨이퍼)은 사실, 매출 기여는 아직 데이터 부족</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>FAQ</h3>
+  <p><b>Q. 2025년 적자면 나쁜 회사 아닌가요?</b><br>
+  A. 사이클 산업에서 저점 적자는 흔합니다. 중요한 건 "왜 적자였나(폴리 가격 폭락)"와 "바닥을 지났나(2026 1Q 흑자전환)",
+  그리고 "다음 사이클엔 덜 흔들리게 바뀌나(계약구조)"입니다. 좋고 나쁨의 판단이 아니라 <b>사이클 위치</b>로 봐야 합니다.</p>
+  <p><b>Q. 지주와 사업회사 숫자 중 뭘 봐야 하나요?</b><br>
+  A. 회사 전체는 지주(연결), 폴리·웨이퍼 사업의 순도 높은 손익은 사업회사(OCI 456040)를 봅니다. 이 리포트는 둘 다 실었습니다.</p>
+  <p><b>Q. 체질 변화가 진짜인지 언제 알 수 있나요?</b><br>
+  A. ① 계약부채(선수금) 잔액 증가, ② 웨이퍼 매출 비중 상승, ③ 마진 변동성 축소가 <b>여러 분기 연속</b> 확인될 때입니다.
+  이 체크리스트가 다음 편(④)의 주제입니다.</p>
+
+  <div class="note">
+    <b>▶ 다음 편 예고 — ④ 체크포인트</b><br>
+    블로그가 스스로 남긴 숙제 3개(웨이퍼 CAPEX 규모·미국 설치량 100/200GW·고객집중도)를 포함해,
+    앞으로 무엇을 어떤 신호로 지켜봐야 하는지 <b>촉매 캘린더·리스크 매트릭스·시나리오·KPI 대시보드</b>로 정리합니다.
+  </div>
+
+  <div class="foot">
+    © 2026 노력하는뚱땡이 리서치 라이브러리.<br>
+    본 문서는 개인 학습용 정보 정리이며 투자 권유가 아닙니다. 재무 수치는 DART 공식 공시(조회 2026-07-26, 연결)를 기준으로 하며, 비율은 자체 계산, 가격·부문 항목은 보도 인용으로 공시 재현이 안 됨을 명시했습니다.
+  </div>
+
+</div>
+</body>
+</html>

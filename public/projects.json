@@ -36,6 +36,15 @@
     "icon": "/assets/px/proj/adr.svg"
   },
   {
+    "emoji": "🌡️",
+    "name_en": "DataLab Observatory",
+    "name_ko": "데이터랩 관측소 — 검색 관심도·공포탐욕",
+    "desc": "네이버 데이터랩 검색어 트렌드로 12개 테마의 관심도와 투자심리(공포·탐욕) 온도를 매일 자동 수집해 한 페이지에서 보여주는 관측소",
+    "tag": "investing",
+    "url": "https://tryingpig.github.io/datalab-monitor/",
+    "icon": "/assets/px/proj/datalab.svg"
+  },
+  {
     "emoji": "🎸",
     "name_en": "Festa Radar",
     "name_ko": "국내 뮤직 페스티벌 트래커",

@@ -31,6 +31,7 @@ export const TOPIC_ICONS: [RegExp, string][] = [
   [/에치에프알|HFR/i, 'opticalfiber'],
   [/OCI|태양광|밸류체인|폴리실리콘/i, 'solarpanel'],
   [/SK이터닉스|이터닉스/i, 'windturbine'],
+  [/삼성E&A|삼성ENA|삼성엔지니어링/i, 'distillationtower'],
 ];
 
 /* 매칭되는 주제가 없을 때 — 파일명 해시로 색과 무늬가 정해지는 픽셀 타일.

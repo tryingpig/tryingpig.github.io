@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>삼성E&A 입문 가이드 — 플랜트를 통째로 짓는 회사, 완전 초보편</title>
+<link rel="stylesheet" href="/assets/report.css">
+<script src="/assets/report.js" defer></script>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<script>
+  (function () {
+    try {
+      var t = localStorage.getItem('theme');
+      if (!t) t = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      if (t === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+    } catch (e) {}
+  })();
+</script>
+</head>
+<body data-topic="invest">
+<div class="topbar">
+  <div class="topbar-in">
+    <a class="back" href="/#study">학습공간</a>
+    <span class="crumb">삼성E&A 입문 가이드 (완전 초보편)</span>
+    <button class="theme-toggle" type="button" aria-label="다크/라이트 전환" title="다크/라이트 전환">
+      <svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      <svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+    </button>
+  </div>
+</div>
+<div class="wrap">
+
+  <span class="kicker">삼성E&A 입문세트 · ① 입문가이드</span>
+  <h1>삼성E&A 입문 가이드<br>— 플랜트를 통째로 짓는 회사, 완전 초보편</h1>
+  <p class="sub">작성일 2026-07-26 · 개인 리서치 노트 · "이 회사 뭐 하는 곳인지"부터 아주 쉽게</p>
+
+  <div class="warn">
+    <b>⚠️ 투자 권유가 아닙니다.</b> 이 문서는 공개 정보(DART 공시·언론)를 쉽게 풀어 정리한 <b>개인 학습 노트</b>이며,
+    특정 종목의 매수·매도 추천이 아닙니다. 수치는 조회 시점 기준이며 실제와 다를 수 있습니다.
+    모든 투자 판단과 그 책임은 전적으로 본인에게 있습니다.
+  </div>
+
+  <div class="note">
+    <b>📦 이 글은 '삼성E&A 입문세트' 3종 중 첫 번째입니다.</b><br>
+    ① <b>입문가이드(이 글)</b> — 완전 초보용. 회사가 뭐 하는 곳인지<br>
+    ② <a href="https://tryingpig.github.io/study/260726_삼성E&A_투자안내서.html">투자안내서</a> — 실적·수주잔고·재무·투자포인트·리스크<br>
+    ③ <a href="https://tryingpig.github.io/study/260726_삼성E&A_밸류체인.html">밸류체인</a> — 플랜트 산업 지도에서 삼성E&A의 자리<br><br>
+    <b>참고</b> — 앞서 다룬 에너지 종목들과 위치가 또 다릅니다.
+    <a href="https://tryingpig.github.io/study/260726_OCI홀딩스_밸류체인.html">OCI</a>는 소재를 <b>만들고</b>,
+    <a href="https://tryingpig.github.io/study/260726_SK이터닉스_밸류체인.html">SK이터닉스</a>는 발전소를 <b>굴리고</b>,
+    삼성E&A는 거대한 <b>산업·에너지 공장(플랜트)을 지어줍니다</b>. 이 대비는 ③밸류체인편에서 그립니다.
+  </div>
+
+  <div class="toc"><b>목차</b>
+    <ol>
+      <li>한 문단 요약 — 삼성E&A는 뭐 하는 회사?</li>
+      <li>'EPC'가 뭔가요 — 공장을 통째로 짓는 일</li>
+      <li>두 개의 사업 — 화공 vs 비화공</li>
+      <li>이름이 바뀐 이유 — 삼성엔지니어링 → 삼성E&A</li>
+      <li>돈은 어떻게 버나 — 수주산업의 원리</li>
+      <li>회사의 뿌리와 지배구조</li>
+      <li>초보가 꼭 알아야 할 3가지 함정</li>
+      <li>한 장 요약 · 용어사전 · FAQ</li>
+    </ol>
+  </div>
+
+  <h2>1. 한 문단 요약 — 삼성E&A는 뭐 하는 회사?</h2>
+  <div class="callout">
+    삼성E&A는 <b>정유·석유화학·가스 같은 거대한 산업 플랜트(공장)를 통째로 설계하고 지어주는 회사</b>입니다.
+    직접 석유나 화학제품을 <b>만들어 파는 게 아니라</b>, 다른 회사(사우디 국영 석유회사, 삼성전자 등)의 주문을 받아
+    <b>공장을 지어주고 공사비를 받는</b> <b>EPC 회사</b>입니다. 건축으로 치면 아파트에 사는 사람이 아니라
+    <b>아파트를 지어주는 시공사(건설사)</b>인데, 대상이 아파트가 아니라 <b>초대형 산업 플랜트</b>인 것이죠.
+    옛 이름은 <b>삼성엔지니어링</b>, 2024년 <b>삼성E&A</b>로 바꿨습니다. 종목코드는 <b>028050</b>입니다.
+  </div>
+
+  <h2>2. 'EPC'가 뭔가요 — 공장을 통째로 짓는 일</h2>
+  <p>삼성E&A를 이해하는 열쇠는 <b>EPC</b>라는 단어입니다. 플랜트 하나를 짓는 세 단계의 앞글자입니다.</p>
+  <figure>
+    <div class="svgbox">
+    <svg viewBox="0 0 920 170" role="img" aria-label="EPC 3단계">
+      <defs><marker id="arr" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#64748b"/></marker></defs>
+      <text x="10" y="24" font-size="14" font-weight="700" fill="#0f172a">EPC = 설계 + 조달 + 시공 (플랜트를 통째로)</text>
+      <g font-size="13" font-weight="700">
+        <rect x="40"  y="55" width="240" height="80" rx="12" fill="#e0e7ff" stroke="#6366f1"/>
+        <text x="160" y="88" text-anchor="middle" fill="#3730a3">E — 설계 (Engineering)</text>
+        <text x="160" y="112" text-anchor="middle" font-size="11" font-weight="400" fill="#3730a3">공장을 어떻게 지을지 설계</text>
+        <rect x="340" y="55" width="240" height="80" rx="12" fill="#ede9fe" stroke="#8b5cf6"/>
+        <text x="460" y="88" text-anchor="middle" fill="#5b21b6">P — 조달 (Procurement)</text>
+        <text x="460" y="112" text-anchor="middle" font-size="11" font-weight="400" fill="#5b21b6">기자재·설비 사오기</text>
+        <rect x="640" y="55" width="240" height="80" rx="12" fill="#fae8ff" stroke="#c026d3"/>
+        <text x="760" y="88" text-anchor="middle" fill="#86198f">C — 시공 (Construction)</text>
+        <text x="760" y="112" text-anchor="middle" font-size="11" font-weight="400" fill="#86198f">현장에서 짓기</text>
+      </g>
+      <g stroke="#64748b" stroke-width="2">
+        <line x1="282" y1="95" x2="338" y2="95" marker-end="url(#arr)"/>
+        <line x1="582" y1="95" x2="638" y2="95" marker-end="url(#arr)"/>
+      </g>
+    </svg>
+    </div>
+    <figcaption>그림 1. EPC = Engineering(설계)·Procurement(조달)·Construction(시공). 삼성E&A는 이 셋을 다 맡는 종합 EPC 회사. 출처: 업계 일반 개념을 필자 정리.</figcaption>
+  </figure>
+  <p>즉 삼성E&A는 발주처(공장을 갖고 싶은 회사)로부터 주문을 받아, <b>설계도 그리고, 필요한 설비도 사오고, 현장에서 짓는 것까지</b>
+  한 번에 책임집니다. 이런 걸 <b>'턴키(Turn-key)'</b> — 열쇠만 돌리면 바로 가동되게 통째로 넘겨준다 — 라고도 합니다.</p>
+  <div class="note"><b>💡 삼성E&A가 짓는 것들</b><br>
+  석유를 정제하는 <b>정유 플랜트</b>, 플라스틱 원료를 만드는 <b>석유화학 플랜트</b>, 천연가스를 처리하는 <b>가스 플랜트</b>,
+  그리고 최근엔 <b>삼성전자 반도체 공장</b>과 <b>수소·친환경 연료 플랜트</b>까지. 규모가 조 단위인 초대형 공사가 많습니다.</div>
+
+  <h2>3. 두 개의 사업 — 화공 vs 비화공</h2>
+  <p>삼성E&A의 일감은 크게 <b>화공</b>과 <b>비화공</b> 두 덩어리입니다. 이 구분은 회사를 이해하는 핵심이라 꼭 알아두세요.</p>
+  <figure>
+    <div class="svgbox">
+    <svg viewBox="0 0 920 210" role="img" aria-label="화공 비화공 사업">
+      <text x="10" y="24" font-size="14" font-weight="700" fill="#0f172a">삼성E&A의 일감 두 덩어리</text>
+      <rect x="30" y="45" width="410" height="140" rx="12" fill="#fef3c7" stroke="#d97706"/>
+      <text x="235" y="72" text-anchor="middle" font-size="13" font-weight="700" fill="#92400e">화공 (Chemical)</text>
+      <text x="235" y="98" text-anchor="middle" font-size="11" fill="#92400e">정유·석유화학·가스 플랜트</text>
+      <text x="235" y="120" text-anchor="middle" font-size="11" fill="#92400e">주로 해외(중동 등) 발주</text>
+      <text x="235" y="142" text-anchor="middle" font-size="11" fill="#92400e">회사의 '본업·최강 분야'</text>
+      <text x="235" y="168" text-anchor="middle" font-size="11" font-weight="700" fill="#92400e">수주잔고의 약 70%</text>
+
+      <rect x="480" y="45" width="410" height="140" rx="12" fill="#dbeafe" stroke="#2563eb"/>
+      <text x="685" y="72" text-anchor="middle" font-size="13" font-weight="700" fill="#1d4ed8">비화공 (Non-Chemical)</text>
+      <text x="685" y="98" text-anchor="middle" font-size="11" fill="#1d4ed8">첨단산업(반도체 공장 등) + New Energy</text>
+      <text x="685" y="120" text-anchor="middle" font-size="11" fill="#1d4ed8">첨단산업은 상당수 삼성전자 등 관계사</text>
+      <text x="685" y="142" text-anchor="middle" font-size="11" fill="#1d4ed8">수소·SAF 등 친환경 신사업 포함</text>
+      <text x="685" y="168" text-anchor="middle" font-size="11" font-weight="700" fill="#1d4ed8">수주잔고의 약 30%</text>
+    </svg>
+    </div>
+    <figcaption>그림 2. 화공(약 70%) vs 비화공(약 30%). 비화공 중 첨단산업은 상당 부분이 삼성전자 등 관계사 물량. 출처: 언론 보도(2024~2025) 기반 필자 정리. 비중은 시점에 따라 변동.</figcaption>
+  </figure>
+  <table>
+    <thead><tr><th>구분</th><th>내용</th><th>특징</th></tr></thead>
+    <tbody>
+      <tr><td><b>화공</b></td><td>정유·석유화학·가스 플랜트</td><td>본업·최강 분야. 주로 <b>중동 등 해외</b> 발주. 유가·에너지 투자에 민감</td></tr>
+      <tr><td><b>비화공 — 첨단산업</b></td><td>반도체 등 산업설비</td><td>상당수가 <b>삼성전자 등 관계사</b>. 반도체 투자 사이클과 연동</td></tr>
+      <tr><td><b>비화공 — New Energy</b></td><td>수소·SAF·친환경</td><td>회사가 키우는 <b>미래 신사업</b>(아직 비중 작음)</td></tr>
+    </tbody>
+  </table>
+
+  <h2>4. 이름이 바뀐 이유 — 삼성엔지니어링 → 삼성E&A</h2>
+  <p>2024년 회사는 <b>삼성엔지니어링</b>에서 <b>삼성E&A</b>로 이름을 바꿨습니다. 단순 개명이 아니라 <b>사업 방향의 선언</b>입니다.</p>
+  <div class="callout"><b>'E&A'에 담긴 뜻</b><br>
+  · <b>E = Engineers / Energy / Environment</b> — 전통 엔지니어링(설계·건설)을 넘어, <b>에너지</b>와 <b>환경(친환경)</b>으로
+  사업을 넓히겠다는 의지.<br>
+  · <b>A = &(and) 그리고 확장</b> — 저탄소(Low)·무탄소(Zero)·순환(Circle)이라는 'E&Able' 전략으로 <b>에너지 전환·친환경</b> 신사업 추진.<br>
+  즉 "석유화학 플랜트만 짓던 회사"에서 "<b>수소·친환경까지 짓는 에너지 전환 기업</b>"으로 정체성을 확장하겠다는 뜻입니다.
+  <span class="src">출처: 회사 발표·언론(2024).</span></div>
+
+  <h2>5. 돈은 어떻게 버나 — 수주산업의 원리</h2>
+  <p>삼성E&A 같은 EPC 회사는 제조업과 <b>돈 버는 순서가 다릅니다.</b> 핵심은 <b>'수주 → 수주잔고 → 매출'</b>입니다.</p>
+  <figure>
+    <div class="svgbox">
+    <svg viewBox="0 0 920 150" role="img" aria-label="수주에서 매출까지">
+      <defs><marker id="a2" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#16a34a"/></marker></defs>
+      <g font-size="12" font-weight="700">
+        <rect x="30" y="50" width="200" height="60" rx="10" fill="#dcfce7" stroke="#16a34a"/>
+        <text x="130" y="76" text-anchor="middle" fill="#166534">1. 수주 (계약 따냄)</text>
+        <text x="130" y="96" text-anchor="middle" font-size="10" font-weight="400" fill="#166534">"이 공장 지어주세요"</text>
+        <rect x="290" y="50" width="220" height="60" rx="10" fill="#bbf7d0" stroke="#16a34a"/>
+        <text x="400" y="76" text-anchor="middle" fill="#166534">2. 수주잔고 (일감 쌓임)</text>
+        <text x="400" y="96" text-anchor="middle" font-size="10" font-weight="400" fill="#166534">앞으로 지을 공사 = 미래매출</text>
+        <rect x="570" y="50" width="320" height="60" rx="10" fill="#a7f3d0" stroke="#15803d"/>
+        <text x="730" y="76" text-anchor="middle" fill="#166534">3. 공사 진행 → 매출·이익 인식</text>
+        <text x="730" y="96" text-anchor="middle" font-size="10" font-weight="400" fill="#166534">몇 년에 걸쳐 나눠서 실적 반영</text>
+      </g>
+      <g stroke="#16a34a" stroke-width="2">
+        <line x1="232" y1="80" x2="288" y2="80" marker-end="url(#a2)"/>
+        <line x1="512" y1="80" x2="568" y2="80" marker-end="url(#a2)"/>
+      </g>
+    </svg>
+    </div>
+    <figcaption>그림 3. 수주 → 수주잔고 → 매출 인식. 오늘 딴 계약이 몇 년에 걸쳐 매출로 잡힌다. 출처: 수주산업 일반 구조.</figcaption>
+  </figure>
+  <div class="callout"><b>가장 중요한 개념 — '수주잔고'</b><br>
+  수주잔고는 <b>"이미 계약을 따서 앞으로 지을 일감의 총량"</b>입니다. 이게 <b>미래 매출의 저수지</b> 역할을 합니다.
+  그래서 삼성E&A를 볼 때는 올해 매출뿐 아니라 <b>"수주를 얼마나 따놨나(수주잔고)"</b>를 함께 봐야 합니다.
+  실제로 2024년 신규수주는 <b>14.4조 원으로 최근 5년 최대</b>였습니다 — 당장 매출엔 다 안 잡혀도 미래 일감이 두둑하다는 뜻이죠.</div>
+
+  <h2>6. 회사의 뿌리와 지배구조</h2>
+  <p>삼성E&A는 <b>50년 넘는 역사</b>의 삼성그룹 엔지니어링 회사입니다. 지배구조는 삼성 계열이 얽혀 있는데, 특이하게도
+  <b>최대주주가 삼성SDI(약 11.7%)</b>이고, 삼성물산(약 7.0%), 이재용 회장(약 1.5%) 등 삼성 계열·특수관계인이 함께 지분을 갖고 있습니다.</p>
+  <p class="src">출처: DART OpenAPI, 삼성E&A(028050), 조회 2026-07-26. 지분율은 공시 원본(보통주 기말 기준). 특수관계인 합산 지배력은 사업보고서 원문 확인 필요.</p>
+  <div class="note"><b>왜 알아둘까</b> — 삼성 계열이라는 점은 ① <b>삼성전자 반도체 공장 건설 물량</b>(첨단산업)이라는 안정적 일감과 연결되고,
+  ② 그룹 신뢰도로 <b>해외 대형 수주</b>에 유리한 면이 있습니다. 다만 관계사 물량 의존은 양날의 검이기도 합니다(②편).</div>
+
+  <h2>7. 초보가 꼭 알아야 할 3가지 함정</h2>
+  <div class="grid2">
+    <div class="card"><b>함정 ① "수주산업의 사이클"</b><br>
+    발주(주문)는 유가·에너지 투자·반도체 투자 사이클에 따라 몰렸다 끊겼다 합니다. 수주가 좋을 때와 나쁠 때 실적 온도가 달라집니다.
+    <b>수주잔고 추세</b>를 봐야 합니다.</div>
+    <div class="card"><b>함정 ② "저가수주의 상처"</b><br>
+    과거 해외 플랜트 업계는 <b>낮은 값에 무리하게 수주</b>했다가 대규모 손실을 낸 아픈 역사가 있습니다(2010년대).
+    "수주 많다"가 곧 "이익 많다"는 아닙니다 — <b>수익성 있는 수주</b>인지가 중요합니다.</div>
+  </div>
+  <div class="card"><b>함정 ③ "매출과 수주는 시차가 있다"</b><br>
+  오늘 딴 대형 계약은 몇 년에 걸쳐 매출로 잡힙니다. 그래서 <b>수주 급증 → 매출은 나중에</b> 반영됩니다.
+  올해 매출만 보고 "성장 멈췄다"고 오해하면 안 됩니다(실제로 최근이 그런 구간).</div>
+
+  <h2>8. 한 장 요약 · 용어사전 · FAQ</h2>
+  <div class="callout">
+    <b>입문가이드 한 장 요약</b>
+    <ul>
+      <li>삼성E&A = 정유·석유화학·가스 등 <b>거대 플랜트를 통째로 설계·건설(EPC)</b>하는 회사. 종목 028050.</li>
+      <li>일감 두 덩어리: <b>화공(약 70%, 본업)</b> + <b>비화공(약 30%, 첨단산업·New Energy)</b>.</li>
+      <li>2024년 <b>삼성엔지니어링→삼성E&A</b>로 개명, 수소·친환경(에너지 전환)으로 확장 선언.</li>
+      <li>돈 버는 법: <b>수주 → 수주잔고(미래매출 저수지) → 매출 인식</b>. 2024 신규수주 14.4조(5년 최대).</li>
+      <li>함정: 수주 사이클 · 저가수주 리스크 · 매출-수주 시차.</li>
+    </ul>
+  </div>
+
+  <h3>용어사전 (초보용)</h3>
+  <table>
+    <tbody>
+      <tr><td><b>EPC</b></td><td>설계(E)·조달(P)·시공(C). 플랜트를 통째로 짓는 것</td></tr>
+      <tr><td><b>플랜트</b></td><td>정유·화학·가스 등을 생산하는 대형 산업 공장</td></tr>
+      <tr><td><b>턴키</b></td><td>열쇠만 돌리면 가동되게 통째로 넘겨주는 방식</td></tr>
+      <tr><td><b>수주잔고</b></td><td>이미 따놓은, 앞으로 지을 일감의 총량(미래매출)</td></tr>
+      <tr><td><b>화공/비화공</b></td><td>화학 플랜트 / 그 외(첨단산업·에너지)</td></tr>
+      <tr><td><b>SAF</b></td><td>지속가능항공유. 친환경 연료 신사업</td></tr>
+    </tbody>
+  </table>
+
+  <h3>FAQ</h3>
+  <p><b>Q. OCI·SK이터닉스랑 뭐가 다른가요?</b><br>
+  A. OCI는 소재(폴리실리콘)를 <b>만들고</b>, SK이터닉스는 발전소를 <b>운영하고</b>, 삼성E&A는 공장을 <b>지어줍니다.</b>
+  같은 에너지 테마라도 사업 성격이 완전히 다릅니다 —
+  <a href="https://tryingpig.github.io/study/260726_삼성E&A_밸류체인.html">③밸류체인편</a>에서 비교합니다.</p>
+  <p><b>Q. 건설사인데 왜 '엔지니어링'인가요?</b><br>
+  A. 일반 건설(아파트·도로)과 달리 <b>고도의 공정 설계 기술</b>이 필요한 산업 플랜트를 짓기 때문입니다. 그래서 단순 시공사보다
+  기술·설계 비중이 큽니다.</p>
+  <p><b>Q. 지금 사도 되나요?</b><br>
+  A. 이 글은 <b>사라/팔라를 말하지 않습니다.</b> 실적·수주·리스크는
+  <a href="https://tryingpig.github.io/study/260726_삼성E&A_투자안내서.html">②투자안내서</a>를 보세요.</p>
+
+  <div class="note"><b>▶ 다음</b> — <a href="https://tryingpig.github.io/study/260726_삼성E&A_투자안내서.html">입문세트 ② 투자안내서</a>에서
+  실적·수주잔고·재무개선·배당·투자포인트·리스크를 종합합니다.</div>
+
+  <div class="foot">
+    © 2026 노력하는뚱땡이 리서치 라이브러리.<br>
+    본 문서는 개인 학습용 정보 정리이며 투자 권유가 아닙니다. 사업 비중·수주 수치는 보도·회사자료 기준 개괄이며, 정확한 값은 원문 공시로 확인하세요.
+  </div>
+
+</div>
+</body>
+</html>

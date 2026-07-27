@@ -34,6 +34,7 @@ export const TOPIC_ICONS: [RegExp, string][] = [
   [/삼성E&A|삼성ENA|삼성엔지니어링/i, 'distillationtower'],
   [/ABF/i, 'abffilm'],
   [/기가비스/, 'gigavis'],
+  [/KKR/i, 'cashbundle'],
 ];
 
 /* 매칭되는 주제가 없을 때 — 파일명 해시로 색과 무늬가 정해지는 픽셀 타일.

@@ -926,6 +926,36 @@
         "................",
         "................"
       ]
+    },
+    "cashbundle": {
+      "bg": [
+        "#12261a",
+        "#050d08"
+      ],
+      "palette": {
+        "g": "#43a047",
+        "l": "#7cc47f",
+        "d": "#256d2c",
+        "y": "#f2c14e"
+      },
+      "grid": [
+        "................",
+        "................",
+        ".......yy.......",
+        "..lllllyylllll..",
+        "..lggggyyggggd..",
+        "..lggggyyggggd..",
+        "..lgggyyyygggd..",
+        "..lgggyyyygggd..",
+        "..lgggyyyygggd..",
+        "..lgggyyyygggd..",
+        "..lggggyyggggd..",
+        "..lggggyyggggd..",
+        "..dddddyyddddd..",
+        ".......yy.......",
+        "................",
+        "................"
+      ]
     }
   }
 }

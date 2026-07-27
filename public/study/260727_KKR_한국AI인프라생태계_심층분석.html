@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KKR 해부 — 한국 AI 인프라 생태계를 조각조각 사 모으는 자본</title>
+<link rel="stylesheet" href="/assets/report.css">
+<script src="/assets/report.js" defer></script>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<script>
+  (function () {
+    try {
+      var t = localStorage.getItem('theme');
+      if (!t) t = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      if (t === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+    } catch (e) {}
+  })();
+</script>
+</head>
+<body data-topic="market">
+<div class="topbar">
+  <div class="topbar-in">
+    <a class="back" href="/#study">학습공간</a>
+    <span class="crumb">KKR 해부 — 한국 AI 인프라 생태계</span>
+    <button class="theme-toggle" type="button" aria-label="다크/라이트 전환" title="다크/라이트 전환">
+      <svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      <svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+    </button>
+  </div>
+</div>
+<div class="wrap">
+
+  <span class="kicker">자본·거시 · KKR 심층 분석 리포트</span>
+  <h1>KKR 해부<br>— 한국 AI 인프라 생태계를 조각조각 사 모으는 자본</h1>
+  <p class="sub">작성일 2026-07-27 · 개인 리서치 노트 · "SK이터닉스에서 본 KKR의 존재감"에서 출발한 심층 분석</p>
+
+  <div class="warn">
+    <b>⚠️ 투자 권유가 아닙니다.</b> 이 문서는 공개 정보(언론·기업 발표·공시)를 정리·해석한 <b>개인 학습 노트</b>이며
+    특정 종목의 매수·매도 추천이 아닙니다. <b>특히 5~8장의 '생태계 연결'과 '추가 투자 추론'은 공개 딜을 바탕으로 한 필자의
+    해석·가설</b>이며, KKR·SK·삼성의 공식 입장이 아닙니다. 딜의 지분율·시점·규모는 협상·확정 과정에 있어 변동될 수 있으니
+    반드시 원문·공시로 확인하세요. 모든 투자 판단과 책임은 전적으로 본인에게 있습니다.
+  </div>
+
+  <div class="note">
+    <b>이 리포트의 출발점.</b> <a href="https://tryingpig.github.io/study/260726_SK이터닉스_투자안내서.html">SK이터닉스 투자안내서</a>를
+    공부하다 "KKR이 최대주주가 된다"는 대목에서 <b>KKR이라는 자본의 존재감</b>이 유난히 강하게 보였습니다. 여기서 나온 질문들 —
+    <i>"KKR은 대체 뭐 하는 회사인가? SK이터닉스 말고 또 어디를 노리나? 얼마 전 삼성SDS 투자도 봤는데,
+    이 지분들이 이터닉스·SDS 등 기업 생태계를 어떻게 잇는가? 왜 데이터센터에서 제일 큰 SKT를 통째로 안 샀나?
+    추가 투자의 흔적은 없나?"</i> —
+    을 <b>하나의 지도</b>로 통합해 깊게 파헤칩니다.
+  </div>
+
+  <div class="callout"><b>이 리포트가 답하는 6가지</b>
+    <ol>
+      <li>KKR은 어떤 회사이고 무엇으로 돈을 버나 (사업 5축 + 규모)</li>
+      <li>KKR의 진짜 엔진 — <b>보험 장기자금 ↔ 인프라</b> 플라이휠</li>
+      <li>KKR의 DNA — 한국 트랙레코드(OB맥주·KCFT)와 글로벌 원본(CyrusOne)</li>
+      <li>KKR의 한국 AI 인프라 포트폴리오 지도 (전력·DC·IT)</li>
+      <li>왜 SKT를 통째로 안 샀나 — SK하이퍼 vs 울산 DC</li>
+      <li>생태계 연결 유추 + 추가 투자 흔적·추론</li>
+    </ol>
+  </div>
+
+  <div class="toc"><b>목차</b>
+    <ol>
+      <li>KKR이라는 회사 — 정체와 규모</li>
+      <li>사업 5축 — 무엇으로 돈을 버나</li>
+      <li>진짜 엔진 — 보험 장기자금과 인프라의 플라이휠</li>
+      <li>KKR의 DNA① — 한국 트랙레코드</li>
+      <li>KKR의 DNA② — 글로벌 원본 'CyrusOne'</li>
+      <li>한국 AI 인프라 포트폴리오 지도</li>
+      <li>왜 SKT를 통째로 안 샀나 — SK하이퍼 vs 울산 DC</li>
+      <li>생태계 연결 유추 — 전력→DC→IT를 한 손에</li>
+      <li>추가 투자 흔적과 다음 타깃 추론</li>
+      <li>균형 — 양날의 검과 리스크</li>
+      <li>확인 체크리스트 · 종합 정리 · FAQ</li>
+    </ol>
+  </div>
+
+  <h2>1. KKR이라는 회사 — 정체와 규모</h2>
+  <p><b>KKR(콜버그·크래비스·로버츠, Kohlberg Kravis Roberts)</b>은 1976년 설립된 <b>세계 최대급 대체투자(Alternative
+  Investment) 운용사</b>입니다. 블랙스톤(Blackstone)·아폴로(Apollo)와 함께 글로벌 3대 사모펀드로 꼽힙니다.
+  1980년대 <b>RJR 나비스코 인수(당시 사상 최대 LBO)</b>로 사모펀드의 상징이 된 회사이기도 합니다.</p>
+
+  <p>흔히 "사모펀드"라고만 알지만, 지금 벌어지는 일을 읽으려면 이 회사가 <b>단순한 기업 사냥꾼이 아니라
+  '자본을 굴리는 거대한 플랫폼'</b>임을 이해해야 합니다.</p>
+
+  <figure>
+    <div class="svgbox">
+    <svg viewBox="0 0 920 180" role="img" aria-label="KKR 규모 지표">
+      <text x="10" y="24" font-size="14" font-weight="700" fill="#0f172a">KKR 한눈에 (2025년 기준, 보도·IR)</text>
+      <g>
+        <rect x="20"  y="45" width="210" height="110" rx="12" fill="#eff6ff" stroke="#2563eb"/>
+        <text x="125" y="78"  text-anchor="middle" font-size="12" fill="#1d4ed8">총 운용자산(AUM)</text>
+        <text x="125" y="112" text-anchor="middle" font-size="22" font-weight="700" fill="#1d4ed8">$6,860억</text>
+        <text x="125" y="136" text-anchor="middle" font-size="11" fill="#1d4ed8">≈ 950조 원</text>
+
+        <rect x="250" y="45" width="210" height="110" rx="12" fill="#f0fdf4" stroke="#16a34a"/>
+        <text x="355" y="78"  text-anchor="middle" font-size="12" fill="#166534">인프라 운용자산</text>
+        <text x="355" y="112" text-anchor="middle" font-size="22" font-weight="700" fill="#166534">$1,000억+</text>
+        <text x="355" y="136" text-anchor="middle" font-size="11" fill="#166534">≈ 150조 원</text>
+
+        <rect x="480" y="45" width="210" height="110" rx="12" fill="#fefce8" stroke="#ca8a04"/>
+        <text x="585" y="78"  text-anchor="middle" font-size="12" fill="#854d0e">신재생 투자(2011~)</text>
+        <text x="585" y="112" text-anchor="middle" font-size="22" font-weight="700" fill="#854d0e">$310억+</text>
+        <text x="585" y="136" text-anchor="middle" font-size="11" fill="#854d0e">≈ 47조 원</text>
+
+        <rect x="710" y="45" width="190" height="110" rx="12" fill="#faf5ff" stroke="#9333ea"/>
+        <text x="805" y="78"  text-anchor="middle" font-size="12" fill="#6b21a8">설립</text>
+        <text x="805" y="112" text-anchor="middle" font-size="22" font-weight="700" fill="#6b21a8">1976</text>
+        <text x="805" y="136" text-anchor="middle" font-size="11" fill="#6b21a8">글로벌 3대 PE</text>
+      </g>
+    </svg>
+    </div>
+    <figcaption>그림 1. KKR 규모 지표(2025년 기준). 출처: KKR IR·나무위키·언론 보도. AUM은 2025.6 기준 약 $6,860억(수수료수익자산 $5,560억 포함).</figcaption>
+  </figure>
+
+  <div class="note"><b>왜 규모가 중요한가</b> — AUM 950조 원은 <b>한국 코스피 대형주 여러 개를 통째로 살 수 있는 화력</b>입니다.
+  게다가 그중 150조 원이 <b>인프라(발전소·데이터센터·통신망)</b> 전용입니다. "왜 KKR이 한국 에너지·데이터센터에 이렇게
+  달려드나"의 첫 번째 답은 <b>애초에 그런 자산을 사려고 모은 돈이 어마어마하게 많기 때문</b>입니다.</div>
+
+  <h2>2. 사업 5축 — 무엇으로 돈을 버나</h2>
+  <p>KKR은 크게 <b>두 개의 부문(자산운용 + 보험)</b>으로 나뉘고, 자산운용 안에 여러 자산군이 있습니다.</p>
+
+  <div class="tablewrap">
+  <table>
+    <thead><tr><th>부문</th><th>자산군</th><th>무엇을 하나</th><th>한국 관련</th></tr></thead>
+    <tbody>
+      <tr><td rowspan="5"><b>자산운용</b></td><td><b>사모펀드(PE)</b></td><td>기업 경영권 인수 → 가치 올려 재매각</td><td>OB맥주·KCFT(과거)</td></tr>
+      <tr><td><b>인프라</b></td><td>발전소·데이터센터·통신망 등 장기 실물</td><td><span class="good">신재생 통합법인·울산 DC</span></td></tr>
+      <tr><td><b>에너지</b></td><td>가스·전력·에너지 자산</td><td>SK E&amp;S RCPS</td></tr>
+      <tr><td><b>크레딧</b></td><td>대출·회사채·전환사채(CB)</td><td><span class="good">삼성SDS CB</span></td></tr>
+      <tr><td><b>부동산</b></td><td>물류·오피스 등</td><td>크리에이트자산운용(물류)</td></tr>
+      <tr><td><b>보험</b></td><td><b>Global Atlantic</b></td><td>퇴직·생명·재보험 (장기 부채자금)</td><td>인프라 투자의 <b>연료</b>(3장)</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p class="src">출처: KKR IR·나무위키 등. 한국 관련은 이 리포트에서 다루는 딜을 자산군에 매핑한 것.</p>
+
+  <div class="callout"><b>핵심 통찰</b> — KKR의 한국 딜들은 <b>제각각이 아니라 이 5축에 정확히 배분</b>돼 있습니다.
+  신재생 통합법인·울산 DC는 <b>인프라</b>, SK E&amp;S는 <b>에너지</b>, 삼성SDS는 <b>크레딧(CB)</b>. 즉 KKR은
+  <b>여러 도구(지분·우선주·전환사채)를 자유자재로 섞어</b> 한 산업(AI 인프라)에 들어가고 있습니다. 이 '도구의 다양성'이
+  뒤에서 볼 생태계 전략의 기반입니다.</div>
+
+  <h2>3. 진짜 엔진 — 보험 장기자금과 인프라의 플라이휠</h2>
+  <p>KKR을 이해하는 <b>가장 중요한 열쇠</b>는 2021년 완전 자회사로 편입한 보험사 <b>Global Atlantic(글로벌 애틀랜틱)</b>입니다.
+  왜 사모펀드가 보험사를 샀을까요? 여기에 KKR 전략의 비밀이 있습니다.</p>
+
+  <figure>
+    <div class="svgbox">
+    <svg viewBox="0 0 920 250" role="img" aria-label="KKR 보험-인프라 플라이휠">
+      <defs><marker id="arrb" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#2563eb"/></marker></defs>
+      <text x="10" y="24" font-size="14" font-weight="700" fill="#0f172a">KKR의 플라이휠 — 보험 장기자금 ↔ 인프라 장기수익</text>
+      <rect x="60" y="70" width="260" height="90" rx="12" fill="#eff6ff" stroke="#2563eb"/>
+      <text x="190" y="102" text-anchor="middle" font-size="13" font-weight="700" fill="#1d4ed8">보험(Global Atlantic)</text>
+      <text x="190" y="126" text-anchor="middle" font-size="11" fill="#1d4ed8">고객이 낸 보험료 = '20~30년 뒤</text>
+      <text x="190" y="144" text-anchor="middle" font-size="11" fill="#1d4ed8">지급할 장기 부채자금'</text>
+
+      <rect x="600" y="70" width="260" height="90" rx="12" fill="#f0fdf4" stroke="#16a34a"/>
+      <text x="730" y="102" text-anchor="middle" font-size="13" font-weight="700" fill="#166534">인프라(발전소·DC)</text>
+      <text x="730" y="126" text-anchor="middle" font-size="11" fill="#166534">20년간 따박따박 나오는</text>
+      <text x="730" y="144" text-anchor="middle" font-size="11" fill="#166534">안정적 현금흐름 자산</text>
+
+      <path d="M320,100 L595,100" stroke="#2563eb" stroke-width="2.5" marker-end="url(#arrb)"/>
+      <text x="458" y="90" text-anchor="middle" font-size="11" fill="#1d4ed8">장기자금을 인프라에 투입</text>
+      <path d="M595,135 L322,135" stroke="#16a34a" stroke-width="2.5" marker-end="url(#arrb)"/>
+      <text x="458" y="152" text-anchor="middle" font-size="11" fill="#166534">인프라 수익으로 보험금 지급</text>
+
+      <text x="460" y="205" text-anchor="middle" font-size="12" font-weight="700" fill="#334155">장기 부채(보험) ↔ 장기 자산(인프라)의 '만기 매칭' — 서로를 먹여 살린다</text>
+      <text x="460" y="228" text-anchor="middle" font-size="11" fill="#64748b">그래서 KKR은 '20년 현금 뽑는 자산'(발전소·데이터센터)을 유난히 좋아한다</text>
+    </svg>
+    </div>
+    <figcaption>그림 2. KKR의 보험-인프라 플라이휠. 보험 장기자금과 인프라 장기수익을 매칭하는 것이 핵심 수익 모델. 출처: KKR 사업구조를 필자 정리.</figcaption>
+  </figure>
+
+  <p>보험사가 받은 <b>보험료</b>는 "먼 미래에 고객에게 지급해야 할 <b>장기 부채</b>"입니다. 이 돈은 당장 쓸 게 아니라
+  <b>수십 년간 안정적으로 굴려야</b> 합니다. 그런데 <b>발전소·데이터센터 같은 인프라</b>는 정확히 <b>20~30년간 따박따박
+  현금이 나오는 장기 자산</b>입니다. 둘의 <b>만기가 맞아떨어집니다(matching).</b></p>
+
+  <div class="callout"><b>이 플라이휠이 모든 것을 설명한다</b><br>
+  KKR은 <b>① 보험으로 싸고 안정적인 장기자금을 모으고 → ② 그 돈으로 발전소·데이터센터를 사고 → ③ 그 수익으로 보험금을
+  지급하며 → ④ 다시 더 많은 자금을 모으는</b> 선순환(플라이휠)을 돌립니다. <b>"왜 하필 에너지·데이터센터냐"의 근본 답</b>이
+  여기 있습니다 — 그게 KKR의 자금 성격에 가장 잘 맞는 자산이기 때문입니다. 실제로 뒤(5장)에서 볼 삼성SDS CB의 일부도
+  <b>생명·연금보험 자금이 출자된 투자기구로 이전</b>됐다는 보도가 있습니다. 플라이휠이 한국에서도 돌고 있다는 증거죠.</div>
+
+  <h2>4. KKR의 DNA① — 한국 트랙레코드</h2>
+  <p>KKR이 한국에서 처음 온 손님이 아니라는 점이 중요합니다. <b>"사서, 키워서, 되판다"</b>는 KKR의 방식은 한국에서
+  이미 대표적 성공 사례를 남겼습니다.</p>
+
+  <div class="tablewrap">
+  <table>
+    <thead><tr><th>딜</th><th>인수</th><th>회수</th><th>성과</th></tr></thead>
+    <tbody>
+      <tr><td><b>OB맥주</b></td><td>2009년 $18억 (AB인베브에서)</td><td>2014년 $58억 (AB인베브에 재매각)</td><td><b>$40억 차익</b>. 점유율 39.6%→60.4%, 영업이익 1,782억→4,727억</td></tr>
+      <tr><td><b>KCFT</b>(동박)</td><td>2018년 약 3,000억 (LS엠트론 사업부)</td><td>SKC에 매각 → 현 <b>SK넥실리스</b></td><td>공장 증설·해외진출로 기업가치 대폭 확대</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p class="src">출처: 한국경제·서울경제·프레시안 등 보도. 금액은 보도 기준 개괄.</p>
+
+  <div class="note"><b>패턴 읽기</b> — OB맥주는 KKR이 <b>"경영권을 잡고 회사를 키운 뒤 되판" 전형적 PE 딜</b>입니다.
+  반면 <b>지금의 SK·삼성 딜은 성격이 다릅니다</b> — 회사를 통째로 사서 키우는 게 아니라, <b>소수지분·우선주·전환사채로
+  '인프라 자산'에 들어갑니다.</b> 같은 KKR이지만 <b>"기업을 사는 PE"에서 "인프라에 자본을 대는 파트너"로 진화</b>한
+  모습입니다. 이 진화의 배경이 바로 3장의 보험-인프라 플라이휠입니다.</div>
+
+  <h2>5. KKR의 DNA② — 글로벌 원본 'CyrusOne'</h2>
+  <p>한국 울산 데이터센터 투자를 이해하려면 <b>그 '원본(template)'</b>을 봐야 합니다. 바로 <b>CyrusOne</b>입니다.</p>
+
+  <div class="callout"><b>CyrusOne 딜 (2021~2022)</b><br>
+  KKR은 GIP(글로벌 인프라스트럭처 파트너스)와 함께 미국 데이터센터 회사 <b>CyrusOne을 약 $150억(부채 포함)에 인수</b>했습니다.
+  55개 이상의 데이터센터를 보유한 회사입니다. 주목할 점은 <b>자금 조달 방식</b> —
+  <b>KKR의 보험 자회사 Global Atlantic이 $79억 규모 대출의 일부를 조달</b>했고, KKR은 <b>인프라·부동산 펀드 + Strategic
+  Holdings(장기 보유 유닛)</b>로 지분을 나눠 보유했습니다. <span class="src">출처: KKR·GIP·Businesswire 발표(2021~2022).</span></div>
+
+  <p>즉 CyrusOne은 <b>3장의 플라이휠(보험자금 + 인프라)이 데이터센터에 적용된 실제 사례</b>입니다.
+  그리고 <b>한국 울산 AI 데이터센터 투자는 이 플레이북의 복제</b>로 읽힙니다:</p>
+
+  <table>
+    <thead><tr><th>요소</th><th>CyrusOne (미국)</th><th>울산 AI DC (한국)</th></tr></thead>
+    <tbody>
+      <tr><td>자산</td><td>55+ 데이터센터</td><td>7조 원 규모 AI DC(2029년 100MW)</td></tr>
+      <tr><td>방식</td><td>인수 + 보험자금 조달</td><td>소수지분(29%) + 에너지 자산 묶음</td></tr>
+      <tr><td>자금원</td><td>인프라 펀드 + Global Atlantic</td><td>인프라 펀드(보험 플라이휠 추정)</td></tr>
+      <tr><td>논리</td><td>DC = 장기 임대 현금흐름</td><td>DC = AI 시대 장기 현금흐름</td></tr>
+    </tbody>
+  </table>
+  <div class="note"><b>결론</b> — KKR의 한국 AI 인프라 투자는 <b>즉흥적 베팅이 아니라, 글로벌에서 이미 검증한 공식을
+  한국에 이식하는 것</b>입니다. "왜 KKR이 잘할 것 같은가"의 근거이자, "왜 이렇게 공격적인가"의 이유이기도 합니다.</div>
+
+  <h2>6. 한국 AI 인프라 포트폴리오 지도</h2>
+  <p>이제 KKR이 한국에서 벌이는 일들을 <b>하나의 지도</b>로 모읍니다. 개별 딜로 보면 산발적이지만, 밸류체인에 얹으면
+  <b>뚜렷한 패턴</b>이 드러납니다.</p>
+
+  <figure>
+    <div class="svgbox">
+    <svg viewBox="0 0 920 260" role="img" aria-label="KKR 한국 AI 인프라 포트폴리오 밸류체인">
+      <defs><marker id="arrm" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#64748b"/></marker></defs>
+      <text x="10" y="24" font-size="14" font-weight="700" fill="#0f172a">KKR의 한국 AI 인프라 포트폴리오 — 밸류체인 3단</text>
+      <!-- 전력 -->
+      <rect x="20" y="55" width="270" height="170" rx="12" fill="#f0fdf4" stroke="#16a34a"/>
+      <text x="155" y="82" text-anchor="middle" font-size="13" font-weight="700" fill="#166534">① 전력 (만든다)</text>
+      <text x="155" y="112" text-anchor="middle" font-size="11" fill="#166534">신재생 통합법인 (KKR 51%)</text>
+      <text x="155" y="132" text-anchor="middle" font-size="10" fill="#166534">1.7GW→10GW, SK이터닉스 포함</text>
+      <text x="155" y="158" text-anchor="middle" font-size="11" fill="#166534">SK E&amp;S RCPS (LNG·수소)</text>
+      <text x="155" y="184" text-anchor="middle" font-size="11" fill="#166534">SK엠유·울산GPS·ESS (제안)</text>
+      <text x="155" y="210" text-anchor="middle" font-size="10" font-weight="700" fill="#166534">= AI가 먹을 '전기'</text>
+      <!-- DC -->
+      <rect x="325" y="55" width="270" height="170" rx="12" fill="#eff6ff" stroke="#2563eb"/>
+      <text x="460" y="82" text-anchor="middle" font-size="13" font-weight="700" fill="#1d4ed8">② 데이터센터 (담는다)</text>
+      <text x="460" y="115" text-anchor="middle" font-size="11" fill="#1d4ed8">울산 AI DC 지분 29%</text>
+      <text x="460" y="135" text-anchor="middle" font-size="10" fill="#1d4ed8">(우선협상, 7조 규모 자산)</text>
+      <text x="460" y="165" text-anchor="middle" font-size="11" fill="#1d4ed8">SK하이퍼(15GW)는 미래 후보</text>
+      <text x="460" y="205" text-anchor="middle" font-size="10" font-weight="700" fill="#1d4ed8">= 전기를 담을 '그릇'</text>
+      <!-- IT -->
+      <rect x="630" y="55" width="270" height="170" rx="12" fill="#faf5ff" stroke="#9333ea"/>
+      <text x="765" y="82" text-anchor="middle" font-size="13" font-weight="700" fill="#6b21a8">③ IT·AI (돌린다)</text>
+      <text x="765" y="115" text-anchor="middle" font-size="11" fill="#6b21a8">삼성SDS 전환사채(CB)</text>
+      <text x="765" y="135" text-anchor="middle" font-size="10" fill="#6b21a8">1.22조, 전략적 파트너십</text>
+      <text x="765" y="165" text-anchor="middle" font-size="10" fill="#6b21a8">클라우드·SI·AI 서비스</text>
+      <text x="765" y="205" text-anchor="middle" font-size="10" font-weight="700" fill="#6b21a8">= 그 위에서 도는 '서비스'</text>
+      <!-- arrows -->
+      <g stroke="#64748b" stroke-width="2.5">
+        <line x1="292" y1="140" x2="323" y2="140" marker-end="url(#arrm)"/>
+        <line x1="597" y1="140" x2="628" y2="140" marker-end="url(#arrm)"/>
+      </g>
+      <text x="460" y="248" text-anchor="middle" font-size="12" font-weight="700" fill="#334155">SK그룹(전력·DC) + 삼성(IT) 양쪽에 걸쳐 — AI 인프라 밸류체인 전체에 포지션</text>
+    </svg>
+    </div>
+    <figcaption>그림 3. KKR의 한국 AI 인프라 포트폴리오 지도. 전력→데이터센터→IT의 밸류체인 각 단에 지분·우선주·CB로 포지션. 출처: 각 딜 보도를 필자가 밸류체인에 매핑(해석 포함).</figcaption>
+  </figure>
+
+  <h3>6-1. 전력 — 신재생 통합법인 (핵심)</h3>
+  <p>SK이터닉스 이야기의 '큰 그림'이 여기입니다. <b>SK이노베이션·SK에코플랜트·SK디스커버리 3사가 각자의 신재생 자산을
+  KKR에 매각</b>해 <b>국내 최대 신재생 통합법인</b>을 만듭니다(2026년 말 출범 예정).</p>
+  <ul>
+    <li><b>지분: KKR 51% / SK 49%</b> — 초기 경영권은 KKR, SK는 추후 경영권 확보 가능성을 열어둠</li>
+    <li><b>포트폴리오:</b> 태양광·해상/육상풍력·연료전지·ESS (수소 제외)</li>
+    <li><b>규모:</b> 현재 운영 1.7GW → <b>2031년 10GW로 6배</b> 확대 계획</li>
+    <li><b>기업가치 약 1.8조</b>, SK는 이 거래로 <b>9,000억~1조 유동성</b> 확보</li>
+    <li><b>SK이터닉스는 이 통합법인의 핵심 조각</b> (태양광·풍력·ESS)</li>
+  </ul>
+  <p class="src">출처: 머니투데이·경향·비즈워치·CNBC·Bloomberg(2026.07). 지분·규모는 보도 기준.</p>
+
+  <h3>6-2. 에너지 — SK E&amp;S RCPS</h3>
+  <p>KKR은 SK E&amp;S(도시가스·LNG·수소·전력)의 <b>상환전환우선주(RCPS)</b>에 대규모 투자했습니다. RCPS는 채권과 주식의
+  성격을 섞은 도구로, <b>안정적 배당(우선주) + 나중에 상환/전환</b>이 가능합니다. 전형적인 "인프라에 안정적으로 자금을 대는" KKR 방식.</p>
+
+  <h3>6-3. 데이터센터 — 울산 AI DC 29% + 에너지 묶음</h3>
+  <p>SK(SKT·SK에코플랜트)가 AWS·울산시와 짓는 <b>7조 원 규모 국내 최대 AI 데이터센터</b>. KKR이
+  <b>소수지분 29% 우선협상자</b>(IMM인베·스톤브릿지 컨소 20%와 함께)입니다. 결정적으로 KKR은 여기서
+  <b>DC 지분만이 아니라 SK멀티유틸리티(SK엠유)·울산GPS 소수지분 + 그룹 ESS까지 '한 번에 인수'하겠다고 제안</b>했습니다.</p>
+  <div class="callout"><b>이 제안이 결정적 단서</b> — <b>데이터센터 + 그 옆의 전력·유틸리티·저장(ESS)을 한 묶음으로</b> 사겠다는 것.
+  8장에서 볼 <b>"전력↔DC 매칭"</b>을 KKR이 <b>실제 협상 테이블에서 시도하고 있다</b>는 증거입니다.</div>
+
+  <h3>6-4. IT·AI — 삼성SDS 전환사채</h3>
+  <p>2026년 4월, KKR은 <b>삼성SDS가 발행하는 1.22조 원(약 $8.2억) 규모 전환사채(CB)를 인수</b>하고 전략적 파트너십을
+  맺었습니다. 표면·만기금리 2.5%, 발행 후 6년간 지분 매각 제한, 보유목적 '경영권 영향'. <b>삼성그룹에서 오너가 직접 지분을
+  가진 계열사가 외부 파트너를 처음 끌어들인 사례</b>로, AI 인프라 투자·글로벌 M&amp;A 실탄 확보가 목적입니다.</p>
+
+  <h2>7. 왜 SKT를 통째로 안 샀나 — SK하이퍼 vs 울산 DC</h2>
+  <p>"데이터센터를 한다면 국내 최대 통신사 SKT를 사는 게 낫지 않나? SK하이퍼가 더 큰 규모던데?"라는 질문은 아주 날카롭습니다.
+  답은 <b>두 개를 구분</b>하는 데서 시작합니다.</p>
+
+  <div class="tablewrap">
+  <table>
+    <thead><tr><th></th><th>SK하이퍼</th><th>울산 AI DC</th></tr></thead>
+    <tbody>
+      <tr><td>정체</td><td>SKT가 2026.7.23 세운 <b>100% 자회사</b>(AI DC 개발 전담)</td><td>SKT+SK에코플랜트+<b>AWS</b>+울산시가 짓는 실물 DC</td></tr>
+      <tr><td>규모</td><td>2030년까지 <b>7,500억 출자</b>, 2035년까지 <b>15GW</b></td><td><b>7조 원</b>, 2027년 40MW→2029년 100MW, GPU 6만개</td></tr>
+      <tr><td>성격</td><td><b>개발 청사진·그릇</b>(SKT 종잣돈 직접 투입)</td><td><b>짓고 있는 자산</b>, 소수지분 최대 49%(~2조) 매각 중</td></tr>
+      <tr><td>KKR 관여</td><td>(아직 없음 — 갓 생긴 100% 자회사)</td><td><b>KKR 29% 우선협상자</b></td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <p><b>세 가지 이유</b>로 정리됩니다.</p>
+  <div class="grid2">
+    <div class="card"><b>① 사실 이미 SKT DC에 들어갔다</b><br>
+    울산 DC는 SKT·SK에코플랜트가 주도합니다. KKR이 그 <b>29%를 가져가는 것 = 사실상 SKT의 DC 사업에 참여</b>.
+    "SKT를 안 한 게" 아니라 "SKT가 떼어 파는 DC 자산을 골라 담은" 것.</div>
+    <div class="card"><b>② KKR이 원하는 건 통신사가 아니라 인프라 캐시플로우</b><br>
+    SKT 본체(상장 통신사)는 시총이 크고 <b>기간통신사업자라 외국인 지분·경영권 규제</b>가 걸려 통째로 못 삽니다.
+    KKR이 필요한 건 <b>20년 현금 나오는 자산(DC·발전소)</b>이지 통신 소매사업이 아닙니다.</div>
+  </div>
+  <div class="card"><b>③ SK하이퍼는 갓 생긴 '그릇'이라 아직 유치 단계가 아니다</b><br>
+  2026.7.23 설립돼 SKT가 종잣돈을 넣어 <b>개발체계를 세우는 중</b>입니다. 이런 개발법인은 통상 <b>프로젝트가 무르익으면
+  프로젝트·법인 단위로 외부자본을 유치</b>합니다. 즉 지금은 "SKT가 판을 깔고", <b>미래에 SK하이퍼/개별 DC가 KKR류 자본의
+  다음 타깃</b>이 될 수 있는 구조입니다.</div>
+
+  <div class="callout"><b>정리</b> — KKR은 <b>"개발 청사진(SK하이퍼)"보다 "짓고 있는 실물+현금흐름(울산 DC)"</b>에 지분으로
+  들어갑니다. 이것은 3장의 플라이휠(안정적 장기 현금흐름 선호)과 5장의 CyrusOne 플레이북(실물 DC 인수)과 완벽히 일치합니다.
+  <b>SKT를 '통째로'가 아니라 '조각으로' 잡은 것은 KKR의 일관된 방식</b>입니다.</div>
+
+  <h2>8. 생태계 연결 유추 — 전력→DC→IT를 한 손에</h2>
+  <div class="warn"><b>여기부터는 공개된 딜을 근거로 한 필자의 해석·가설입니다.</b> KKR의 공식 선언이 아니라 구조를 읽은 것입니다.</div>
+
+  <p>AI 시대의 병목을 밸류체인으로 그리면 <b>전력 → 데이터센터 → IT·AI 서비스</b>입니다. AI 데이터센터는 <b>'전기 먹는 하마'</b>라,
+  진짜 승부는 <b>"전력을 확보한 자"</b>에게 있습니다. KKR의 한국 포트폴리오를 이 밸류체인에 얹으면(6장 지도) —
+  <b>KKR은 상류(전력)·중류(DC)·하류(IT)를 각각 다른 회사 지분으로 조각조각 확보</b>하고 있습니다.</p>
+
+  <div class="callout"><b>연결 유추 3가지</b>
+    <ol>
+      <li><b>전력↔DC 매칭</b> — KKR이 가진 신재생 전력(통합법인)을 KKR이 투자한 데이터센터(울산)에 공급(PPA)하면,
+      두 자산이 서로를 키웁니다. "내 발전소 전기를 내 데이터센터가 산다." 울산에서 <b>DC+SK엠유·울산GPS·ESS를 묶어 사겠다는
+      제안</b>이 이 매칭의 실물 신호입니다.</li>
+      <li><b>SK↔삼성 교차</b> — 한쪽(SK)은 에너지·DC, 다른 쪽(삼성SDS)은 IT/AI. KKR이 <b>양대 그룹에 다 걸쳐</b>
+      AI 인프라 전반의 '중립적 자본 축'이 되려는 그림. 언론도 "재계 2위 SK 이어 1위 삼성과도 맞손"으로 표현.</li>
+      <li><b>보험 장기자금의 출구</b> — 이 모든 인프라는 20년짜리 현금흐름 → KKR의 보험(Global Atlantic) 자금과 매칭.
+      실제로 삼성SDS CB 일부가 <b>생명·연금보험 자금 투자기구로 이전</b>됐다는 보도가 이를 뒷받침합니다.</li>
+    </ol>
+  </div>
+
+  <div class="dark">
+    <b>한 줄 유추</b> — KKR은 지금 한국에서 <b>"AI가 굴러가려면 필요한 전력·건물(DC)·소프트웨어를 밸류체인 칸칸이 사들여,
+    장기 보험자금으로 받치는 AI 인프라 포트폴리오"</b>를 짜고 있는 것으로 읽힙니다. SK이터닉스는 그 큰 판의 <b>'전력' 칸 한 조각</b>입니다.
+  </div>
+
+  <h2>9. 추가 투자 흔적과 다음 타깃 추론</h2>
+
+  <h3>9-1. 이미 드러난 흔적 (팩트)</h3>
+  <table>
+    <thead><tr><th>신호</th><th>내용</th><th>의미</th></tr></thead>
+    <tbody>
+      <tr><td>울산 묶음 제안</td><td>DC 29% + SK엠유·울산GPS·ESS 한 번에 인수 제안</td><td><b>전력↔DC 매칭</b>을 실제 시도</td></tr>
+      <tr><td>신재생 10GW</td><td>1.7GW→10GW 파이프라인 확대</td><td>추가 자본 계속 필요 → KKR 추가 투입 여지</td></tr>
+      <tr><td>삼성SDS CB</td><td>6년 매각제한·경영권 영향 목적</td><td>전환 시 <b>지분 파트너</b>로 격상 가능</td></tr>
+      <tr><td>SK E&amp;S RCPS</td><td>우선주 투자</td><td>에너지 축 이미 확보</td></tr>
+    </tbody>
+  </table>
+
+  <h3>9-2. 다음 타깃 추론 (가설)</h3>
+  <p>KKR의 패턴(<b>AI 인프라 밸류체인을 조각조각, 전력↔DC 매칭, 보험 장기자금으로 받침</b>)을 연장하면 다음이 자연스러운 후보로 보입니다.</p>
+  <ol>
+    <li><b>전력 공급 추가</b> — DC가 늘수록 전기가 핵심. 발전(LNG·연료전지·향후 SMR)·<b>전력망·유틸리티</b> 자산을 더 담을 가능성.
+    (SK엠유·울산GPS 제안이 그 신호)</li>
+    <li><b>SK하이퍼 / 개별 DC 프로젝트</b> — 지금은 SKT 100%지만 15GW를 혼자 못 댐. <b>개발이 익으면 KKR류 자본이
+    프로젝트 단위로 진입</b>할 개연성.</li>
+    <li><b>DC를 돌리는 부품</b> — 냉각·전력설비·향후 SMR 등 실물 밸류체인 확장(인프라 펀드의 전형).</li>
+    <li><b>삼성SDS 후속</b> — CB 전환·추가 협력으로 '삼성 쪽 AI/IT 축' 강화.</li>
+    <li><b>빈 칸 채우기</b> — 통신·클라우드·소프트웨어 등 아직 확보 안 된 밸류체인 칸.</li>
+  </ol>
+  <div class="note"><b>추론의 핵심 논리</b> — KKR은 <b>"AI가 돌아가려면 필요한 전력–그릇(DC)–서비스"</b>를 모으는 중이라,
+  <b>아직 못 채운 칸(안정적 전력원, DC 실물 추가, 냉각·전력설비)</b>이 다음 사냥터일 가능성이 큽니다.
+  특히 <b>전력↔DC 매칭</b>을 완성하려는 동선이 보이므로, <b>전력·유틸리티 쪽을 더 담을 것</b>으로 추정합니다.</div>
+
+  <h2>10. 균형 — 양날의 검과 리스크</h2>
+  <p>흥미로운 그림이지만 반대편도 균형 있게 봐야 합니다.</p>
+  <div class="tablewrap">
+  <table>
+    <thead><tr><th>관점</th><th>내용</th></tr></thead>
+    <tbody>
+      <tr><td><b>PEF는 결국 되판다(엑시트)</b></td><td>KKR은 영구 보유가 목적이 아님. OB맥주처럼 <b>키워서 되파는</b> 게 본질 → 중장기 지배구조 변화 가능성</td></tr>
+      <tr><td><b>일반주주와 이해 상충 소지</b></td><td>통합법인·소수지분 구조에서 <b>PEF의 수익(우선주·배당·엑시트)과 일반주주 이익이 항상 일치하진 않음</b></td></tr>
+      <tr><td><b>규제 장벽</b></td><td>기간통신(SKT)·전력 등은 외국자본 지분·경영권 규제 → KKR이 '조각·소수지분·CB'로 우회하는 이유</td></tr>
+      <tr><td><b>AI 인프라 과열 리스크</b></td><td>데이터센터 과잉투자·전력 병목·금리 등 매크로 변수. AI 수요가 예상보다 느리면 인프라 회수 지연</td></tr>
+      <tr><td><b>레버리지</b></td><td>PE·인프라 딜은 차입을 크게 씀. 금리 상승 국면에선 수익성·안정성에 부담</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="warn"><b>과잉해석 경계.</b> 8~9장의 "한 손에 묶는다"는 <b>구조적 해석이지, KKR이 이 회사들을 서로 연결해
+  운영하겠다고 선언한 것이 아닙니다.</b> 각 딜은 독립적 투자일 수 있고, 소수지분·CB·우선주 형태가 많아 경영권 인수와는
+  결이 다릅니다. "생태계를 장악한다"가 아니라 "<b>생태계 전반에 포지션을 확보하는 중</b>"으로 이해하는 게 정확합니다.</div>
+
+  <h2>11. 확인 체크리스트 · 종합 정리 · FAQ</h2>
+
+  <h3>확인 체크리스트 (앞으로 지켜볼 것)</h3>
+  <table>
+    <tbody>
+      <tr><td>□ 신재생 통합법인 연말 출범·지분구조 확정(KKR 51%)</td></tr>
+      <tr><td>□ 울산 DC에서 SK엠유·울산GPS·ESS 묶음이 실제 성사되는지(전력↔DC 매칭 실증)</td></tr>
+      <tr><td>□ SK하이퍼(15GW)가 언제 외부자본을 유치하는지</td></tr>
+      <tr><td>□ 삼성SDS CB의 주식 전환·추가 협력 여부</td></tr>
+      <tr><td>□ KKR이 발전·전력망·유틸리티 자산을 추가로 담는지</td></tr>
+      <tr><td>□ 신재생 10GW 파이프라인의 실제 진척(인허가·착공)</td></tr>
+      <tr><td>□ 금리·AI 수요 등 매크로 — 인프라 투자 회수 환경</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout">
+    <b>종합 — 한 장 정리</b>
+    <ul>
+      <li>KKR은 단순 사모펀드가 아니라 <b>AUM 950조·인프라 150조의 대체투자 거인</b>이며, <b>보험 장기자금 ↔ 인프라</b> 플라이휠이 엔진.</li>
+      <li>한국서 <b>OB맥주·KCFT</b>로 트랙레코드를 쌓았고, <b>CyrusOne(DC+보험자금)</b>이라는 글로벌 원본을 한국에 이식 중.</li>
+      <li>포트폴리오는 <b>전력(신재생 통합법인 51%·SK E&amp;S)–데이터센터(울산 29%)–IT(삼성SDS CB)</b>로 밸류체인 3단에 포진.</li>
+      <li>SKT를 통째로 안 산 건 <b>규제+목적 불일치</b> 때문 — 대신 SKT가 떼어 파는 <b>울산 DC 조각+전력·ESS 묶음</b>으로 진입.</li>
+      <li>이는 <b>"전력→DC→IT를 한 손에" 묶으려는 AI 인프라 생태계 포지션</b>으로 읽히며, SK이터닉스는 그 '전력' 칸의 한 조각.</li>
+      <li>단, <b>PEF는 엑시트가 목적</b>이고 규제·과열·레버리지 리스크가 있어 "장악"이 아니라 "포지션 확보"로 봐야 함.</li>
+    </ul>
+  </div>
+
+  <h3>FAQ</h3>
+  <p><b>Q. 그래서 KKR이 한국 AI 인프라를 '지배'하는 건가요?</b><br>
+  A. 아닙니다. 소수지분·우선주·전환사채가 많아 '지배'와는 거리가 있습니다. 밸류체인 <b>각 칸에 자본 파트너로 포지션을 확보</b>하는
+  중이라고 보는 게 정확합니다. 게다가 PEF는 언젠가 되파는 게 목적입니다.</p>
+  <p><b>Q. SK이터닉스 주주 입장에선 KKR이 좋은가요, 나쁜가요?</b><br>
+  A. 이 리포트는 추천·우열을 말하지 않습니다. 자금·확장 기대(긍정)와 엑시트·일반주주 이해상충 소지(주의)가 공존합니다.
+  개별 판단은 <a href="https://tryingpig.github.io/study/260726_SK이터닉스_투자안내서.html">SK이터닉스 투자안내서</a>의 체크리스트와 함께 하세요.</p>
+  <p><b>Q. KKR 자체(미국 상장사, 티커 KKR)에 투자하는 것과는 다른 얘기인가요?</b><br>
+  A. 다릅니다. 이 리포트는 <b>KKR의 '전략·행보'를 분석</b>한 것이지 KKR 주식을 논하는 게 아닙니다. KKR 주식은 별도의
+  밸류에이션·리스크(운용보수·성과보수·보험·금리 민감도)가 있어 별도 분석이 필요합니다.</p>
+  <p><b>Q. 삼성SDS·SK이터닉스 외에 확실히 확정된 건 뭔가요?</b><br>
+  A. 신재생 통합법인(KKR 51%, 연말 출범 예정)과 SK E&amp;S RCPS는 계약이 진행/체결됐고, 울산 DC 29%는 <b>우선협상 단계</b>,
+  삼성SDS는 CB 인수 계약입니다. 세부는 확정·공시로 계속 확인해야 합니다.</p>
+
+  <div class="note"><b>관련 리포트</b> —
+  <a href="https://tryingpig.github.io/study/260726_SK이터닉스_입문가이드.html">SK이터닉스 입문세트</a> ·
+  <a href="https://tryingpig.github.io/study/260726_SK이터닉스_투자안내서.html">투자안내서(KKR 인수 상세)</a> ·
+  <a href="https://tryingpig.github.io/study/260726_SK이터닉스_밸류체인.html">밸류체인(에너지 3형제)</a>.</div>
+
+  <div class="foot">
+    © 2026 노력하는뚱땡이 리서치 라이브러리.<br>
+    본 문서는 개인 학습용 정보 정리이며 투자 권유가 아닙니다. 딜 규모·지분율·시점은 언론·기업 발표를 조회 시점 기준으로 정리했으며 협상·확정 과정에서 변동될 수 있습니다. 5~9장의 생태계 연결·추가 투자 추론은 공개 정보에 기반한 필자의 해석·가설이며 예측이 아닙니다. 정확한 내용은 원문·공시로 확인하세요.
+  </div>
+
+</div>
+</body>
+</html>

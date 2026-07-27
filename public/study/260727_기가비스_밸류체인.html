@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>기가비스 밸류체인 — 기판 검사 산업 지도에서 기가비스의 자리</title>
+<link rel="stylesheet" href="/assets/report.css">
+<script src="/assets/report.js" defer></script>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<script>
+  (function () {
+    try {
+      var t = localStorage.getItem('theme');
+      if (!t) t = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      if (t === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+    } catch (e) {}
+  })();
+</script>
+</head>
+<body data-topic="invest">
+<div class="topbar">
+  <div class="topbar-in">
+    <a class="back" href="/#study">학습공간</a>
+    <span class="crumb">기가비스 밸류체인 — 산업 지도</span>
+    <button class="theme-toggle" type="button" aria-label="다크/라이트 전환" title="다크/라이트 전환">
+      <svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      <svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+    </button>
+  </div>
+</div>
+<div class="wrap">
+
+  <span class="kicker">기가비스 입문세트 · ③ 밸류체인</span>
+  <h1>기가비스 밸류체인<br>— 기판 검사 산업 지도에서 기가비스의 자리</h1>
+  <p class="sub">작성일 2026-07-27 · 개인 리서치 노트 · 인텍플러스 대비와 유리기판 확장까지</p>
+
+  <div class="warn">
+    <b>⚠️ 투자 권유가 아닙니다.</b> 이 문서는 공개 정보를 정리한 <b>개인 학습 노트</b>이며 매수·매도 추천이 아닙니다.
+    언급된 기업명은 <b>산업 구조 설명</b>을 위한 것이지 투자 대상 추천이 아닙니다. 점유율은 보도·업계 자료 기준 개괄입니다.
+    투자 판단과 책임은 전적으로 본인에게 있습니다.
+  </div>
+
+  <div class="note">
+    <b>📦 기가비스 입문세트의 마지막, ③ 밸류체인입니다.</b>
+    ① <a href="https://tryingpig.github.io/study/260727_기가비스_입문가이드.html">입문가이드</a> ·
+    ② <a href="https://tryingpig.github.io/study/260727_기가비스_투자안내서.html">투자안내서</a> 를 봤다면,
+    이제 <b>기판·검사장비 산업 지도에서 기가비스의 자리</b>와 <b>경쟁사(인텍플러스)와의 차이</b>를 봅니다.
+    기판 자체 개념은 <a href="https://tryingpig.github.io/study/260727_ABF기판_개념설명리포트.html">ABF 기판 개념 리포트</a> 참고.
+  </div>
+
+  <div class="toc"><b>목차</b>
+    <ol>
+      <li>큰 그림 — 기판 밸류체인에서 검사장비의 위치</li>
+      <li>검사장비 안에서 기가비스가 하는 것</li>
+      <li>기가비스 vs 인텍플러스 — 검사장비 두 회사</li>
+      <li>경쟁 지형 — 글로벌 라이벌</li>
+      <li>유리기판·PLP — 다음 성장 무대</li>
+      <li>기가비스가 커지는 구조 — 조건부 논리</li>
+      <li>요약 · 용어 · FAQ</li>
+    </ol>
+  </div>
+
+  <h2>1. 큰 그림 — 기판 밸류체인에서 검사장비의 위치</h2>
+  <p>ABF 기판이 만들어지는 사슬은 <b>소재 → 기판 제조 → (검사·수리) → 수요처</b>입니다. 기가비스는 <b>기판 제조 옆에서
+  불량을 잡아주는 검사·수리 단계</b>에 있습니다.</p>
+  <figure>
+    <div class="svgbox">
+    <svg viewBox="0 0 920 230" role="img" aria-label="기판 밸류체인과 검사장비 위치">
+      <defs><marker id="arr" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#64748b"/></marker></defs>
+      <text x="10" y="24" font-size="14" font-weight="700" fill="#0f172a">ABF 기판 밸류체인 · 기가비스의 위치</text>
+      <g font-size="12" font-weight="700">
+        <rect x="20"  y="55" width="180" height="80" rx="10" fill="#fef3c7" stroke="#d97706"/>
+        <text x="110" y="86" text-anchor="middle" fill="#92400e">소재</text>
+        <text x="110" y="108" text-anchor="middle" font-size="10" font-weight="400" fill="#92400e">아지노모토(ABF) 등</text>
+
+        <rect x="250" y="55" width="200" height="80" rx="10" fill="#e0e7ff" stroke="#6366f1"/>
+        <text x="350" y="86" text-anchor="middle" fill="#3730a3">기판 제조</text>
+        <text x="350" y="108" text-anchor="middle" font-size="10" font-weight="400" fill="#3730a3">이비덴·신코·삼성전기</text>
+
+        <rect x="500" y="55" width="160" height="80" rx="10" fill="#dbeafe" stroke="#2563eb"/>
+        <text x="580" y="86" text-anchor="middle" fill="#1d4ed8">수요처</text>
+        <text x="580" y="108" text-anchor="middle" font-size="10" font-weight="400" fill="#1d4ed8">엔비디아·인텔·AMD</text>
+      </g>
+      <!-- inspection callout under 기판 제조 -->
+      <rect x="230" y="160" width="240" height="55" rx="10" fill="#dcfce7" stroke="#16a34a" stroke-dasharray="5 4"/>
+      <text x="350" y="183" text-anchor="middle" font-size="12" font-weight="700" fill="#166534">검사·수리 장비 (공정 옆)</text>
+      <text x="350" y="203" text-anchor="middle" font-size="11" font-weight="700" fill="#166534">기가비스 ★ / 인텍플러스</text>
+      <line x1="350" y1="137" x2="350" y2="158" stroke="#16a34a" stroke-width="2" marker-end="url(#arr)"/>
+      <g stroke="#64748b" stroke-width="2">
+        <line x1="202" y1="95" x2="248" y2="95" marker-end="url(#arr)"/>
+        <line x1="452" y1="95" x2="498" y2="95" marker-end="url(#arr)"/>
+      </g>
+    </svg>
+    </div>
+    <figcaption>그림 1. 기가비스는 '기판 제조' 단계 옆에서 검사·수리 장비를 공급한다. 출처: 업계 구조를 필자 정리(기업명은 예시).</figcaption>
+  </figure>
+  <div class="note"><b>핵심</b> — 기가비스는 기판을 <b>만들지 않습니다.</b> 기판 제조사가 <b>장비를 사는 고객</b>입니다.
+  그래서 기가비스 실적은 기판사의 투자(CAPEX)에 연동됩니다(②편 참조).</div>
+
+  <h2>2. 검사장비 안에서 기가비스가 하는 것</h2>
+  <p>기판 검사는 여러 종류가 있습니다. 기가비스는 그 중 <b>FC-BGA 기판의 '내층 회로' 검사·수리</b>에 특화돼 있습니다.</p>
+  <table>
+    <thead><tr><th>단계</th><th>내용</th><th>기가비스</th></tr></thead>
+    <tbody>
+      <tr><td>내층 회로 검사</td><td>기판 안쪽 미세 회로 패턴 불량 검사(AOI)</td><td><b>주력·세계 1위</b></td></tr>
+      <tr><td>불량 수리</td><td>검출 불량을 자동 수리(AOR)</td><td><b>차별화 역량</b></td></tr>
+      <tr><td>검증</td><td>수리·검사 결과 확인(VRS)</td><td>보유</td></tr>
+      <tr><td>외관·최종 검사</td><td>완성 기판·패키지 외관 검사</td><td>인접 영역(경쟁사 강점)</td></tr>
+    </tbody>
+  </table>
+  <div class="callout"><b>강점 요약</b> — 기가비스는 <b>"만드는 도중(내층)에 불량을 찾아 바로 고친다"</b>는 점에서 독보적입니다.
+  비싼 기판을 버리지 않고 살리는 <b>AOR(수리)</b> 역량이 핵심 해자입니다.</div>
+
+  <h2>3. 기가비스 vs 인텍플러스 — 검사장비 두 회사</h2>
+  <p>이 학습공간에 이미 있는 <a href="https://tryingpig.github.io/study/260704_인텍플러스_1_입문가이드.html">인텍플러스</a>도 반도체 기판/패키지 검사장비 회사라 자주 비교됩니다. 둘의 결을 정리하면:</p>
+  <div class="tablewrap">
+  <table>
+    <thead><tr><th>구분</th><th>기가비스</th><th>인텍플러스</th></tr></thead>
+    <tbody>
+      <tr><td>특화 영역</td><td>FC-BGA <b>내층 회로 검사·수리</b>(AOI/AOR)</td><td>반도체 패키지·기판 <b>외관 검사</b> 등</td></tr>
+      <tr><td>시장 지위</td><td>FC-BGA 검사 <b>세계 1위</b>(~60%)</td><td>패키지 외관검사 등에서 경쟁력</td></tr>
+      <tr><td>차별점</td><td>검사+<b>수리(AOR)</b> 통합</td><td>다양한 검사 대상 커버리지</td></tr>
+      <tr><td>공통점</td><td colspan="2" style="text-align:center">둘 다 <b>기판·패키지 '검사장비'</b> = 고객 CAPEX 사이클에 연동되는 '곽쟁이·삽'</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p class="src">기업명·영역 구분은 산업 설명용 개괄이며 투자 추천이 아닙니다. 인텍플러스 상세는 해당 입문세트 참조.</p>
+  <div class="note"><b>핵심</b> — 둘은 <b>"검사장비"라는 같은 우산 아래 특화 지점이 다릅니다.</b> 기가비스는 <b>내층+수리</b>,
+  인텍플러스는 <b>외관·패키지 검사</b> 쪽에 강점. 그래서 "경쟁자"이기도, "서로 다른 공정을 담당하는 이웃"이기도 합니다.</div>
+
+  <h2>4. 경쟁 지형 — 글로벌 라이벌</h2>
+  <p>기판 검사장비는 세계적으로 소수 기업이 경쟁합니다(구조 설명용, 추천 아님).</p>
+  <table>
+    <thead><tr><th>구분</th><th>대표(예시)</th><th>비고</th></tr></thead>
+    <tbody>
+      <tr><td>FC-BGA 내층 검사·수리</td><td><b>기가비스</b></td><td>세계 1위(~60%)</td></tr>
+      <tr><td>패키지·외관 검사</td><td>인텍플러스 등 국내외</td><td>인접 영역</td></tr>
+      <tr><td>글로벌 검사장비</td><td>일본·이스라엘·미국계 업체 등</td><td>PCB/기판 검사 전반</td></tr>
+    </tbody>
+  </table>
+  <div class="note"><b>포인트</b> — 기가비스의 방어력은 <b>세계 최고 난이도 고객(이비덴·신코)의 레퍼런스</b>입니다.
+  고성능 기판일수록 검증된 장비를 못 바꾸기 때문에, 1위 자리가 쉽게 흔들리지 않습니다. 다만 신기술(유리기판)에서는 새 경쟁이 열립니다.</div>
+
+  <h2>5. 유리기판·PLP — 다음 성장 무대</h2>
+  <p>기가비스의 미래 스토리는 <b>차세대 기판(유리기판)·PLP</b>로의 확장입니다.</p>
+  <div class="grid2">
+    <div class="card"><b>🟢 기회</b>
+      <ul>
+        <li>유리기판이 확산되면 <b>새 검사장비 수요</b> 발생</li>
+        <li>기존 검사·AI 역량을 <b>신기판에 적용</b> 가능</li>
+        <li>PLP(패널레벨패키지) 등 <b>인접 시장</b> 확장</li>
+      </ul>
+    </div>
+    <div class="card"><b>🔴 불확실성</b>
+      <ul>
+        <li>유리기판 <b>상용화·양산 시점이 불확실</b></li>
+        <li>새 시장에선 <b>새 경쟁</b>이 열림</li>
+        <li>초기 시장이라 <b>수익 기여까지 시간</b></li>
+      </ul>
+    </div>
+  </div>
+  <div class="callout"><b>연결</b> — 유리기판 자체는 <a href="https://tryingpig.github.io/study/260630_유리기판_1_입문가이드.html">유리기판 입문세트</a>에 정리돼 있습니다.
+  "유리기판이 뜨면 검사장비(기가비스)도 함께 수혜"라는 논리가 성립하려면 <b>유리기판의 실제 상용화</b>가 전제입니다.</div>
+
+  <h2>6. 기가비스가 커지는 구조 — 조건부 논리</h2>
+  <div class="dark">
+    AI 칩 수요 → FC-BGA 기판 수요 → 기판사 <b>증설(CAPEX)</b> → 검사·수리 장비 발주 →
+    기가비스 <b>매출↑</b> → 유리기판·PLP로 <b>시장 확장</b> → 성장 지속.
+  </div>
+  <div class="warn"><b>단, 각 고리가 '조건부'입니다.</b>
+  ① AI 기판 수요가 이어질까 · ② 고객이 실제로 <b>투자를 집행</b>할까(타이밍) · ③ 점유율을 지킬까 · ④ 유리기판이 실제로 상용화될까.
+  특히 ②(고객 CAPEX 타이밍)가 실적 변동의 핵심이라, "수요 방향"과 "투자 타이밍"을 구분해서 봐야 합니다.
+  확인 항목은 <a href="https://tryingpig.github.io/study/260727_기가비스_투자안내서.html">②투자안내서</a> 체크리스트를 쓰세요.</div>
+
+  <h2>7. 요약 · 용어 · FAQ</h2>
+  <div class="callout">
+    <b>밸류체인편 한 장 요약</b>
+    <ul>
+      <li>기가비스는 기판 밸류체인의 <b>검사·수리 장비(공정 옆)</b>에 위치 — 기판을 만들지 않음.</li>
+      <li>특화: FC-BGA <b>내층 검사(AOI)+수리(AOR)</b> 세계 1위.</li>
+      <li>인텍플러스와는 <b>같은 검사장비, 다른 특화 지점</b>(내층·수리 vs 외관·패키지).</li>
+      <li>해자: 최고 난이도 고객 <b>레퍼런스</b>. 신기술(유리기판)에선 새 경쟁.</li>
+      <li>미래: <b>유리기판·PLP</b> 확장 — 상용화 시점이 관건.</li>
+    </ul>
+  </div>
+
+  <h3>용어사전</h3>
+  <table>
+    <tbody>
+      <tr><td><b>내층 회로</b></td><td>기판 안쪽에 쌓인 미세 회로층</td></tr>
+      <tr><td><b>AOI/AOR/VRS</b></td><td>자동광학검사 / 자동광학수리 / 검증</td></tr>
+      <tr><td><b>PLP</b></td><td>패널레벨패키지. 대면적 패키징 방식</td></tr>
+      <tr><td><b>레퍼런스</b></td><td>납품 실적(진입장벽의 핵심)</td></tr>
+      <tr><td><b>곽쟁이·삽</b></td><td>산업 전체에 장비를 파는 포지션</td></tr>
+    </tbody>
+  </table>
+
+  <h3>FAQ</h3>
+  <p><b>Q. 기가비스랑 인텍플러스 중 뭘 사야 하나요?</b><br>
+  A. 이 리포트는 추천·우열을 말하지 않습니다. 둘은 특화 지점이 달라 <b>투자하는 이유가 다릅니다</b>. 각 입문세트를 보고
+  스스로 판단하세요.</p>
+  <p><b>Q. AI 기판이 중요하면 기판사(삼성전기 등)를 직접 사는 게 낫지 않나요?</b><br>
+  A. 접근이 다릅니다. 기판사는 '금 캐는 사람'(가격·수율 경쟁), 기가비스는 '곽쟁이·삽'(장비 공급). 각자 장단이 있어
+  무엇이 낫다고 단정할 수 없습니다.</p>
+  <p><b>Q. 입문세트를 다 봤는데 다음은?</b><br>
+  A. 고객 CAPEX·수주, 유리기판 상용화, 점유율을 추적하세요. 기판 전반은
+  <a href="https://tryingpig.github.io/study/260630_FCBGA_1_입문가이드.html">FC-BGA</a>·<a href="https://tryingpig.github.io/study/260630_유리기판_1_입문가이드.html">유리기판</a> 입문세트,
+  개념은 <a href="https://tryingpig.github.io/study/260727_ABF기판_개념설명리포트.html">ABF 기판 리포트</a>를 함께 보면 그림이 완성됩니다.</p>
+
+  <div class="note"><b>🎓 기가비스 입문세트 완료.</b> "무슨 회사인지 → 실적·투자관점 → 산업 지도" 순서로 훑었습니다.
+  이제 스스로 물을 수 있습니다 — <b>"이 회사의 성장 논리, 각 고리가 지금 몇 개나 확인됐나?"</b></div>
+
+  <div class="foot">
+    © 2026 노력하는뚱땡이 리서치 라이브러리.<br>
+    본 문서는 개인 학습용 정보 정리이며 투자 권유가 아닙니다. 기업명·점유율·영역 구분은 산업 구조 설명을 위한 개괄(보도 기준)이며, 정확한 수치는 원문·최신 자료로 확인하세요.
+  </div>
+
+</div>
+</body>
+</html>

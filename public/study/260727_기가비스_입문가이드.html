@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>기가비스 입문 가이드 — 기판 불량을 잡는 곽쟁이·삽, 완전 초보편</title>
+<link rel="stylesheet" href="/assets/report.css">
+<script src="/assets/report.js" defer></script>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<script>
+  (function () {
+    try {
+      var t = localStorage.getItem('theme');
+      if (!t) t = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      if (t === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+    } catch (e) {}
+  })();
+</script>
+</head>
+<body data-topic="invest">
+<div class="topbar">
+  <div class="topbar-in">
+    <a class="back" href="/#study">학습공간</a>
+    <span class="crumb">기가비스 입문 가이드 (완전 초보편)</span>
+    <button class="theme-toggle" type="button" aria-label="다크/라이트 전환" title="다크/라이트 전환">
+      <svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      <svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+    </button>
+  </div>
+</div>
+<div class="wrap">
+
+  <span class="kicker">기가비스 입문세트 · ① 입문가이드</span>
+  <h1>기가비스 입문 가이드<br>— 기판 불량을 잡는 곽쟁이·삽, 완전 초보편</h1>
+  <p class="sub">작성일 2026-07-27 · 개인 리서치 노트 · "이 회사 뭐 하는 곳인지"부터 아주 쉽게</p>
+
+  <div class="warn">
+    <b>⚠️ 투자 권유가 아닙니다.</b> 이 문서는 공개 정보(DART 공시·언론)를 쉽게 풀어 정리한 <b>개인 학습 노트</b>이며,
+    특정 종목의 매수·매도 추천이 아닙니다. 수치는 조회 시점 기준이며 실제와 다를 수 있습니다.
+    모든 투자 판단과 그 책임은 전적으로 본인에게 있습니다.
+  </div>
+
+  <div class="note">
+    <b>📦 이 글은 '기가비스 입문세트' 3종 중 첫 번째입니다.</b><br>
+    ① <b>입문가이드(이 글)</b> — 완전 초보용<br>
+    ② <a href="https://tryingpig.github.io/study/260727_기가비스_투자안내서.html">투자안내서</a> — 실적·재무·점유율·리스크<br>
+    ③ <a href="https://tryingpig.github.io/study/260727_기가비스_밸류체인.html">밸류체인</a> — 기판 검사 산업 지도<br><br>
+    <b>먼저 배경이 필요하면</b> — 기가비스가 검사하는 대상인 'ABF 기판'이 뭔지는
+    <a href="https://tryingpig.github.io/study/260727_ABF기판_개념설명리포트.html">ABF 기판 개념 리포트</a>에 정리돼 있습니다. 함께 보면 이해가 빠릅니다.
+  </div>
+
+  <div class="toc"><b>목차</b>
+    <ol>
+      <li>한 문단 요약 — 기가비스는 뭐 하는 회사?</li>
+      <li>'곽쟁이·삽' 회사라는 뜻</li>
+      <li>무엇을 만드나 — AOI·AOR·VRS</li>
+      <li>왜 잘나가나 — 세계 1위라는 해자</li>
+      <li>돈은 어떻게 버나 — 그리고 왜 출렁이나</li>
+      <li>회사의 뿌리와 지배구조</li>
+      <li>초보가 꼭 알아야 할 3가지 함정</li>
+      <li>한 장 요약 · 용어사전 · FAQ</li>
+    </ol>
+  </div>
+
+  <h2>1. 한 문단 요약 — 기가비스는 뭐 하는 회사?</h2>
+  <div class="callout">
+    기가비스는 <b>고성능 반도체 기판(FC-BGA·ABF 기판)이 불량인지 검사하고, 불량을 자동으로 수리해주는 광학 장비</b>를 만드는 회사입니다.
+    기판을 <b>직접 만드는 게 아니라</b>, 기판을 만드는 회사(이비덴·신코 등)에 <b>검사·수리 장비를 파는</b> 회사죠.
+    금광에 비유하면 <b>금을 캐는 사람이 아니라, 곡괭이와 삽을 파는 사람</b>입니다.
+    이 분야에서 <b>세계 1위</b>이고, 2023년 상장했으며 종목코드는 <b>420770</b>입니다.
+  </div>
+
+  <h2>2. '곽쟁이·삽' 회사라는 뜻</h2>
+  <p>투자에서 <b>"곽쟁이·삽(picks &amp; shovels)"</b>은 골드러시 때 <b>금을 캐는 사람보다, 그들에게 곡괭이·삽을 판 사람이 더 안정적으로 돈을 벌었다</b>는 데서 온 말입니다.</p>
+  <figure>
+    <div class="svgbox">
+    <svg viewBox="0 0 920 160" role="img" aria-label="곽쟁이 삽 비유">
+      <text x="10" y="24" font-size="14" font-weight="700" fill="#0f172a">AI 기판 러시에서 기가비스의 자리</text>
+      <rect x="40" y="50" width="360" height="80" rx="10" fill="#fef3c7" stroke="#d97706"/>
+      <text x="220" y="82" text-anchor="middle" font-size="13" font-weight="700" fill="#92400e">금 캐는 사람 (기판 제조사)</text>
+      <text x="220" y="106" text-anchor="middle" font-size="11" fill="#92400e">이비덴·신코·삼성전기 등 — 기판을 만들어 판다</text>
+      <rect x="520" y="50" width="360" height="80" rx="10" fill="#dcfce7" stroke="#16a34a"/>
+      <text x="700" y="82" text-anchor="middle" font-size="13" font-weight="700" fill="#166534">곽쟁이·삽 파는 사람 (기가비스)</text>
+      <text x="700" y="106" text-anchor="middle" font-size="11" fill="#166534">누가 이기든, 기판 만들면 검사장비가 필요</text>
+      <text x="460" y="95" text-anchor="middle" font-size="20" fill="#64748b">→</text>
+    </svg>
+    </div>
+    <figcaption>그림 1. 기가비스는 기판 제조 경쟁에서 누가 이기든, 기판을 만들면 필요한 '검사장비'를 판다. 출처: 개념 비유.</figcaption>
+  </figure>
+  <div class="note"><b>왜 매력적인가</b> — 어느 기판 회사가 1등이 되든, <b>기판을 만들려면 검사·수리 장비가 필요</b>합니다.
+  그래서 기가비스는 특정 기판사 하나에 걸지 않고 <b>산업 전체의 성장에 올라탈 수</b> 있습니다.
+  다만 "산업이 쉬면(고객이 투자를 멈추면) 곽쟁이도 안 팔린다"는 약점도 같이 있습니다(5·7장).</div>
+
+  <h2>3. 무엇을 만드나 — AOI·AOR·VRS</h2>
+  <p>ABF 기판은 회로가 <b>머리카락보다 훨씬 가늘어서</b> 눈으로 불량을 못 잡습니다. 그래서 광학·AI로 검사·수리하는 장비가 필요합니다.</p>
+  <table>
+    <thead><tr><th>장비</th><th>하는 일</th><th>쉽게</th></tr></thead>
+    <tbody>
+      <tr><td><b>AOI</b> (자동광학검사)</td><td>회로 패턴에 불량이 있나 자동 검사</td><td>"불량 찾기" — 주력 제품</td></tr>
+      <tr><td><b>AOR</b> (자동광학수리)</td><td>찾은 불량을 자동으로 고침</td><td>"불량 고치기" — 차별화</td></tr>
+      <tr><td><b>VRS</b> (검증)</td><td>수리·검사 결과를 최종 확인</td><td>"확인 도장"</td></tr>
+      <tr><td><b>소프트웨어</b></td><td>AI 기반 검사 알고리즘</td><td>"장비의 두뇌"</td></tr>
+    </tbody>
+  </table>
+  <div class="callout"><b>기가비스만의 강점 — '검사 + 수리'를 함께</b><br>
+  많은 검사장비 회사는 <b>불량을 찾기만(AOI)</b> 합니다. 기가비스는 <b>찾은 불량을 자동으로 수리(AOR)</b>까지 해줍니다.
+  비싼 기판을 버리지 않고 살릴 수 있으니 고객(기판사)에게 가치가 큽니다. 이 '검사+수리 세트'가 경쟁력의 핵심입니다.</div>
+
+  <h2>4. 왜 잘나가나 — 세계 1위라는 해자</h2>
+  <ul>
+    <li><b>FC-BGA 검사장비 글로벌 점유율 약 60%</b>, AOI/AOR 기준 약 50%로 <b>세계 1위</b>.</li>
+    <li>고객이 <b>이비덴·신코 등 글로벌 Top10 기판업체 대부분</b>. 최고 난이도 고객을 확보.</li>
+    <li>기판 검사는 <b>레퍼런스·신뢰가 진입장벽</b> — 한번 자리 잡으면 쉽게 안 바뀝니다.</li>
+  </ul>
+  <p class="src">출처: 삼성증권·메리츠 등 증권사 리포트(2025). 점유율 수치는 보도 기준 개괄이며 시점·정의에 따라 다를 수 있습니다.</p>
+  <div class="note"><b>한 줄</b> — 기가비스의 해자는 <b>"세계 최고 기판사들이 이미 쓰고 있다"</b>는 레퍼런스 그 자체입니다.
+  고성능 기판일수록 검사 난이도가 높아, 검증된 장비를 쉽게 바꾸지 못합니다.</div>
+
+  <h2>5. 돈은 어떻게 버나 — 그리고 왜 출렁이나</h2>
+  <p>기가비스는 장비를 <b>기판 회사에 팔아</b> 돈을 법니다. 문제는 <b>기판 회사가 '언제' 장비를 사느냐</b>입니다.</p>
+  <div class="dark">
+    기판 회사가 <b>공장을 새로 짓거나 증설할 때(CAPEX 투자)</b> → 검사장비를 왕창 삼 → 기가비스 매출 급증<br>
+    반대로 기판 회사가 <b>투자를 멈추면</b> → 장비 주문이 뚝 끊김 → 기가비스 매출 급감
+  </div>
+  <p>그래서 기가비스 실적은 <b>고객사의 설비투자(CAPEX) 사이클</b>에 통째로 연동됩니다. 이게 <b>기가비스가 사이클을 크게 타는 이유</b>입니다.
+  (실제 숫자로 보는 사이클은 <a href="https://tryingpig.github.io/study/260727_기가비스_투자안내서.html">②투자안내서</a>에서 확인.)</p>
+
+  <h2>6. 회사의 뿌리와 지배구조</h2>
+  <p>기가비스는 <b>창업자·경영진이 회사를 함께 소유한 오너 중심 기술기업</b>입니다. 최대주주 김종준(약 18%)을 비롯해
+  대표이사·사내이사 등 <b>경영진 지분 합계가 약 60.9%</b>로 매우 높습니다. 2023년 상장했고, 베트남 법인 등을 두고 있습니다.</p>
+  <p class="src">출처: DART OpenAPI, 기가비스(420770), 조회 2026-07-27. 지분율은 공시 원본(보통주 기말 기준).</p>
+  <div class="note"><b>읽는 법</b> — 경영진 지분이 높다는 건 <b>경영 안정성</b> 측면에서 긍정적일 수 있지만,
+  <b>유통 물량이 적어 주가 변동성이 커질 수</b> 있다는 뜻도 됩니다.</div>
+
+  <h2>7. 초보가 꼭 알아야 할 3가지 함정</h2>
+  <div class="grid2">
+    <div class="card"><b>함정 ① "심한 사이클"</b><br>
+    고객 CAPEX에 실적이 통째로 연동돼 <b>매출이 해마다 크게 출렁</b>입니다. 좋은 해 실적만 보고 들어가면 다음 해 급감에 놀랄 수 있습니다.
+    <b>수주·고객 투자 계획</b>을 봐야 합니다.</div>
+    <div class="card"><b>함정 ② "고객 집중"</b><br>
+    소수의 글로벌 대형 기판사에 매출이 몰려 있습니다. 한 고객의 투자 축소가 큰 타격이 될 수 있습니다.</div>
+  </div>
+  <div class="card"><b>함정 ③ "곽쟁이·삽의 양면"</b><br>
+  산업 전체에 올라타는 게 강점이지만, 반대로 <b>산업이 쉬면(기판 업황 침체) 곽쟁이도 안 팔립니다.</b>
+  "AI 붐 = 무조건 호황"이 아니라, <b>고객이 실제로 투자를 집행하는 타이밍</b>이 중요합니다.</div>
+
+  <h2>8. 한 장 요약 · 용어사전 · FAQ</h2>
+  <div class="callout">
+    <b>입문가이드 한 장 요약</b>
+    <ul>
+      <li>기가비스 = FC-BGA(ABF) 기판 <b>검사·수리 장비</b> 회사. 종목 420770.</li>
+      <li><b>곽쟁이·삽</b> 포지션 — 어느 기판사가 이기든 검사장비는 필요.</li>
+      <li>제품: <b>AOI(검사) + AOR(수리) + VRS</b>. '검사+수리'가 차별점.</li>
+      <li>지위: FC-BGA 검사장비 <b>세계 1위(점유율 ~60%)</b>, 고객 이비덴·신코.</li>
+      <li>함정: <b>심한 CAPEX 사이클</b> · 고객 집중 · 업황 침체 시 동반 부진.</li>
+    </ul>
+  </div>
+
+  <h3>용어사전 (초보용)</h3>
+  <table>
+    <tbody>
+      <tr><td><b>FC-BGA / ABF 기판</b></td><td>고성능 칩용 고급 반도체 패키지 기판</td></tr>
+      <tr><td><b>AOI</b></td><td>자동광학검사 — 불량 찾기</td></tr>
+      <tr><td><b>AOR</b></td><td>자동광학수리 — 불량 고치기</td></tr>
+      <tr><td><b>곽쟁이·삽</b></td><td>산업 전체에 장비·도구를 파는 포지션</td></tr>
+      <tr><td><b>CAPEX</b></td><td>설비투자. 고객이 공장·장비에 쓰는 돈</td></tr>
+      <tr><td><b>레퍼런스</b></td><td>"이미 쓰고 있다"는 납품 실적(진입장벽)</td></tr>
+    </tbody>
+  </table>
+
+  <h3>FAQ</h3>
+  <p><b>Q. 인텍플러스랑 같은 회사인가요?</b><br>
+  A. 아닙니다. 둘 다 반도체 기판/패키지 <b>검사장비</b> 회사이지만, 기가비스는 <b>FC-BGA 기판 내층 검사·수리(AOI/AOR) 세계 1위</b>,
+  인텍플러스는 반도체 패키지·기판 외관검사 등으로 영역이 조금 다릅니다. 비교는
+  <a href="https://tryingpig.github.io/study/260727_기가비스_밸류체인.html">③밸류체인편</a>에서 다룹니다.</p>
+  <p><b>Q. AI가 뜨면 무조건 좋은 거 아닌가요?</b><br>
+  A. 방향은 맞지만 <b>타이밍</b>이 중요합니다. AI 수요가 늘어도 고객(기판사)이 실제 투자를 집행해야 장비가 팔립니다.
+  그 시차 때문에 실적이 출렁입니다.</p>
+  <p><b>Q. 지금 사도 되나요?</b><br>
+  A. 이 글은 <b>사라/팔라를 말하지 않습니다.</b> 실적·재무·리스크는
+  <a href="https://tryingpig.github.io/study/260727_기가비스_투자안내서.html">②투자안내서</a>를 보세요.</p>
+
+  <div class="note"><b>▶ 다음</b> — <a href="https://tryingpig.github.io/study/260727_기가비스_투자안내서.html">입문세트 ② 투자안내서</a>에서
+  실적 사이클·재무·점유율·배당·리스크를 종합합니다.</div>
+
+  <div class="foot">
+    © 2026 노력하는뚱땡이 리서치 라이브러리.<br>
+    본 문서는 개인 학습용 정보 정리이며 투자 권유가 아닙니다. 점유율·시장 수치는 보도·회사자료 기준 개괄이며, 정확한 값은 원문 공시로 확인하세요.
+  </div>
+
+</div>
+</body>
+</html>

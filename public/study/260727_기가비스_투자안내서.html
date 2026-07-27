@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>기가비스 투자 안내서 — 사이클 실적·재무·점유율·리스크</title>
+<link rel="stylesheet" href="/assets/report.css">
+<script src="/assets/report.js" defer></script>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<script>
+  (function () {
+    try {
+      var t = localStorage.getItem('theme');
+      if (!t) t = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      if (t === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+    } catch (e) {}
+  })();
+</script>
+</head>
+<body data-topic="invest">
+<div class="topbar">
+  <div class="topbar-in">
+    <a class="back" href="/#study">학습공간</a>
+    <span class="crumb">기가비스 투자 안내서</span>
+    <button class="theme-toggle" type="button" aria-label="다크/라이트 전환" title="다크/라이트 전환">
+      <svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      <svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+    </button>
+  </div>
+</div>
+<div class="wrap">
+
+  <span class="kicker">기가비스 입문세트 · ② 투자안내서</span>
+  <h1>기가비스 투자 안내서<br>— 사이클 실적·재무·점유율·리스크</h1>
+  <p class="sub">작성일 2026-07-27 · 개인 리서치 노트 · DART 공시 기반 정리</p>
+
+  <div class="warn">
+    <b>⚠️ 투자 권유가 아닙니다.</b> 이 문서는 <b>DART 공시</b>와 공개 자료를 정리한 <b>개인 학습 노트</b>이며 매수·매도 추천이 아닙니다.
+    비율은 DART 원본값을 <b>자체 계산</b>한 것, 일부는 <b>보도 인용</b>으로 공시 재현이 안 됨을 명시했습니다.
+    투자 판단과 책임은 전적으로 본인에게 있습니다.
+  </div>
+
+  <div class="note">
+    <b>📦 입문세트 ② 투자안내서입니다.</b>
+    ① <a href="https://tryingpig.github.io/study/260727_기가비스_입문가이드.html">입문가이드</a> →
+    ② <b>투자안내서(이 글)</b> →
+    ③ <a href="https://tryingpig.github.io/study/260727_기가비스_밸류체인.html">밸류체인</a>.
+    이 회사의 핵심은 <b>사이클</b>입니다. 그 사이클을 숫자로 확인하는 게 이 편의 목적입니다.
+  </div>
+
+  <div class="toc"><b>목차</b>
+    <ol>
+      <li>3분 투자 요약 — 강점·약점 한눈에</li>
+      <li>실적 — 극심한 사이클의 민낯</li>
+      <li>왜 이렇게 출렁이나 — 고객 CAPEX 사이클</li>
+      <li>재무 — 매우 우량한 곳간</li>
+      <li>투자 포인트 4가지</li>
+      <li>리스크 4가지 · 밸류에이션 주의점</li>
+      <li>요약 · 체크리스트 · FAQ</li>
+    </ol>
+  </div>
+
+  <h2>1. 3분 투자 요약 — 강점·약점 한눈에</h2>
+  <div class="grid2">
+    <div class="card"><b>💪 강점</b>
+      <ul>
+        <li>FC-BGA 검사장비 <b>세계 1위</b>(점유율 ~60%)</li>
+        <li><b>검사(AOI)+수리(AOR)</b> 통합 역량</li>
+        <li><b>고마진</b>(GPM 54~58%) + <b>무차입 순현금</b></li>
+        <li>AI 기판 수요 → <b>구조적 성장</b> 잠재력</li>
+        <li>유리기판·PLP용 <b>신시장 확장</b> 시도</li>
+      </ul>
+    </div>
+    <div class="card"><b>⚠️ 약점·불확실성</b>
+      <ul>
+        <li><b>극심한 실적 사이클</b>(연도별 급등락)</li>
+        <li>고객(기판사) <b>CAPEX에 통째로 연동</b></li>
+        <li><b>고객 집중</b>(소수 글로벌 대형사)</li>
+        <li>규모 작아 <b>단일 이벤트 민감</b></li>
+        <li>신시장(유리기판) 채택 <b>시점 불확실</b></li>
+      </ul>
+    </div>
+  </div>
+
+  <h2>2. 실적 — 극심한 사이클의 민낯</h2>
+  <p>기가비스 <b>연결 기준</b> 실적입니다(단위: 억 원). 이 표 하나에 "왜 사이클 회사인가"가 다 담겨 있습니다.</p>
+  <figure>
+    <div class="svgbox">
+    <svg viewBox="0 0 920 300" role="img" aria-label="기가비스 매출과 영업이익 사이클">
+      <text x="10" y="22" font-size="14" font-weight="700" fill="#0f172a">기가비스 매출 (억 원) — 급등락 사이클</text>
+      <line x1="70" y1="240" x2="890" y2="240" stroke="#94a3b8"/>
+      <g font-size="10" fill="#64748b">
+        <line x1="70" y1="80"  x2="890" y2="80"  stroke="#e2e8f0"/><text x="34" y="84">900</text>
+        <line x1="70" y1="133" x2="890" y2="133" stroke="#e2e8f0"/><text x="34" y="137">600</text>
+        <line x1="70" y1="187" x2="890" y2="187" stroke="#e2e8f0"/><text x="34" y="191">300</text>
+      </g>
+      <!-- scale 900 over 160px(240->80). h=v/900*160 -->
+      <g font-size="12" font-weight="700" fill="#fff" text-anchor="middle">
+        <!-- 2023 914 -> 162 y=78 -->
+        <rect x="150" y="78" width="150" height="162" rx="4" fill="#4f46e5"/><text x="225" y="70" fill="#3730a3">914</text>
+        <!-- 2024 261 -> 46 y=194 -->
+        <rect x="390" y="194" width="150" height="46" rx="4" fill="#f59e0b"/><text x="465" y="186" fill="#92400e">261</text>
+        <!-- 2025 524 -> 93 y=147 -->
+        <rect x="630" y="147" width="150" height="93" rx="4" fill="#6366f1"/><text x="705" y="139" fill="#4338ca">524</text>
+      </g>
+      <g font-size="12" font-weight="700" fill="#334155" text-anchor="middle">
+        <text x="225" y="262">2023 (호황)</text><text x="465" y="262">2024 (급락)</text><text x="705" y="262">2025 (회복)</text>
+      </g>
+      <text x="480" y="288" text-anchor="middle" font-size="11" fill="#475569">매출이 914 → 261 → 524로 롤러코스터. 영업이익은 2024년 적자 전환.</text>
+    </svg>
+    </div>
+    <figcaption>그림 1. 기가비스 연결 매출. 2023 호황 → 2024 급락(영업적자) → 2025 회복. 출처: DART OpenAPI(조회 2026-07-27). ① 공시 원본.</figcaption>
+  </figure>
+  <div class="tablewrap">
+  <table>
+    <thead><tr><th>연도</th><th>매출</th><th>매출총이익</th><th>영업이익</th><th>순이익</th><th>GPM</th><th>영업이익률</th></tr></thead>
+    <tbody>
+      <tr><td class="good">2023</td><td>914</td><td>533</td><td>350</td><td>327</td><td>58.3%</td><td class="good">38.3%</td></tr>
+      <tr><td class="bad">2024</td><td>261</td><td>121</td><td><b>-18</b></td><td>34</td><td>46.4%</td><td class="bad">-6.8%</td></tr>
+      <tr><td>2025</td><td>524</td><td>284</td><td>121</td><td>155</td><td>54.1%</td><td>23.1%</td></tr>
+      <tr><td>2026 1Q</td><td>60</td><td>—</td><td class="bad">-10</td><td>6</td><td>—</td><td>적자</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p class="src">출처: DART OpenAPI, 기가비스(420770) 연결, 조회 2026-07-27. 매출·이익은 ① 공시 원본, 비율은 ② 자체 계산.</p>
+
+  <div class="callout"><b>읽는 법 — "높은 마진 + 극심한 변동"</b><br>
+  ① <b>마진은 매우 높습니다</b>(GPM 54~58%, 호황기 영업이익률 38%) — 기술·SW 기반 장비라 수익성이 좋습니다.<br>
+  ② 그런데 <b>매출이 914→261→524로 롤러코스터</b>이고 2024년·2026년 1분기엔 <b>영업적자</b>. 이게 사이클 장비주의 전형입니다.<br>
+  즉 <b>"잘 벌 땐 크게, 쉴 땐 적자"</b>. 이 회사를 볼 땐 한 해 숫자가 아니라 <b>사이클 위치</b>를 봐야 합니다.
+  (사이클 밸류에이션 원리는 <a href="https://tryingpig.github.io/study/260726_OCI홀딩스_사이클리레이팅분석.html">사이클 리레이팅 리포트</a> 참고.)</div>
+
+  <h2>3. 왜 이렇게 출렁이나 — 고객 CAPEX 사이클</h2>
+  <p>기가비스 매출은 <b>고객(기판사)이 장비를 사는 타이밍</b>에 달려 있습니다.</p>
+  <div class="dark">
+    기판사가 <b>증설(CAPEX)</b> → 검사장비 대량 발주 → 기가비스 <b>매출 급증</b><br>
+    기판사가 <b>투자 숨고르기</b> → 발주 뚝 → 기가비스 <b>매출 급감·적자</b>
+  </div>
+  <p>2023년은 기판 업황 호황으로 발주가 몰렸고, 2024년은 고객 투자 숨고르기로 급감했습니다.
+  증권사들은 <b>2026년 고객 CAPEX 증가</b>로 본업 회복 + 유리기판·PLP용 신규 수요를 기대합니다
+  (2025년 매출 약 515억, 2026년 약 635억 전망 — 보도 기준).</p>
+  <p class="src">③ 보도 기준(삼성증권·메리츠 등, 2025). 전망치는 추정이며 실제와 다를 수 있습니다.</p>
+
+  <h2>4. 재무 — 매우 우량한 곳간</h2>
+  <p>사이클은 심하지만 <b>재무는 매우 튼튼</b>합니다. 이게 사이클 저점을 버티는 힘입니다.</p>
+  <table>
+    <thead><tr><th>지표</th><th>2023</th><th>2024</th><th>2025</th></tr></thead>
+    <tbody>
+      <tr><td>부채비율</td><td class="good">6.2%</td><td>11.7%</td><td>13.4%</td></tr>
+      <tr><td>GPM</td><td>58.3%</td><td>46.4%</td><td>54.1%</td></tr>
+      <tr><td>자본총계(억)</td><td>2,126</td><td>2,057</td><td>2,110</td></tr>
+    </tbody>
+  </table>
+  <p class="src">출처: DART 원본값 기준. 부채비율·GPM은 자체 계산.</p>
+  <div class="note"><b>핵심</b> — <b>부채비율이 한 자릿수~10%대</b>로 사실상 <b>무차입 순현금</b> 회사입니다.
+  그래서 2024년 영업적자에도 <b>배당을 유지</b>했습니다(아래). 사이클 저점을 견디는 체력이 강한 편입니다.</div>
+  <p>배당도 특이합니다 — <b>주당 800원을 3년 연속 유지</b>했는데, 이익이 급감한 해엔 <b>배당성향이 297%</b>까지 치솟았습니다
+  (이익보다 많은 배당). 곳간이 튼튼해 가능한 <b>주주환원 의지</b>로 볼 수 있지만, 사이클 저점엔 배당이 이익을 초과하는 무리한 구조가 될 수 있어 지속성은 지켜봐야 합니다.</p>
+  <p class="src">출처: DART 공시 원본. 배당성향 = 배당총액/순이익(순이익 급감 시 성향이 급등).</p>
+
+  <h2>5. 투자 포인트 4가지</h2>
+  <table>
+    <thead><tr><th>포인트</th><th>내용</th><th>확인 신호</th></tr></thead>
+    <tbody>
+      <tr><td><b>① AI 기판 성장</b></td><td>AI·서버 칩 → FC-BGA 수요 구조적 증가</td><td>고객 CAPEX·기판 업황</td></tr>
+      <tr><td><b>② 세계 1위 해자</b></td><td>점유율 ~60%, 최고 난이도 고객 레퍼런스</td><td>신규 고객·점유율 유지</td></tr>
+      <tr><td><b>③ 검사+수리 통합</b></td><td>AOR(수리)로 고객 가치·차별화</td><td>AOR 매출 비중</td></tr>
+      <tr><td><b>④ 신시장(유리기판·PLP)</b></td><td>차세대 기판용 장비로 시장 확장</td><td>유리기판용 수주 발생</td></tr>
+    </tbody>
+  </table>
+
+  <h2>6. 리스크 4가지 · 밸류에이션 주의점</h2>
+  <table>
+    <thead><tr><th>리스크</th><th>내용</th></tr></thead>
+    <tbody>
+      <tr><td><b>CAPEX 사이클</b></td><td>고객 투자 숨고르기 시 매출 급감·적자(2024·26 1Q 사례)</td></tr>
+      <tr><td><b>고객 집중</b></td><td>소수 글로벌 대형 기판사 의존 — 한 곳 축소가 큰 타격</td></tr>
+      <tr><td><b>규모·유통물량</b></td><td>회사 규모가 작고 경영진 지분 높아 주가 변동성 큼</td></tr>
+      <tr><td><b>신시장 지연</b></td><td>유리기판 상용화·채택이 늦어지면 성장 스토리 지연</td></tr>
+    </tbody>
+  </table>
+  <div class="warn"><b>밸류에이션 주의.</b> 기가비스는 <b>전형적 사이클 장비주</b>라 단순 PER로 보면 함정에 빠지기 쉽습니다.
+  이익 정점(2023)엔 PER이 낮아 보이고, 적자(2024)엔 PER이 무의미해집니다. <b>정상화 이익·수주잔고·고객 CAPEX 전망</b>으로 봐야 합니다.
+  (사이클 PER 역설은 <a href="https://tryingpig.github.io/study/260726_OCI홀딩스_사이클리레이팅분석.html">사이클 리레이팅 리포트</a> 1~2장 참고.)</div>
+  <p class="src">시가총액·목표주가·컨센서스는 ③ 보도·증권사 인용 영역이며 DART 공시로 재현되지 않아 구체 수치를 제시하지 않습니다.</p>
+
+  <h2>7. 요약 · 체크리스트 · FAQ</h2>
+  <div class="callout">
+    <b>투자안내서 한 장 요약</b>
+    <ul>
+      <li>실적: 매출 <b>914(23)→261(24)→524(25)</b> 롤러코스터, 2024·26 1Q 영업적자 — <b>전형적 사이클</b>.</li>
+      <li>마진·재무: <b>GPM 54~58% 고마진 + 무차입 순현금</b>. 저점 버티는 체력.</li>
+      <li>지위: FC-BGA 검사장비 <b>세계 1위</b>(점유율 ~60%).</li>
+      <li>배당: 주당 800원 유지(적자해엔 성향 297%) — 지속성은 관찰 필요.</li>
+      <li>밸류: <b>사이클 장비주</b> — PER 함정 주의, 고객 CAPEX·정상화이익으로.</li>
+    </ul>
+  </div>
+
+  <h3>투자 전 체크리스트 (분기·이벤트마다)</h3>
+  <table>
+    <tbody>
+      <tr><td>□ 신규 수주·수주잔고 추세</td></tr>
+      <tr><td>□ 주요 고객(이비덴·신코 등) CAPEX 계획</td></tr>
+      <tr><td>□ FC-BGA·기판 업황(가동률·증설)</td></tr>
+      <tr><td>□ 유리기판·PLP용 신규 수주 발생 여부</td></tr>
+      <tr><td>□ 점유율 유지 vs 경쟁 심화</td></tr>
+      <tr><td>□ 배당 지속성(이익 대비 배당 부담)</td></tr>
+    </tbody>
+  </table>
+
+  <h3>FAQ</h3>
+  <p><b>Q. 2024년 적자면 나쁜 회사인가요?</b><br>
+  A. 사이클 장비주에서 저점 적자는 흔합니다. 중요한 건 "왜 적자였나(고객 투자 숨고르기)"와 "다시 회복하나(2025 흑자, 2026 회복 전망)"입니다.
+  좋고 나쁨이 아니라 <b>사이클 위치</b>로 봐야 합니다.</p>
+  <p><b>Q. 무차입인데 왜 이익보다 배당이 많았나요?</b><br>
+  A. 이익이 급감한 해에도 주당 배당(800원)을 유지해 배당성향이 순이익을 초과(297%)한 것입니다. 곳간이 튼튼해 가능하지만,
+  이런 구조가 계속되면 부담이 되므로 <b>지속성</b>을 봐야 합니다.</p>
+  <p><b>Q. AI 붐이면 계속 오르지 않나요?</b><br>
+  A. 수요 방향은 우호적이지만 <b>고객 투자 타이밍</b>에 따라 분기·연도별로 크게 출렁입니다. "붐=상시 호황"이 아닙니다.</p>
+
+  <div class="note"><b>▶ 다음</b> — <a href="https://tryingpig.github.io/study/260727_기가비스_밸류체인.html">입문세트 ③ 밸류체인</a>에서
+  기판 검사 산업 지도와 인텍플러스 대비, 유리기판 확장을 정리합니다.</div>
+
+  <div class="foot">
+    © 2026 노력하는뚱땡이 리서치 라이브러리.<br>
+    본 문서는 개인 학습용 정보 정리이며 투자 권유가 아닙니다. 재무 수치는 DART 공식 공시(조회 2026-07-27, 연결) 기준, 비율은 자체 계산, 점유율·전망은 보도 인용으로 공시 재현이 안 됨을 명시했습니다.
+  </div>
+
+</div>
+</body>
+</html>

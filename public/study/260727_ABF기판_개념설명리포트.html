@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ABF 기판이란 — FC-BGA·유리기판·검사장비를 한눈에 잇는 지도</title>
+<link rel="stylesheet" href="/assets/report.css">
+<script src="/assets/report.js" defer></script>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<script>
+  (function () {
+    try {
+      var t = localStorage.getItem('theme');
+      if (!t) t = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      if (t === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+    } catch (e) {}
+  })();
+</script>
+</head>
+<body data-topic="tech">
+<div class="topbar">
+  <div class="topbar-in">
+    <a class="back" href="/#study">학습공간</a>
+    <span class="crumb">ABF 기판이란 — 개념 설명</span>
+    <button class="theme-toggle" type="button" aria-label="다크/라이트 전환" title="다크/라이트 전환">
+      <svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      <svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+    </button>
+  </div>
+</div>
+<div class="wrap">
+
+  <span class="kicker">반도체 기판 · 개념 설명 리포트</span>
+  <h1>ABF 기판이란<br>— FC-BGA·유리기판·검사장비를 한눈에 잇는 지도</h1>
+  <p class="sub">작성일 2026-07-27 · 개인 리서치 노트 · "ABF 기판이 뭔지"부터 아주 쉽게</p>
+
+  <div class="warn">
+    <b>⚠️ 투자 권유가 아닙니다.</b> 이 문서는 공개 정보를 쉽게 풀어 정리한 <b>개인 학습 노트</b>이며,
+    특정 종목의 매수·매도 추천이 아닙니다. 언급된 기업명은 산업 구조 설명을 위한 것입니다.
+    모든 투자 판단과 그 책임은 전적으로 본인에게 있습니다.
+  </div>
+
+  <div class="note">
+    <b>이 리포트의 목적.</b> "ABF 기판이 뭐냐"는 질문에서 출발해, ① ABF와 FC-BGA가 무엇인지,
+    ② 왜 요즘(AI 시대) 중요한지, ③ 누가 만들고 누가 검사하는지, ④ 차세대 유리기판과 어떻게 이어지는지를
+    <b>하나의 지도</b>로 정리합니다. 이 학습공간의 관련 리포트들을 잇는 <b>허브 문서</b> 역할을 합니다.
+  </div>
+
+  <div class="callout"><b>연결되는 기존 리포트</b>
+    <ul>
+      <li>기판 심화: <a href="https://tryingpig.github.io/study/260630_FCBGA_1_입문가이드.html">FC-BGA 입문세트 ①</a> · <a href="https://tryingpig.github.io/study/260630_FCBGA_2_투자안내서.html">②</a> · <a href="https://tryingpig.github.io/study/260630_FCBGA_3_밸류체인.html">③</a></li>
+      <li>차세대: <a href="https://tryingpig.github.io/study/260630_유리기판_1_입문가이드.html">유리기판 입문세트</a></li>
+      <li>검사장비: <a href="https://tryingpig.github.io/study/260727_기가비스_입문가이드.html">기가비스 입문세트</a> · <a href="https://tryingpig.github.io/study/260704_인텍플러스_1_입문가이드.html">인텍플러스 입문세트</a></li>
+    </ul>
+  </div>
+
+  <div class="toc"><b>목차</b>
+    <ol>
+      <li>기판(substrate)이 왜 필요한가 — '통역사'</li>
+      <li>FC-BGA란 — 칩을 뒤집어 붙이는 방식</li>
+      <li>ABF란 — 아지노모토가 만든 절연 필름</li>
+      <li>왜 지금 뜨거운가 — AI가 부른 수요</li>
+      <li>누가 만드나 — ABF 기판 밸류체인</li>
+      <li>왜 검사가 중요한가 — 검사장비의 등장</li>
+      <li>차세대 — 유리기판이 ABF를 대체할까</li>
+      <li>요약 · 용어 · FAQ</li>
+    </ol>
+  </div>
+
+  <h2>1. 기판(substrate)이 왜 필요한가 — '통역사'</h2>
+  <p>반도체 칩(다이)은 <b>너무 작고 전극(다리)이 수천~수만 개</b>라 메인보드(PCB)에 바로 붙일 수 없습니다.
+  칩의 촘촘한 전극과 메인보드의 넓은 배선 사이를 <b>중간에서 이어주는 다리</b>가 필요한데, 그게 <b>패키지 기판(substrate)</b>입니다.</p>
+  <figure>
+    <div class="svgbox">
+    <svg viewBox="0 0 920 220" role="img" aria-label="칩-기판-메인보드 구조">
+      <text x="10" y="24" font-size="14" font-weight="700" fill="#0f172a">칩 → 기판(통역사) → 메인보드</text>
+      <!-- chip -->
+      <rect x="330" y="45" width="260" height="35" rx="4" fill="#1e293b"/>
+      <text x="460" y="68" text-anchor="middle" font-size="12" font-weight="700" fill="#fff">반도체 칩 (다이)</text>
+      <!-- bumps -->
+      <g fill="#f59e0b"><circle cx="360" cy="88" r="4"/><circle cx="390" cy="88" r="4"/><circle cx="420" cy="88" r="4"/><circle cx="450" cy="88" r="4"/><circle cx="480" cy="88" r="4"/><circle cx="510" cy="88" r="4"/><circle cx="540" cy="88" r="4"/><circle cx="560" cy="88" r="4"/></g>
+      <text x="640" y="92" font-size="10" fill="#92400e">← 범프(작은 땜납 공)</text>
+      <!-- substrate -->
+      <rect x="230" y="98" width="460" height="55" rx="6" fill="#6366f1"/>
+      <text x="460" y="131" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">패키지 기판 (FC-BGA / ABF 기판)</text>
+      <!-- balls -->
+      <g fill="#64748b"><circle cx="260" cy="162" r="6"/><circle cx="310" cy="162" r="6"/><circle cx="360" cy="162" r="6"/><circle cx="410" cy="162" r="6"/><circle cx="460" cy="162" r="6"/><circle cx="510" cy="162" r="6"/><circle cx="560" cy="162" r="6"/><circle cx="610" cy="162" r="6"/><circle cx="660" cy="162" r="6"/></g>
+      <text x="720" y="166" font-size="10" fill="#475569">← 볼(ball) 배열</text>
+      <!-- mainboard -->
+      <rect x="150" y="172" width="620" height="30" rx="4" fill="#16a34a"/>
+      <text x="460" y="192" text-anchor="middle" font-size="12" font-weight="700" fill="#fff">메인보드 (PCB)</text>
+    </svg>
+    </div>
+    <figcaption>그림 1. 칩(위)의 촘촘한 범프를 기판(가운데)이 받아 넓은 볼 배열로 메인보드(아래)에 연결한다. 출처: 반도체 패키지 일반 구조를 필자 정리.</figcaption>
+  </figure>
+  <div class="note"><b>한 줄</b> — 기판은 칩과 메인보드 사이의 <b>'통역사'</b>입니다. 칩이 고성능일수록 통역할 신호가 많아져
+  기판도 더 정교·고급이 돼야 합니다. 그 고급 기판의 대표가 <b>FC-BGA(=ABF 기판)</b>입니다.</div>
+
+  <h2>2. FC-BGA란 — 칩을 뒤집어 붙이는 방식</h2>
+  <p><b>FC-BGA (Flip Chip-Ball Grid Array)</b>는 이름에 방식이 다 들어 있습니다.</p>
+  <table>
+    <thead><tr><th>용어</th><th>뜻</th><th>효과</th></tr></thead>
+    <tbody>
+      <tr><td><b>Flip Chip</b></td><td>칩을 <b>뒤집어(flip)</b> 범프로 기판에 직접 붙임</td><td>신호 경로가 짧아짐 → 빠르고 저전력</td></tr>
+      <tr><td><b>Ball Grid Array</b></td><td>기판 밑면을 <b>공(ball) 배열</b>로 메인보드에 연결</td><td>많은 핀을 촘촘히 배치</td></tr>
+    </tbody>
+  </table>
+  <p>과거 방식(와이어로 칩 옆구리를 잇던 것)보다 <b>훨씬 빠르고 열도 잘 빠지고 신호도 안정적</b>이어서,
+  <b>CPU·GPU·AI 가속기 같은 고성능 칩의 표준 패키지</b>가 됐습니다.</p>
+
+  <h2>3. ABF란 — 아지노모토가 만든 절연 필름</h2>
+  <p>FC-BGA 기판은 회로를 <b>여러 층으로 쌓아(build-up)</b> 만듭니다. 이때 층과 층 사이를 절연하는 <b>필름 소재</b>가
+  <b>ABF (Ajinomoto Build-up Film)</b>입니다.</p>
+  <div class="callout"><b>재밌는 사실 — 'A'가 그 조미료 회사, 아지노모토(味の素)</b><br>
+  ABF는 일본 <b>아지노모토</b>가 개발한 에폭시계 절연 필름입니다. 조미료용 아미노산 기술에서 파생됐는데,
+  지금은 <b>고성능 반도체 기판 절연재를 사실상 독점</b>하고 있습니다. 그래서 업계에서는 FC-BGA 기판을 아예
+  <b>"ABF 기판"</b>이라고 부르기도 합니다. ABF가 있어야 <b>초미세 회로(가는 선폭)</b>를 쌓을 수 있습니다.</div>
+
+  <h2>4. 왜 지금 뜨거운가 — AI가 부른 수요</h2>
+  <p>AI·서버용 칩(GPU·가속기)은 이전보다 <b>훨씬 크고, 층수가 많고, 전극이 많은</b> 기판을 요구합니다.</p>
+  <ul>
+    <li><b>칩 대형화·고집적</b> → 더 크고 정교한 ABF 기판 필요</li>
+    <li><b>고속·고전력</b> → 신호·발열 관리가 좋은 FC-BGA가 필수</li>
+    <li><b>수량 급증</b> → AI 붐 = ABF 기판 수요 급증 = <b>기판·소재·검사장비 전반의 수혜</b></li>
+  </ul>
+  <div class="note"><b>포인트</b> — ABF 기판은 <b>AI 반도체의 '숨은 병목'</b> 중 하나로 꼽힙니다. 칩이 아무리 좋아도
+  이걸 받쳐줄 고급 기판이 부족하면 완성이 안 되기 때문입니다. 그래서 AI 스토리에서 기판·소재·검사장비가 함께 주목받습니다.</div>
+
+  <h2>5. 누가 만드나 — ABF 기판 밸류체인</h2>
+  <figure>
+    <div class="svgbox">
+    <svg viewBox="0 0 920 210" role="img" aria-label="ABF 기판 밸류체인">
+      <defs><marker id="arr" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#64748b"/></marker></defs>
+      <text x="10" y="24" font-size="14" font-weight="700" fill="#0f172a">ABF 기판 밸류체인</text>
+      <g font-size="12" font-weight="700">
+        <rect x="20"  y="55" width="200" height="95" rx="10" fill="#fef3c7" stroke="#d97706"/>
+        <text x="120" y="86" text-anchor="middle" fill="#92400e">소재</text>
+        <text x="120" y="108" text-anchor="middle" font-size="10" font-weight="400" fill="#92400e">ABF 필름: 아지노모토</text>
+        <text x="120" y="126" text-anchor="middle" font-size="10" font-weight="400" fill="#92400e">동박·유리섬유 등</text>
+
+        <rect x="270" y="55" width="220" height="95" rx="10" fill="#e0e7ff" stroke="#6366f1"/>
+        <text x="380" y="86" text-anchor="middle" fill="#3730a3">기판 제조(FC-BGA)</text>
+        <text x="380" y="108" text-anchor="middle" font-size="10" font-weight="400" fill="#3730a3">이비덴·신코·유니마이크론</text>
+        <text x="380" y="126" text-anchor="middle" font-size="10" font-weight="400" fill="#3730a3">삼성전기·대덕전자 등</text>
+
+        <rect x="540" y="55" width="170" height="95" rx="10" fill="#dcfce7" stroke="#16a34a"/>
+        <text x="625" y="86" text-anchor="middle" fill="#166534">검사·수리 장비</text>
+        <text x="625" y="108" text-anchor="middle" font-size="10" font-weight="700" fill="#166534">기가비스 ★</text>
+        <text x="625" y="126" text-anchor="middle" font-size="10" font-weight="400" fill="#166534">인텍플러스 등</text>
+
+        <rect x="760" y="55" width="140" height="95" rx="10" fill="#dbeafe" stroke="#2563eb"/>
+        <text x="830" y="86" text-anchor="middle" fill="#1d4ed8">수요처</text>
+        <text x="830" y="108" text-anchor="middle" font-size="10" font-weight="400" fill="#1d4ed8">인텔·엔비디아·AMD</text>
+        <text x="830" y="126" text-anchor="middle" font-size="10" font-weight="400" fill="#1d4ed8">AI·서버 칩</text>
+      </g>
+      <g stroke="#64748b" stroke-width="2">
+        <line x1="222" y1="102" x2="268" y2="102" marker-end="url(#arr)"/>
+        <line x1="492" y1="102" x2="538" y2="102" marker-end="url(#arr)"/>
+        <line x1="712" y1="102" x2="758" y2="102" marker-end="url(#arr)"/>
+      </g>
+      <text x="460" y="180" text-anchor="middle" font-size="11" fill="#475569">검사·수리 장비(기가비스)는 '기판 제조' 단계 옆에서 불량을 잡아주는 곽쟁이·삽 포지션</text>
+    </svg>
+    </div>
+    <figcaption>그림 2. ABF 기판 밸류체인 — 소재(아지노모토) → 기판 제조(이비덴·신코 등) → 검사장비(기가비스) → 수요처(AI 칩). 출처: 업계 구조를 필자 정리(기업명은 예시).</figcaption>
+  </figure>
+  <div class="note"><b>기억할 구분</b> — <b>ABF 소재</b>(아지노모토)와 <b>ABF 기판 제조</b>(이비덴·신코·삼성전기 등)와
+  <b>검사장비</b>(기가비스)는 <b>서로 다른 회사</b>입니다. "기가비스는 ABF 기판을 만드는 게 아니라, 만들어진 걸 검사·수리한다"는 점이 핵심입니다.</div>
+
+  <h2>6. 왜 검사가 중요한가 — 검사장비의 등장</h2>
+  <p>ABF 기판은 회로가 <b>머리카락보다 훨씬 가늘고</b> 층이 많아, <b>아주 작은 불량 하나도 치명적</b>입니다.
+  게다가 기판은 비싸서 불량이 나면 손실이 큽니다. 그래서 <b>공정 단계마다 검사(AOI)와 수리(AOR)</b>가 필수입니다.</p>
+  <table>
+    <thead><tr><th>장비</th><th>역할</th></tr></thead>
+    <tbody>
+      <tr><td><b>AOI</b> (자동광학검사)</td><td>회로 패턴에 불량이 있는지 광학으로 검사</td></tr>
+      <tr><td><b>AOR</b> (자동광학수리)</td><td>검출된 불량을 자동으로 수리(리페어)</td></tr>
+      <tr><td><b>VRS</b> (검증)</td><td>최종 확인</td></tr>
+    </tbody>
+  </table>
+  <div class="callout"><b>여기가 기가비스의 무대</b> — 기가비스는 이 <b>FC-BGA 기판 검사·수리 장비</b>에서
+  <b>글로벌 점유율 약 60%(AOI/AOR 세계 1위)</b>를 가진 회사입니다. AI로 기판 수요가 늘수록 검사장비 수요도 늘어나는
+  <b>곽쟁이·삽(picks &amp; shovels)</b> 포지션이죠. 자세한 회사 분석은
+  <a href="https://tryingpig.github.io/study/260727_기가비스_입문가이드.html">기가비스 입문세트</a> 참고.</div>
+
+  <h2>7. 차세대 — 유리기판이 ABF를 대체할까</h2>
+  <p>ABF 기판(유기 소재)은 대형화·고집적에서 한계(휨·미세화)가 지적됩니다. 그 대안으로 떠오른 게 <b>유리기판(Glass Substrate)</b>입니다.</p>
+  <table>
+    <thead><tr><th>구분</th><th>ABF 기판(현재)</th><th>유리기판(차세대)</th></tr></thead>
+    <tbody>
+      <tr><td>코어 소재</td><td>유기(플라스틱)+ABF</td><td>유리</td></tr>
+      <tr><td>장점</td><td>성숙·양산 안정</td><td>평탄·대형·미세화 유리</td></tr>
+      <tr><td>단점</td><td>휨·미세화 한계</td><td>깨짐·양산 초기</td></tr>
+      <tr><td>시점</td><td>지금 주력</td><td>2020년대 후반 상용화 시도</td></tr>
+    </tbody>
+  </table>
+  <div class="note"><b>포인트</b> — 유리기판이 확산되면 <b>검사장비도 유리기판용으로 진화</b>해야 합니다. 기가비스가 유리기판·PLP용
+  신규 장비로 확장하려는 이유입니다. 유리기판 자체는 <a href="https://tryingpig.github.io/study/260630_유리기판_1_입문가이드.html">유리기판 입문세트</a>에서 다룹니다.</div>
+
+  <h2>8. 요약 · 용어 · FAQ</h2>
+  <div class="callout">
+    <b>한 장 요약</b>
+    <ul>
+      <li>기판 = 칩과 메인보드를 잇는 <b>'통역사'</b>. 고성능 칩용 고급 기판이 <b>FC-BGA</b>.</li>
+      <li><b>ABF</b> = 아지노모토가 만든 층간 절연 필름. FC-BGA를 "ABF 기판"이라 부르는 이유.</li>
+      <li>AI 붐 → 크고 정교한 ABF 기판 수요 급증 → <b>소재·기판·검사장비 전반 수혜</b>.</li>
+      <li>밸류체인: 소재(아지노모토) → 기판(이비덴·신코·삼성전기) → <b>검사장비(기가비스)</b> → AI 칩.</li>
+      <li>차세대 <b>유리기판</b>이 ABF 한계를 넘으려 하고, 검사장비도 함께 진화.</li>
+    </ul>
+  </div>
+
+  <h3>용어사전</h3>
+  <table>
+    <tbody>
+      <tr><td><b>substrate(기판)</b></td><td>칩과 메인보드를 잇는 패키지 받침판</td></tr>
+      <tr><td><b>FC-BGA</b></td><td>칩을 뒤집어 붙이고 볼 배열로 연결하는 고급 기판</td></tr>
+      <tr><td><b>ABF</b></td><td>아지노모토 빌드업 필름. FC-BGA 층간 절연재</td></tr>
+      <tr><td><b>build-up</b></td><td>회로를 여러 층으로 쌓아 올리는 공정</td></tr>
+      <tr><td><b>AOI/AOR</b></td><td>자동광학검사 / 자동광학수리</td></tr>
+      <tr><td><b>유리기판</b></td><td>유리를 코어로 쓰는 차세대 기판</td></tr>
+    </tbody>
+  </table>
+
+  <h3>FAQ</h3>
+  <p><b>Q. ABF 기판이랑 FC-BGA는 같은 말인가요?</b><br>
+  A. 거의 같이 쓰입니다. 정확히는 FC-BGA가 패키지 '방식'이고, 그걸 만들 때 ABF 필름을 절연재로 써서
+  "ABF 기판"이라 부릅니다. 실무에선 사실상 같은 걸 가리키는 경우가 많습니다.</p>
+  <p><b>Q. 삼성E&A랑 관련 있나요?</b><br>
+  A. 없습니다. 삼성E&A는 플랜트 EPC 회사이고, ABF 기판은 반도체 패키지 분야입니다. 이 리포트는 반도체 기판·검사장비
+  (FC-BGA·유리기판·기가비스·인텍플러스) 계열과 연결됩니다.</p>
+  <p><b>Q. 그럼 어디에 투자 기회가 있나요?</b><br>
+  A. 이 리포트는 개념 지도이며 추천을 하지 않습니다. 밸류체인 각 칸(소재·기판·검사장비)마다 다른 회사가 있으니,
+  관심 가는 칸의 개별 리포트를 보며 스스로 판단하세요.</p>
+
+  <div class="foot">
+    © 2026 노력하는뚱땡이 리서치 라이브러리.<br>
+    본 문서는 개인 학습용 정보 정리이며 투자 권유가 아닙니다. 기업명·구조는 산업 설명을 위한 개괄이며, 정확한 내용은 원문·최신 자료로 확인하세요.
+  </div>
+
+</div>
+</body>
+</html>

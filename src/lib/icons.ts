@@ -36,6 +36,7 @@ export const TOPIC_ICONS: [RegExp, string][] = [
   [/기가비스/, 'gigavis'],
   [/KKR/i, 'cashbundle'],
   [/SK신재생|신재생통합법인|울산DC|전력|송전/i, 'powerpylon'],
+  [/SOCAMM|소캠/i, 'socamm'],
 ];
 
 /* 매칭되는 주제가 없을 때 — 파일명 해시로 색과 무늬가 정해지는 픽셀 타일.

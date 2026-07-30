@@ -985,6 +985,36 @@
         "..ss........ss..",
         "................"
       ]
+    },
+    "socamm": {
+      "bg": [
+        "#0f1a14",
+        "#08120c"
+      ],
+      "palette": {
+        "g": "#33a35c",
+        "h": "#5fd989",
+        "k": "#26262e",
+        "y": "#d9ad33"
+      },
+      "grid": [
+        "................",
+        "................",
+        "................",
+        "..hhhhhhhhhhhh..",
+        "..gggggggggggg..",
+        "..gkkkkggkkkkg..",
+        "..gkkkkggkkkkg..",
+        "..gggggggggggg..",
+        "..gkkkkggkkkkg..",
+        "..gkkkkggkkkkg..",
+        "..gggggggggggg..",
+        "..gggggggggggg..",
+        "..yyyyyyyyyyyy..",
+        "..y.y.y.y.y.y...",
+        "................",
+        "................"
+      ]
     }
   }
 }

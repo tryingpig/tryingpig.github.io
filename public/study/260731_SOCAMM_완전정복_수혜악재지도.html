@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SOCAMM 완전정복 — 개념부터 Vera Rubin 용량축소 수혜·악재 지도까지</title>
+<link rel="stylesheet" href="/assets/report.css">
+<script src="/assets/report.js" defer></script>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<script>
+  (function () {
+    try {
+      var t = localStorage.getItem('theme');
+      if (!t) t = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      if (t === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+    } catch (e) {}
+  })();
+</script>
+</head>
+<body data-topic="invest">
+<div class="topbar">
+  <div class="topbar-in">
+    <a class="back" href="/#study">학습공간</a>
+    <span class="crumb">SOCAMM 완전정복 — 수혜·악재 지도</span>
+    <button class="theme-toggle" type="button" aria-label="다크/라이트 전환" title="다크/라이트 전환">
+      <svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      <svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+    </button>
+  </div>
+</div>
+<div class="wrap">
+
+  <span class="kicker">AI 반도체 · SOCAMM 심층 분석</span>
+  <h1>SOCAMM 완전정복<br>— 개념부터 Vera Rubin 용량축소 수혜·악재 지도까지</h1>
+  <p class="sub">작성일 2026-07-31 · 개인 리서치 노트 · TrendForce "Vera Rubin SOCAMM 용량 반토막" 보도(2026-07-28)에서 출발</p>
+
+  <div class="warn">
+    <b>⚠️ 투자 권유가 아닙니다.</b> 이 문서는 공개 정보(TrendForce·디일렉·증권사 등)를 정리·해석한 <b>개인 학습 노트</b>이며
+    매수·매도 추천이 아닙니다. <b>수혜/악재에 등장하는 기업명은 밸류체인 구조를 설명하기 위한 예시</b>이지 투자 대상 추천이 아닙니다.
+    수치는 보도 기준이며 추정·전망이 포함돼 실제와 다를 수 있습니다. 모든 투자 판단과 책임은 전적으로 본인에게 있습니다.
+  </div>
+
+  <div class="note">
+    <b>이 리포트의 출발점.</b> TrendForce 보도(2026-07-28) — <i>"NVIDIA가 메모리 비용이 시스템 BOM의 29%에 육박하자
+    Vera Rubin의 SOCAMM 용량을 절반으로 줄였다"</i>. 여기서 나온 질문 두 개 — <b>"① SOCAMM이 대체 뭔가? ② 용량이 줄면
+    어디가 수혜이고 어디가 악재인가?"</b> — 를 개념부터 밸류체인 수혜 지도까지 통째로 정리합니다.
+  </div>
+
+  <div class="callout"><b>3줄 결론 (먼저)</b>
+    <ol>
+      <li><b>SOCAMM</b> = 엔비디아가 AI 서버 CPU용으로 미는 <b>저전력 D램(LPDDR) 모듈</b>. HBM을 대체가 아니라 <b>보완</b>.</li>
+      <li>이번 용량 반토막(192→96GB)은 <b>메모리가 너무 비싸(BOM 29%)+공급 부족</b>해서 엔비디아가 <b>원가를 방어</b>한 것. 칼날은 <b>HBM이 아니라 LPDDR에만</b> 떨어짐.</li>
+      <li>→ 수혜: <b>HBM(SK하이닉스)·기판/소켓/후공정</b>. 부담: <b>LPDDR 콘텐츠·SOCAMM 고성장 기대</b>. LPDDR 3사는 복합.</li>
+    </ol>
+  </div>
+
+  <div class="toc"><b>목차</b>
+    <ol>
+      <li>SOCAMM이란 — 개념과 위치</li>
+      <li>SOCAMM은 어떻게 생겼나 — 구조와 제품 세대</li>
+      <li>이번 사건 — Vera Rubin 용량 반토막의 전말</li>
+      <li>핵심 도식 — HBM은 보호, LPDDR만 삭감</li>
+      <li>용량이 줄면 왜 '기판'은 웃나 — 개수의 논리</li>
+      <li>수혜·악재 지도</li>
+      <li>메모리 3사 — 복합적 영향</li>
+      <li>시장의 오해 — '악재'로 급락했지만</li>
+      <li>종합 · 확인 체크리스트 · 용어 · FAQ</li>
+    </ol>
+  </div>
+
+  <h2>1. SOCAMM이란 — 개념과 위치</h2>
+  <p><b>SOCAMM(Small Outline Compression Attached Memory Module)</b>은 엔비디아가 밀고 있는 <b>AI 서버 전용 저전력 D램 모듈</b>입니다.
+  이름이 어렵지만 뜯어보면 간단합니다 — <b>작고(Small Outline) 눌러 붙이는(Compression Attached) 메모리 모듈</b>.</p>
+  <ul>
+    <li><b>바탕 소재:</b> HBM이 아니라 <b>LPDDR(저전력 D램)</b> — 원래 스마트폰에 쓰던 전력 적게 먹는 D램 계열.</li>
+    <li><b>역할:</b> HBM을 <b>대체가 아니라 보완</b>. HBM은 GPU에 딱 붙는 초고속 메모리, SOCAMM은 그 옆 <b>CPU(그레이스·베라)용 대용량 시스템 메모리</b>.</li>
+    <li><b>강점:</b> 마이크론 기준 기존 서버 메모리(<b>RDIMM</b>) 대비 <b>대역폭 2.5배, 전력 소비 1/3</b>. 게다가 <b>모듈형이라 교체·확장이 쉬움</b>.</li>
+    <li><b>탑재처:</b> 엔비디아 <b>GB300(블랙웰)</b>, 차세대 <b>SOCAMM2는 '베라 루빈(Vera Rubin)'</b>.</li>
+  </ul>
+
+  <figure>
+    <div class="svgbox">
+    <svg viewBox="0 0 920 210" role="img" aria-label="AI 서버 안 HBM과 SOCAMM 위치">
+      <text x="10" y="24" font-size="14" font-weight="700" fill="#0f172a">AI 서버 안에서 HBM과 SOCAMM의 위치</text>
+      <!-- GPU + HBM -->
+      <rect x="60" y="55" width="330" height="120" rx="12" fill="#faf5ff" stroke="#9333ea"/>
+      <text x="225" y="80" text-anchor="middle" font-size="12" font-weight="700" fill="#6b21a8">GPU 영역</text>
+      <rect x="150" y="95" width="150" height="45" rx="6" fill="#7c3aed"/>
+      <text x="225" y="122" text-anchor="middle" font-size="12" font-weight="700" fill="#fff">GPU</text>
+      <rect x="95" y="95" width="45" height="45" rx="4" fill="#c084fc"/><text x="117" y="122" text-anchor="middle" font-size="10" font-weight="700" fill="#4a044e">HBM</text>
+      <rect x="310" y="95" width="45" height="45" rx="4" fill="#c084fc"/><text x="332" y="122" text-anchor="middle" font-size="10" font-weight="700" fill="#4a044e">HBM</text>
+      <text x="225" y="162" text-anchor="middle" font-size="10" fill="#6b21a8">HBM = GPU에 딱 붙는 초고속 메모리(대체 불가)</text>
+      <!-- CPU + SOCAMM -->
+      <rect x="530" y="55" width="330" height="120" rx="12" fill="#eff6ff" stroke="#2563eb"/>
+      <text x="695" y="80" text-anchor="middle" font-size="12" font-weight="700" fill="#1d4ed8">CPU 영역</text>
+      <rect x="620" y="95" width="150" height="45" rx="6" fill="#2563eb"/>
+      <text x="695" y="122" text-anchor="middle" font-size="12" font-weight="700" fill="#fff">CPU(베라)</text>
+      <rect x="565" y="95" width="45" height="45" rx="4" fill="#93c5fd"/><text x="587" y="118" text-anchor="middle" font-size="9" font-weight="700" fill="#1e3a8a">SO-</text><text x="587" y="130" text-anchor="middle" font-size="9" font-weight="700" fill="#1e3a8a">CAMM</text>
+      <rect x="780" y="95" width="45" height="45" rx="4" fill="#93c5fd"/><text x="802" y="118" text-anchor="middle" font-size="9" font-weight="700" fill="#1e3a8a">SO-</text><text x="802" y="130" text-anchor="middle" font-size="9" font-weight="700" fill="#1e3a8a">CAMM</text>
+      <text x="695" y="162" text-anchor="middle" font-size="10" fill="#1d4ed8">SOCAMM = CPU용 대용량 시스템 메모리(LPDDR 모듈)</text>
+    </svg>
+    </div>
+    <figcaption>그림 1. AI 서버에서 HBM(GPU 옆)과 SOCAMM(CPU 옆)의 역할 구분. 둘은 경쟁이 아니라 분업. 출처: 업계 구조를 필자 정리(개념도).</figcaption>
+  </figure>
+
+  <div class="callout"><b>가장 중요한 오해 풀기</b> — "SOCAMM이 HBM을 대체한다"는 자극적 표현이 있지만, 실제로는
+  <b>서로 다른 자리(GPU 옆 HBM vs CPU 옆 SOCAMM)에서 각자 역할</b>을 합니다. 이 구분이 3~4장에서 <b>"왜 이번 삭감이 HBM엔
+  타격이 아니고 LPDDR에만 타격인가"</b>의 열쇠가 됩니다.</div>
+
+  <h2>2. SOCAMM은 어떻게 생겼나 — 구조와 제품 세대</h2>
+  <p>SOCAMM은 <b>LPDDR D램 여러 개를 얹어 만든 모듈</b>입니다. 용량은 <b>D램을 몇 단으로 쌓느냐(적층)</b>로 결정됩니다.</p>
+  <table>
+    <thead><tr><th>구분</th><th>내용</th></tr></thead>
+    <tbody>
+      <tr><td>기본 단위</td><td>12GB LPDDR5X 패키지</td></tr>
+      <tr><td>192GB 구성(원안)</td><td>12GB를 <b>4단 적층 × 4패키지</b> = 192GB</td></tr>
+      <tr><td>96GB 구성(수정안)</td><td>적층을 <b>2단으로 축소</b> = 96GB</td></tr>
+      <tr><td>제품 세대</td><td><b>SOCAMM</b>(GB300용) → <b>SOCAMM2</b>(베라 루빈용)</td></tr>
+      <tr><td>공급 3사</td><td>삼성전자·SK하이닉스·마이크론 (초기 양산승인은 마이크론이 먼저)</td></tr>
+    </tbody>
+  </table>
+  <p class="src">출처: 디일렉·ZDNet·세계일보 등(2025~2026). SK하이닉스는 SOCAMM2 192GB 양산을 개시했고, 삼성도 SOCAMM2 물량 상당분 공급이 거론됐습니다.</p>
+
+  <div class="note"><b>핵심 개념</b> — <b>"적층 단수 = 용량"</b>입니다. 4단(192GB)에서 2단(96GB)으로 줄이면 <b>모듈 하나에 들어가는
+  D램 양이 절반</b>이 됩니다. 이 단순한 사실이 6~7장 수혜/악재의 갈림길입니다.</div>
+
+  <h2>3. 이번 사건 — Vera Rubin 용량 반토막의 전말</h2>
+  <p>TrendForce(2026-07-28) 보도의 핵심은 이렇습니다.</p>
+
+  <figure>
+    <div class="svgbox">
+    <svg viewBox="0 0 920 220" role="img" aria-label="Vera Rubin BOM 메모리 비중">
+      <text x="10" y="24" font-size="14" font-weight="700" fill="#0f172a">왜 줄였나 — 메모리가 시스템 원가(BOM)의 29%까지</text>
+      <!-- bar 1 -->
+      <text x="60" y="70" font-size="12" font-weight="700" fill="#334155">원안: 메모리 29%</text>
+      <rect x="60" y="80" width="600" height="34" rx="4" fill="#e2e8f0"/>
+      <rect x="60" y="80" width="174" height="34" rx="4" fill="#dc2626"/>
+      <text x="147" y="102" text-anchor="middle" font-size="12" font-weight="700" fill="#fff">29%</text>
+      <text x="675" y="102" font-size="11" fill="#991b1b">← 엔비디아 선호선(20%) 크게 초과</text>
+      <!-- bar 2 -->
+      <text x="60" y="150" font-size="12" font-weight="700" fill="#334155">목표: 메모리 20%대</text>
+      <rect x="60" y="160" width="600" height="34" rx="4" fill="#e2e8f0"/>
+      <rect x="60" y="160" width="120" height="34" rx="4" fill="#16a34a"/>
+      <text x="120" y="182" text-anchor="middle" font-size="12" font-weight="700" fill="#fff">~20%</text>
+      <text x="675" y="182" font-size="11" fill="#166534">← SOCAMM 반토막으로 비용 방어</text>
+    </svg>
+    </div>
+    <figcaption>그림 2. Vera Rubin(VR200) BOM에서 메모리 비중 29% → 선호선 20% 초과가 삭감의 직접 동기. 출처: TrendForce·GF Securities·Wccftech(2026.07).</figcaption>
+  </figure>
+
+  <div class="tablewrap">
+  <table>
+    <thead><tr><th>항목</th><th>수치(보도 기준)</th></tr></thead>
+    <tbody>
+      <tr><td>VR200 시스템 BOM</td><td>약 <b>$210만</b> — 이 중 메모리가 <b>~29%</b>(선호선 20% 초과)</td></tr>
+      <tr><td>NVL72 랙 원가</td><td>약 <b>$910만</b> (Bernstein)</td></tr>
+      <tr><td>HBM4 가격 전망</td><td>2027년까지 <b>GB당 $53</b>까지 상승</td></tr>
+      <tr><td>SOCAMM 용량</td><td>Vera CPU당 <b>192GB → 96GB</b></td></tr>
+      <tr><td>CPU 총 메모리</td><td><b>55TB → 28TB</b> (반토막)</td></tr>
+      <tr><td>GPU HBM4</td><td>랙당 <b>20.7TB 불변</b> ★</td></tr>
+      <tr><td>LPDDR5X 비용</td><td>$120만 → <b>$58.6만</b> (최악 시 $29.3만)</td></tr>
+      <tr><td>LPDRAM 공급</td><td>엔비디아 기대 수요의 <b>약 60%만</b> 확보 가능(공급 부족)</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p class="src">출처: TrendForce(2026-07-28), GF Securities·Bernstein·Wccftech 인용. 전망·추정치 포함.</p>
+
+  <div class="callout"><b>두 개의 동기</b> — 이번 삭감은 <b>① 비용(메모리가 BOM 29%로 너무 비쌈)</b>과
+  <b>② 공급 부족(원하는 LPDRAM의 60%만 확보)</b>이 겹친 결과입니다. 즉 <b>"수요가 죽어서"가 아니라 "너무 비싸고 물량이 모자라서"</b>
+  엔비디아가 스펙을 낮춘 것입니다. 그리고 낮추면 <b>같은 LPDDR으로 더 많은 Vera CPU를 만들 수</b> 있어 생산량도 지킵니다.</div>
+
+  <h2>4. 핵심 도식 — HBM은 보호, LPDDR만 삭감</h2>
+  <p>이 리포트에서 <b>가장 중요한 한 장</b>입니다. 삭감의 칼날이 어디에 떨어졌는지 보면 수혜/악재가 저절로 갈립니다.</p>
+  <figure>
+    <div class="svgbox">
+    <svg viewBox="0 0 920 230" role="img" aria-label="HBM 불변 LPDDR 삭감">
+      <text x="10" y="24" font-size="14" font-weight="700" fill="#0f172a">삭감은 LPDDR(SOCAMM)에만 — HBM은 그대로</text>
+      <!-- HBM unchanged -->
+      <rect x="60" y="55" width="360" height="140" rx="12" fill="#f0fdf4" stroke="#16a34a"/>
+      <text x="240" y="82" text-anchor="middle" font-size="13" font-weight="700" fill="#166534">GPU HBM4 — 불변 ✅</text>
+      <rect x="110" y="100" width="260" height="40" rx="6" fill="#16a34a"/>
+      <text x="240" y="126" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">랙당 20.7TB (그대로)</text>
+      <text x="240" y="168" text-anchor="middle" font-size="11" fill="#166534">HBM 진영(특히 SK하이닉스)은 타격 없음</text>
+      <text x="240" y="186" text-anchor="middle" font-size="11" fill="#166534">+ 가격 강세 + 엔비디아 장기계약</text>
+      <!-- LPDDR halved -->
+      <rect x="500" y="55" width="360" height="140" rx="12" fill="#fef2f2" stroke="#dc2626"/>
+      <text x="680" y="82" text-anchor="middle" font-size="13" font-weight="700" fill="#991b1b">CPU LPDDR(SOCAMM) — 반토막 📉</text>
+      <rect x="540" y="100" width="280" height="40" rx="6" fill="#fca5a5"/>
+      <rect x="540" y="100" width="140" height="40" rx="6" fill="#dc2626"/>
+      <text x="610" y="126" text-anchor="middle" font-size="12" font-weight="700" fill="#fff">55→28TB</text>
+      <text x="760" y="126" text-anchor="middle" font-size="11" fill="#991b1b">절반↓</text>
+      <text x="680" y="168" text-anchor="middle" font-size="11" fill="#991b1b">LPDDR 콘텐츠·SOCAMM 성장 기대 타격</text>
+      <text x="680" y="186" text-anchor="middle" font-size="11" fill="#991b1b">(단, 모듈 개수는 오히려 증가 → 5장)</text>
+    </svg>
+    </div>
+    <figcaption>그림 3. 삭감의 칼날은 CPU용 LPDDR(SOCAMM)에만 떨어지고 GPU HBM4는 불변. 출처: TrendForce(2026.07) 수치를 필자 도식화.</figcaption>
+  </figure>
+  <div class="callout"><b>이 그림이 전부다</b> — <b>HBM은 안 건드렸다(20.7TB 불변).</b> 그러니 "SOCAMM 축소 = SK하이닉스 위기"는
+  <b>오해</b>입니다. 오히려 엔비디아–SK는 <b>$5,000억+ 전략적 파트너십 LOI</b>(6월 SK하이닉스 장기 메모리 공급계약 포함)로 더 밀착했습니다.
+  삭감은 <b>LPDDR/SOCAMM 몫</b>입니다.</div>
+
+  <h2>5. 용량이 줄면 왜 '기판'은 웃나 — 개수의 논리</h2>
+  <p>직관과 반대되는 부분입니다. "메모리 용량이 줄면 다 나쁜 것 아닌가?" — 아닙니다. <b>모듈당 용량↓ → 모듈 개수↑</b>이기 때문입니다.</p>
+  <figure>
+    <div class="svgbox">
+    <svg viewBox="0 0 920 180" role="img" aria-label="용량 축소와 모듈 개수 증가">
+      <text x="10" y="24" font-size="14" font-weight="700" fill="#0f172a">같은 총량을 채우려면 → 모듈 '개수'가 늘어난다</text>
+      <text x="70" y="70" font-size="12" font-weight="700" fill="#334155">192GB 모듈 (4단)</text>
+      <rect x="70" y="80" width="70" height="50" rx="6" fill="#6366f1"/><text x="105" y="110" text-anchor="middle" font-size="11" fill="#fff">192</text>
+      <rect x="160" y="80" width="70" height="50" rx="6" fill="#6366f1"/><text x="195" y="110" text-anchor="middle" font-size="11" fill="#fff">192</text>
+      <text x="150" y="150" font-size="10" fill="#64748b">모듈 2개로 384GB</text>
+      <text x="470" y="70" font-size="12" font-weight="700" fill="#334155">96GB 모듈 (2단) — 개수 2배</text>
+      <rect x="470" y="80" width="55" height="50" rx="6" fill="#16a34a"/><text x="497" y="110" text-anchor="middle" font-size="10" fill="#fff">96</text>
+      <rect x="535" y="80" width="55" height="50" rx="6" fill="#16a34a"/><text x="562" y="110" text-anchor="middle" font-size="10" fill="#fff">96</text>
+      <rect x="600" y="80" width="55" height="50" rx="6" fill="#16a34a"/><text x="627" y="110" text-anchor="middle" font-size="10" fill="#fff">96</text>
+      <rect x="665" y="80" width="55" height="50" rx="6" fill="#16a34a"/><text x="692" y="110" text-anchor="middle" font-size="10" fill="#fff">96</text>
+      <text x="595" y="150" font-size="10" fill="#64748b">모듈 4개로 384GB → 기판·소켓 2배</text>
+    </svg>
+    </div>
+    <figcaption>그림 4. 모듈당 용량이 절반이 되면, 같은 총량을 채우는 데 필요한 모듈 개수는 2배. 기판·소켓·후공정은 '개수'에 비례. 출처: 개념 도식.</figcaption>
+  </figure>
+  <p>실제로 디일렉 보도에 따르면 <b>192GB 물량은 반토막, 96GB 주문은 약 6배 급증</b>해 96GB가 주력이 됐습니다.
+  그래서 기사 제목이 <b>"엔비디아 고육지책에 기판 업계는 '방긋'"</b>이었습니다.</p>
+  <div class="note"><b>무엇에 비례하는지가 관건</b> —
+  <b>모듈 '개수'에 비례하는 것(기판·소켓·후공정)</b>은 수혜, <b>모듈당 'D램 콘텐츠·적층 단수'에 비례하는 것(고용량·고단적층 프리미엄)</b>은 부담.
+  이 한 문장이 다음 장 수혜/악재 지도의 원리입니다.</div>
+
+  <h2>6. 수혜·악재 지도</h2>
+
+  <h3>✅ 수혜 / 보호받는 쪽</h3>
+  <div class="tablewrap">
+  <table>
+    <thead><tr><th>대상</th><th>왜 수혜/보호</th><th>예시(밸류체인 설명용)</th></tr></thead>
+    <tbody>
+      <tr><td><b>HBM 진영 (특히 SK하이닉스)</b></td><td>삭감이 <b>HBM은 안 건드림</b>(20.7TB 불변) + HBM4 가격 강세($53/GB) + 엔비디아 $5,000억 LOI·장기공급</td><td>SK하이닉스</td></tr>
+      <tr><td><b>모듈 기판(PCB)</b></td><td>모듈 <b>개수↑</b> → 기판 수요↑</td><td>심텍·티엘비(TLB)·대덕전자·코리아써키트</td></tr>
+      <tr><td><b>소켓·커넥터</b></td><td>모듈 개수↑ → 소켓 물량↑</td><td>마이크로컨텍솔 등</td></tr>
+      <tr><td><b>후공정(패키징·테스트)</b></td><td>모듈·패키지 개수↑ → 테스트↑</td><td>에이팩트·티에스이 등</td></tr>
+      <tr><td><b>부품 소재(솔더볼·전구체)</b></td><td>개수↑ → 소재 수요↑</td><td>엠케이전자·레이크머티리얼즈 등</td></tr>
+      <tr><td><b>엔비디아 자신</b></td><td>BOM 메모리 29%→20% 지향, Vera CPU 생산량↑, 공급리스크↓</td><td>—</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3>⚠️ 악재 / 부담받는 쪽</h3>
+  <div class="tablewrap">
+  <table>
+    <thead><tr><th>대상</th><th>왜 부담</th></tr></thead>
+    <tbody>
+      <tr><td><b>LPDDR 콘텐츠·SOCAMM 성장 기대</b></td><td>시스템당 LPDDR 매출 급감 — LPDDR5X 비용 $120만 → $58.6만(최악 $29.3만). "SOCAMM으로 LPDDR 고성장" 서사에 찬물</td></tr>
+      <tr><td><b>SOCAMM 비중이 상대적으로 큰 업체</b></td><td>삼성은 SOCAMM2 물량 상당분 공급이 거론됐던 만큼, 콘텐츠 축소의 상대적 영향</td></tr>
+      <tr><td><b>고단 적층(4단→2단) 고부가 공정</b></td><td>적층 단수↓ = 부가가치·프리미엄↓. 고단 적층용 소재·장비 수혜 상대적 축소</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p class="src">기업명은 밸류체인 구조 설명용 예시이며 투자 추천이 아닙니다. 실제 수혜·부담의 크기는 각 사의 SOCAMM/HBM 노출도·수주·마진에 따라 다르므로 개별 확인이 필요합니다.</p>
+
+  <h2>7. 메모리 3사 — 복합적 영향</h2>
+  <p>삼성·SK하이닉스·마이크론에 미치는 영향은 <b>한쪽으로 단정하기 어렵습니다.</b> 갈래를 나눠 봅니다.</p>
+  <div class="tablewrap">
+  <table>
+    <thead><tr><th>축</th><th>방향</th><th>설명</th></tr></thead>
+    <tbody>
+      <tr><td>HBM 노출</td><td class="good">호재</td><td>HBM 불변 + 가격 강세 → <b>HBM 강자(SK하이닉스)가 가장 유리</b></td></tr>
+      <tr><td>LPDDR 물량</td><td class="mid">방어</td><td>공급 부족(60%)이라 <b>만든 건 다 팔림</b> → 판매량 타격 제한적</td></tr>
+      <tr><td>LPDDR 가격</td><td class="good">호재</td><td>품귀로 가격 강세 → 마진 우호적</td></tr>
+      <tr><td>시스템당 LPDDR 콘텐츠</td><td class="bad">부담</td><td>55→28TB → <b>SOCAMM발 고성장 기대는 하향</b></td></tr>
+      <tr><td>고단 적층 프리미엄</td><td class="bad">부담</td><td>4단→2단 → 고부가 축소</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="callout"><b>정리</b> — <b>SK하이닉스</b>는 HBM 보호+가격+장기계약으로 <b>가장 유리</b>. <b>LPDDR/SOCAMM에 상대적으로 더 걸었던 쪽</b>은
+  물량·가격은 방어되지만 <b>성장 서사가 약화</b>. 즉 <b>"메모리사가 망하는 뉴스가 아니라, 성장의 무게중심이 LPDDR에서 HBM으로
+  더 쏠리는 뉴스"</b>로 읽는 게 정확합니다.</div>
+
+  <h2>8. 시장의 오해 — '악재'로 급락했지만</h2>
+  <p>이 뉴스가 처음 나왔을 때 <b>반도체가 급락</b>했습니다. "엔비디아가 메모리 용량을 줄인다 = 메모리 수요 감소"로 읽혔기 때문입니다.
+  하지만 EBN 보도 제목처럼 <b>"반도체 급락 부른 '엔비디아 용량 축소'…알고보니 메모리 품귀 탓"</b>이었습니다.</p>
+  <div class="dark">
+    겉보기: "엔비디아가 메모리를 덜 쓴다 → 메모리 악재" 😱<br>
+    사실: "메모리가 <b>너무 비싸고 모자라서</b> 스펙을 낮춘 것 → 수요는 멀쩡, <b>메모리 희소성·가격결정력은 오히려 입증</b>" 💡
+  </div>
+  <div class="note"><b>교훈</b> — 사이클·공급망 뉴스는 <b>"왜 그런가"의 원인</b>을 봐야 합니다. 같은 "용량 축소"라도
+  <b>수요 붕괴 탓</b>이면 진짜 악재지만, <b>공급 부족·고가 탓</b>이면 오히려 메모리 파워의 방증입니다. 이번은 후자에 가깝습니다.
+  (사이클 해석의 함정은 <a href="https://tryingpig.github.io/study/260726_OCI홀딩스_사이클리레이팅분석.html">사이클 리레이팅 리포트</a>와도 통합니다.)</div>
+
+  <h2>9. 종합 · 확인 체크리스트 · 용어 · FAQ</h2>
+  <div class="callout">
+    <b>종합 — 한 장 정리</b>
+    <ul>
+      <li><b>SOCAMM</b> = 엔비디아 AI서버 CPU용 LPDDR 모듈. HBM 보완(대체 아님).</li>
+      <li>이번 반토막(192→96GB)은 <b>비용(BOM 29%)+공급부족(60%)</b>에 대한 원가 방어. <b>칼날은 LPDDR에만, HBM은 불변.</b></li>
+      <li><b>수혜</b>: HBM(SK하이닉스)·기판/소켓/후공정(모듈 개수↑)·엔비디아.</li>
+      <li><b>부담</b>: LPDDR 콘텐츠·SOCAMM 고성장 기대·고단적층 프리미엄.</li>
+      <li><b>메모리 3사</b>: 물량·가격 방어 + HBM 호재 vs LPDDR 성장서사 약화 → 복합(SK하이닉스 최선호).</li>
+      <li>시장 급락은 <b>'수요 감소' 오해</b>에서 나온 과민반응 — 실제는 <b>메모리 희소성의 방증</b>.</li>
+    </ul>
+  </div>
+
+  <h3>확인 체크리스트</h3>
+  <table>
+    <tbody>
+      <tr><td>□ 96GB가 실제 주력으로 굳는지(96GB 주문 6배↑ 지속 여부)</td></tr>
+      <tr><td>□ 메모리 품귀 완화 시 192GB 복귀 가능성</td></tr>
+      <tr><td>□ 엔비디아–SK $5,000억 LOI 세부·HBM4 물량</td></tr>
+      <tr><td>□ 삼성의 SOCAMM 물량·전략 조정</td></tr>
+      <tr><td>□ 기판사(심텍 등)의 실제 SOCAMM 매출 기여</td></tr>
+      <tr><td>□ 루빈(Vera Rubin) 양산 일정</td></tr>
+    </tbody>
+  </table>
+
+  <h3>용어사전</h3>
+  <table>
+    <tbody>
+      <tr><td><b>SOCAMM</b></td><td>Small Outline Compression Attached Memory Module. AI서버 CPU용 LPDDR 모듈</td></tr>
+      <tr><td><b>LPDDR</b></td><td>저전력 D램. 전력 소모가 적은 D램 계열</td></tr>
+      <tr><td><b>HBM</b></td><td>고대역폭메모리. GPU에 붙는 초고속 메모리</td></tr>
+      <tr><td><b>RDIMM</b></td><td>기존 서버용 D램 모듈. SOCAMM이 이 자리를 노림</td></tr>
+      <tr><td><b>BOM</b></td><td>Bill of Materials. 제품 총 부품원가</td></tr>
+      <tr><td><b>적층</b></td><td>D램을 여러 단으로 쌓는 것. 단수↑ = 용량↑</td></tr>
+      <tr><td><b>Vera Rubin</b></td><td>엔비디아 차세대 AI 플랫폼(GB300 다음 세대)</td></tr>
+    </tbody>
+  </table>
+
+  <h3>FAQ</h3>
+  <p><b>Q. SOCAMM 축소면 SK하이닉스가 위기인가요?</b><br>
+  A. 반대에 가깝습니다. 삭감은 <b>LPDDR/SOCAMM</b> 몫이고 <b>HBM은 불변</b>입니다. HBM 강자인 SK하이닉스는 오히려
+  가격 강세·엔비디아 장기계약으로 <b>보호받는 쪽</b>입니다.</p>
+  <p><b>Q. 그럼 기판주는 무조건 좋은 건가요?</b><br>
+  A. 방향은 우호적(모듈 개수↑)이지만, 실제 수혜는 각 사의 <b>SOCAMM 기판 수주·매출 기여</b>로 확인돼야 합니다.
+  이 리포트는 종목 추천을 하지 않습니다.</p>
+  <p><b>Q. 왜 메모리가 이렇게 비싸졌나요?</b><br>
+  A. AI 수요 폭증 + HBM 중심 생산 전환으로 <b>일반 D램·LPDDR까지 품귀</b>가 왔습니다. 그래서 메모리가 시스템 원가의 29%까지
+  치솟았고, 엔비디아가 스펙을 낮춰 대응한 것입니다.</p>
+  <p><b>Q. 이건 일회성인가요?</b><br>
+  A. 공급이 풀리면 192GB로 복귀할 수 있습니다. 즉 <b>구조적 다운그레이드가 아니라 공급·비용 국면에 따른 조정</b>일 수 있어,
+  메모리 사이클을 함께 봐야 합니다.</p>
+
+  <div class="note"><b>관련 리포트</b> —
+  <a href="https://tryingpig.github.io/study/260727_ABF기판_개념설명리포트.html">ABF 기판 개념</a> ·
+  <a href="https://tryingpig.github.io/study/260630_FCBGA_1_입문가이드.html">FC-BGA 입문세트</a> ·
+  <a href="https://tryingpig.github.io/study/260718_대덕전자_1_입문가이드.html">대덕전자 입문세트</a> ·
+  <a href="https://tryingpig.github.io/study/260727_기가비스_입문가이드.html">기가비스(기판 검사)</a>.</div>
+
+  <div class="foot">
+    © 2026 노력하는뚱땡이 리서치 라이브러리.<br>
+    본 문서는 개인 학습용 정보 정리이며 투자 권유가 아닙니다. 수치는 TrendForce·GF Securities·Bernstein·언론 보도를 조회 시점 기준으로 정리했으며 추정·전망이 포함돼 실제와 다를 수 있습니다. 수혜·악재의 기업명은 밸류체인 구조 설명을 위한 예시이며 추천이 아닙니다.
+  </div>
+
+</div>
+</body>
+</html>

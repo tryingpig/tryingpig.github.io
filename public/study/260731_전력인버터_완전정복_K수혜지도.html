@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>전력 인버터 완전정복 — 미국 對中 규제와 K-수혜 지도</title>
+<link rel="stylesheet" href="/assets/report.css">
+<script src="/assets/report.js" defer></script>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<script>
+  (function () {
+    try {
+      var t = localStorage.getItem('theme');
+      if (!t) t = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      if (t === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+    } catch (e) {}
+  })();
+</script>
+</head>
+<body data-topic="invest">
+<div class="topbar">
+  <div class="topbar-in">
+    <a class="back" href="/#study">학습공간</a>
+    <span class="crumb">전력 인버터 완전정복 — K-수혜 지도</span>
+    <button class="theme-toggle" type="button" aria-label="다크/라이트 전환" title="다크/라이트 전환">
+      <svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      <svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+    </button>
+  </div>
+</div>
+<div class="wrap">
+
+  <span class="kicker">전력 인프라 · 규제 수혜 분석</span>
+  <h1>전력 인버터 완전정복<br>— 미국 對中 규제와 K-수혜 지도</h1>
+  <p class="sub">작성일 2026-07-31 · 개인 리서치 노트 · FCC의 중국산 인버터 금지(2026-07-28)에서 출발</p>
+
+  <div class="warn">
+    <b>⚠️ 투자 권유가 아닙니다.</b> 이 문서는 공개 정보(로이터·TrendForce·pv-magazine·언론)를 정리·해석한 <b>개인 학습 노트</b>이며
+    매수·매도 추천이 아닙니다. <b>수혜에 등장하는 기업명은 밸류체인 구조 설명용 예시</b>이지 투자 대상 추천이 아닙니다.
+    규제 범위·수혜 크기는 확정·해석 과정에 있어 변동될 수 있습니다. 판단과 책임은 본인에게 있습니다.
+  </div>
+
+  <div class="note">
+    <b>이 리포트의 출발점.</b> 2026년 7월 28일 미국 FCC가 <b>중국산 '연결형 전력 인버터'를 수입금지(Covered List)</b>에 올렸습니다.
+    여기서 나온 질문 — <b>"① 전력 인버터가 뭔가? ② 이 규제로 국내 어디가 수혜인가?"</b> — 를 개념부터 K-수혜 지도까지 정리합니다.
+    (같은 날 함께 금지된 <b>중국산 로봇</b>은 별도 리포트에서 다룹니다.)
+  </div>
+
+  <div class="callout"><b>3줄 결론 (먼저)</b>
+    <ol>
+      <li><b>전력 인버터</b> = 태양광·배터리의 직류(DC)를 전력망용 교류(AC)로 바꾸는 <b>'그리드의 문지기'</b>.</li>
+      <li>이번 금지는 <b>중국을 타깃, 非중국(한국)은 면제 전망</b> — 스마트 인버터의 원격 셧다운·백도어 우려 때문.</li>
+      <li>→ 미국 인버터 수입의 <b>약 1/3(중국 몫)이 열리며</b> K-전력기기·인버터가 수혜 후보. 단, <b>최대 수혜는 미국 리쇼어링</b>일 수 있어 냉정히.</li>
+    </ol>
+  </div>
+
+  <div class="toc"><b>목차</b>
+    <ol>
+      <li>전력 인버터란 — '그리드의 문지기'</li>
+      <li>인버터의 종류 — 스트링·센트럴·마이크로·PCS</li>
+      <li>왜 안보 문제가 됐나 — 스마트 인버터의 그림자</li>
+      <li>이번 규제 정확히 — FCC 금지의 구조</li>
+      <li>중국의 지배와 열리는 '1/3'</li>
+      <li>K-수혜 지도</li>
+      <li>냉정한 캡 — 과열 경계</li>
+      <li>종합 · 확인 체크리스트 · 용어 · FAQ</li>
+    </ol>
+  </div>
+
+  <h2>1. 전력 인버터란 — '그리드의 문지기'</h2>
+  <p><b>전력 인버터(Power Inverter)</b>는 <b>직류(DC)를 교류(AC)로 바꾸는 전력변환장치</b>입니다. 원리는 간단합니다 —
+  태양광 패널·배터리(ESS)는 <b>직류(DC)</b>로 전기를 만드는데, 우리 전력망과 가전은 <b>교류(AC)</b>를 씁니다.
+  이 둘을 잇는 <b>'통역기'</b>가 인버터입니다.</p>
+
+  <figure>
+    <div class="svgbox">
+    <svg viewBox="0 0 920 190" role="img" aria-label="인버터의 위치와 역할">
+      <defs><marker id="arri" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#64748b"/></marker></defs>
+      <text x="10" y="24" font-size="14" font-weight="700" fill="#0f172a">태양광·배터리(DC) → [인버터] → 전력망(AC)</text>
+      <g font-size="12" font-weight="700">
+        <rect x="30" y="60" width="200" height="80" rx="10" fill="#fef9c3" stroke="#ca8a04"/>
+        <text x="130" y="90" text-anchor="middle" fill="#854d0e">태양광·ESS</text>
+        <text x="130" y="112" text-anchor="middle" font-size="11" font-weight="400" fill="#854d0e">직류(DC) 생산</text>
+
+        <rect x="360" y="55" width="200" height="90" rx="10" fill="#dcfce7" stroke="#16a34a"/>
+        <text x="460" y="85" text-anchor="middle" fill="#166534">전력 인버터</text>
+        <text x="460" y="107" text-anchor="middle" font-size="10" font-weight="400" fill="#166534">DC→AC 변환 + 주파수·전압</text>
+        <text x="460" y="123" text-anchor="middle" font-size="10" font-weight="400" fill="#166534">그리드 동기화(60Hz)</text>
+
+        <rect x="690" y="60" width="200" height="80" rx="10" fill="#dbeafe" stroke="#2563eb"/>
+        <text x="790" y="90" text-anchor="middle" fill="#1d4ed8">전력망·데이터센터</text>
+        <text x="790" y="112" text-anchor="middle" font-size="11" font-weight="400" fill="#1d4ed8">교류(AC) 사용</text>
+      </g>
+      <g stroke="#64748b" stroke-width="2.5">
+        <line x1="232" y1="100" x2="358" y2="100" marker-end="url(#arri)"/>
+        <line x1="562" y1="100" x2="688" y2="100" marker-end="url(#arri)"/>
+      </g>
+      <text x="460" y="172" text-anchor="middle" font-size="11" fill="#475569">발전을 전력망에 붙이는 '계통연계'의 필수 관문 = 여기가 막히면 발전소가 그리드에 못 붙는다</text>
+    </svg>
+    </div>
+    <figcaption>그림 1. 전력 인버터의 위치와 역할 — DC를 AC로 바꾸고 그리드에 동기화하는 문지기. 출처: 업계 일반 구조를 필자 정리.</figcaption>
+  </figure>
+  <div class="note"><b>왜 '문지기'인가</b> — 인버터는 단순 변환기가 아니라 <b>주파수(60Hz)·전압을 전력망에 맞춰 동기화</b>하고,
+  발전을 그리드에 연결하는 <b>계통연계의 필수 관문</b>입니다. 즉 <b>발전·배터리의 전기가 세상에 나가는 유일한 문</b>이라,
+  이 문을 누가 만드느냐가 곧 <b>전력망 제어권</b>과 직결됩니다. 이게 3장 안보 이슈의 뿌리입니다.</div>
+
+  <h2>2. 인버터의 종류 — 스트링·센트럴·마이크로·PCS</h2>
+  <table>
+    <thead><tr><th>종류</th><th>쓰임</th><th>특징</th></tr></thead>
+    <tbody>
+      <tr><td><b>스트링 인버터</b></td><td>주택·상업 태양광</td><td>패널 여러 장(스트링)을 묶어 한 대가 처리. 가장 보편적</td></tr>
+      <tr><td><b>센트럴(중앙) 인버터</b></td><td>대형 발전소</td><td>대용량. 유틸리티 규모</td></tr>
+      <tr><td><b>마이크로 인버터</b></td><td>패널 1장마다</td><td>패널별 최적화·안전. 고급형</td></tr>
+      <tr><td><b>PCS(전력변환장치)</b></td><td><b>ESS(배터리)</b></td><td>배터리 충·방전을 제어. 인버터의 '형제'. AI 데이터센터·그리드 안정화 핵심</td></tr>
+    </tbody>
+  </table>
+  <div class="callout"><b>이번 규제의 대상</b> — FCC 금지는 <b>재생에너지·배터리를 그리드·데이터센터에 연결하는 '연결형(스마트) 인버터'</b>가 핵심입니다.
+  즉 <b>태양광 인버터 + ESS용 PCS</b>가 다 걸립니다. 그래서 K-수혜도 <b>태양광 인버터와 PCS 양쪽</b>에서 봅니다(6장).</div>
+
+  <h2>3. 왜 안보 문제가 됐나 — 스마트 인버터의 그림자</h2>
+  <p>요즘 인버터는 <b>무선 연결(스마트 인버터)</b>로 원격 모니터링·펌웨어 업데이트를 받습니다. 편리하지만, 바로 그게 위험입니다.</p>
+  <div class="dark">
+    무선 연결 → 제조사가 <b>펌웨어를 원격으로 바꿀 수 있음</b> → 적성국이 마음먹으면 <b>태양광·배터리를 원격에서 셧다운</b>하거나
+    전력망을 교란할 수 있음. 미국은 이를 <b>"용납 불가한 위협"</b>으로 규정.
+  </div>
+  <p>결정적 계기는 <b>로이터 조사</b>였습니다 — 미국에 깔린 <b>일부 중국산 인버터에서 '숨겨진 통신 장치(rogue 부품)'</b>가 발견됐고,
+  전문가들은 이 부품이 <b>방화벽을 우회해 악의적 원격 접근</b>을 가능케 한다고 경고했습니다. "이론적 우려"가 아니라 "실물 발견"이라
+  규제로 이어졌습니다.</p>
+
+  <h2>4. 이번 규제 정확히 — FCC 금지의 구조</h2>
+  <div class="tablewrap">
+  <table>
+    <thead><tr><th>항목</th><th>내용</th></tr></thead>
+    <tbody>
+      <tr><td>주체·시점</td><td>미국 <b>FCC</b>, <b>2026-07-28</b> — 중국산 연결형 전력 인버터 + 휴머노이드/4족보행 로봇을 <b>Covered List</b>에 추가</td></tr>
+      <tr><td>범위</td><td>즉시 발효, 단 <b>아직 출시 안 된 신규 모델</b>에 적용. FCC는 <b>기존 승인 제품의 승인도 취소할 권한</b> 보유 → 단계적 확대 가능</td></tr>
+      <tr><td><b>非중국 면제</b></td><td>앞선 드론·라우터 금지 선례처럼 <b>중국 이외 다수 공급사는 면제 전망</b> ★</td></tr>
+      <tr><td>전략 목적</td><td>중국의 <b>신흥기술(인버터·로봇) 지배 사전 차단</b>. "<b>희토류 시나리오 반복 회피</b>" — 핵심 투입재를 무기화당하지 않겠다는 것</td></tr>
+      <tr><td>선례</td><td>EU·일본도 유사 규제. 미국이 뒤이어 강화</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p class="src">출처: 로이터·TrendForce(2026-07-28~29), pv-magazine, RSC. 규제 세부·면제 범위는 확정 과정에 있어 원문 확인 필요.</p>
+  <div class="callout"><b>★ 이 리포트의 핵심 포인트</b> — <b>"중국만 찍고 非중국은 면제"</b>라는 구조가 K-수혜의 근거입니다.
+  만약 규제가 '외국산 전체'를 막았다면 한국도 걸렸겠지만, 선례상 <b>중국 타깃·한국 면제</b>가 유력합니다. 이건 우리가
+  <a href="https://tryingpig.github.io/study/260726_OCI홀딩스_2_미국정책.html">OCI 미국정책편</a>에서 본
+  <b>"규제가 만든 비중국 프리미엄"</b>과 정확히 같은 구조입니다.</div>
+
+  <h2>5. 중국의 지배와 열리는 '1/3'</h2>
+  <p>세계 인버터 시장은 <b>중국(선그로우·화웨이)이 압도</b>합니다. 공격적 가격으로 서방 점유율을 계속 키워왔습니다.
+  화웨이는 이미 광범위한 미국 제재 대상입니다.</p>
+  <figure>
+    <div class="svgbox">
+    <svg viewBox="0 0 920 170" role="img" aria-label="미국 인버터 수입 중 중국 비중">
+      <text x="10" y="24" font-size="14" font-weight="700" fill="#0f172a">2024년 미국 인버터 수입 — 약 1/3이 중국 직수입</text>
+      <rect x="60" y="60" width="800" height="50" rx="6" fill="#e2e8f0"/>
+      <rect x="60" y="60" width="267" height="50" rx="6" fill="#dc2626"/>
+      <text x="193" y="90" text-anchor="middle" font-size="13" font-weight="700" fill="#fff">중국 ~1/3</text>
+      <text x="600" y="90" text-anchor="middle" font-size="13" font-weight="700" fill="#475569">非중국(한국 등 포함) ~2/3</text>
+      <text x="60" y="140" font-size="12" fill="#334155">규제로 <b>중국 몫(약 1/3)이 열리고</b>, 그 자리를 非중국(면제 대상)이 노린다 → K-수혜의 실체</text>
+    </svg>
+    </div>
+    <figcaption>그림 2. 2024년 미국 인버터 수입 중 중국 비중 약 1/3(美中경제안보검토위, SCMP 인용). 이 몫이 규제로 열린다. 출처: 보도 기준 개괄.</figcaption>
+  </figure>
+  <div class="note"><b>기회의 크기</b> — <b>"미국 인버터 수입의 약 1/3이 중국 직수입"</b>이라는 사실이 핵심입니다.
+  이 몫이 규제로 빠지면, 그 자리를 <b>비중국 공급사(미국 현지·한국·기타)</b>가 나눠 갖습니다. 게다가 기사에 따르면
+  <b>"글로벌 인버터 시장에서 한국의 강력한 입지가 미국 수입 패턴에 반영"</b>돼 있어, 한국이 이 개방분의 일부를 노릴 위치에 있습니다.</div>
+
+  <h2>6. K-수혜 지도</h2>
+  <p>수혜를 <b>결에 따라 3층</b>으로 나눕니다 (기업명은 밸류체인 설명용 예시, 추천 아님).</p>
+  <figure>
+    <div class="svgbox">
+    <svg viewBox="0 0 920 220" role="img" aria-label="K 인버터 수혜 3층 지도">
+      <text x="10" y="24" font-size="14" font-weight="700" fill="#0f172a">K-수혜 3층 — 확실·구조·기대</text>
+      <rect x="40" y="50" width="840" height="45" rx="9" fill="#dcfce7" stroke="#16a34a"/>
+      <text x="60" y="78" font-size="12" font-weight="700" fill="#166534">① 대형 전력기기·전력변환·ESS — 효성중공업 · LS일렉트릭 · HD현대일렉트릭</text>
+      <rect x="40" y="105" width="840" height="45" rx="9" fill="#dbeafe" stroke="#2563eb"/>
+      <text x="60" y="133" font-size="12" font-weight="700" fill="#1d4ed8">② 인버터·PCS 전문(내수 강자) — 데스틴파워(ESS PCS) · OCI파워 · 다쓰테크 · 윌링스</text>
+      <rect x="40" y="160" width="840" height="45" rx="9" fill="#fef3c7" stroke="#d97706"/>
+      <text x="60" y="188" font-size="12" font-weight="700" fill="#92400e">③ (구조적 최대 수혜, 참고) 미국 현지 인버터 — Enphase · SolarEdge · Tesla 등</text>
+    </svg>
+    </div>
+    <figcaption>그림 3. K-인버터 수혜 3층 지도. 출처: 시사저널e·인더스트리뉴스·THE VC 등을 필자가 정리. 기업명은 예시이며 추천 아님.</figcaption>
+  </figure>
+  <div class="tablewrap">
+  <table>
+    <thead><tr><th>층</th><th>왜 수혜</th><th>예시(보도 기준)</th></tr></thead>
+    <tbody>
+      <tr><td><b>① 대형 전력기기</b></td><td>변압기·전력변환·ESS 통합 역량 + 이미 미국 전력기기 붐 → 그리드/ESS 수요 대응</td><td>효성중공업·LS일렉트릭·HD현대일렉트릭</td></tr>
+      <tr><td><b>② 인버터·PCS 전문</b></td><td>중국 배제 반사이익. 데스틴파워는 국내 PCS 1위·글로벌 상위권 이력</td><td>데스틴파워·OCI파워·다쓰테크·윌링스</td></tr>
+      <tr><td><b>③ 미국 현지(참고)</b></td><td>리쇼어링 목적상 <b>구조적 최대 수혜</b>는 미국 생산</td><td>Enphase·SolarEdge·Tesla 등</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="callout"><b>수혜의 결 구분</b>
+    <ul>
+      <li><b>①층</b>은 인버터 그 자체보다 <b>전력기기·ESS 붐 전체</b>에 올라타는 곽쟁이·삽 성격 — 이미 미국 수주 실적이 있어 가장 견고.</li>
+      <li><b>②층</b>은 순수 인버터/PCS라 <b>규제 직접 수혜</b>지만, 대부분 <b>규모가 작고 내수 위주</b>라 즉시 대형 수주로 이어질지는 확인 필요.</li>
+      <li><b>③층</b>(미국 현지)이 리쇼어링 취지상 진짜 최대 수혜일 수 있음 — "한국 자동 대박"이 아님을 상기.</li>
+    </ul></div>
+
+  <h2>7. 냉정한 캡 — 과열 경계</h2>
+  <table>
+    <thead><tr><th>주의점</th><th>내용</th></tr></thead>
+    <tbody>
+      <tr><td>리쇼어링이 본질</td><td>규제 목적이 <b>미국 내 생산 이전</b>이라, 최대 수혜는 미국 현지 인버터일 수 있음</td></tr>
+      <tr><td>한국 인버터 규모</td><td>순수 인버터/PCS 업체는 <b>내수 위주·소형</b> — 글로벌 대형 프로젝트 수주력은 제한적</td></tr>
+      <tr><td>'非중국 면제'의 불확실성</td><td>면제 범위가 확정 전. 만약 '외국산 전체'로 넓어지면 한국도 <b>미국 현지생산</b>이 필요해짐</td></tr>
+      <tr><td>미중 관계 변수</td><td>2026년 9월 시진핑 방미 예정 — 협상에 따라 강도 조절 가능. 중국 보복 리스크</td></tr>
+      <tr><td>수혜=수주 아님</td><td>"수혜 기대감"과 "실제 매출·수주"는 별개. 개별 확인 필수</td></tr>
+    </tbody>
+  </table>
+
+  <h2>8. 종합 · 확인 체크리스트 · 용어 · FAQ</h2>
+  <div class="callout">
+    <b>종합 — 한 장 정리</b>
+    <ul>
+      <li><b>전력 인버터</b> = DC→AC 변환 + 그리드 연결의 <b>문지기</b>. 태양광·ESS(PCS)·데이터센터의 필수 관문.</li>
+      <li>안보 이슈: 스마트 인버터의 <b>원격 셧다운·숨은 통신칩(로이터)</b> → FCC가 중국산 금지(7/28).</li>
+      <li>구조: <b>중국 타깃·非중국 면제</b> → 미국 인버터 수입의 <b>1/3(중국 몫)이 개방</b>.</li>
+      <li>K-수혜: ①대형 전력기기(효성·LS·HD현대) ②인버터·PCS(데스틴파워·OCI파워·다쓰테크) — 단 ③미국 현지가 최대 수혜일 수 있음.</li>
+      <li>본질은 <a href="https://tryingpig.github.io/study/260726_OCI홀딩스_2_미국정책.html">OCI에서 본 '비중국 프리미엄'</a>과 같은 구조.</li>
+    </ul>
+  </div>
+
+  <h3>확인 체크리스트</h3>
+  <table>
+    <tbody>
+      <tr><td>□ FCC 면제 범위 확정 — 非중국(한국) 실제 면제 여부</td></tr>
+      <tr><td>□ 기존 승인 제품 취소권 발동 여부(중국 압박 강도)</td></tr>
+      <tr><td>□ 한국 전력기기·인버터사의 <b>미국 수주·현지생산</b> 진척</td></tr>
+      <tr><td>□ ESS PCS 수요(AI 데이터센터·그리드 안정화)</td></tr>
+      <tr><td>□ 미중 관계(9월 정상회담)·중국 보복</td></tr>
+    </tbody>
+  </table>
+
+  <h3>용어사전</h3>
+  <table>
+    <tbody>
+      <tr><td><b>인버터</b></td><td>직류(DC)를 교류(AC)로 바꾸는 전력변환장치</td></tr>
+      <tr><td><b>PCS</b></td><td>Power Conversion System. ESS(배터리)용 인버터</td></tr>
+      <tr><td><b>계통연계</b></td><td>발전을 전력망에 연결하는 것</td></tr>
+      <tr><td><b>스마트 인버터</b></td><td>무선 연결·원격 업데이트 기능이 있는 인버터</td></tr>
+      <tr><td><b>Covered List</b></td><td>FCC의 안보 위협 장비 목록(수입·인증 금지)</td></tr>
+    </tbody>
+  </table>
+
+  <h3>FAQ</h3>
+  <p><b>Q. 중국이 막히면 한국 인버터가 바로 대박인가요?</b><br>
+  A. 방향은 우호적이지만 <b>구조적 최대 수혜는 미국 현지 생산</b>일 수 있고, 한국 순수 인버터사는 내수 위주라 즉시 대형 수주로
+  이어질지는 확인이 필요합니다. "기대감"과 "실적"을 구분하세요.</p>
+  <p><b>Q. 인버터랑 변압기(전력기기)는 같은 건가요?</b><br>
+  A. 다릅니다. 인버터는 DC↔AC 변환, 변압기는 전압을 올리고 내리는 장치입니다. 다만 효성·LS·HD현대 같은 <b>대형 전력기기사</b>는
+  둘 다(전력변환+전력기기) 역량이 있어 함께 수혜 후보로 묶입니다.</p>
+  <p><b>Q. OCI파워는 OCI홀딩스와 관련 있나요?</b><br>
+  A. 이름이 비슷하지만 이 리포트는 밸류체인 설명용으로 언급한 것이며, 지분·계열 관계는 별도 공시로 확인하세요. 이 리포트는 종목 추천을 하지 않습니다.</p>
+
+  <div class="note"><b>관련 리포트</b> —
+  <a href="https://tryingpig.github.io/study/260630_효성중공업_SST_가이드.html">효성중공업 SST</a> ·
+  <a href="https://tryingpig.github.io/study/260627_800VDC_1_입문가이드.html">800VDC 입문</a> ·
+  <a href="https://tryingpig.github.io/study/260630_전력공조냉각_수혜리포트.html">전력·공조·냉각 수혜</a> ·
+  <a href="https://tryingpig.github.io/study/260726_OCI홀딩스_2_미국정책.html">OCI 미국정책(비중국 프리미엄)</a>.</div>
+
+  <div class="foot">
+    © 2026 노력하는뚱땡이 리서치 라이브러리.<br>
+    본 문서는 개인 학습용 정보 정리이며 투자 권유가 아닙니다. 규제·수치는 로이터·TrendForce·언론 보도를 조회 시점 기준으로 정리했으며 확정 과정에서 변동될 수 있습니다. 수혜 기업명은 밸류체인 구조 설명을 위한 예시이며 추천이 아닙니다.
+  </div>
+
+</div>
+</body>
+</html>

@@ -37,6 +37,7 @@ export const TOPIC_ICONS: [RegExp, string][] = [
   [/KKR/i, 'cashbundle'],
   [/SK신재생|신재생통합법인|울산DC|전력|송전/i, 'powerpylon'],
   [/SOCAMM|소캠/i, 'socamm'],
+  [/미국로봇금지|국내로봇수혜|유니트리|로봇/i, 'humanoidrobot'],
 ];
 
 /* 매칭되는 주제가 없을 때 — 파일명 해시로 색과 무늬가 정해지는 픽셀 타일.

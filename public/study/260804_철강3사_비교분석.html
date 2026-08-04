@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>철강 3사 비교 분석 — 데이터센터 수혜와 딥밸류, 포스코·현대제철·동국제강</title>
+<link rel="stylesheet" href="/assets/report.css">
+<script src="/assets/report.js" defer></script>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<script>
+  (function () {
+    try {
+      var t = localStorage.getItem('theme');
+      if (!t) t = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      if (t === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+    } catch (e) {}
+  })();
+</script>
+</head>
+<body data-topic="invest">
+<div class="topbar">
+  <div class="topbar-in">
+    <a class="back" href="/#study">학습공간</a>
+    <span class="crumb">철강 3사 비교 분석</span>
+    <button class="theme-toggle" type="button" aria-label="다크/라이트 전환" title="다크/라이트 전환">
+      <svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      <svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+    </button>
+  </div>
+</div>
+<div class="wrap">
+
+  <span class="kicker">철강 · 업종 비교 분석</span>
+  <h1>철강 3사 비교 분석<br>— 데이터센터 수혜와 딥밸류, 포스코·현대제철·동국제강</h1>
+  <p class="sub">작성일 2026-08-04 · 개인 리서치 노트 · "철강이 데이터센터 수혜?"에서 출발</p>
+
+  <div class="warn">
+    <b>⚠️ 투자 권유가 아닙니다.</b> 이 문서는 <b>DART 공시·자체 계산·증권사·언론</b>을 정리·해석한 <b>개인 학습 노트</b>이며 매수·매도 추천이 아닙니다.
+    비율·시총은 자체계산 근사가 포함되며, 목표주가·PBR은 보도·컨센 인용입니다. 투자 판단의 최종 책임은 투자자에게 있습니다.
+  </div>
+
+  <div class="note">
+    <b>이 리포트의 출발점.</b> "철강 3사 2분기 동반 개선 + AI 데이터센터 인프라 수요"라는 소식을 보고 나온 두 질문 —
+    <b>① 철강이 데이터센터 수혜를 본다는 게 진짜인가? ② 포스코홀딩스·현대제철·동국제강 중 무엇이 투자 메리트가 큰가?</b> — 에 답한다.
+    개별 딥다이브는 <a href="https://tryingpig.github.io/study/260804_포스코홀딩스_기업분석.html">포스코홀딩스 기업분석</a>에서 이어진다.
+  </div>
+
+  <div class="callout"><b>3줄 결론</b>
+    <ol>
+      <li>데이터센터 철강 수혜는 <b>진짜, 단 '보조 엔진'</b> — 강구조(형강·후판)·<b>전기강판</b>·PosMAC·데이터랙. 철강 사이클 본체는 여전히 중국·건설·관세.</li>
+      <li>가장 <b>직접·고부가</b> 수혜는 전기강판 가진 <b>포스코</b>. 봉형강 강구조는 <b>동국제강</b>, 후판은 <b>현대제철</b>도 걸림.</li>
+      <li>메리트: <b>포스코=균형·회복+DC직접</b> / <b>현대제철=최저 PBR·하이리스크 턴어라운드</b> / <b>동국제강=봉형강 소형 회복주</b>. "싸다≠오른다"(밸류트랩) 유의.</li>
+    </ol>
+  </div>
+
+  <div class="toc"><b>목차</b>
+    <ol>
+      <li>철강=데이터센터 수혜, 어디까지 진짜인가</li>
+      <li>3사 재무 정면 비교</li>
+      <li>딥밸류의 함정 — PBR 0.3배가 싼 이유</li>
+      <li>투자 메리트 스코어카드</li>
+      <li>종합 · 리스크 · 체크리스트</li>
+    </ol>
+  </div>
+
+  <h2>1. 철강=데이터센터 수혜, 어디까지 진짜인가</h2>
+  <p>결론부터: <b>진짜지만 '본체'가 아니라 '보조 엔진'</b>이다. 실제로 <b>포스코가 7/30 컨콜에서 "AI 데이터센터를 철강의 새 먹거리"로 명시</b>했다. <span class="src">(보도, 2026-07-30 ZDNet·뉴스핌)</span> 수혜 경로는 세 갈래다.</p>
+  <figure>
+    <div class="svgbox">
+    <svg viewBox="0 0 920 210" role="img" aria-label="데이터센터 철강 수혜 3경로">
+      <text x="10" y="24" font-size="14" font-weight="700" fill="#0f172a">데이터센터 → 철강 수혜 3경로</text>
+      <g font-size="12" font-weight="700">
+        <rect x="20" y="50" width="285" height="140" rx="10" fill="#fef3c7" stroke="#d97706"/>
+        <text x="162" y="76" text-anchor="middle" fill="#92400e">① 강구조 (건설)</text>
+        <text x="162" y="102" text-anchor="middle" font-size="11" font-weight="400" fill="#92400e">DC 대형화 → 철근·콘크리트 대신</text>
+        <text x="162" y="120" text-anchor="middle" font-size="11" font-weight="400" fill="#92400e">H형강·후판·강관 채택</text>
+        <text x="162" y="150" text-anchor="middle" font-size="11" font-weight="700" fill="#92400e">봉형강(동국)·후판(포스코·현대)</text>
+
+        <rect x="318" y="50" width="285" height="140" rx="10" fill="#dbeafe" stroke="#2563eb"/>
+        <text x="460" y="76" text-anchor="middle" fill="#1d4ed8">② 전기강판 ★</text>
+        <text x="460" y="102" text-anchor="middle" font-size="11" font-weight="400" fill="#1d4ed8">변압기·모터 핵심 소재</text>
+        <text x="460" y="120" text-anchor="middle" font-size="11" font-weight="400" fill="#1d4ed8">전력망·DC 전력인프라 폭증</text>
+        <text x="460" y="150" text-anchor="middle" font-size="11" font-weight="700" fill="#1d4ed8">포스코 (고부가·최직접)</text>
+
+        <rect x="616" y="50" width="285" height="140" rx="10" fill="#dcfce7" stroke="#16a34a"/>
+        <text x="758" y="76" text-anchor="middle" fill="#166534">③ 내부 설비</text>
+        <text x="758" y="102" text-anchor="middle" font-size="11" font-weight="400" fill="#166534">PosMAC(고내식)·데이터랙</text>
+        <text x="758" y="120" text-anchor="middle" font-size="11" font-weight="400" fill="#166534">냉각·배관·옥외구조물</text>
+        <text x="758" y="150" text-anchor="middle" font-size="11" font-weight="700" fill="#166534">포스코 (PosMAC·데이터랙)</text>
+      </g>
+    </svg>
+    </div>
+    <figcaption>그림 1. 데이터센터가 철강 수요로 이어지는 3경로. 출처: ZDNet·뉴스핌·헤럴드경제(2026) 기반 필자 정리.</figcaption>
+  </figure>
+  <div class="warn"><b>규모는 냉정하게.</b> 데이터센터發 철강 수요는 <b>전체 철강 수요의 일부</b>다. 철강 사이클의 진짜 드라이버는 여전히
+  <b>①중국 수급·감산 ②건설·자동차 전방 ③미국 관세</b>다. 데이터센터는 <b>"건설 불황을 일부 메우는 신규 판로 + 고부가 믹스 개선"</b> 정도로 봐야 한다.
+  실제로 형강 내수판매가 1~5월 +9.7%로 반등했는데, 데이터센터·반도체공장 건설이 기여했다. <span class="src">(보도, 2026 시사저널e)</span></div>
+
+  <h2>2. 3사 재무 정면 비교</h2>
+  <div class="tablewrap">
+  <table>
+    <thead><tr><th>지표 (2025)</th><th>포스코홀딩스<br>(005490, 연결)</th><th>현대제철<br>(004020, 연결)</th><th>동국제강<br>(460860, 별도)</th></tr></thead>
+    <tbody>
+      <tr><td>매출</td><td>69.1조</td><td>22.7조</td><td>3.2조</td></tr>
+      <tr><td>영업이익</td><td>1.83조</td><td>2,192억</td><td>594억</td></tr>
+      <tr><td>영업이익률</td><td>2.6%</td><td class="bad">1.0%</td><td>1.9%</td></tr>
+      <tr><td>순이익</td><td>5,044억</td><td class="bad">14억</td><td>82억</td></tr>
+      <tr><td>ROE</td><td>0.8%</td><td class="bad">~0.0%</td><td>0.5%</td></tr>
+      <tr><td>부채비율</td><td class="good">68.6%</td><td class="good">73.6%</td><td class="mid">119.4%</td></tr>
+      <tr><td><b>2026 1Q 영업이익</b></td><td class="good">7,068억</td><td>157억</td><td>214억</td></tr>
+      <tr><td><b>2026 1Q 순이익</b></td><td class="good">5,434억</td><td class="bad">-393억</td><td>62억</td></tr>
+      <tr><td>PBR (보도)</td><td>~0.39x</td><td class="good">~0.17x</td><td>미확보</td></tr>
+      <tr><td>주당배당</td><td>10,000원</td><td>500원(삭감)</td><td>400원</td></tr>
+      <tr><td>DC 수혜 경로</td><td>전기강판·PosMAC·후판</td><td>후판·봉형강(간접)</td><td>봉형강(강구조·직접)</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p class="src">(공시, DART 조회 2026-08-04) 매출·이익·자본·배당은 공시 원본. 영업이익률·ROE·부채비율은 (자체계산). PBR은 (보도 인용, 대신·메리츠 2026). 동국제강은 별도재무·2023년 인적분할 신설이라 3년치. 현대제철 순이익률·ROE 0%는 반올림.</p>
+
+  <figure>
+    <div class="svgbox">
+    <svg viewBox="0 0 920 240" role="img" aria-label="3사 영업이익 사이클">
+      <text x="10" y="22" font-size="14" font-weight="700" fill="#0f172a">영업이익 다운사이클 — 다 같이 바닥 (조 원, 로그 아님)</text>
+      <text x="60" y="44" font-size="11" fill="#475569">포스코홀딩스: 2021 9.24조 → 2025 1.83조 / 현대제철: 2.45조 → 0.22조 / 동국(별도): (23)0.24조 → (25)0.06조</text>
+      <line x1="70" y1="200" x2="890" y2="200" stroke="#94a3b8"/>
+      <!-- POSCO bars scale 10조 over 150px -->
+      <g font-size="10" font-weight="700" fill="#fff" text-anchor="middle">
+        <rect x="110" y="62" width="70" height="138" rx="3" fill="#2563eb"/><text x="145" y="80">9.2</text>
+        <rect x="190" y="127" width="70" height="73" rx="3" fill="#2563eb"/><text x="225" y="145" fill="#1e3a8a">4.9</text>
+        <rect x="270" y="147" width="70" height="53" rx="3" fill="#2563eb"/><text x="305" y="165" fill="#1e3a8a">3.5</text>
+        <rect x="350" y="167" width="70" height="33" rx="3" fill="#93c5fd"/><text x="385" y="162" fill="#1e3a8a">2.2</text>
+        <rect x="430" y="173" width="70" height="27" rx="3" fill="#93c5fd"/><text x="465" y="168" fill="#1e3a8a">1.8</text>
+      </g>
+      <g font-size="10" fill="#334155" text-anchor="middle"><text x="145" y="216">21</text><text x="225" y="216">22</text><text x="305" y="216">23</text><text x="385" y="216">24</text><text x="465" y="216">25</text></g>
+      <text x="305" y="234" text-anchor="middle" font-size="10" fill="#1d4ed8">포스코홀딩스</text>
+      <!-- 현대 -->
+      <g font-size="10" font-weight="700" fill="#fff" text-anchor="middle">
+        <rect x="560" y="163" width="55" height="37" rx="3" fill="#dc2626"/><text x="587" y="158" fill="#991b1b">2.45</text>
+        <rect x="625" y="176" width="55" height="24" rx="3" fill="#dc2626"/><text x="652" y="171" fill="#991b1b">1.62</text>
+        <rect x="690" y="188" width="55" height="12" rx="3" fill="#f87171"/><text x="717" y="183" fill="#991b1b">0.80</text>
+        <rect x="755" y="197" width="55" height="4" rx="2" fill="#f87171"/><text x="782" y="192" fill="#991b1b">0.16</text>
+        <rect x="820" y="197" width="55" height="4" rx="2" fill="#f87171"/><text x="847" y="192" fill="#991b1b">0.22</text>
+      </g>
+      <g font-size="10" fill="#334155" text-anchor="middle"><text x="587" y="216">21</text><text x="652" y="216">22</text><text x="717" y="216">23</text><text x="782" y="216">24</text><text x="847" y="216">25</text></g>
+      <text x="717" y="234" text-anchor="middle" font-size="10" fill="#b91c1c">현대제철</text>
+    </svg>
+    </div>
+    <figcaption>그림 2. 포스코홀딩스·현대제철 영업이익 5개년. 둘 다 2021 정점→2025 바닥. 출처: DART 공시. 동국제강은 3년치라 별도 표기.</figcaption>
+  </figure>
+
+  <div class="callout"><b>핵심 관찰</b> — 셋 다 <b>극심한 다운사이클 바닥</b>(포스코 영익 9.2조→1.8조)이지만, <b>2026 1Q에서 갈렸다.</b>
+  포스코는 <b>순익 5,434억으로 강한 반등</b>(1분기에 작년 연간 초과), 현대제철은 여전히 <b>적자(-393억)</b>, 동국제강은 소폭 회복(62억).
+  → <b>회복의 선명도: 포스코 &gt; 동국제강 &gt; 현대제철.</b></div>
+
+  <h2>3. 딥밸류의 함정 — PBR 0.3배가 싼 이유</h2>
+  <p>채팅방의 <b>"PBR 0.1→0.3배면 3배 수익"</b>은 매력적이지만 위험한 프레이밍이다. 철강주가 <b>수년째 순자산의 절반도 안 되는 값</b>에 거래되는 데는 구조적 이유가 있다.</p>
+  <table>
+    <thead><tr><th>왜 싼가 (구조적)</th><th>재평가 조건</th></tr></thead>
+    <tbody>
+      <tr><td>중국 공급과잉 → 만성 가격 압박</td><td>중국 <b>감산 실행</b> + 철강價 반등</td></tr>
+      <tr><td>자본집약·사이클 → 낮고 변동 큰 ROE</td><td><b>ROE 5%+ 복귀</b>(현재 0~1%대)</td></tr>
+      <tr><td>탄소중립 CAPEX 부담(수소환원제철 등)</td><td>투자 규율 + FCF 창출</td></tr>
+      <tr><td>주주환원 소극적 이력</td><td>배당·자사주 확대(밸류업)</td></tr>
+    </tbody>
+  </table>
+  <div class="warn"><b>밸류트랩 경고.</b> PBR 0.17x(현대제철)가 0.3x로 가려면 <b>순자산이 아니라 ROE가 회복돼야</b> 한다.
+  "싸다"는 필요조건일 뿐 충분조건이 아니다. 실제로 철강주는 <b>싼 채로 수년을 보낸</b> 전형적 밸류 업종이다.
+  <b>재평가의 방아쇠는 밸류가 아니라 이익(ROE)과 중국 감산</b>이다.</div>
+
+  <h2>4. 투자 메리트 스코어카드</h2>
+  <p>다섯 축으로 상대 평가한다(◎우위 ○보통 △열위, 절대평가 아님·추천 아님).</p>
+  <div class="tablewrap">
+  <table>
+    <thead><tr><th>축</th><th>포스코홀딩스</th><th>현대제철</th><th>동국제강</th></tr></thead>
+    <tbody>
+      <tr><td>실적 회복 선명도</td><td>◎ 1Q 순익 5,434억</td><td>△ 1Q 적자</td><td>○ 소폭 회복</td></tr>
+      <tr><td>재무 안정성</td><td>◎ 부채 68%·규모</td><td>◎ 부채 73%</td><td>△ 부채 119%</td></tr>
+      <tr><td>밸류 매력(PBR)</td><td>○ 0.39x</td><td>◎ 0.17x(최저)</td><td>○ 미확보</td></tr>
+      <tr><td>DC 수혜 직접성</td><td>◎ 전기강판·PosMAC</td><td>△ 간접(후판)</td><td>◎ 봉형강 강구조</td></tr>
+      <tr><td>배당·주주환원</td><td>◎ 10,000원 유지</td><td>△ 삭감</td><td>○ 400원</td></tr>
+      <tr><td>고유 옵션</td><td>이차전지소재(리튬)</td><td>자동차강판 회복</td><td>봉형강 P 개선</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="grid3">
+    <div class="card"><b>🟦 포스코홀딩스</b><br>균형·회복·DC직접(전기강판)·고배당. 단 리튬 적자 불확실성, 3사 중 제일 안 쌈(0.39x). <b>종합 메리트 균형 1위.</b></div>
+    <div class="card"><b>🟥 현대제철</b><br>PBR 0.17x 최저·재무 건전. 단 아직 적자·미국 관세 직격. <b>하이리스크 턴어라운드 딥밸류 베팅.</b></div>
+    <div class="card"><b>🟨 동국제강</b><br>봉형강=DC 강구조 직접 노출·1Q 회복. 단 소형·건설의존·부채 119%·과다배당. <b>소형 회복주.</b></div>
+  </div>
+
+  <h2>5. 종합 · 리스크 · 체크리스트</h2>
+  <div class="callout"><b>종합 판단</b> — <b>데이터센터 수혜의 '질'과 실적 회복·재무·배당의 균형으로 보면 포스코홀딩스가 가장 안정적</b>이다(딥다이브: <a href="https://tryingpig.github.io/study/260804_포스코홀딩스_기업분석.html">포스코홀딩스 기업분석</a>).
+  현대제철은 "가장 싸지만 아직 적자"인 고위험 반등 베팅, 동국제강은 봉형강 순수 노출의 소형 회복주다. 셋 다 <b>밸류가 아니라 ROE 회복이 방아쇠</b>임을 잊지 말 것.</div>
+  <table>
+    <thead><tr><th>공통 리스크</th><th>정량화</th></tr></thead>
+    <tbody>
+      <tr><td>중국 감산 무산 → 사이클 재하강</td><td>철강價 톤당 -5만원 시 마진 직접 훼손</td></tr>
+      <tr><td>미국 관세(특히 현대제철 판재)</td><td>대미 수출 비중만큼 노출</td></tr>
+      <tr><td>밸류트랩(ROE 미회복)</td><td>ROE 5% 미달 시 PBR 재평가 지연</td></tr>
+    </tbody>
+  </table>
+  <table>
+    <tbody>
+      <tr><td>□ 중국 <b>감산 실행</b> 뉴스 + 철강 스프레드 반등</td></tr>
+      <tr><td>□ 3사 <b>ROE 5% 이상</b> 복귀(현재 0~1%대)</td></tr>
+      <tr><td>□ 데이터센터 <b>고부가 매출</b>(전기강판·형강)의 실제 실적 인식</td></tr>
+      <tr><td>□ 포스코 <b>리튬 흑자전환</b> 여부 / 현대제철 <b>흑자전환</b> 분기</td></tr>
+    </tbody>
+  </table>
+
+  <div class="warn"><b>면책.</b> 개인 학습용 정보 정리이며 투자 권유가 아닙니다. 투자 판단의 최종 책임은 투자자에게 있습니다.
+  데이터: DART 공시(조회 2026-08-04), 비율·시총은 자체계산, PBR·목표가·데이터센터 관련은 보도·컨센 인용.</div>
+
+  <div class="note"><b>관련 리포트</b> —
+  <a href="https://tryingpig.github.io/study/260804_포스코홀딩스_기업분석.html">포스코홀딩스 기업분석(딥다이브)</a> ·
+  <a href="https://tryingpig.github.io/study/260803_효성중공업_기업분석.html">효성중공업 기업분석</a> ·
+  <a href="https://tryingpig.github.io/study/260731_전력인버터_완전정복_K수혜지도.html">전력 인버터 K-수혜</a>.</div>
+
+  <div class="foot">
+    © 2026 노력하는뚱땡이 리서치 라이브러리.<br>
+    투자 판단의 최종 책임은 투자자에게 있습니다. 수치는 조회 시점(2026-08-04) 기준이며 실시간 시세·최신 공시로 재확인이 필요합니다.
+  </div>
+
+</div>
+</body>
+</html>

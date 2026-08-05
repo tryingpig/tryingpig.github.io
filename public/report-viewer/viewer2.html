@@ -44,6 +44,10 @@
     const params = new URLSearchParams(location.search);
     const REPORT_ID = params.get("id");
     const HL = PdfAnnotationSubtype.HIGHLIGHT;
+    // 목록·모아보기에서 넘어오는 딥링크 파라미터(v1과 같은 규약)
+    const START_MODE = params.get("mode") === "read" ? "reading" : "pdf";
+    const GOTO_PAGE = parseInt(params.get("page") || "0", 10);
+    const GOTO_HL = params.get("hl") || "";
 
     /* 기존 하이라이트 색 이름 ↔ 화면 색.
        EmbedPDF 툴은 자유 색을 주므로, 저장할 때는 가장 가까운 이름으로 되돌린다
@@ -545,6 +549,22 @@
           capBtn.classList.remove("active");         // 한 번 캡처하면 모드 해제(v1과 동일)
         } catch (e) { toast("캡처 실패: " + (e.message || e)); }
       });
+
+      /* 딥링크 처리 — 목록의 '읽기로 열기', 모아보기의 '이 하이라이트로 점프' */
+      const scrollApi = registry.getPlugin("scroll").provides();
+      const target = highlights.find((h) => h.hid === GOTO_HL);
+      const gotoPage = target ? target.page : (GOTO_PAGE || 0);
+      if (START_MODE === "reading") {
+        await setMode("reading");
+        if (gotoPage) {
+          setTimeout(() => {
+            const el = document.querySelector(`#readingContainer .rd-page[data-page="${gotoPage}"]`);
+            if (el) el.scrollIntoView({ block: "start" });
+          }, 400);
+        }
+      } else if (gotoPage) {
+        setTimeout(() => scrollApi.scrollToPage({ pageNumber: gotoPage }), 300);
+      }
 
       // 콘솔 디버그용 훅(문제 생겼을 때 상태를 바로 들여다볼 수 있게)
       window.__rv2 = { registry, annoApi, docApi, selApi, pageSizes,

@@ -99,7 +99,7 @@
             updateBar();
           } else {
             const modeParam = OPEN_MODE === "pdf" ? "" : "&mode=read";
-            location.href = `viewer.html?id=${encodeURIComponent(REPORT_ID)}`
+            location.href = `viewer2.html?id=${encodeURIComponent(REPORT_ID)}`
               + `&hl=${encodeURIComponent(hid)}&page=${it.dataset.page}${modeParam}`;
           }
         };

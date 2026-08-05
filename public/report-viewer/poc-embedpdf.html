@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#fbfaf7" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#101216" media="(prefers-color-scheme: dark)">
+  <title>EmbedPDF 실험 — 리포트 뷰어</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+  <link rel="stylesheet" href="style.css?v=28">
+  <style>
+    /* 실험 페이지 전용 — 기존 뷰어 CSS를 건드리지 않기 위해 여기에만 둔다 */
+    .poc-bar { display:flex; gap:6px; align-items:center; flex-wrap:wrap;
+               padding:8px 10px; border-bottom:1px solid var(--line,#e5e1d8); }
+    .poc-bar select, .poc-bar button, .poc-bar label.file {
+      font:inherit; font-size:13px; padding:6px 10px; border-radius:8px;
+      border:1px solid var(--line,#d8d3c7); background:var(--card,#fff);
+      color:inherit; cursor:pointer; max-width:52vw;
+    }
+    .poc-bar button.on { background:#3b6ea5; color:#fff; border-color:#3b6ea5; }
+    .poc-bar input[type=file] { display:none; }
+    #metrics { font-size:12px; line-height:1.7; padding:8px 12px;
+               background:var(--card,#f7f5f0); border-bottom:1px solid var(--line,#e5e1d8);
+               white-space:pre-wrap; font-family:ui-monospace,'JetBrains Mono',monospace; }
+    #stage { position:relative; height:calc(100dvh - 190px); min-height:360px; }
+    #embedHost, #pdfjsHost { position:absolute; inset:0; overflow:auto; }
+    #pdfjsHost { display:none; background:var(--bg,#fbfaf7); text-align:center; }
+    #pdfjsHost canvas { max-width:100%; height:auto; margin:8px auto; display:block;
+                        box-shadow:0 1px 6px rgba(0,0,0,.15); }
+    .poc-note { font-size:12px; opacity:.75; padding:6px 12px; }
+    .poc-err { color:#c0392b; padding:10px 12px; font-size:13px; }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <a class="back" href="index.html">‹</a>
+    <h1>EmbedPDF 실험</h1>
+    <div class="spacer"></div>
+    <a class="btn" id="openCurrent" style="display:none">현재 뷰어로</a>
+  </div>
+
+  <div class="poc-bar">
+    <select id="reportSel"><option value="">리포트 불러오는 중…</option></select>
+    <label class="file">로컬 PDF
+      <input type="file" id="fileInput" accept="application/pdf">
+    </label>
+    <button id="btnEmbed" class="on">EmbedPDF</button>
+    <button id="btnPdfjs">PDF.js (현재 방식)</button>
+    <button id="btnBytes">엔진 용량 실측</button>
+  </div>
+
+  <div id="metrics">측정값이 여기에 표시됩니다.</div>
+  <div class="poc-note">같은 PDF를 두 엔진으로 번갈아 열어 첫 페이지가 뜨는 시간과 내려받은 용량을 비교합니다. 기존 뷰어 파일은 건드리지 않습니다.</div>
+
+  <div id="stage">
+    <div id="embedHost"></div>
+    <div id="pdfjsHost"></div>
+  </div>
+
+  <script src="app.js?v=22"></script>
+  <script type="module">
+    const EMBED_URL = "https://cdn.jsdelivr.net/npm/@embedpdf/snippet@2/dist/embedpdf.js";
+    const PDFJS_URL = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.6.82/pdf.min.mjs";
+    const PDFJS_WORKER = "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.6.82/pdf.worker.min.mjs";
+
+    const $ = (id) => document.getElementById(id);
+    const sel = $("reportSel"), metricsEl = $("metrics");
+    const embedHost = $("embedHost"), pdfjsHost = $("pdfjsHost");
+
+    let currentBuf = null;      // 현재 로드된 PDF 바이트
+    let currentName = "";
+    let blobUrl = null;
+    let engine = "embed";       // embed | pdfjs
+    const M = { load: null, embed: null, pdfjs: null, embedBytes: null, pdfjsBytes: null };
+
+    /* ── 용량 실측 ────────────────────────────────────────
+       EmbedPDF의 PDFium WASM은 '워커 안에서' 받기 때문에 페이지의 resource timing에 잡히지 않는다.
+       그래서 같은 파일을 캐시 무시로 한 번 받아 압축 전송량(transferSize)과 해제 크기를 직접 잰다. */
+    const ENGINE_FILES = {
+      embed: ["https://cdn.jsdelivr.net/npm/@embedpdf/pdfium/dist/pdfium.wasm", EMBED_URL],
+      pdfjs: [PDFJS_URL, PDFJS_WORKER],
+    };
+    async function measureEngine(which) {
+      let wire = 0, raw = 0;
+      for (const url of ENGINE_FILES[which]) {
+        const t = performance.now();
+        const res = await fetch(url, { cache: "reload" });
+        const buf = await res.arrayBuffer();
+        raw += buf.byteLength;
+        // 같은 요청의 resource 엔트리에서 실제 전송량(압축분)을 찾는다
+        const ent = performance.getEntriesByType("resource")
+          .filter((r) => r.name === url && r.startTime >= t - 5).pop();
+        wire += (ent && ent.transferSize) || 0;
+      }
+      return { wire, raw };
+    }
+    const fmtB = (n) => n == null ? "—"
+      : n > 1048576 ? (n / 1048576).toFixed(1) + " MB" : Math.round(n / 1024) + " KB";
+    const fmtEng = (v) => !v ? "—" : `${fmtB(v.wire || null)} 전송 / ${fmtB(v.raw)} 원본`;
+    const fmtMs = (n) => n == null ? "—" : Math.round(n) + " ms";
+
+    function paint() {
+      metricsEl.textContent =
+        `문서       : ${currentName || "—"}\n` +
+        `PDF 다운로드: ${fmtMs(M.load)}\n` +
+        `첫 페이지   : EmbedPDF ${fmtMs(M.embed)}   |   PDF.js ${fmtMs(M.pdfjs)}\n` +
+        `엔진 용량   : EmbedPDF ${fmtEng(M.embedBytes)}\n` +
+        `             PDF.js   ${fmtEng(M.pdfjsBytes)}`;
+    }
+
+    /* 첫 페이지가 화면에 뜨는 순간 —
+       EmbedPDF는 <embedpdf-container>의 shadow DOM 안에 <img>로 그리므로 라이트 DOM만 봐선 못 찾는다.
+       그래서 shadowRoot까지 훑는 폴링으로 판정한다. */
+    function firstPaintEl(host) {
+      const direct = host.querySelector("canvas, img");
+      if (direct) return direct;
+      const ce = host.querySelector("embedpdf-container");
+      const sr = ce && ce.shadowRoot;
+      return sr ? sr.querySelector("canvas, img") : null;
+    }
+    function waitFirstPaint(host, timeout = 30000) {
+      return new Promise((resolve) => {
+        const t0 = performance.now();
+        const tick = () => {
+          const el = firstPaintEl(host);
+          if (el && (el.clientWidth > 10 || el.width > 10)) return resolve(true);
+          if (performance.now() - t0 > timeout) return resolve(false);   // 타임아웃 = 측정 실패
+          setTimeout(tick, 50);
+        };
+        tick();
+      });
+    }
+
+    /* ── 엔진 1: EmbedPDF ─────────────────────────────── */
+    async function renderEmbed() {
+      embedHost.innerHTML = "";
+      if (blobUrl) URL.revokeObjectURL(blobUrl);
+      blobUrl = URL.createObjectURL(new Blob([currentBuf.slice(0)], { type: "application/pdf" }));
+      const t0 = performance.now();
+      const { default: EmbedPDF } = await import(EMBED_URL);
+      const box = document.createElement("div");
+      box.style.cssText = "position:absolute;inset:0";
+      embedHost.appendChild(box);
+      await EmbedPDF.init({ type: "container", target: box, src: blobUrl });
+      const ok = await waitFirstPaint(embedHost);
+      M.embed = ok ? performance.now() - t0 : null;
+      paint();
+    }
+
+    /* ── 엔진 2: PDF.js (지금 뷰어와 같은 방식) ────────── */
+    async function renderPdfjs() {
+      pdfjsHost.innerHTML = "";
+      const t0 = performance.now();
+      const pdfjsLib = await import(PDFJS_URL);
+      pdfjsLib.GlobalWorkerOptions.workerSrc = PDFJS_WORKER;
+      const doc = await pdfjsLib.getDocument({ data: currentBuf.slice(0) }).promise;
+      const page = await doc.getPage(1);
+      const cssW = Math.min(pdfjsHost.clientWidth - 16, 1000);
+      const base = page.getViewport({ scale: 1 });
+      const viewport = page.getViewport({ scale: cssW / base.width });
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      const canvas = document.createElement("canvas");
+      canvas.width = Math.floor(viewport.width * dpr);
+      canvas.height = Math.floor(viewport.height * dpr);
+      canvas.style.width = viewport.width + "px";
+      const ctx = canvas.getContext("2d");
+      ctx.scale(dpr, dpr);
+      pdfjsHost.appendChild(canvas);
+      await page.render({ canvasContext: ctx, viewport }).promise;
+      M.pdfjs = performance.now() - t0;
+      paint();
+      // 나머지 페이지는 비교에 필요 없으므로 그리지 않는다(첫 페이지 시간만 측정).
+      const rest = document.createElement("div");
+      rest.className = "poc-note";
+      rest.textContent = `총 ${doc.numPages}쪽 — 비교용이라 1쪽만 그립니다.`;
+      pdfjsHost.appendChild(rest);
+    }
+
+    async function show() {
+      if (!currentBuf) return;
+      const isEmbed = engine === "embed";
+      embedHost.style.display = isEmbed ? "block" : "none";
+      pdfjsHost.style.display = isEmbed ? "none" : "block";
+      $("btnEmbed").classList.toggle("on", isEmbed);
+      $("btnPdfjs").classList.toggle("on", !isEmbed);
+      try {
+        if (isEmbed) await renderEmbed(); else await renderPdfjs();
+      } catch (e) {
+        const host = isEmbed ? embedHost : pdfjsHost;
+        host.innerHTML = `<div class="poc-err">렌더 실패: ${String(e && e.message || e)}</div>`;
+      }
+    }
+
+    async function loadBuffer(getBuf, name, reportId) {
+      currentName = name;
+      M.embed = M.pdfjs = null;
+      paint();
+      const t0 = performance.now();
+      currentBuf = await getBuf();
+      M.load = performance.now() - t0;
+      const link = $("openCurrent");
+      if (reportId) {
+        link.href = "viewer.html?id=" + encodeURIComponent(reportId);
+        link.style.display = "";
+      } else {
+        link.style.display = "none";
+      }
+      await show();
+    }
+
+    /* ── 리포트 목록 (기존 app.js의 GitHub 래퍼 재사용) ── */
+    (async () => {
+      if (!getPat()) {
+        sel.innerHTML = '<option value="">PAT 없음 — 로컬 PDF로 시험하세요</option>';
+        return;
+      }
+      try {
+        const reports = await loadReports();
+        const list = (Array.isArray(reports) ? reports : reports.items || [])
+          .slice(0, 50);
+        sel.innerHTML = '<option value="">리포트 선택…</option>' +
+          list.map((r) => `<option value="${r.id}" data-path="${r.pdf_path || ""}">${
+            (r.title || r.id).replace(/[<>&]/g, "")}</option>`).join("");
+        sel.onchange = () => {
+          const opt = sel.selectedOptions[0];
+          if (!opt || !opt.value) return;
+          loadBuffer(() => loadPdf(opt.dataset.path), opt.textContent, opt.value);
+        };
+      } catch (e) {
+        sel.innerHTML = `<option value="">목록 실패: ${String(e.message || e)}</option>`;
+      }
+    })();
+
+    $("fileInput").onchange = (ev) => {
+      const f = ev.target.files && ev.target.files[0];
+      if (f) loadBuffer(() => f.arrayBuffer(), f.name, null);
+    };
+    $("btnEmbed").onclick = () => { engine = "embed"; show(); };
+    $("btnPdfjs").onclick = () => { engine = "pdfjs"; show(); };
+    $("btnBytes").onclick = async () => {
+      const b = $("btnBytes"), label = b.textContent;
+      b.disabled = true; b.textContent = "재는 중…";
+      try {
+        M.embedBytes = await measureEngine("embed"); paint();
+        M.pdfjsBytes = await measureEngine("pdfjs"); paint();
+      } catch (e) {
+        metricsEl.textContent += `\n용량 실측 실패: ${String(e.message || e)}`;
+      } finally { b.disabled = false; b.textContent = label; }
+    };
+    paint();
+  </script>
+</body>
+</html>

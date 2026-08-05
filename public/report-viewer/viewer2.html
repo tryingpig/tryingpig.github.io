@@ -13,6 +13,8 @@
     #host { position:absolute; inset:0; top:var(--topbar-h,48px); }
     #host > div { position:absolute; inset:0; }
     body { overflow:hidden; }
+    body.reading-on { overflow:auto; }
+    body.reading-on #host { display:none; }
     .v2-msg { padding:14px; font-size:13px; line-height:1.7; }
     .v2-err { color:#c0392b; }
     .v2-badge { font-size:11px; opacity:.7; margin-left:6px; }
@@ -24,10 +26,14 @@
     <h1 id="docTitle">불러오는 중…</h1>
     <span class="v2-badge" id="hlCount"></span>
     <div class="spacer"></div>
+    <button class="btn" id="capBtn" title="영역 캡처(드래그)">✂️</button>
+    <button class="btn" id="modeBtn" title="읽기/PDF 전환">📖 읽기</button>
+    <button class="btn" id="llmBtn" title="읽기 본문을 LLM으로 정리 요청" style="display:none">🤖 LLM</button>
     <a class="btn" id="oldLink" title="기존 뷰어로 열기">v1</a>
     <a class="btn" id="hlLink">모아보기</a>
   </div>
   <div id="host"><div class="v2-msg" id="boot">여는 중…</div></div>
+  <div id="readingContainer" class="reading" style="display:none"></div>
   <div class="toast" id="toast"></div>
 
   <script src="app.js?v=22"></script>
@@ -100,6 +106,12 @@
     };
 
     /* ── 상태 ── */
+    let REPORT = null;         // reports.json 항목
+    let READTEXT = null;       // text/<id>.json 의 pages — 읽기 모드 본문
+    let readingBuilt = false;
+    let mode = "pdf";          // pdf | reading
+    let llmEngine = null, llmQueued = false, llmChecked = false, llmPoll = null;
+    const _pageImgCache = {};
     let highlights = [];       // 기존 스키마 그대로
     let annoSha = null;
     const deletedHids = new Set();
@@ -139,11 +151,247 @@
           deletedHids.clear();
           document.getElementById("hlCount").textContent = `${highlights.length}개`;
           bumpCount(REPORT_ID, highlights.length);
+          if (readingBuilt) {                            // 읽기 화면에도 반영
+            renderReadingMarks();
+            document.querySelectorAll("#readingContainer .rd-pageimg").forEach(
+              (w) => renderReadImgBoxes(parseInt(w.dataset.page, 10)));
+          }
         } catch (e) {
           toast("저장 실패: " + (e.message || e));
         }
       }, 600);   // 연속 편집을 한 번에 묶어 저장(기존 뷰어와 같은 취지)
     }
+
+    /* ═══ 읽기 모드 ═══════════════════════════════════════
+       엔진과 무관하다 — 수집 때 PyMuPDF로 뽑아둔 본문(text/<id>.json)과
+       사전 렌더 페이지 이미지(pages/<id>/n.jpg)만 쓴다. v1과 같은 CSS 클래스를 쓴다. */
+    const esc = (s) => (s == null ? "" : String(s)).replace(/[&<>"]/g, (c) =>
+      ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+
+    async function idbAsset(key, val) {
+      try {
+        const db = await idbOpen();
+        if (val === undefined) {
+          return await new Promise((res) => {
+            const rq = db.transaction(ASSET_STORE, "readonly").objectStore(ASSET_STORE).get(key);
+            rq.onsuccess = () => res(rq.result); rq.onerror = () => res(null);
+          });
+        }
+        db.transaction(ASSET_STORE, "readwrite").objectStore(ASSET_STORE).put({ val, ts: Date.now() }, key);
+      } catch (e) { return null; }
+    }
+
+    /* 페이지 이미지는 vault(비공개)라 인증 fetch → objectURL. id 기준 불변이라 영구 캐시. */
+    async function loadPageImage(n) {
+      if (_pageImgCache[n]) return _pageImgCache[n];
+      const key = "img:" + REPORT_ID + "/" + n;
+      let blob = null;
+      const hit = await idbAsset(key);
+      if (hit && hit.val) blob = hit.val;
+      if (!blob) {
+        const res = await ghFetch("contents/" + REPORT.pages_dir + "/" + n + ".jpg",
+                                  { accept: "application/vnd.github.raw" });
+        if (!res.ok) throw new Error("page image " + n + " " + res.status);
+        blob = await res.blob();
+        idbAsset(key, blob);
+      }
+      const url = URL.createObjectURL(blob);
+      _pageImgCache[n] = url;
+      return url;
+    }
+
+    function buildReadingView() {
+      const rd = document.getElementById("readingContainer");
+      rd.innerHTML = "";
+      const total = REPORT.pages || 0;
+      for (let n = 1; n <= total; n++) {
+        let html = `<div class="rd-pageno">p.${n}</div>`;
+        html += `<div class="rd-pageimg" data-page="${n}" style="min-height:200px"></div>`;
+        for (const b of (READTEXT ? (READTEXT[String(n)] || []) : [])) {
+          if (b.kind === "sub") html += `<h3 class="rd-h rd-sub">${esc(b.text)}</h3>`;
+          else if (b.kind !== "p") html += `<h3 class="rd-h">${esc(b.text)}</h3>`;
+          else html += `<p class="rd-para">${esc(b.text)}</p>`;
+        }
+        rd.insertAdjacentHTML("beforeend", `<div class="rd-page" data-page="${n}">${html}</div>`);
+      }
+      // 페이지 이미지는 뷰포트 근처에 오면 그때 받는다(전 페이지 선다운로드 방지)
+      const io = new IntersectionObserver((ents, obs) => {
+        for (const en of ents) {
+          if (!en.isIntersecting) continue;
+          obs.unobserve(en.target);
+          const n = parseInt(en.target.dataset.page, 10);
+          loadPageImage(n).then((url) => {
+            en.target.innerHTML = `<img class="rd-pagecanvas" src="${url}" alt="p.${n}">`;
+            en.target.style.minHeight = "";
+            renderReadImgBoxes(n);
+          }).catch(() => { en.target.innerHTML = `<div class="v2-msg">이미지 로드 실패</div>`; });
+        }
+      }, { rootMargin: "800px 0px" });
+      rd.querySelectorAll(".rd-pageimg").forEach((w) => io.observe(w));
+    }
+
+    /* 기존 하이라이트를 읽기 본문 위에 <mark>로 표시.
+       ★ 공백을 지우고 맞춘다 — PDF에서 딴 하이라이트 텍스트와 수집 때 PyMuPDF가 뽑은 본문은
+         띄어쓰기가 다르다("① 고연차" vs "①고연차"). 그대로 indexOf 하면 하나도 안 맞는다. */
+    function markNeedle(page, raw, color) {
+      const needle = (raw || "").replace(/\s+/g, "");
+      if (needle.length < 4) return false;
+      for (const el of page.querySelectorAll(".rd-para, .rd-h")) {
+        // 블록 안 텍스트 노드를 이어붙이며 (노드, 오프셋) 지도를 만든다
+        const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
+        let stripped = "", map = [], node;
+        while ((node = walker.nextNode())) {
+          if (node.parentNode && node.parentNode.tagName === "MARK") continue;   // 이미 칠한 곳은 건너뛴다
+          const v = node.nodeValue;
+          for (let i = 0; i < v.length; i++) {
+            if (/\s/.test(v[i])) continue;
+            stripped += v[i]; map.push([node, i]);
+          }
+        }
+        const at = stripped.indexOf(needle);
+        if (at < 0) continue;
+        const [sNode, sOff] = map[at];
+        const [eNode, eOff] = map[at + needle.length - 1];
+        const r = document.createRange();
+        r.setStart(sNode, sOff); r.setEnd(eNode, eOff + 1);
+        const mk = document.createElement("mark");
+        mk.className = "rd-mark " + (color || "yellow");
+        try {
+          r.surroundContents(mk);
+        } catch (e) {
+          try { mk.appendChild(r.extractContents()); r.insertNode(mk); } catch (e2) { continue; }
+        }
+        return true;
+      }
+      return false;
+    }
+
+    function renderReadingMarks() {
+      const rd = document.getElementById("readingContainer");
+      rd.querySelectorAll("mark.rd-mark").forEach((m) => {
+        m.parentNode.replaceChild(document.createTextNode(m.textContent), m);
+      });
+      rd.querySelectorAll(".rd-page").forEach((p) => p.normalize());
+      for (const hl of highlights) {
+        if (hl.type === "image") continue;
+        const page = rd.querySelector(`.rd-page[data-page="${hl.page}"]`);
+        if (!page) continue;
+        const parts = (hl.segs && hl.segs.length ? hl.segs : [hl.text]).filter(Boolean);
+        for (const part of parts) {
+          if (markNeedle(page, part, hl.color)) continue;
+          // 통째로 못 찾으면 두 문단에 걸친 선택이다 → 문장 단위로 쪼개 각각 시도
+          const chunks = part.split(/(?<=[.!?。])\s+/).filter((c) => c.replace(/\s+/g, "").length >= 4);
+          if (chunks.length > 1) for (const c of chunks) markNeedle(page, c, hl.color);
+        }
+      }
+    }
+
+    /* 캡처(type=image)는 페이지 이미지 위 박스로 표시 — 정규 좌표라 크기 무관 */
+    function renderReadImgBoxes(pageNo) {
+      const wrap = document.querySelector(`#readingContainer .rd-pageimg[data-page="${pageNo}"]`);
+      if (!wrap || !wrap.querySelector("img.rd-pagecanvas")) return;
+      wrap.querySelectorAll(".rd-imgbox").forEach((el) => el.remove());
+      for (const hl of highlights) {
+        if (hl.type !== "image" || hl.page !== pageNo) continue;
+        for (const r of hl.rects || []) {
+          const div = document.createElement("div");
+          div.className = "rd-imgbox " + (hl.color || "yellow");
+          div.style.cssText = `left:${r.x * 100}%;top:${r.y * 100}%;width:${r.w * 100}%;height:${r.h * 100}%`;
+          div.dataset.hid = hl.hid;
+          wrap.appendChild(div);
+        }
+      }
+    }
+
+    async function setMode(m) {
+      mode = m;
+      const rd = document.getElementById("readingContainer");
+      const btn = document.getElementById("modeBtn");
+      if (m === "reading") {
+        if (!readingBuilt) {
+          rd.innerHTML = `<div class="v2-msg">읽기 화면 구성 중…</div>`;
+          rd.style.display = "";
+          document.body.classList.add("reading-on");
+          buildReadingView();
+          readingBuilt = true;
+        } else {
+          rd.style.display = ""; document.body.classList.add("reading-on");
+        }
+        renderReadingMarks();
+        btn.textContent = "📄 PDF";
+        document.getElementById("llmBtn").style.display = "";
+        ensureLlmState();
+      } else {
+        rd.style.display = "none";
+        document.body.classList.remove("reading-on");
+        btn.textContent = "📖 읽기";
+        document.getElementById("llmBtn").style.display = "none";
+      }
+      window.scrollTo(0, 0);
+    }
+
+    /* ═══ 온디맨드 LLM 본문 재추출 (v1과 같은 큐를 쓴다) ═══ */
+    const LLM_REQ = "contents/index/llm_requests.json";
+    function renderLlmBtn() {
+      const b = document.getElementById("llmBtn");
+      if (llmQueued) { b.textContent = "⏳ 처리 대기중"; b.disabled = true; }
+      else if (llmEngine === "llm") { b.textContent = "✅ LLM 본문"; b.disabled = false; }
+      else { b.textContent = "🤖 LLM 정리"; b.disabled = false; }
+    }
+    async function llmPending() {
+      try {
+        const res = await ghFetch(LLM_REQ, { cache: "no-store" });
+        if (!res.ok) return [];
+        return (JSON.parse(decodeB64Utf8((await res.json()).content)).pending) || [];
+      } catch (e) { return []; }
+    }
+    async function requestLlm() {
+      for (let a = 0; a < 4; a++) {
+        const res = await ghFetch(LLM_REQ, { cache: "no-store" });
+        let doc = { pending: [], done: [] }, sha = null;
+        if (res.ok) { const obj = await res.json(); doc = JSON.parse(decodeB64Utf8(obj.content)); sha = obj.sha; }
+        doc.pending = doc.pending || [];
+        if (!doc.pending.some((p) => (p.id || p) === REPORT_ID)) doc.pending.push({ id: REPORT_ID, requested_at: nowKst() });
+        const body = { message: `llm-req: ${REPORT_ID}`, content: encodeUtf8B64(JSON.stringify(doc, null, 2)) };
+        if (sha) body.sha = sha;
+        const put = await ghFetch(LLM_REQ, { method: "PUT", body });
+        if (put.ok) return;
+        if (put.status !== 409 && put.status !== 422) throw new Error("요청 실패 " + put.status);
+      }
+      throw new Error("요청 충돌(잠시 후 다시)");
+    }
+    function startLlmPoll() {
+      clearInterval(llmPoll);
+      llmPoll = setInterval(async () => {
+        const pend = await llmPending();
+        if (pend.some((p) => (p.id || p) === REPORT_ID)) return;
+        clearInterval(llmPoll);
+        llmQueued = false;
+        renderLlmBtn();
+        toast("본문 정리 완료 — 새로고침하면 반영됩니다");
+      }, 25000);
+    }
+    async function ensureLlmState() {
+      renderLlmBtn();
+      if (llmChecked) return;
+      llmChecked = true;
+      llmQueued = (await llmPending()).some((p) => (p.id || p) === REPORT_ID);
+      renderLlmBtn();
+      if (llmQueued) startLlmPoll();
+    }
+
+    document.getElementById("modeBtn").onclick = () => setMode(mode === "pdf" ? "reading" : "pdf");
+    document.getElementById("llmBtn").onclick = async () => {
+      if (llmQueued) return;
+      if (llmEngine === "llm" && !confirm("이미 LLM으로 정리된 본문이에요. 다시 요청할까요?")) return;
+      const b = document.getElementById("llmBtn"); b.disabled = true;
+      try {
+        await requestLlm();
+        llmQueued = true; renderLlmBtn();
+        toast("요청됨 · 몇 분 내 반영됩니다");
+        startLlmPoll();
+      } catch (e) { toast(e.message || "요청 실패"); renderLlmBtn(); }
+    };
 
     async function start() {
       if (!REPORT_ID) return fail("리포트 id가 없습니다. index.html에서 열어주세요.");
@@ -158,11 +406,23 @@
       } catch (e) { return fail("불러오기 실패: " + (e.message || e)); }
       if (!report) return fail("리포트를 찾을 수 없습니다: " + REPORT_ID);
 
+      REPORT = report;
+      llmEngine = report.text_engine || null;
       document.getElementById("docTitle").textContent = report.title || REPORT_ID;
       document.title = (report.title || "리포트 뷰어") + " · v2";
       highlights = anno.data.highlights || [];
       annoSha = anno.sha;
       document.getElementById("hlCount").textContent = `${highlights.length}개`;
+
+      // 읽기 모드용 본문(있으면). 실패해도 PDF 모드는 정상 동작한다.
+      if (report.text_path) {
+        try {
+          const res = await ghFetch("contents/" + report.text_path,
+                                    { accept: "application/vnd.github.raw", cache: "no-store" });
+          if (res.ok) { const td = await res.json(); READTEXT = td && td.pages ? td.pages : null; }
+        } catch (e) { READTEXT = null; }
+      }
+      if (!READTEXT || !report.pages_dir) document.getElementById("modeBtn").style.display = "none";
 
       // PDF 확보(캐시 우선)
       let buf;
@@ -231,6 +491,60 @@
         await new Promise((r) => setTimeout(r, 60));
       }
       if (shown) toast(`하이라이트 ${shown}개 표시`);
+
+      /* ═══ 영역 캡처 — EmbedPDF CapturePlugin ═══════════
+         v1은 캡처 UI를 직접 만들었지만 여기선 플러그인의 마퀴 선택을 쓴다.
+         결과 blob은 PNG라서, 기존 파이프라인(clips/<id>/<hid>.jpg)에 맞춰 JPEG로 바꿔 올린다. */
+      const capApi = registry.getPlugin("capture").provides();
+      const capBtn = document.getElementById("capBtn");
+      capBtn.onclick = () => {
+        capApi.toggleMarqueeCapture();
+        const on = capApi.isMarqueeCaptureActive && capApi.isMarqueeCaptureActive();
+        capBtn.classList.toggle("active", !!on);
+        toast(on ? "드래그로 영역을 선택하세요" : "캡처 모드 해제");
+      };
+
+      const toJpeg = (blob) => new Promise((res, rej) => {
+        const img = new Image();
+        img.onload = () => {
+          const cv = document.createElement("canvas");
+          cv.width = img.naturalWidth; cv.height = img.naturalHeight;
+          const ctx = cv.getContext("2d");
+          ctx.fillStyle = "#fff"; ctx.fillRect(0, 0, cv.width, cv.height);   // JPEG는 알파 없음
+          ctx.drawImage(img, 0, 0);
+          URL.revokeObjectURL(img.src);
+          cv.toBlob((b) => b ? res(b) : rej(new Error("jpeg 변환 실패")), "image/jpeg", 0.85);
+        };
+        img.onerror = () => rej(new Error("캡처 이미지 로드 실패"));
+        img.src = URL.createObjectURL(blob);
+      });
+
+      capApi.onCaptureArea(async (ev) => {
+        try {
+          const pi = ev.pageIndex, size = pageSizes[pi];
+          if (!size || !ev.blob) return;
+          const r = ev.rect;
+          const hid = "h_" + Date.now();
+          const clip = `clips/${REPORT_ID}/${hid}.jpg`;
+          const hl = { hid, page: pi + 1, type: "image", clip, color: "yellow",
+            rects: [{ x: r.origin.x / size.width, y: r.origin.y / size.height,
+                      w: r.size.width / size.width, h: r.size.height / size.height }],
+            created_at: nowKst() };
+          highlights.push(hl);                       // 낙관적 반영(업로드 전에도 개수에 보임)
+          document.getElementById("hlCount").textContent = `${highlights.length}개`;
+          toast("캡처 저장 중…");
+          try {
+            await putBinaryFile(clip, await toJpeg(ev.blob), `clip: ${REPORT_ID} ${hid}`);
+            persist();
+            toast("✂️ 캡처됨 · 모아보기에서 확인");
+          } catch (e) {
+            highlights = highlights.filter((h) => h.hid !== hid);   // 업로드 실패 → 롤백
+            document.getElementById("hlCount").textContent = `${highlights.length}개`;
+            toast("캡처 저장 실패 — 다시 시도해 주세요");
+          }
+          capBtn.classList.remove("active");         // 한 번 캡처하면 모드 해제(v1과 동일)
+        } catch (e) { toast("캡처 실패: " + (e.message || e)); }
+      });
 
       // 콘솔 디버그용 훅(문제 생겼을 때 상태를 바로 들여다볼 수 있게)
       window.__rv2 = { registry, annoApi, docApi, selApi, pageSizes,

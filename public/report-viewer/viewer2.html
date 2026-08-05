@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#fbfaf7" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#101216" media="(prefers-color-scheme: dark)">
+  <title>리포트 뷰어 v2</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+  <link rel="stylesheet" href="style.css?v=28">
+  <style>
+    /* v2 전용 — 기존 뷰어 CSS는 손대지 않는다 */
+    #host { position:absolute; inset:0; top:var(--topbar-h,48px); }
+    #host > div { position:absolute; inset:0; }
+    body { overflow:hidden; }
+    .v2-msg { padding:14px; font-size:13px; line-height:1.7; }
+    .v2-err { color:#c0392b; }
+    .v2-badge { font-size:11px; opacity:.7; margin-left:6px; }
+  </style>
+</head>
+<body>
+  <div class="topbar viewer-topbar" id="topbar">
+    <a class="back" href="index.html">‹</a>
+    <h1 id="docTitle">불러오는 중…</h1>
+    <span class="v2-badge" id="hlCount"></span>
+    <div class="spacer"></div>
+    <a class="btn" id="oldLink" title="기존 뷰어로 열기">v1</a>
+    <a class="btn" id="hlLink">모아보기</a>
+  </div>
+  <div id="host"><div class="v2-msg" id="boot">여는 중…</div></div>
+  <div class="toast" id="toast"></div>
+
+  <script src="app.js?v=22"></script>
+  <script type="module">
+    import EmbedPDF, { PdfAnnotationSubtype }
+      from "https://cdn.jsdelivr.net/npm/@embedpdf/snippet@2/dist/embedpdf.js";
+
+    const params = new URLSearchParams(location.search);
+    const REPORT_ID = params.get("id");
+    const HL = PdfAnnotationSubtype.HIGHLIGHT;
+
+    /* 기존 하이라이트 색 이름 ↔ 화면 색.
+       EmbedPDF 툴은 자유 색을 주므로, 저장할 때는 가장 가까운 이름으로 되돌린다
+       (모아보기·노션·PDF 굽기가 이름을 쓴다). */
+    const COLOR_HEX = { yellow: "#FFE066", green: "#7CE38B", pink: "#FF9FB1" };
+    const hex2rgb = (h) => {
+      const s = (h || "").replace("#", "");
+      const v = s.length === 3 ? s.split("").map((c) => c + c).join("") : s;
+      return [0, 2, 4].map((i) => parseInt(v.slice(i, i + 2), 16) || 0);
+    };
+    function nearestColorName(hex) {
+      const t = hex2rgb(hex);
+      let best = "yellow", bd = Infinity;
+      for (const [name, h] of Object.entries(COLOR_HEX)) {
+        const c = hex2rgb(h);
+        const d = (t[0]-c[0])**2 + (t[1]-c[1])**2 + (t[2]-c[2])**2;
+        if (d < bd) { bd = d; best = name; }
+      }
+      return best;
+    }
+
+    /* ── PDF 캐시: 기존 뷰어와 같은 IndexedDB를 쓴다(중복 다운로드 방지) ── */
+    const PDF_DB = "rv_pdfcache", PDF_STORE = "pdfs", ASSET_STORE = "assets";
+    function idbOpen() {
+      return new Promise((res, rej) => {
+        const rq = indexedDB.open(PDF_DB, 2);
+        rq.onupgradeneeded = () => {
+          const db = rq.result;
+          if (!db.objectStoreNames.contains(PDF_STORE)) db.createObjectStore(PDF_STORE);
+          if (!db.objectStoreNames.contains(ASSET_STORE)) db.createObjectStore(ASSET_STORE);
+        };
+        rq.onsuccess = () => res(rq.result); rq.onerror = () => rej(rq.error);
+      });
+    }
+    async function pdfCacheGet(id) {
+      try {
+        const db = await idbOpen();
+        return await new Promise((res) => {
+          const rq = db.transaction(PDF_STORE, "readonly").objectStore(PDF_STORE).get(id);
+          rq.onsuccess = () => res(rq.result); rq.onerror = () => res(null);
+        });
+      } catch (e) { return null; }
+    }
+    async function pdfCachePut(id, buf) {
+      try {
+        const db = await idbOpen();
+        const st = db.transaction(PDF_STORE, "readwrite").objectStore(PDF_STORE);
+        st.put({ buf, ts: Date.now() }, id);
+      } catch (e) { /* quota 초과 등 무시 */ }
+    }
+
+    function toast(msg) {
+      const t = document.getElementById("toast");
+      t.textContent = msg; t.classList.add("show");
+      setTimeout(() => t.classList.remove("show"), 1800);
+    }
+    const fail = (msg) => {
+      document.getElementById("host").innerHTML =
+        `<div class="v2-msg v2-err">${msg}</div>`;
+    };
+
+    /* ── 상태 ── */
+    let highlights = [];       // 기존 스키마 그대로
+    let annoSha = null;
+    const deletedHids = new Set();
+    const idMap = new Map();   // EmbedPDF annotation id -> hid
+    let pageSizes = [];        // pageIndex -> {width,height} (PDF 포인트)
+    let lastSelection = null;  // {text, segs} — 하이라이트 생성 직전의 선택 텍스트
+    let saveTimer = null;
+
+    /* 기존(정규화) → EmbedPDF(PDF 포인트) */
+    function toSegRects(rects, size) {
+      return rects.map((r) => ({
+        origin: { x: r.x * size.width, y: r.y * size.height },
+        size: { width: r.w * size.width, height: r.h * size.height },
+      }));
+    }
+    const boundOf = (segs) => {
+      const x1 = Math.min(...segs.map((s) => s.origin.x));
+      const y1 = Math.min(...segs.map((s) => s.origin.y));
+      const x2 = Math.max(...segs.map((s) => s.origin.x + s.size.width));
+      const y2 = Math.max(...segs.map((s) => s.origin.y + s.size.height));
+      return { origin: { x: x1, y: y1 }, size: { width: x2 - x1, height: y2 - y1 } };
+    };
+    /* EmbedPDF(PDF 포인트) → 기존(정규화) */
+    function toNormRects(segs, size) {
+      return (segs || []).map((s) => ({
+        x: s.origin.x / size.width,       y: s.origin.y / size.height,
+        w: s.size.width / size.width,     h: s.size.height / size.height,
+      }));
+    }
+
+    async function persist() {
+      clearTimeout(saveTimer);
+      saveTimer = setTimeout(async () => {
+        try {
+          const r = await saveAnnotations(REPORT_ID, highlights, [...deletedHids], annoSha);
+          annoSha = r.sha; highlights = r.highlights;
+          deletedHids.clear();
+          document.getElementById("hlCount").textContent = `${highlights.length}개`;
+          bumpCount(REPORT_ID, highlights.length);
+        } catch (e) {
+          toast("저장 실패: " + (e.message || e));
+        }
+      }, 600);   // 연속 편집을 한 번에 묶어 저장(기존 뷰어와 같은 취지)
+    }
+
+    async function start() {
+      if (!REPORT_ID) return fail("리포트 id가 없습니다. index.html에서 열어주세요.");
+      document.getElementById("hlLink").href = "highlights.html?id=" + encodeURIComponent(REPORT_ID);
+      document.getElementById("oldLink").href = "viewer.html?id=" + encodeURIComponent(REPORT_ID);
+
+      let report, anno;
+      try {
+        const [reportsDoc, a] = await Promise.all([loadReports(), loadAnnotations(REPORT_ID)]);
+        report = (reportsDoc.reports || []).find((r) => r.id === REPORT_ID);
+        anno = a;
+      } catch (e) { return fail("불러오기 실패: " + (e.message || e)); }
+      if (!report) return fail("리포트를 찾을 수 없습니다: " + REPORT_ID);
+
+      document.getElementById("docTitle").textContent = report.title || REPORT_ID;
+      document.title = (report.title || "리포트 뷰어") + " · v2";
+      highlights = anno.data.highlights || [];
+      annoSha = anno.sha;
+      document.getElementById("hlCount").textContent = `${highlights.length}개`;
+
+      // PDF 확보(캐시 우선)
+      let buf;
+      try {
+        const hit = await pdfCacheGet(REPORT_ID);
+        if (hit && hit.buf) buf = hit.buf;
+        else { buf = await loadPdf(report.pdf_path); pdfCachePut(REPORT_ID, buf.slice(0)); }
+      } catch (e) { return fail("PDF 로드 실패: " + (e.message || e)); }
+
+      const host = document.getElementById("host");
+      host.innerHTML = "";
+      const box = document.createElement("div");
+      host.appendChild(box);
+      const src = URL.createObjectURL(new Blob([buf], { type: "application/pdf" }));
+      const viewer = EmbedPDF.init({ type: "container", target: box, src });
+
+      const registry = await viewer.registry;
+      const annoApi = registry.getPlugin("annotation").provides();
+      const docApi  = registry.getPlugin("document-manager").provides();
+      const selApi  = registry.getPlugin("selection").provides();
+
+      // 문서가 실제로 열릴 때까지 기다린다.
+      // ★ 이걸 안 하고 바로 주석을 넣으면 조용히 유실된다(검증에서 7개 중 1개만 남았다).
+      const doc = await new Promise((res) => {
+        const now = docApi.getActiveDocument && docApi.getActiveDocument();
+        if (now && now.pages) return res(now);
+        const off = docApi.onDocumentOpened((d) => { off && off(); res(d && d.pages ? d : docApi.getActiveDocument()); });
+        setTimeout(() => res(docApi.getActiveDocument()), 15000);
+      });
+      if (!doc || !doc.pages) return fail("PDF를 여는 데 실패했습니다.");
+      pageSizes = doc.pages.map((p) => p.size);
+
+      // 선택 텍스트 기억 — 새 하이라이트의 text/segs 로 쓴다
+      if (selApi.onSelectionChange) {
+        selApi.onSelectionChange(() => {
+          try {
+            const t = selApi.getSelectedText && selApi.getSelectedText();
+            const done = (v) => {
+              const arr = Array.isArray(v) ? v : (typeof v === "string" ? [v] : []);
+              const segs = arr.filter(Boolean);
+              if (segs.length) lastSelection = { text: segs.join(" ").trim(), segs };
+            };
+            (t && t.wait) ? t.wait(done, () => {}) : done(t);
+          } catch (e) { /* 선택 텍스트는 없어도 하이라이트는 만든다 */ }
+        });
+      }
+
+      // 기존 하이라이트 표시 — 하나씩, 간격을 두고(대량 import는 내부 렌더 에러가 난다)
+      let shown = 0;
+      for (const h of highlights) {
+        const pi = (h.page || 1) - 1;
+        const size = pageSizes[pi];
+        if (!size || !Array.isArray(h.rects) || !h.rects.length) continue;
+        if (h.type === "clip") continue;                 // 캡처 항목은 표시 대상 아님
+        const segs = toSegRects(h.rects, size);
+        try {
+          annoApi.createAnnotation(pi, {
+            type: HL, pageIndex: pi, id: h.hid,
+            rect: boundOf(segs), segmentRects: segs,
+            color: COLOR_HEX[h.color] || COLOR_HEX.yellow,
+            opacity: 0.45, contents: h.text || "",
+          });
+          idMap.set(h.hid, h.hid);
+          shown++;
+        } catch (e) { /* 개별 실패는 건너뛴다 */ }
+        await new Promise((r) => setTimeout(r, 60));
+      }
+      if (shown) toast(`하이라이트 ${shown}개 표시`);
+
+      // 콘솔 디버그용 훅(문제 생겼을 때 상태를 바로 들여다볼 수 있게)
+      window.__rv2 = { registry, annoApi, docApi, selApi, pageSizes,
+                       get highlights() { return highlights; } };
+
+      // 새 하이라이트/삭제를 기존 스키마로 반영
+      annoApi.onAnnotationEvent((ev) => {
+        if (!ev || !ev.annotation) return;
+        const an = ev.annotation;
+        if (an.type !== HL) return;                       // 1단계는 형광펜만 다룬다
+        const pi = ev.pageIndex != null ? ev.pageIndex : an.pageIndex;
+        const size = pageSizes[pi];
+        if (!size) return;
+
+        if (ev.type === "create" && ev.committed) {
+          if (idMap.has(an.id)) return;                   // 기존 항목 표시분은 무시
+          const hid = "h_" + Date.now();
+          idMap.set(an.id, hid);
+          const sel = lastSelection || {};
+          highlights.push({
+            hid, page: pi + 1,
+            text: (an.contents || sel.text || "").trim(),
+            rects: toNormRects(an.segmentRects, size),
+            segs: sel.segs || undefined,
+            color: nearestColorName(an.color),
+            created_at: nowKst(),
+          });
+          lastSelection = null;
+          persist();
+        } else if (ev.type === "update" && ev.committed) {
+          const hid = idMap.get(an.id);
+          const h = highlights.find((x) => x.hid === hid);
+          if (!h) return;
+          h.rects = toNormRects(an.segmentRects, size);
+          h.color = nearestColorName(an.color);
+          persist();
+        } else if (ev.type === "delete") {
+          const hid = idMap.get(an.id) || an.id;
+          const i = highlights.findIndex((x) => x.hid === hid);
+          if (i < 0) return;
+          highlights.splice(i, 1);
+          deletedHids.add(hid);
+          persist();
+        }
+      });
+    }
+
+    requirePat(start);
+  </script>
+</body>
+</html>

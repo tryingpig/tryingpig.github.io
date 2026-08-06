@@ -44,6 +44,7 @@
     const params = new URLSearchParams(location.search);
     const REPORT_ID = params.get("id");
     const HL = PdfAnnotationSubtype.HIGHLIGHT;
+    const SQ = PdfAnnotationSubtype.SQUARE;   // 캡처(type=image) 영역 표시용 사각형
     // 목록·모아보기에서 넘어오는 딥링크 파라미터(v1과 같은 규약)
     const START_MODE = params.get("mode") === "read" ? "reading" : "pdf";
     const GOTO_PAGE = parseInt(params.get("page") || "0", 10);
@@ -480,15 +481,24 @@
         const pi = (h.page || 1) - 1;
         const size = pageSizes[pi];
         if (!size || !Array.isArray(h.rects) || !h.rects.length) continue;
-        if (h.type === "clip") continue;                 // 캡처 항목은 표시 대상 아님
         const segs = toSegRects(h.rects, size);
         try {
-          annoApi.createAnnotation(pi, {
-            type: HL, pageIndex: pi, id: h.hid,
-            rect: boundOf(segs), segmentRects: segs,
-            color: COLOR_HEX[h.color] || COLOR_HEX.yellow,
-            opacity: 0.45, contents: h.text || "",
-          });
+          if (h.type === "image") {
+            // 캡처 영역은 테두리 사각형으로 표시(v1의 페이지 위 박스 대응).
+            // ★ strokeStyle 이 빠지면 store 에는 들어가는데 화면에 안 그려진다.
+            annoApi.createAnnotation(pi, {
+              type: SQ, pageIndex: pi, id: h.hid, rect: boundOf(segs),
+              color: "transparent", opacity: 1, strokeWidth: 3,
+              strokeColor: COLOR_HEX[h.color] || COLOR_HEX.yellow, strokeStyle: 1,
+            });
+          } else {
+            annoApi.createAnnotation(pi, {
+              type: HL, pageIndex: pi, id: h.hid,
+              rect: boundOf(segs), segmentRects: segs,
+              color: COLOR_HEX[h.color] || COLOR_HEX.yellow,
+              opacity: 0.45, contents: h.text || "",
+            });
+          }
           idMap.set(h.hid, h.hid);
           shown++;
         } catch (e) { /* 개별 실패는 건너뛴다 */ }
@@ -539,6 +549,13 @@
           toast("캡처 저장 중…");
           try {
             await putBinaryFile(clip, await toJpeg(ev.blob), `clip: ${REPORT_ID} ${hid}`);
+            // 캡처한 자리에 테두리를 남겨 어디를 떴는지 PDF에서도 보이게 한다
+            annoApi.createAnnotation(pi, {
+              type: SQ, pageIndex: pi, id: hid, rect: r,
+              color: "transparent", opacity: 1, strokeWidth: 3,
+              strokeColor: COLOR_HEX[hl.color] || COLOR_HEX.yellow, strokeStyle: 1,
+            });
+            idMap.set(hid, hid);
             persist();
             toast("✂️ 캡처됨 · 모아보기에서 확인");
           } catch (e) {
@@ -574,7 +591,14 @@
       annoApi.onAnnotationEvent((ev) => {
         if (!ev || !ev.annotation) return;
         const an = ev.annotation;
-        if (an.type !== HL) return;                       // 1단계는 형광펜만 다룬다
+        // 캡처 사각형(SQ)은 지울 때만 반응한다 — 상자를 지우면 캡처 항목도 같이 없앤다
+        if (an.type === SQ && ev.type === "delete") {
+          const hid = idMap.get(an.id) || an.id;
+          const i = highlights.findIndex((x) => x.hid === hid);
+          if (i >= 0) { highlights.splice(i, 1); deletedHids.add(hid); persist(); }
+          return;
+        }
+        if (an.type !== HL) return;                       // 그 밖의 도형·펜은 저장하지 않는다
         const pi = ev.pageIndex != null ? ev.pageIndex : an.pageIndex;
         const size = pageSizes[pi];
         if (!size) return;

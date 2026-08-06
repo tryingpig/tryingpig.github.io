@@ -41,6 +41,7 @@ export const TOPIC_ICONS: [RegExp, string][] = [
   [/철강3사|철강.?3|비교분석/i, 'steelcoil'],
   [/포스코홀딩스|포스코|005490/i, 'moltenladle'],
   [/고려아연|010130/i, 'bullionbars'],
+  [/SK텔레콤|SKT|017670|유심/i, 'usimcard'],
 ];
 
 /* 매칭되는 주제가 없을 때 — 파일명 해시로 색과 무늬가 정해지는 픽셀 타일.

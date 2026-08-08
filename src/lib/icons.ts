@@ -43,6 +43,7 @@ export const TOPIC_ICONS: [RegExp, string][] = [
   [/고려아연|010130/i, 'bullionbars'],
   [/SK텔레콤|SKT|017670|유심/i, 'usimcard'],
   [/팔란티어|palantir|PLTR/i, 'palantir'],
+  [/음식료|K-?Food|kfood/i, 'cupnoodle'],
 ];
 
 /* 매칭되는 주제가 없을 때 — 파일명 해시로 색과 무늬가 정해지는 픽셀 타일.

@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>팔란티어(PLTR) 기업분석 — 왜 떨어졌다 다시 오르나: '성장률'이 유일한 팩터인 초성장 SW</title>
+<link rel="stylesheet" href="/assets/report.css">
+<script src="/assets/report.js" defer></script>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<script>
+  (function () {
+    try {
+      var t = localStorage.getItem('theme');
+      if (!t) t = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      if (t === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+    } catch (e) {}
+  })();
+</script>
+</head>
+<body data-topic="invest">
+<div class="topbar">
+  <div class="topbar-in">
+    <a class="back" href="/#study">학습공간</a>
+    <span class="crumb">팔란티어(PLTR) 기업분석</span>
+    <button class="theme-toggle" type="button" aria-label="다크/라이트 전환" title="다크/라이트 전환">
+      <svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      <svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+    </button>
+  </div>
+</div>
+<div class="wrap">
+
+  <span class="kicker">기업분석 딥다이브 · 미국 · 엔터프라이즈 AI 소프트웨어</span>
+  <h1>팔란티어(PLTR) 기업분석<br>— 왜 떨어졌다 다시 오르나: '성장률'이 유일한 팩터인 초성장 SW</h1>
+  <p class="sub">작성일 2026-08-08 · 개인 리서치 노트 · 주가 기준일 2026-08-07 종가 $172.01 (valley.town)</p>
+
+  <div class="warn">
+    <b>⚠️ 투자 권유가 아닙니다.</b> 이 문서는 <b>SEC 공시(10-K·10-Q)·valley.town·증권/언론 컨센서스·자체 계산</b>을 정리·해석한 <b>개인 학습 노트</b>이며 매수·매도 추천이 아닙니다.
+    목표주가·시나리오는 <b>필자의 가정에 기반한 계산</b>으로 실제와 다릅니다. 투자 판단의 최종 책임은 투자자에게 있습니다.
+  </div>
+
+  <div class="note">
+    <b>이 리포트가 답하는 질문.</b> "회사는 늘 잘 나갔는데 주가는 빠졌다가 최근 다시 오른다 — 뭐가 작용했나, 앞으로 방향은?" 이 두 질문에 <b>공시 숫자</b>로 답한다.
+    선요약: ① <b>"늘 돈을 잘 벌었다"는 사실과 다르다</b> — 팔란티어의 GAAP 흑자는 <b>2023년부터</b>다(그전엔 대규모 적자). ② 최근 상승의 직접 방아쇠는 <b>2026-08-03 발표한 2분기 실적(매출 +93%, 미국 상업 +149%, 가이던스 상향)</b>이고, 발표 <b>익일 주가가 +29.5% 급등</b>했다. ③ 이 종목은 <b>절대 이익이 아니라 '매출 성장률의 가속'</b>으로 움직인다 — 그래서 P/E가 100배를 넘어도 성장률이 재가속하면 오른다.
+  </div>
+
+  <!-- ===================== 1. 스냅샷 ===================== -->
+  <h2>1. 스냅샷</h2>
+  <div class="kpi">
+    <div class="box"><div class="num">$172.01</div><div class="lab">종가 (2026-08-07)</div></div>
+    <div class="box"><div class="num">$374.5B</div><div class="lab">시가총액 (EV $365.2B)</div></div>
+    <div class="box"><div class="num">−17%</div><div class="lab">52주 고점($207.52) 대비</div></div>
+    <div class="box"><div class="num">~82배</div><div class="lab">Fwd P/E (FY27E GAAP)</div></div>
+  </div>
+  <div class="kpi">
+    <div class="box"><div class="num">$97</div><div class="lab">Bear 목표 (−44%)</div></div>
+    <div class="box"><div class="num">$159</div><div class="lab">Base 목표 (−8%)</div></div>
+    <div class="box"><div class="num">$210</div><div class="lab">Bull 목표 (+22%)</div></div>
+    <div class="box"><div class="num">$200</div><div class="lab">애널 컨센 중앙값 (보도)</div></div>
+  </div>
+
+  <div class="callout">
+    <b>한 줄 요약.</b> 팔란티어는 정부(51%)·상업(49%) 두 축에서 AI 플랫폼(AIP)을 파는 소프트웨어 기업이다. 매출이 <b>FY2023 $2.2B → FY2025 $4.5B → Q2'26 연율화 $7.7B</b>로 <b>가속</b>하면서 GAAP 영업이익률이 <b>5.4%(’23)→47%(Q2’26)</b>로 폭발했다. 주가는 2026년 상반기 밸류에이션 부담·차익실현으로 고점 $207→저점 $106까지 밀렸다가, <b>Q2 실적 블로우아웃</b>으로 하루 +29.5% 튀며 $172까지 회복했다.
+    <b>Base 판단</b>: FY2027E 매출 컨센($11.2B)에 EV/Sales 30배를 적용한 적정가 <b>$159(−8%)</b> — 즉 <b>현재가는 이미 내년 성장을 상당 부분 선반영</b>했다. 성장률 지속 여부가 모든 것을 가른다.
+  </div>
+
+  <!-- ===================== 2. 투자 포인트 ===================== -->
+  <h2>2. 투자 포인트</h2>
+
+  <div class="card"><p><b>① 매출이 '가속'하고 있다 — 대형주에서 드문 현상.</b><br>
+  연매출 성장률이 <b>+29%(’24)→+56%(’25)</b>로 오르더니, 2026년 2분기는 <b>+93% YoY($1,935M)</b>로 회사 역사상 최고 속도를 찍었다(공시 10-Q, 2026-06-30 기준). 미국 상업 부문은 <b>+149%</b>(보도).<br>
+  <span style="color:var(--muted)">→ 해석: 보통 기업은 규모가 커지면 성장률이 둔화한다. 팔란티어는 반대로 <b>재가속</b>했다 — AI 도입이 '파일럿'에서 '전사 배포'로 넘어가는 변곡을 잡았다는 신호. 이것이 리레이팅의 근본 동력이다.</span></p></div>
+
+  <div class="card"><p><b>② 성장하면서 동시에 이익이 폭발 — Rule of 40 145%.</b><br>
+  GAAP 영업이익률이 <b>5.4%(’23)→10.8%(’24)→31.6%(’25)→47%(Q2’26)</b>로 급등했다(공시). 매출 성장률 + 영업이익률의 합(Rule of 40)이 <b>145%</b>에 달한다(보도, Q1’26) — SaaS 업계 통상 40~60을 압도한다.<br>
+  <span style="color:var(--muted)">→ 해석: "성장 vs 수익성" 트레이드오프를 깬 희귀 사례. 매출이 2배 되는 동안 비용은 그만큼 안 늘어 <b>영업 레버리지</b>가 극대화됐다. 순현금 약 <b>$9.3B</b>로 재무도 무결점.</span></p></div>
+
+  <div class="card"><p><b>③ "늘 돈을 잘 벌었다"는 통념 교정 — 흑자는 2023년부터.</b><br>
+  팔란티어는 상장(2020) 후 <b>수년간 GAAP 적자</b>였고, 첫 연간 GAAP 흑자는 <b>FY2023(순이익 $210M)</b>이었다(공시). 이후 $462M(’24)→$1,625M(’25)로 급증했다.<br>
+  <span style="color:var(--muted)">→ 해석: 시장이 팔란티어를 재평가한 결정적 계기가 바로 이 <b>흑자 전환 + S&P500 편입(2024)</b>이었다. "항상 잘 벌던 회사"가 아니라 "적자에서 초우량 수익성으로 변신한 회사"로 봐야 방향성이 정확히 보인다.</span></p></div>
+
+  <div class="card"><p><b>④ 그럼에도 밸류에이션이 최대 쟁점.</b><br>
+  현재 <b>Fwd EV/Sales ~32배(FY27E)·Fwd P/E ~82배</b>, 선행 P/S는 소프트웨어 업종 평균(3.96배)의 <b>약 9배</b>(보도). Citi는 2027년 성장률 전망을 53%로 <b>올리면서도</b> 목표가는 $200으로 <b>내렸다</b>(보도).<br>
+  <span style="color:var(--muted)">→ 해석: 펀더멘털은 강하지만 가격에 이미 많은 것이 들어가 있다. <b>성장률이 조금만 꺾여도 멀티플 디레이팅 폭이 크다</b>는 것이 이 종목의 양날의 검이다(§8 Bear).</span></p></div>
+
+  <!-- ===================== 3. 주가 팩터 ===================== -->
+  <h2>3. ★ 종목 고유 주가 팩터 — "이익 수준이 아니라 성장률의 가속"</h2>
+
+  <p>이 종목의 주가를 움직이는 단일 신호는 <b>분기 매출 성장률(특히 미국 상업)과 가이던스 상향</b>이다. 절대 이익이나 밸류에이션 저평가가 아니다. 증거는 최근 사건의 순서에 있다 — <b>P/E가 100배를 넘는 상태</b>에서도, 성장률이 재가속하자 하루에 +29.5%가 튀었다.</p>
+
+  <div class="tablewrap">
+  <table>
+    <caption style="text-align:left;color:var(--muted);font-size:.85rem;padding:6px 0">표 1. 주가 팩터 증명 — 이벤트 대비 주가 반응</caption>
+    <thead><tr><th>시점</th><th>이벤트</th><th>성장/펀더멘털 신호</th><th>주가 반응</th></tr></thead>
+    <tbody>
+      <tr><td>2026-05-04</td><td>Q1’26 실적</td><td>미국 매출 +100%↑, Rule of 40 <b>145%</b></td><td>강세 (일간 등락률 미확보)</td></tr>
+      <tr><td>2026 상반기<br>(2월~7월)</td><td>밸류에이션 부담·차익실현<br>마이클 버리 숏 논리(2월)</td><td>펀더멘털은 견조하나 P/S ~40배 부담</td><td>52주 <b>고점 $207.52 → 저점 $106.37</b><br>(고점比 −49%, 연초 대비 −10%)</td></tr>
+      <tr><td>2026-08-03</td><td>Q2’26 실적 + FY26 가이던스 상향</td><td>매출 <b>+93% YoY</b>, 미국 상업 <b>+149%</b>, GAAP OPM 47%</td><td>발표 <b>익일 +29.5%</b> (1일)</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p class="src">출처: 공시 10-Q(2026-06-30) 실적 · 보도(Fortune·TradingKey 등, 2026-08-03~04) 성장률·주가 반응 · valley.town 52주 시세. ※ Q1’26 발표일 일간 등락률은 미확보(MCP 시세 권한 미승인).</p>
+
+  <div class="callout">
+    <b>결론 — 팩터는 "성장률의 방향".</b> 팔란티어는 8분기 연속 어닝 서프라이즈를 냈고(보도), 그때마다 시장이 본 것은 이익 <b>금액</b>이 아니라 <b>성장률이 가속하는가/가이던스가 올라가는가</b>였다. 상반기 하락도 실적이 나빠서가 아니라 '성장 프리미엄이 과도한가'라는 밸류에이션 논쟁 때문이었다. → 다음 분기 판단(§9)도 이익이 아니라 <b>성장률·가이던스·Rule of 40</b>로 짜야 한다.
+  </div>
+
+  <h3>3-1. 산업 → 회사 → 경쟁사</h3>
+  <div class="tablewrap">
+  <table>
+    <thead><tr><th>구분</th><th>동인</th><th>최근 신호</th><th>회사와의 연동</th></tr></thead>
+    <tbody>
+      <tr><td>산업</td><td>기업 AI 지출의 '파일럿→프로덕션' 전환</td><td>엔터프라이즈 AI 예산 확대, AI 병목이 SW로 이동(보도)</td><td>AIP 수요의 근본 동인 ○</td></tr>
+      <tr><td>산업</td><td>미국 국방·정부 디지털화</td><td>Mercury Systems 파트너십 등 국방 인프라 확대(보도)</td><td>정부 부문(매출 51%) 직접 연동 ○</td></tr>
+      <tr><td>회사</td><td>미국 상업 매출 성장률</td><td>Q2’26 <b>+149%</b> (보도)</td><td><b>가장 강한 선행 신호</b> — 리레이팅의 핵심</td></tr>
+      <tr><td>경쟁사</td><td>엔터프라이즈 SW(Snowflake·Datadog·ServiceNow 등)</td><td>대부분 성장률 20~40%대</td><td>팔란티어의 성장률·Rule of 40이 압도적 (§7)</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p class="note"><b>선행성 검증:</b> 미국 상업 성장률은 실적·주가와 <b>같은 방향으로 움직여 왔다</b>(Q1 +100%↑·Q2 +149% → 주가 재가속). 다만 <b>낮은 기저(low base)</b> 효과가 크므로, 향후 기저가 높아지면 성장률 자체는 자연 둔화한다 — "성장률 절대치"가 아니라 "컨센 대비 상회 여부"로 봐야 한다.</p>
+
+  <!-- ===================== 4. 비즈니스 모델 ===================== -->
+  <h2>4. 비즈니스 모델 + 매출 분해</h2>
+  <p>팔란티어는 4개 플랫폼 — <b>Gotham</b>(정부·국방), <b>Foundry</b>(상업 데이터 운영체제), <b>AIP</b>(AI 애플리케이션 플랫폼), <b>Apollo</b>(배포)를 판다. 수익 구조는 <b>대형 계약 기반의 랜드-앤-익스팬드</b>(먼저 작게 도입 → 사용 확대)로, 계약이 커질수록 마진이 개선되는 소프트웨어 특유의 구조다.</p>
+
+  <figure>
+    <div class="svgbox">
+      <svg viewBox="0 0 480 220" role="img" aria-label="세그먼트별 매출">
+        <text x="10" y="16" fill="var(--ink)" font-size="13" font-weight="700">세그먼트별 매출 ($B) — 정부·상업 동반 가속</text>
+        <line x1="30" y1="180" x2="455" y2="180" stroke="var(--line)" stroke-width="1"></line>
+        <!-- 2023 -->
+        <rect x="80" y="106.2" width="34" height="73.8" rx="2" fill="var(--accent)"></rect><text x="97" y="101" fill="var(--ink)" font-size="8.5" text-anchor="middle">1.22</text>
+        <rect x="118" y="119.4" width="34" height="60.6" rx="2" fill="#5a9bd4"></rect><text x="135" y="114" fill="var(--ink)" font-size="8.5" text-anchor="middle">1.00</text>
+        <text x="116" y="196" fill="var(--muted)" font-size="10" text-anchor="middle">2023</text>
+        <!-- 2024 -->
+        <rect x="210" y="85.1" width="34" height="94.9" rx="2" fill="var(--accent)"></rect><text x="227" y="80" fill="var(--ink)" font-size="8.5" text-anchor="middle">1.57</text>
+        <rect x="248" y="101.7" width="34" height="78.3" rx="2" fill="#5a9bd4"></rect><text x="265" y="96" fill="var(--ink)" font-size="8.5" text-anchor="middle">1.30</text>
+        <text x="246" y="196" fill="var(--muted)" font-size="10" text-anchor="middle">2024</text>
+        <!-- 2025 -->
+        <rect x="340" y="34.9" width="34" height="145.1" rx="2" fill="var(--accent)"></rect><text x="357" y="30" fill="var(--ink)" font-size="8.5" text-anchor="middle">2.40</text>
+        <rect x="378" y="54.8" width="34" height="125.2" rx="2" fill="#5a9bd4"></rect><text x="395" y="50" fill="var(--ink)" font-size="8.5" text-anchor="middle">2.07</text>
+        <text x="376" y="196" fill="var(--muted)" font-size="10" text-anchor="middle">2025</text>
+        <!-- legend -->
+        <rect x="30" y="205" width="12" height="10" fill="var(--accent)"></rect><text x="47" y="214" fill="var(--muted)" font-size="9.5">정부(Government)</text>
+        <rect x="160" y="205" width="12" height="10" fill="#5a9bd4"></rect><text x="177" y="214" fill="var(--muted)" font-size="9.5">상업(Commercial)</text>
+      </svg>
+    </div>
+    <figcaption>그림 1. 세그먼트별 매출. 정부·상업이 함께 가속. 출처: 공시 10-K(2025-12-31 기준).</figcaption>
+  </figure>
+
+  <div class="tablewrap">
+  <table>
+    <caption style="text-align:left;color:var(--muted);font-size:.85rem;padding:6px 0">표 2. 매출 분해 (공시, $M)</caption>
+    <thead><tr><th>구분</th><th>FY2023</th><th>FY2024</th><th>FY2025</th><th>FY25 비중</th><th>’23→’25 CAGR</th></tr></thead>
+    <tbody>
+      <tr><td>정부(Government)</td><td>1,222</td><td>1,570</td><td>2,402</td><td>54%</td><td>+40%</td></tr>
+      <tr><td>상업(Commercial)</td><td>1,003</td><td>1,296</td><td>2,073</td><td>46%</td><td>+44%</td></tr>
+      <tr><td><b>총매출</b></td><td><b>2,225</b></td><td><b>2,866</b></td><td><b>4,475</b></td><td>100%</td><td><b>+42%</b></td></tr>
+      <tr><td>ㄴ 미국(US)</td><td>1,378</td><td>1,900</td><td>3,320</td><td>74%</td><td>+55%</td></tr>
+      <tr><td>ㄴ 해외(UK+기타)</td><td>847</td><td>965</td><td>1,155</td><td>26%</td><td>+17%</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p class="src">출처: 공시 10-K(2026-02-17 제출, FY2025). 미국 매출이 전체의 74%이고 ’24→’25 +75% — 성장의 엔진이 <b>미국</b>임을 보여준다. Q2’26에는 정부 $990M·상업 $945M로 상업 비중이 49%까지 상승(공시 10-Q).</p>
+
+  <div class="note">
+    <b>수익 공식과 민감도.</b> 매출 = <b>고객수 × 계약당 규모(랜드-앤-익스팬드) × 순확장률(NDR)</b>. 소프트웨어라 한계원가가 낮아, 매출이 늘면 이익이 그 이상으로 늘어난다(그림 2).<br>
+    <b>역방향 민감도(자체계산):</b> FY2027E 매출 $11.2B, GAAP OPM 약 45% 가정 시 영업이익 ~$5.0B. 만약 재투자·경쟁으로 <b>OPM이 −5%p</b>(40%로) 낮아지면 영업이익은 약 <b>$560M(−11%)</b> 감소한다. 다만 이 종목의 진짜 민감도는 마진보다 <b>매출 성장률</b>이다 — 성장률 10%p 둔화가 멀티플에 주는 충격이 마진보다 훨씬 크다.
+  </div>
+
+  <!-- ===================== 5. 최근 분기 실적 ===================== -->
+  <h2>5. 최근 실적 — 매출 가속 + 이익 폭발</h2>
+
+  <figure>
+    <div class="svgbox">
+      <svg viewBox="0 0 560 230" role="img" aria-label="연매출 추이">
+        <text x="10" y="16" fill="var(--ink)" font-size="13" font-weight="700">연매출 추이 ($B) · 막대 위=YoY 성장률</text>
+        <line x1="30" y1="190" x2="545" y2="190" stroke="var(--line)" stroke-width="1"></line>
+        <!-- 2023 2.225 -->
+        <rect x="62" y="158.3" width="56" height="31.7" rx="3" fill="var(--accent)"></rect><text x="90" y="153" fill="var(--ink)" font-size="10" text-anchor="middle">2.23</text>
+        <text x="90" y="206" fill="var(--muted)" font-size="10" text-anchor="middle">2023</text>
+        <!-- 2024 2.866 -->
+        <rect x="162" y="149.1" width="56" height="40.9" rx="3" fill="var(--accent)"></rect><text x="190" y="144" fill="var(--ink)" font-size="10" text-anchor="middle">2.87</text><text x="190" y="135" fill="var(--muted)" font-size="9" text-anchor="middle">+29%</text>
+        <text x="190" y="206" fill="var(--muted)" font-size="10" text-anchor="middle">2024</text>
+        <!-- 2025 4.475 -->
+        <rect x="262" y="126.2" width="56" height="63.8" rx="3" fill="var(--accent)"></rect><text x="290" y="121" fill="var(--ink)" font-size="10" text-anchor="middle">4.48</text><text x="290" y="112" fill="var(--muted)" font-size="9" text-anchor="middle">+56%</text>
+        <text x="290" y="206" fill="var(--muted)" font-size="10" text-anchor="middle">2025</text>
+        <!-- 2026E 8.077 -->
+        <rect x="362" y="74.8" width="56" height="115.2" rx="3" fill="var(--accent)" fill-opacity="0.28" stroke="var(--accent)" stroke-width="1.5" stroke-dasharray="4 3"></rect><text x="390" y="69" fill="var(--ink)" font-size="10" text-anchor="middle">8.08</text><text x="390" y="60" fill="var(--muted)" font-size="9" text-anchor="middle">+80%</text>
+        <text x="390" y="206" fill="var(--accent)" font-size="10" text-anchor="middle">2026E</text>
+        <!-- 2027E 11.22 -->
+        <rect x="462" y="30" width="56" height="160" rx="3" fill="var(--accent)" fill-opacity="0.28" stroke="var(--accent)" stroke-width="1.5" stroke-dasharray="4 3"></rect><text x="490" y="24" fill="var(--ink)" font-size="10" text-anchor="middle">11.22</text><text x="490" y="15" fill="none"></text>
+        <text x="490" y="206" fill="var(--accent)" font-size="10" text-anchor="middle">2027E</text>
+        <text x="490" y="45" fill="var(--muted)" font-size="9" text-anchor="middle">+46%</text>
+      </svg>
+    </div>
+    <figcaption>그림 2. 연매출. 채운 막대=실적(공시), 점선=컨센(valley·보도). 성장률이 오히려 <b>가속</b>. 출처: 공시 10-K(’23~’25), valley FY26E, 보도 FY27E($11.22B).</figcaption>
+  </figure>
+
+  <figure>
+    <div class="svgbox">
+      <svg viewBox="0 0 460 210" role="img" aria-label="GAAP 영업이익률">
+        <text x="10" y="16" fill="var(--ink)" font-size="13" font-weight="700">GAAP 영업이익률 (%) — 5.4% → 47%</text>
+        <line x1="30" y1="180" x2="440" y2="180" stroke="var(--line)" stroke-width="1"></line>
+        <rect x="62" y="162.7" width="56" height="17.3" rx="3" fill="var(--accent)"></rect><text x="90" y="157" fill="var(--ink)" font-size="10" text-anchor="middle">5.4</text><text x="90" y="196" fill="var(--muted)" font-size="9.5" text-anchor="middle">2023</text>
+        <rect x="162" y="145.3" width="56" height="34.7" rx="3" fill="var(--accent)"></rect><text x="190" y="140" fill="var(--ink)" font-size="10" text-anchor="middle">10.8</text><text x="190" y="196" fill="var(--muted)" font-size="9.5" text-anchor="middle">2024</text>
+        <rect x="262" y="78.5" width="56" height="101.5" rx="3" fill="var(--accent)"></rect><text x="290" y="73" fill="var(--ink)" font-size="10" text-anchor="middle">31.6</text><text x="290" y="196" fill="var(--muted)" font-size="9.5" text-anchor="middle">2025</text>
+        <rect x="362" y="30" width="56" height="150" rx="3" fill="var(--accent)"></rect><text x="390" y="24" fill="var(--ink)" font-size="10" text-anchor="middle" font-weight="700">46.7</text><text x="390" y="196" fill="var(--muted)" font-size="9.5" text-anchor="middle">H1’26</text>
+      </svg>
+    </div>
+    <figcaption>그림 3. GAAP 영업이익률. 매출이 커지는 동안 이익률이 함께 급등 = 영업 레버리지. 출처: 공시 10-K/10-Q.</figcaption>
+  </figure>
+
+  <div class="tablewrap">
+  <table>
+    <caption style="text-align:left;color:var(--muted);font-size:.85rem;padding:6px 0">표 3. 실적 요약 (공시, $M · GAAP)</caption>
+    <thead><tr><th></th><th>FY2023</th><th>FY2024</th><th>FY2025</th><th>Q2’26</th><th>Q2’25</th><th>Q2 YoY</th></tr></thead>
+    <tbody>
+      <tr><td>매출</td><td>2,225</td><td>2,866</td><td>4,475</td><td><b>1,935</b></td><td>1,004</td><td><b>+93%</b></td></tr>
+      <tr><td>매출총이익</td><td>1,794</td><td>2,300</td><td>3,686</td><td>1,639</td><td>811</td><td>+102%</td></tr>
+      <tr><td>영업이익</td><td>120</td><td>310</td><td>1,414</td><td><b>912</b></td><td>269</td><td>+239%</td></tr>
+      <tr><td>영업이익률</td><td>5.4%</td><td>10.8%</td><td>31.6%</td><td><b>47.1%</b></td><td>26.8%</td><td>+20%p</td></tr>
+      <tr><td>순이익</td><td>210</td><td>462</td><td>1,625</td><td>1,062</td><td>327</td><td>+225%</td></tr>
+      <tr><td>희석 EPS</td><td>$0.09</td><td>$0.19</td><td>$0.63</td><td>$0.41</td><td>$0.13</td><td>+215%</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p class="src">출처: SEC 공시 10-K(FY’23~’25)·10-Q(Q2’26, 2026-06-30). GPM·OPM은 자체계산. ※ 순이익 > 영업이익인 것은 순현금(~$9.3B)의 이자수익 + 이연법인세 환입(흑자 전환 기업 특유) 때문.</p>
+
+  <div class="warn">
+    <b>⚠️ 저기저(low base) 경고.</b> Q2’26의 +93%·미국 상업 +149%는 <b>전년 기저가 낮았던</b> 영향이 있다(Q2’25 상업 $451M). 기저가 높아지는 향후 분기엔 성장률 자체가 자연 둔화한다. → YoY 성장률의 <b>절대치가 아니라 컨센 대비 상회/하회</b>와 <b>가이던스 방향</b>으로 봐야 한다(§3 팩터와 직결).
+  </div>
+
+  <!-- ===================== 6. 밸류에이션 ===================== -->
+  <h2>6. 밸류에이션 — Bear / Base / Bull</h2>
+  <div class="note">
+    <b>방법론 선언.</b> 채택 방법론은 <b>Fwd EV/Sales</b>다. 이유: 팔란티어는 초성장·고마진 소프트웨어라 P/E(82배)·EBITDA 배수가 불안정하고, 시장이 실제로 이런 주식을 평가하는 <b>표준 지표가 EV/Sales</b>이기 때문이다. 기준연도는 <b>FY2027E 매출 컨센($11.22B, 보도)</b> — 올해(FY26)는 이미 절반이 지났고, 시장은 내년을 본다. <b>대안(주류) 지표인 애널리스트 목표가 컨센(중앙값 $200)도 §6-2에 병기</b>한다.
+  </div>
+
+  <div class="tablewrap">
+  <table>
+    <caption style="text-align:left;color:var(--muted);font-size:.85rem;padding:6px 0">표 4. 시나리오 (FY2027E 매출 $11.22B 기준, EV/Sales)</caption>
+    <thead><tr><th>시나리오</th><th>목표 EV/Sales</th><th>목표 EV</th><th>+순현금</th><th>÷주식수</th><th>목표주가</th><th>현재가 대비</th><th>근거</th></tr></thead>
+    <tbody>
+      <tr><td><b>Bear</b></td><td>18배</td><td>$202B</td><td>$9.3B</td><td>2,177M</td><td><b>$97</b></td><td><b>−44%</b></td><td>성장률 급둔화 + 프리미엄 축소</td></tr>
+      <tr><td><b>Base</b></td><td>30배</td><td>$337B</td><td>$9.3B</td><td>2,177M</td><td><b>$159</b></td><td><b>−8%</b></td><td>컨센 성장(+46%) 달성, 현 멀티플 근처 유지</td></tr>
+      <tr><td><b>Bull</b></td><td>40배</td><td>$449B</td><td>$9.3B</td><td>2,177M</td><td><b>$210</b></td><td><b>+22%</b></td><td>성장 재가속·가이던스 추가 상향, 프리미엄 확대</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p class="src">순현금 $9.3B = 시총 $374.5B − EV $365.2B(valley). 주식수 2,177M은 <b>시총÷현재가로 역산한 클래스A 기준</b>. ⚠️ <b>완전희석 주식수는 약 2,580M</b>(클래스B + SBC 희석 포함, 10-Q EPS 역산)로 약 18% 많다 — 이걸로 나누면 목표가가 약 16% 낮아진다. SBC 희석은 §8의 구조적 리스크다.
+  교차검증: 현재가 $172 → 내재 FY27E EV/Sales = 32.5배(Base 30배와 Bull 40배 사이). 즉 <b>현재 가격은 이미 내년 성장을 상당히 반영</b>했다.</p>
+
+  <div class="callout">
+    <b>Bear는 최대 리스크를 숫자로 반영했다.</b> §8의 1순위(밸류에이션)·2순위(성장 지속성) 리스크가 현실화 — <b>성장률이 컨센(+46%)을 크게 하회</b>하고 시장이 프리미엄을 정상 SaaS 수준으로 되돌리는 시나리오(EV/S 40배→18배)를 반영해 <b>$97(−44%)</b>. 이는 실제 애널리스트 최저 목표가($80~90, 보도)와 일치하는 영역이다.
+  </div>
+
+  <h3>6-2. 자체 Base vs 애널리스트 컨센 — 격차 분해</h3>
+  <p>자체 Base($159)와 애널리스트 컨센 중앙값($200)의 격차는 <b>+26%</b>다(§5-3-3 규칙). 분해하면:</p>
+  <ul>
+    <li><b>애널이 주는 배수 역산:</b> 목표가 $200 → 내재 FY27E EV/Sales = ($200×2,177 − $9.3B) ÷ $11.22B = <b>약 38배</b>. 이는 자체 Bull(40배)에 가깝다.</li>
+    <li><b>원인 ① 기준연도:</b> 다수 애널은 FY2027이 아니라 <b>FY2028 매출</b>까지 당겨본다(성장 지속 가정). 같은 38배라도 더 먼 해 기준이면 목표가가 커진다.</li>
+    <li><b>원인 ② 성장 지속성 낙관:</b> Citi는 2027 성장률을 53%로 상향(컨센 46% 대비)했다(보도). 성장 지속을 더 믿을수록 높은 배수가 정당화된다.</li>
+  </ul>
+  <p>→ 요컨대 <b>자체 Base(30배·FY27)는 보수적</b>이고, 애널 $200은 "성장이 FY28까지 이어진다"는 낙관을 당겨 반영한 값이다. 둘의 차이는 결국 <b>성장 지속성에 대한 베팅</b>이다.</p>
+
+  <div class="tablewrap">
+  <table>
+    <thead><tr><th>방법론</th><th>주체</th><th>기준</th><th>목표가</th></tr></thead>
+    <tbody>
+      <tr><td>Fwd EV/Sales 30배 (채택)</td><td>본 리포트 Base</td><td>FY27E 매출 × 30배</td><td><b>$159</b></td></tr>
+      <tr><td>애널리스트 컨센 (주류)</td><td>~32곳 평균/중앙값</td><td>Buy 18 / Hold 10 / Sell 2</td><td>평균 ~$190 · <b>중앙값 $200</b></td></tr>
+      <tr><td>강세 개별</td><td>Citi / Mizuho / Oppenheimer</td><td>—</td><td>$245 / $215 / $200</td></tr>
+      <tr><td>약세 최저</td><td>일부 하우스</td><td>—</td><td>$80~90</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <!-- ===================== 7. 피어 비교 ===================== -->
+  <h2>7. 피어 비교</h2>
+  <div class="note">
+    <b>피어 선정 기준(수동).</b> 미국 종목은 자동 피어 도구(epic)가 없어 <b>수동 선정</b>했다 — 기준은 "고성장 엔터프라이즈 소프트웨어/데이터·AI 플랫폼": Snowflake·Datadog·CrowdStrike·ServiceNow·MongoDB. ⚠️ 각사 개별 배수는 이번에 수집하지 못했다(UsStockInfo MCP 권한 미승인) — 대신 검증된 두 값으로 상대 위치만 제시한다.
+  </div>
+  <ul>
+    <li><b>Fwd P/S:</b> 팔란티어 <b>37.57배</b> vs 소프트웨어 업종 평균 <b>3.96배</b> — 약 <b>9배 프리미엄</b>(보도). 고성장 SaaS 그룹(통상 10~20배)과 비교해도 팔란티어가 <b>최상단</b>이다.</li>
+    <li><b>Rule of 40:</b> 팔란티어 <b>145</b>(성장 85 + 조정 OPM 60, Q1’26 보도) vs 우량 SaaS 통상 <b>40~60</b>. 즉 밸류에이션은 최상단이지만 <b>펀더멘털 지표도 최상단</b>이다.</li>
+  </ul>
+  <p><b>해석:</b> "왜 이렇게 비싼가"의 답은 <b>Rule of 40이 피어의 2~3배</b>라는 데 있다. 다만 이 프리미엄은 <b>성장률이 피어 대비 압도적으로 유지될 때만</b> 정당화된다 — 성장률이 피어 수준(30~40%)으로 수렴하면, 9배 P/S 프리미엄은 근거를 잃는다(§8 Bear의 핵심).</p>
+
+  <!-- ===================== 8. 리스크 ===================== -->
+  <h2>8. 리스크</h2>
+  <div class="warn">
+    <ol style="margin:0;padding-left:1.2em">
+      <li style="margin-bottom:.6em"><b>밸류에이션 — 최대 리스크.</b> Fwd EV/S ~32배·P/E ~82배·P/S 37.57배(업종 평균의 9배). 성장률이 조금만 둔화해도 디레이팅 폭이 크다. <b>정량화: Bear $97(−44%)</b> — EV/S 40→18배 정상화.</li>
+      <li style="margin-bottom:.6em"><b>성장 지속성.</b> +93%·상업 +149%는 낮은 기저 효과를 포함한다. 대수의 법칙상 감속은 필연 — 관건은 <b>속도</b>다. Citi는 성장률을 올리면서도 목표가를 $200으로 낮췄다(보도) — 성장을 인정해도 가격이 부담이라는 신호.</li>
+      <li style="margin-bottom:.6em"><b>SBC(주식보상) 희석.</b> H1’26 SBC $467M(매출의 13.1%). 완전희석 주식(~2,580M)이 시총 기준(~2,177M)보다 약 18% 많아 <b>주당가치의 구조적 역풍</b>. 다만 SBC 매출비중은 16.7%(’25 상반기)→13.1%로 <b>하락 중</b>이라는 점은 완화 요인.</li>
+      <li style="margin-bottom:.6em"><b>정부·정책 의존.</b> 매출 51%가 정부(국방 중심). 예산 삭감·정치 변화·조달 지연에 노출. 정량화는 어려우나 단일 대형 계약 변동성이 크다.</li>
+      <li style="margin-bottom:.6em"><b>거버넌스·키맨.</b> 창업진(Karp·Thiel)의 클래스B 의결권 집중 — 소액주주 통제력 제한. 이례적 CEO 커뮤니케이션 스타일도 변동성 요인.</li>
+      <li><b>(정황) 극단적 비관론의 존재.</b> valley 유저 목표가에는 마이클 버리 숏 논리($100)·개인 SELL($14~31) 등 극단 비관이 공존한다(정황, 밸류에이션 산출엔 미반영). <b>모멘텀이 꺾이면 이런 심리가 되돌림으로 재부상</b>할 수 있다.</li>
+    </ol>
+  </div>
+
+  <!-- ===================== 9. 체크리스트 ===================== -->
+  <h2>9. 다음 분기 체크리스트 (반증 가능)</h2>
+  <div class="card">
+    <p><b>■ 분기 지표 (실적 발표 시)</b></p>
+    <ul>
+      <li>Q3’26 <b>매출 성장률이 컨센 상회</b>(감속 폭 QoQ 20%p 이내) — 미달 시 성장 스토리 균열</li>
+      <li><b>미국 상업 성장률 100% 이상</b> 유지 — 핵심 엔진 점검</li>
+      <li><b>GAAP 영업이익률 45% 이상</b> 유지 (Rule of 40 100+ 유지)</li>
+      <li><b>FY2026 가이던스 추가 상향</b> 여부 (상향 → 팩터 우호)</li>
+    </ul>
+    <p><b>■ 이벤트·구조 지표</b></p>
+    <ul>
+      <li>신규 대형 <b>정부/국방 계약</b> 및 총계약가치(RPO/TCV) 증가</li>
+      <li><b>SBC 매출비중 13% 이하</b>로 추가 하락 — 희석 완화 확인</li>
+      <li>애널 목표가 컨센 <b>$200 이상</b>으로 상향 지속 여부</li>
+    </ul>
+    <p class="note" style="margin-top:.5em">※ 판정 방향: 위 지표가 "컨센 상회 + 가이던스 상향"이면 Bull($210) 경로, "성장률 컨센 하회 + 목표가 하향"이면 Bear($97) 경로.</p>
+  </div>
+
+  <!-- ===================== 10. 장기 궤적 ===================== -->
+  <h2>10. 장기 궤적 — 사이클이 아니라 '변신'</h2>
+  <p>팔란티어는 철강·폴리실리콘 같은 <b>경기 사이클 종목이 아니다.</b> 역사적 하강 사이클이 없는 대신, <b>적자 성장주 → 초우량 수익성 성장주</b>로의 변신 궤적을 본다.</p>
+  <ul>
+    <li><b>마진 궤적:</b> GAAP 영업이익률 <b>5.4%(’23)→10.8%(’24)→31.6%(’25)→47%(Q2’26)</b>. 4년 만에 8배 이상 개선 — 소프트웨어 영업 레버리지의 교과서적 사례.</li>
+    <li><b>성장 궤적:</b> 매출 성장률이 둔화가 아니라 <b>가속(+29%→+56%→+93%)</b>. 대형주에서 극히 드문 패턴.</li>
+    <li><b>재무 궤적:</b> 순현금 ~$9.3B, CAPEX 부담이 거의 없는 소프트웨어라 증설·차입 리스크가 없다(제조업과 정반대) — 그래서 <b>이 종목의 리스크는 '사이클 저점'이 아니라 '성장 절벽(성장률 급둔화)'</b>이다.</li>
+  </ul>
+  <div class="note">
+    <b>지금 궤적의 어디인가:</b> "고성장 + 마진 확장"이 동시에 진행되는 <b>최적 구간(sweet spot)</b>에 있다. 문제는 이 구간이 <b>이미 가격에 반영</b>됐다는 것 — 그래서 향후 방향은 회사의 실적보다 <b>"성장이 얼마나 오래 이 속도를 유지하느냐"</b>에 달려 있다.
+  </div>
+
+  <!-- ===================== 11. 종합 판단 ===================== -->
+  <h2>11. 종합 판단 — 질문에 대한 답</h2>
+  <div class="callout">
+    <p><b>Q1. 회사는 잘 나가는데 왜 떨어졌다 다시 올랐나?</b><br>
+    ① "늘 잘 벌었다"는 정확히는 <b>2023년 흑자 전환 이후</b>의 이야기다. ② 2026년 상반기 하락은 실적 악화가 아니라 <b>밸류에이션 부담·차익실현</b>(P/S ~40배, 버리 숏 논리) 때문이었고 — 고점 $207→저점 $106. ③ 최근 반등의 방아쇠는 <b>2026-08-03 Q2 실적</b>(매출 +93%, 미국 상업 +149%, 가이던스 상향)이며 <b>익일 +29.5% 급등</b>했다. 즉 <b>"성장률의 재가속"</b>이 밸류에이션 논쟁을 잠재웠다.</p>
+    <p><b>Q2. 앞으로 방향은?</b> Base 기준 적정가 <b>$159(−8%)</b> — 현재가는 이미 FY2027 성장을 상당 부분 선반영했다. 방향을 가르는 단 하나의 변수는 <b>"성장률 지속"</b>이다.
+    <b>Bull($210, +22%)</b>: 미국 상업 성장 100%+ 유지 + 가이던스 추가 상향 + 대형 국방 계약. <b>Bear($97, −44%)</b>: 성장률 컨센 하회 + 프리미엄 정상화(SaaS 평균 수렴). <b>§9 체크리스트</b>가 매 분기 이 갈림길을 숫자로 판정한다.</p>
+    <p>결론: 팔란티어는 <b>펀더멘털이 최상단이자 밸류에이션도 최상단</b>인 종목이다. "좋은 회사"인 것과 "지금 가격이 싼가"는 별개의 질문이며, 이 종목에서 그 둘의 간극이 유난히 크다.</p>
+  </div>
+
+  <hr>
+  <div class="warn" style="font-size:.9rem">
+    <b>면책.</b> 투자 판단의 최종 책임은 투자자에게 있습니다. 본 문서는 개인 학습용 정리이며 매수·매도 권유가 아닙니다.<br>
+    <b>데이터 출처·기준일:</b> ① SEC 공시 원문 — 10-K(2026-02-17 제출, FY2025)·10-Q(2026-08-03 제출, 2026-06-30) 매출·이익·세그먼트·SBC (공시, 조회 2026-08-08) ② valley.town — 시세·시총·EV·컨센서스·SEC 공시 목록 (밸리, 2026-08-08) ③ 보도·컨센서스 — Fortune·Bloomberg·TipRanks·MarketBeat·TradingKey 등 Q2 실적 반응·애널리스트 목표가·FY27 매출 컨센·Rule of 40 (보도, 2026-07~08) ④ 자체 계산 — GPM·OPM·EV/Sales·시나리오 목표가. GAAP 재무는 SEC 원문 기준이며, valley의 FY2025 EPS(0.75)는 GAAP(0.63)과 달라 <b>공시 원문 값을 채택</b>했습니다. 셀사이드·언론 의견은 사실이 아닌 '주장'이며 발간 주체를 표기했습니다.<br>
+    주가 반응·목표가 근거 기사: <a href="https://fortune.com/2026/08/03/palantir-earnings-guidance-beat-revenue-profit-ai-demand/">Fortune</a> · <a href="https://www.tradingkey.com/analysis/stocks/us-stocks/262076608-palantir-q2-2026-earnings-commercial-149-stock-surge-tradingkey">TradingKey</a> · <a href="https://www.tipranks.com/news/palantir-stock-price-forecast-what-financial-analysts-expect-right-now">TipRanks</a> · <a href="https://www.marketbeat.com/stocks/NASDAQ/PLTR/forecast/">MarketBeat</a>
+  </div>
+
+  <p style="text-align:center;color:var(--muted);font-size:.85rem;margin-top:2em">© 2026 노력하는뚱땡이 리서치 라이브러리.</p>
+
+</div>
+</body>
+</html>

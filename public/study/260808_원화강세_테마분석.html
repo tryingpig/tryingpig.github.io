@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>원화강세 테마 — 환율 민감도 스코어카드: 진짜 수혜와 피해</title>
+<link rel="stylesheet" href="/assets/report.css">
+<script src="/assets/report.js" defer></script>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<script>
+  (function () {
+    try {
+      var t = localStorage.getItem('theme');
+      if (!t) t = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      if (t === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+    } catch (e) {}
+  })();
+</script>
+</head>
+<body data-topic="tech">
+<div class="topbar">
+  <div class="topbar-in">
+    <a class="back" href="/#study">학습공간</a>
+    <span class="crumb">원화강세 테마 — 환율 민감도 스코어카드</span>
+    <button class="theme-toggle" type="button" aria-label="다크/라이트 전환" title="다크/라이트 전환">
+      <svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      <svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+    </button>
+  </div>
+</div>
+<div class="wrap">
+
+  <span class="kicker">매크로 테마 · 환율 민감도 스코어카드</span>
+  <h1>원화강세 테마<br>— 환율 민감도 스코어카드: 진짜 수혜와 피해</h1>
+  <p class="sub">작성일 2026-08-08 · 개인 리서치 노트 · 환율/금리 웹 컨센서스·DART 공시·epic.ai 기준</p>
+
+  <div class="warn">
+    <b>⚠️ 투자 권유가 아닙니다.</b> 이 문서는 <b>환율·금리 컨센서스(보도)·DART 공시·epic.ai</b>를 정리·해석한 <b>개인 학습 노트</b>이며 매수·매도 추천이 아닙니다. 환율 전망은 기관마다 크게 갈립니다. 투자 판단의 최종 책임은 투자자에게 있습니다.
+  </div>
+
+  <div class="note">
+    <b>이 리포트가 답하는 것.</b> ① "금리 → 원화강세" 논리가 실제로 성립하는가 ② 흔히 꼽히는 5개 섹터(항공/여행·전력유틸·음식료·철강·금융)가 <b>진짜 수혜</b>인가 ③ 리스크는 ④ 빠진 수혜·피해 섹터는. 핵심 도구는 <b>3축 환율 민감도 스코어카드</b>(달러매출·달러비용·외화부채)다.<br>
+    <b>연계:</b> 항공/여행은 <a href="https://tryingpig.github.io/study/260808_항공여행_산업분석.html">항공·여행 산업분석</a>, 음식료는 <a href="https://tryingpig.github.io/study/260808_음식료_산업분석.html">음식료 산업분석</a>으로 각각 깊게 다룬다.
+  </div>
+
+  <!-- ===================== 1. 논리 점검 ===================== -->
+  <h2>1. "금리 → 원화강세" 논리부터 — 방향이 갈린다</h2>
+  <p>먼저 전제를 바로잡아야 한다. <b>"한국 금리가 오르면 원화강세"라는 단선 논리는 위험하다.</b> 진짜 동인은 <b>절대 금리가 아니라 한·미 금리차와 그 축소 방향</b>이다.</p>
+
+  <div class="grid2">
+    <div class="card"><b>원화강세가 되는 밑그림 (성립)</b><br>
+    <b>미국이 인하 → 한미 금리차 축소</b> → 달러 매력↓ → 자금 유입. 여기에 <b>경상수지 흑자 + WGBI 채권 편입(2026-04) + 한국 성장률 우위</b>가 겹치면 강세. 현재 금리차는 <b>약 1.5%p</b>(미 3.75~4.0% > 한 2.5%)로, Fed가 더 내리면 이 갭이 줄며 강세 압력(보도).</div>
+    <div class="card"><b>오히려 약세 신호일 수도</b><br>
+    한국 금리가 <b>물가·재정·신용 리스크 때문에</b> 오르는 거라면 통화는 되레 약해진다(신흥국 패턴). 실제로 2026-06 원·달러는 <b>1,561원(17년래 고점)</b>까지 치솟았다 — 대미투자 200억달러 약정·외국인 순매도·AI 버블 우려가 <b>달러 강세</b>로 작용했기 때문(보도).</div>
+  </div>
+
+  <figure>
+    <div class="svgbox">
+      <svg viewBox="0 0 520 190" role="img" aria-label="원달러 환율 경로와 컨센서스">
+        <text x="10" y="16" fill="var(--ink)" font-size="13" font-weight="700">원·달러 환율 경로 (원, 아래로 갈수록 원화강세)</text>
+        <line x1="40" y1="150" x2="500" y2="150" stroke="var(--line)" stroke-width="1"></line>
+        <!-- points: 6월 1561, 현재 ~1470, 26말E 1400, 27말E 1350. y = map 1300~1600 -> 40~150 -->
+        <!-- y(v) = 40 + (1600-v)/(1600-1300)*110 ... higher v = lower on chart(위=고환율). Let's put high value at top. y=40 at 1600, y=150 at 1300 -->
+        <!-- 1561 -> 40+(1600-1561)/300*110=40+14.3=54.3 -->
+        <!-- 1470 -> 40+(130)/300*110=40+47.7=87.7 -->
+        <!-- 1400 -> 40+(200)/300*110=40+73.3=113.3 -->
+        <!-- 1350 -> 40+(250)/300*110=40+91.7=131.7 -->
+        <polyline points="90,54.3 200,87.7 350,113.3 460,131.7" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-dasharray="0"></polyline>
+        <circle cx="90" cy="54.3" r="4" fill="var(--accent)"></circle><text x="90" y="46" fill="var(--ink)" font-size="10" text-anchor="middle">1,561</text><text x="90" y="168" fill="var(--muted)" font-size="9" text-anchor="middle">’26-06 고점</text>
+        <circle cx="200" cy="87.7" r="4" fill="var(--accent)"></circle><text x="200" y="80" fill="var(--ink)" font-size="10" text-anchor="middle">~1,470</text><text x="200" y="168" fill="var(--muted)" font-size="9" text-anchor="middle">현재</text>
+        <circle cx="350" cy="113.3" r="4" fill="var(--accent)" stroke="var(--card)" stroke-width="1.5"></circle><text x="350" y="106" fill="var(--ink)" font-size="10" text-anchor="middle">1,400</text><text x="350" y="168" fill="var(--accent)" font-size="9" text-anchor="middle">’26말 컨센</text>
+        <circle cx="460" cy="131.7" r="4" fill="var(--accent)" stroke="var(--card)" stroke-width="1.5"></circle><text x="460" y="124" fill="var(--ink)" font-size="10" text-anchor="middle">1,350</text><text x="460" y="168" fill="var(--accent)" font-size="9" text-anchor="middle">’27말 컨센</text>
+      </svg>
+    </div>
+    <figcaption>그림 1. 원·달러 경로. 2026-06 17년래 고점(1,561) 이후 강세 전환 기대 — Bloomberg 컨센 2026말 1,400·2027말 1,350. 출처: 보도 집계(KB·신한·ING·BofA, 2026-06~08). 전망은 기관별 편차 큼.</figcaption>
+  </figure>
+
+  <div class="callout">
+    <b>정리:</b> 지금의 원화강세 기대는 <b>"한국 금리 상승"이 아니라 "미국 인하 + 금리차 축소 + WGBI 채권 유입 + 경상흑자"</b>에서 나온다. 즉 <b>달러 약세형(외부 요인) 강세</b>에 가깝다. 이 구분이 중요한 이유 — 강세가 <b>'경기 회복 동반'인지 '단순 달러 약세'인지</b>에 따라 수혜 섹터의 강도가 달라진다(§3 리스크).
+  </div>
+
+  <!-- ===================== 2. 스코어카드 ===================== -->
+  <h2>2. ★ 환율 민감도 스코어카드 — 3축으로 본 진짜 수혜/피해</h2>
+  <p>원화강세가 기업에 미치는 영향은 <b>세 경로</b>로 갈린다. 이 셋을 분리해야 "수혜라는데 진짜냐"에 답할 수 있다.</p>
+  <ul>
+    <li><b>달러 매출(수출) 노출</b> → 원화강세 시 <b>불리</b>(환산이익·가격경쟁력↓)</li>
+    <li><b>달러 비용(원재료·연료·리스) 노출</b> → 원화강세 시 <b>유리</b>(원가↓)</li>
+    <li><b>외화부채 노출</b> → 원화강세 시 <b>유리</b>(외화환산이익)</li>
+  </ul>
+  <p>순효과 = (비용·부채 유리) − (매출 불리). 아래가 5개 섹터 + 반대편(피해)까지 한 장에 놓은 스코어카드다.</p>
+
+  <div class="tablewrap">
+  <table>
+    <caption style="text-align:left;color:var(--muted);font-size:.85rem;padding:6px 0">표 1. 원화강세 민감도 스코어카드 (高=노출 큼)</caption>
+    <thead><tr><th>섹터 / 대표</th><th>달러매출<br>(강세 시 불리)</th><th>달러비용<br>(유리)</th><th>외화부채<br>(유리)</th><th>순 FX효과</th><th>핵심 단서</th></tr></thead>
+    <tbody>
+      <tr><td><b>항공</b> · 대한항공</td><td>中</td><td>高(유류·리스)</td><td><b>高</b></td><td><b class="vd v-o">수혜 ★★★</b></td><td>자산 50.4조·외화부채 막대 → 강세 시 대규모 외화환산이익. 아웃바운드 수요도 ↑</td></tr>
+      <tr><td><b>LCC</b> · 제주/진에어</td><td>中</td><td>高</td><td>中</td><td><b class="vd v-o">수혜 ★★</b></td><td>비용·부채는 유리하나 이미 적자 — 환보다 수요·경쟁이 더 큰 변수</td></tr>
+      <tr><td><b>여행사</b> · 하나/모두투어</td><td>低</td><td>低</td><td>低</td><td><b class="vd v-o">수혜 ★★</b></td><td>FX 직접노출은 낮지만 <b>아웃바운드 여행수요</b> 최대 수혜(해외여행이 싸짐)</td></tr>
+      <tr><td><b>전력유틸</b> · 한국전력</td><td>低(내수·규제)</td><td><b>高(연료)</b></td><td><b>高</b></td><td><b class="vd v-o">수혜 ★★★</b></td><td>LNG·석탄 달러수입 + 외화부채 → 강세 시 연료비·이자 부담↓. 단 <b>요금 규제로 회수</b> 가능</td></tr>
+      <tr><td><b>철강</b> · POSCO홀딩스</td><td><b>高(해외 63%)</b></td><td>中(원료)</td><td>中</td><td><b class="vd v-m">중립~약수혜</b></td><td>원료(철광석·원료탄) 달러수입은 유리하나 <b>해외·수출 비중이 커</b> 매출 환산 불리와 상쇄</td></tr>
+      <tr><td><b>금융</b> · KB금융</td><td>低</td><td>低</td><td>低</td><td><b class="vd v-m">간접수혜 ★</b></td><td>직접 FX노출 미미 — <b>외국인 자금유입·증시 상승</b>의 간접 수혜(밸류업 테마와 결합)</td></tr>
+      <tr><td>음식료-내수 · 오뚜기</td><td>低</td><td>中(수입원재료)</td><td>低</td><td><b class="vd v-o">수혜 ★</b></td><td>곡물·원당 달러 원가↓ + 내수 구매력↑</td></tr>
+      <tr><td>음식료-수출 · 삼양식품</td><td><b>高(수출)</b></td><td>中</td><td>低</td><td><b class="vd v-x">피해</b></td><td>불닭 수출이 실적을 좌우 → 강세 시 환산이익 감소</td></tr>
+      <tr><td><b>대형 수출주</b> · 삼성전자·현대차</td><td><b>高</b></td><td>低</td><td>低</td><td><b class="vd v-x">피해 ★★★</b></td><td>매출 대부분 달러 → 강세 = 환산이익·가격경쟁력↓. <b>코스피 지수 비중이 큰 쪽</b></td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p class="src">노출도(高/中/低)는 사업구조·DART 공시(수출/해외 비중·외화부채 규모) 기반 정성 판정. POSCO 해외비중 63%는 dart_segment(공시). 판정 배지는 순효과 방향(수혜/중립/피해)이며 투자의견이 아니다.</p>
+
+  <div class="callout">
+    <b>스코어카드 결론.</b> ① <b>가장 깔끔한 수혜 = 항공·전력유틸</b> — 둘 다 "달러 비용 + 외화부채 + 내수(or 수요 우호) 매출"의 삼박자다. ② <b>여행사·LCC</b>는 FX보다 <b>수요 채널</b>로 수혜. ③ <b>철강은 수혜 논리가 약하다</b>(수출·해외 비중이 원료 이점을 상쇄) — 환율보다 중국 철강 사이클이 지배. ④ <b>금융은 간접수혜</b>(자금유입)일 뿐 직접 FX효과는 미미. ⑤ <b>음식료는 섹터가 아니라 종목으로 갈린다</b> — 내수 원가주(오뚜기)는 수혜, 수출주(삼양)는 피해.
+  </div>
+
+  <!-- ===================== 3. 리스크 ===================== -->
+  <h2>3. 리스크 — "수혜 논리"가 깨지는 경로</h2>
+  <div class="warn">
+    <ol style="margin:0;padding-left:1.2em">
+      <li style="margin-bottom:.5em"><b>원화강세가 안 올 수 있다.</b> 대미투자 약정·외국인 순매도·AI 버블 우려는 <b>달러 강세</b> 요인이다. 2026-06 1,561원이 그 증거 — 전망은 기관별로 1,350~1,590까지 크게 갈린다(보도).</li>
+      <li style="margin-bottom:.5em"><b>강세가 '경기둔화 동반'이면 수요가 죽는다.</b> 여행·소비 수혜의 전제는 '구매력 개선'인데, 원화강세가 수출 위축·경기둔화와 함께 오면 <b>아웃바운드 여행수요 자체가 약화</b>돼 수혜가 상쇄된다.</li>
+      <li style="margin-bottom:.5em"><b>연료·원자재 가격이 환효과를 덮는다.</b> 항공·유틸의 수혜는 "달러 약세 × 연료가 안정"일 때만 유효 — 유가·LNG가 오르면 환이익이 상쇄된다.</li>
+      <li style="margin-bottom:.5em"><b>한전은 요금 규제로 회수된다.</b> 연료비 하락분이 전기요금 인하로 이어지면 마진 개선이 제한된다(연료비 연동제).</li>
+      <li><b>★ 지수 관점의 함정.</b> 원화강세 최대 피해는 <b>삼성전자·현대차 등 대형 수출주</b>이고 이들이 코스피 시총의 큰 몫이다. 따라서 원화강세는 <b>"코스피 지수 상승"이 아니라 "수출 → 내수·수입 섹터로의 로테이션"</b>으로 봐야 한다.</li>
+    </ol>
+  </div>
+
+  <!-- ===================== 4. 빠진 관점 ===================== -->
+  <h2>4. 다른 섹터는? — 빠진 수혜·피해</h2>
+  <div class="grid2">
+    <div class="card"><b>추가 수혜 후보(수입·외화부채·내수)</b>
+      <ul style="margin:.4em 0 0">
+        <li><b>내수 소비재·유통·화장품</b> — 수입물가↓ → 구매력·원료마진 개선</li>
+        <li><b>해운</b> — 용선료·연료 달러비용, 외화부채(단 운임 사이클이 더 큼)</li>
+        <li><b>외화부채 과다 기업 일반</b> — 강세 시 환평가이익(항공·해운·유틸·일부 지주)</li>
+        <li><b>면세/카지노</b> — 아웃바운드엔 유리, 인바운드(방한 외국인)엔 불리 <b>양면성</b></li>
+      </ul></div>
+    <div class="card"><b>피해 섹터(수출 환산 감소)</b>
+      <ul style="margin:.4em 0 0">
+        <li><b>반도체·자동차·2차전지·조선</b> — 달러매출 압도 → 강세 시 환산이익↓</li>
+        <li><b>음식료·화장품 내 수출주</b>(삼양 등) — 섹터 안에서 피해로 분화</li>
+        <li><b>해외법인 이익 비중 큰 기업</b> — 연결 환산이익 감소(오리온 중국 등)</li>
+      </ul></div>
+  </div>
+
+  <!-- ===================== 5. 결론 ===================== -->
+  <h2>5. 결론</h2>
+  <div class="callout">
+    <p><b>제시된 5개 섹터의 실제 수혜 강도:</b> <b>항공 ≈ 전력유틸 &gt; 여행사 &gt; (금융·내수음식료) &gt; 철강</b> 순이다. 철강·금융은 "환율 수혜주"로 묶기엔 논리가 약하고(철강=중국 사이클 지배, 금융=간접), 음식료는 종목별로 수혜/피해가 갈린다.</p>
+    <p><b>가장 중요한 프레임:</b> 원화강세는 <b>지수 상승 이벤트가 아니라 로테이션 이벤트</b>다 — 대형 수출주(삼성·현대)가 피해를 보는 만큼, 수혜는 "달러 비용·외화부채가 크고 매출은 내수(or 수요 우호)"인 곳으로 이동한다. 그 교집합의 정점이 <b>항공·전력유틸</b>이다.</p>
+    <p><b>검증 포인트:</b> ① 원·달러가 실제로 1,400 아래로 내려가는가(컨센 성립) ② 그 강세가 'Fed 인하·금리차 축소'발인가 'AI 버블·경기둔화'발인가 ③ 유가·LNG가 안정적인가 — 이 셋이 맞아야 스코어카드의 '수혜'가 현실이 된다.</p>
+  </div>
+
+  <hr>
+  <div class="warn" style="font-size:.9rem">
+    <b>면책.</b> 투자 판단의 최종 책임은 투자자에게 있습니다. 본 문서는 개인 학습용 정리이며 매수·매도 권유가 아닙니다.<br>
+    <b>데이터 출처·기준일:</b> ① 환율·금리 컨센서스 — KB·신한·ING·BofA·Bloomberg 집계(보도, 2026-06~08) ② DART 전자공시 — 대표 종목 재무·수출/해외 비중(공시, 2026-08-08) ③ epic.ai — 시총·밸류에이션(2026-08-08) ④ 자체 판정(3축 민감도). 환율 전망은 기관별 편차가 크며 셀사이드·언론 의견은 '주장'입니다.<br>
+    참고: <a href="https://kbthink.com/investment/issues/2026-krw-usd-outlook.html">KB 2026 환율 전망</a> · <a href="https://think.ing.com/articles/asia-2026-fx-outlook/">ING Asia FX 2026</a>
+  </div>
+  <p style="text-align:center;color:var(--muted);font-size:.85rem;margin-top:2em">© 2026 노력하는뚱땡이 리서치 라이브러리.</p>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>하이라이트 전체</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+  <link rel="stylesheet" href="style.css?v=28">
+  <style>
+    /* 이 페이지에서만 쓰는 것들. 나머지 모양(.hl-item/.hl-text/.pg)은 모아보기와 공용 */
+    .ah-bar { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin: 10px 0 14px; }
+    .ah-search { position: relative; flex: 1 1 240px; min-width: 200px; }
+    .ah-search input { width: 100%; }
+    .ah-colors { display: flex; gap: 6px; }
+    .ah-c { width: 26px; height: 26px; border-radius: 8px; border: 2px solid transparent;
+            cursor: pointer; padding: 0; opacity: .45; }
+    .ah-c.on { opacity: 1; border-color: var(--ink, #333); }
+    .ah-c[data-c="yellow"] { background: #ffe680; }
+    .ah-c[data-c="green"]  { background: #8ceb80; }
+    .ah-c[data-c="pink"]   { background: #ff8cb8; }
+    .ah-group { margin: 0 0 26px; }
+    .ah-ghead { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap;
+                padding: 8px 2px; border-bottom: 1px solid var(--line); margin-bottom: 10px; }
+    .ah-gtitle { font-weight: 700; font-size: 15.5px; }
+    .ah-gmeta { color: var(--sub); font-size: 12.5px; }
+    .ah-gcount { color: var(--sub); font-size: 12.5px; margin-left: auto; }
+    .ah-gtitle a { color: inherit; text-decoration: none; }
+    .ah-gtitle a:hover { text-decoration: underline; }
+    .ah-hit { background: #ffe066; color: #222; border-radius: 2px; }
+    @media (prefers-color-scheme: dark) { .ah-hit { background: #7a6320; color: #fff; } }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <a class="back" href="index.html">‹</a>
+    <h1>하이라이트 전체</h1>
+    <span class="count num" id="count"></span>
+    <div class="spacer"></div>
+    <button id="copyBtn">전체 복사</button>
+  </div>
+
+  <div class="wrap">
+    <div class="ah-bar">
+      <div class="ah-search"><input type="text" id="q" class="s-input" placeholder="하이라이트 내용·리포트 제목 검색"></div>
+      <div class="ah-colors" id="colors">
+        <button class="ah-c on" data-c="yellow" title="노랑" aria-label="노랑"></button>
+        <button class="ah-c on" data-c="green" title="초록" aria-label="초록"></button>
+        <button class="ah-c on" data-c="pink" title="분홍" aria-label="분홍"></button>
+      </div>
+      <div class="hl-openmode">
+        <span>열기</span>
+        <button class="seg" id="segRead">📖 읽기</button>
+        <button class="seg" id="segPdf">📄 PDF</button>
+      </div>
+    </div>
+    <div id="list"><div class="loading">불러오는 중…</div></div>
+  </div>
+  <div class="toast" id="toast"></div>
+
+  <script src="app.js?v=22"></script>
+  <script>
+    /* 리포트 한 건씩만 보던 highlights.html 과 달리, 하이라이트가 있는 리포트를 전부 모아 보여준다.
+       reports.json 의 highlight_count 로 대상을 먼저 걸러서, 있는 것만 annotations 를 받는다
+       (전체 170건 중 실제로 줄 친 건 13건이라 요청이 확 줄어든다). */
+    let GROUPS = [];            // [{rep, hls:[...]}] — 발행일 최신순
+    let TOTAL = 0;
+    const OPEN_KEY = "rv_hl_open_mode";
+    let OPEN_MODE = localStorage.getItem(OPEN_KEY) || "read";   // highlights.html 과 같은 값을 쓴다
+    const OFF = new Set();      // 꺼둔 색
+    let Q = "";
+
+    /* 좌표 재구성 폴백(layout_path)은 여기선 쓰지 않는다 — 리포트마다 레이아웃을 받으면
+       13번 추가 요청이 된다. 저장된 segs/text 로 충분하고, 없으면 그 항목만 비워 둔다. */
+    const displayText = (h) => hlDisplayText(h, null);
+
+    function esc(s) {
+      return (s == null ? "" : String(s)).replace(/[&<>"]/g, (c) =>
+        ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+    }
+    function toast(m) {
+      const t = document.getElementById("toast");
+      t.textContent = m; t.classList.add("show");
+      setTimeout(() => t.classList.remove("show"), 1600);
+    }
+    /* 검색어를 결과 안에서 노랗게. esc 된 문자열 위에서만 치환한다(원문에 태그 주입 방지) */
+    function mark(escaped, q) {
+      if (!q) return escaped;
+      const re = new RegExp("(" + q.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + ")", "gi");
+      return escaped.replace(re, '<span class="ah-hit">$1</span>');
+    }
+
+    function matches(rep, h) {
+      if (OFF.has(h.color || "yellow")) return false;
+      if (!Q) return true;
+      const q = Q.toLowerCase();
+      return displayText(h).toLowerCase().includes(q)
+          || (rep.title || "").toLowerCase().includes(q)
+          || (rep.broker || "").toLowerCase().includes(q);
+    }
+
+    function render() {
+      const list = document.getElementById("list");
+      const shown = [];
+      for (const g of GROUPS) {
+        const hls = g.hls.filter((h) => matches(g.rep, h));
+        if (hls.length) shown.push({ rep: g.rep, hls });
+      }
+      const n = shown.reduce((a, g) => a + g.hls.length, 0);
+      document.getElementById("count").textContent = Q || OFF.size ? `${n}/${TOTAL}` : `${TOTAL}`;
+
+      if (!shown.length) {
+        list.innerHTML = `<div class="empty">${TOTAL ? "검색 결과가 없습니다." : "아직 하이라이트가 없습니다.<br>뷰어에서 문장을 선택해 줄을 쳐보세요."}</div>`;
+        return;
+      }
+      const modeParam = OPEN_MODE === "pdf" ? "" : "&mode=read";
+      list.innerHTML = shown.map((g) => {
+        const rep = g.rep;
+        const meta = [rep.broker, rep.sector, (rep.publish_date || (rep.uploaded_at || "").slice(0, 10))]
+          .filter(Boolean).join(" · ");
+        const items = g.hls.slice().sort((a, b) => a.page - b.page).map((h) => {
+          const isImg = h.type === "image";
+          const body = isImg
+            ? `<div class="hl-img-wrap" data-clip="${esc(h.clip || "")}" data-hid="${esc(h.hid)}"><div class="hl-img-ph">🖼 캡처</div></div>`
+            : `<div class="hl-text">${mark(esc(displayText(h)), Q)}</div>`;
+          return `
+          <div class="hl-item ${esc(h.color || "yellow")}" data-rid="${esc(rep.id)}" data-hid="${esc(h.hid)}" data-page="${h.page}">
+            <div class="hl-head"><span class="pg">p.${h.page}${isImg ? " · ✂️ 캡처" : ""}</span></div>
+            ${body}
+          </div>`;
+        }).join("");
+        return `
+        <div class="ah-group">
+          <div class="ah-ghead">
+            <span class="ah-gtitle"><a href="highlights.html?id=${encodeURIComponent(rep.id)}">${mark(esc(rep.title || rep.id), Q)}</a></span>
+            <span class="ah-gmeta">${esc(meta)}</span>
+            <span class="ah-gcount">${g.hls.length}개</span>
+          </div>
+          ${items}
+        </div>`;
+      }).join("");
+
+      list.querySelectorAll(".hl-item").forEach((it) => {
+        it.onclick = () => {
+          location.href = `viewer2.html?id=${encodeURIComponent(it.dataset.rid)}`
+            + `&hl=${encodeURIComponent(it.dataset.hid)}&page=${it.dataset.page}${modeParam}`;
+        };
+      });
+      // 캡처 이미지는 화면에 들어올 때만 받는다(줄 친 리포트가 늘어도 첫 화면이 느려지지 않게)
+      const io = new IntersectionObserver((ents, obs) => {
+        for (const en of ents) {
+          if (!en.isIntersecting) continue;
+          obs.unobserve(en.target);
+          const el = en.target, clip = el.dataset.clip;
+          if (!clip) { el.innerHTML = `<div class="hl-img-ph">이미지 없음</div>`; continue; }
+          fetchImageDataURL(clip)
+            .then((url) => { el.innerHTML = url ? `<img src="${url}" alt="캡처">` : `<div class="hl-img-ph">이미지 없음</div>`; })
+            .catch(() => { el.innerHTML = `<div class="hl-img-ph">이미지 없음</div>`; });
+        }
+      }, { rootMargin: "300px 0px" });
+      list.querySelectorAll(".hl-img-wrap").forEach((w) => io.observe(w));
+    }
+
+    /* GitHub API 를 한꺼번에 두드리지 않도록 동시 요청 수를 묶어서 처리 */
+    async function mapLimit(items, limit, fn) {
+      const out = new Array(items.length);
+      let i = 0;
+      await Promise.all(Array.from({ length: Math.min(limit, items.length) }, async () => {
+        while (i < items.length) {
+          const k = i++;
+          try { out[k] = await fn(items[k]); } catch (e) { out[k] = null; }
+        }
+      }));
+      return out;
+    }
+
+    async function load() {
+      try {
+        const doc = await loadReports();
+        const reports = (doc.reports || []).filter((r) => (r.highlight_count || 0) > 0);
+        const dateOf = (r) => r.publish_date || (r.uploaded_at || "").slice(0, 10) || "";
+        reports.sort((a, b) => (dateOf(b) || "").localeCompare(dateOf(a) || ""));
+
+        const annos = await mapLimit(reports, 6, (r) => loadAnnotations(r.id));
+        GROUPS = [];
+        reports.forEach((rep, k) => {
+          const hls = ((annos[k] && annos[k].data && annos[k].data.highlights) || []);
+          if (hls.length) GROUPS.push({ rep, hls });
+        });
+        TOTAL = GROUPS.reduce((a, g) => a + g.hls.length, 0);
+        render();
+      } catch (err) {
+        handleError(err, load);
+      }
+    }
+
+    /* ── 조작 ── */
+    let qTimer = null;
+    document.getElementById("q").oninput = (e) => {
+      clearTimeout(qTimer);
+      const v = e.target.value;
+      qTimer = setTimeout(() => { Q = v.trim(); render(); }, 180);
+    };
+    document.getElementById("colors").onclick = (e) => {
+      const b = e.target.closest(".ah-c");
+      if (!b) return;
+      const c = b.dataset.c;
+      if (OFF.has(c)) OFF.delete(c); else OFF.add(c);
+      b.classList.toggle("on", !OFF.has(c));
+      render();
+    };
+    function renderSeg() {
+      document.getElementById("segRead").classList.toggle("active", OPEN_MODE === "read");
+      document.getElementById("segPdf").classList.toggle("active", OPEN_MODE === "pdf");
+    }
+    function setOpenMode(m) { OPEN_MODE = m; localStorage.setItem(OPEN_KEY, m); renderSeg(); render(); }
+    document.getElementById("segRead").onclick = () => setOpenMode("read");
+    document.getElementById("segPdf").onclick = () => setOpenMode("pdf");
+    renderSeg();
+
+    document.getElementById("copyBtn").onclick = async () => {
+      // 화면에 보이는 것만 복사한다 — 검색해서 추린 뒤 그것만 가져가는 게 자연스럽다
+      const parts = [];
+      for (const g of GROUPS) {
+        const hls = g.hls.filter((h) => matches(g.rep, h)).sort((a, b) => a.page - b.page);
+        if (!hls.length) continue;
+        parts.push(`## ${g.rep.title || g.rep.id}\n\n` + hls.map((h) =>
+          `> (p.${h.page}) ${h.type === "image" ? "[이미지 캡처]" : displayText(h).replace(/\n/g, " ")}`).join("\n\n"));
+      }
+      if (!parts.length) return;
+      try { await navigator.clipboard.writeText(parts.join("\n\n")); toast("복사됨"); }
+      catch { toast("복사 실패"); }
+    };
+
+    requirePat(load);
+  </script>
+</body>
+</html>

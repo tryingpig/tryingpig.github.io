@@ -18,6 +18,10 @@
     .v2-msg { padding:14px; font-size:13px; line-height:1.7; }
     .v2-err { color:#c0392b; }
     .v2-badge { font-size:11px; opacity:.7; margin-left:6px; }
+    /* 삭제는 되돌릴 수 없으니 다른 버튼과 눈에 띄게 구분해 둔다(오탭 방지) */
+    .v2-del { color:#dc2626; border-color:rgba(220,38,38,.35); }
+    .v2-del:hover:not(:disabled) { background:#dc2626; border-color:#dc2626; color:#fff; }
+    .v2-del:disabled { opacity:.5; }
   </style>
 </head>
 <body>
@@ -31,6 +35,7 @@
     <button class="btn" id="llmBtn" title="읽기 본문을 LLM으로 정리 요청" style="display:none">🤖 LLM</button>
     <a class="btn" id="oldLink" title="기존 뷰어로 열기">v1</a>
     <a class="btn" id="hlLink">모아보기</a>
+    <button class="btn v2-del" id="delReportBtn" title="이 리포트 삭제" aria-label="이 리포트 삭제">🗑</button>
   </div>
   <div id="host"><div class="v2-msg" id="boot">여는 중…</div></div>
   <div id="readingContainer" class="reading" style="display:none"></div>
@@ -419,6 +424,52 @@
       renderLlmBtn();
       if (llmQueued) startLlmPoll();
     }
+
+    /* ═══ 리포트 삭제 ═══════════════════════════════════
+       목록(index.html)의 삭제와 같은 규약이다 — reports.json 에서 항목을 빼고
+       deleted 에 id 를 남기면 서버 prune 이 pdf·clips·pages 파일을 정리한다.
+       (읽는 도중에 "이건 아니다" 싶을 때 목록으로 되돌아가지 않아도 되게 여기에도 둔다) */
+    async function deleteThisReport() {
+      for (let attempt = 0; attempt < 3; attempt++) {
+        const res = await ghFetch("contents/index/reports.json", { cache: "no-store" });
+        if (!res.ok) throw new Error("목록 로드 실패: " + res.status);
+        const obj = await res.json();
+        const doc = JSON.parse(decodeB64Utf8(obj.content));
+        doc.reports = (doc.reports || []).filter((r) => r.id !== REPORT_ID);
+        doc.deleted = Array.from(new Set([...(doc.deleted || []), REPORT_ID]));
+        const put = await ghFetch("contents/index/reports.json", {
+          method: "PUT",
+          body: {
+            message: `delete: ${REPORT_ID}`,
+            content: encodeUtf8B64(JSON.stringify(doc, null, 2)),
+            sha: obj.sha,
+          },
+        });
+        if (put.ok) return;
+        // 다른 기기가 먼저 목록을 고친 경우다 → 최신본으로 다시(sha 충돌)
+        if (put.status !== 409 && put.status !== 422) throw new Error("삭제 실패: " + put.status);
+      }
+      throw new Error("삭제 충돌(잠시 후 다시)");
+    }
+
+    document.getElementById("delReportBtn").onclick = async () => {
+      const name = (REPORT && REPORT.title) || REPORT_ID;
+      if (!confirm(`"${name}" 리포트를 삭제할까요?\n하이라이트·캡처도 함께 삭제됩니다. (Notion 기록은 보존)`)) return;
+      const b = document.getElementById("delReportBtn");
+      b.disabled = true; b.textContent = "…";
+      try {
+        clearTimeout(saveTimer);          // 삭제하는데 하이라이트를 되살려 저장하면 곤란하다
+        await deleteThisReport();
+        try {
+          localStorage.removeItem("rv_thumb_" + REPORT_ID);
+          localStorage.removeItem(LASTPAGE_KEY);
+        } catch (e) {}
+        location.replace("index.html");   // 지워진 리포트로 뒤로가기 되지 않게 replace
+      } catch (e) {
+        b.disabled = false; b.textContent = "🗑";
+        toast(e.message || "삭제 실패");
+      }
+    };
 
     document.getElementById("modeBtn").onclick = () => setMode(mode === "pdf" ? "reading" : "pdf");
     document.getElementById("llmBtn").onclick = async () => {

@@ -22,6 +22,31 @@
     .v2-del { color:#dc2626; border-color:rgba(220,38,38,.35); }
     .v2-del:hover:not(:disabled) { background:#dc2626; border-color:#dc2626; color:#fff; }
     .v2-del:disabled { opacity:.5; }
+    /* 낭독 — 지금 읽는 문단 표시.
+       하이라이트(노랑/초록/분홍 배경)와 헷갈리지 않게 배경 대신 왼쪽 띠를 주 신호로 쓴다. */
+    .tts-now { position:relative; background:var(--ink-bg); border-radius:4px; }
+    .tts-now::before { content:""; position:absolute; left:-10px; top:2px; bottom:2px;
+      width:3px; background:var(--ink); border-radius:2px; }
+    .btn.tts-off { opacity:.45; }
+    .tts-bar { position:fixed; left:50%; transform:translateX(-50%); z-index:60;
+      bottom:calc(14px + env(safe-area-inset-bottom, 0px));
+      display:flex; gap:2px; align-items:center; padding:5px 6px;
+      background:var(--card); border:1px solid var(--line); border-radius:999px;
+      box-shadow:0 6px 22px rgba(0,0,0,.20); }
+    .tts-bar button { border:0; background:transparent; color:var(--text);
+      font-size:15px; line-height:1; padding:8px 10px; border-radius:999px; cursor:pointer; }
+    .tts-bar button:hover { background:var(--raise); }
+    .tts-bar #ttsRate { font-size:12px; color:var(--sub); font-variant-numeric:tabular-nums; min-width:38px; }
+    .tts-bar #ttsClose { color:var(--sub); }
+    /* 폰에선 버튼 글자 라벨을 감춘다 — 아이콘만 남긴다.
+       읽기 모드에선 컨트롤이 7개까지 늘어 414px 화면에서 제목과 🗑 이 밀려났다.
+       (목록 화면 상단바는 건드리지 않게 .viewer-topbar 안으로 한정) */
+    @media (max-width: 640px) {
+      .viewer-topbar .btn-txt { display:none; }
+      /* 아이콘만 남으면 좌우 여백이 과하다 — 줄여서 제목이 들어설 자리를 만든다 */
+      .viewer-topbar { gap:4px; }
+      .viewer-topbar .btn { padding:0 7px; }
+    }
   </style>
 </head>
 <body>
@@ -31,14 +56,22 @@
     <span class="v2-badge" id="hlCount"></span>
     <div class="spacer"></div>
     <button class="btn" id="capBtn" title="영역 캡처(드래그)">✂️</button>
-    <button class="btn" id="modeBtn" title="읽기/PDF 전환">📖 읽기</button>
-    <button class="btn" id="llmBtn" title="읽기 본문을 LLM으로 정리 요청" style="display:none">🤖 LLM</button>
+    <button class="btn" id="modeBtn" title="읽기/PDF 전환">📖<span class="btn-txt"> 읽기</span></button>
+    <button class="btn" id="llmBtn" title="읽기 본문을 LLM으로 정리 요청" style="display:none">🤖<span class="btn-txt"> LLM</span></button>
+    <button class="btn" id="ttsBtn" title="본문 낭독" style="display:none">🔊</button>
     <a class="btn" id="oldLink" title="기존 뷰어로 열기">v1</a>
-    <a class="btn" id="hlLink">모아보기</a>
+    <a class="btn" id="hlLink" title="하이라이트 모아보기">📋<span class="btn-txt"> 모아보기</span></a>
     <button class="btn v2-del" id="delReportBtn" title="이 리포트 삭제" aria-label="이 리포트 삭제">🗑</button>
   </div>
   <div id="host"><div class="v2-msg" id="boot">여는 중…</div></div>
   <div id="readingContainer" class="reading" style="display:none"></div>
+  <div class="tts-bar" id="ttsBar" style="display:none">
+    <button id="ttsPrev" title="이전 문단" aria-label="이전 문단">⏮</button>
+    <button id="ttsPlay" title="재생/일시정지" aria-label="재생/일시정지">⏸</button>
+    <button id="ttsNext" title="다음 문단" aria-label="다음 문단">⏭</button>
+    <button id="ttsRate" title="읽는 속도">1.0×</button>
+    <button id="ttsClose" title="낭독 끝내기" aria-label="낭독 끝내기">✕</button>
+  </div>
   <div class="toast" id="toast"></div>
 
   <script src="app.js?v=22"></script>
@@ -213,6 +246,16 @@
     const esc = (s) => (s == null ? "" : String(s)).replace(/[&<>"]/g, (c) =>
       ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 
+    /* 버튼 라벨 갈아끼우기 — 아이콘은 그대로, 글자만 .btn-txt 로 감싼다.
+       textContent 로 통째로 바꾸면 span 이 날아가 좁은 화면에서 라벨이 다시 튀어나온다. */
+    function setBtnLabel(el, icon, text) {
+      el.textContent = icon;
+      const s = document.createElement("span");
+      s.className = "btn-txt";
+      s.textContent = " " + text;
+      el.appendChild(s);
+    }
+
     async function idbAsset(key, val) {
       try {
         const db = await idbOpen();
@@ -363,14 +406,20 @@
           rd.style.display = ""; document.body.classList.add("reading-on");
         }
         renderReadingMarks();
-        btn.textContent = "📄 PDF";
+        setBtnLabel(btn, "📄", "PDF");
         document.getElementById("llmBtn").style.display = "";
+        document.getElementById("ttsBtn").style.display = "";
+        ttsBlocks = [];                 // 본문이 막 만들어졌을 수 있다 → 재생할 때 다시 훑는다
+        renderTtsUI();
         ensureLlmState();
       } else {
         rd.style.display = "none";
         document.body.classList.remove("reading-on");
-        btn.textContent = "📖 읽기";
+        setBtnLabel(btn, "📖", "읽기");
         document.getElementById("llmBtn").style.display = "none";
+        document.getElementById("ttsBtn").style.display = "none";
+        // PDF 모드엔 읽을 본문 DOM이 없다 — 소리만 계속 나면 이상하다
+        if (ttsOn) ttsStop(true);
       }
       window.scrollTo(0, 0);
     }
@@ -379,9 +428,9 @@
     const LLM_REQ = "contents/index/llm_requests.json";
     function renderLlmBtn() {
       const b = document.getElementById("llmBtn");
-      if (llmQueued) { b.textContent = "⏳ 처리 대기중"; b.disabled = true; }
-      else if (llmEngine === "llm") { b.textContent = "✅ LLM 본문"; b.disabled = false; }
-      else { b.textContent = "🤖 LLM 정리"; b.disabled = false; }
+      if (llmQueued) { setBtnLabel(b, "⏳", "처리 대기중"); b.disabled = true; }
+      else if (llmEngine === "llm") { setBtnLabel(b, "✅", "LLM 본문"); b.disabled = false; }
+      else { setBtnLabel(b, "🤖", "LLM 정리"); b.disabled = false; }
     }
     async function llmPending() {
       try {
@@ -470,6 +519,189 @@
         toast(e.message || "삭제 실패");
       }
     };
+
+    /* ═══ 본문 낭독(TTS) ═══════════════════════════════
+       브라우저 내장 음성(speechSynthesis)만 쓴다 — 키도 비용도 없다.
+
+       ★ LLM으로 정리된 본문일 때만 읽는다.
+         규칙 기반(heuristic) 추출본은 2단 조판 때문에 문장이 컬럼 끝에서 잘려
+         "…누적된 엔화 국채금리" / "안정하고 흐름의 추세 전환은…" 처럼 토막나 있다.
+         눈으로 볼 땐 넘어가지지만 소리로 들으면 못 알아듣는다. */
+    const TTS_MIN_LEN = 60, TTS_MIN_BLOCKS = 5;
+    /* 한 번에 읽히는 길이. 크롬은 긴 문장 하나를 15초쯤에서 조용히 끊어버려서
+       문장 단위로 잘라 짧게 넘긴다(끊김 대신 자연스러운 쉼표가 된다). */
+    const TTS_CHUNK = 140;
+    const TTS_RATES = [1.0, 1.25, 1.5];
+    let ttsBlocks = [], ttsIdx = -1, ttsOn = false, ttsPaused = false;
+    let ttsGen = 0, ttsRateI = 0, ttsVoice = null;
+    const synth = window.speechSynthesis;
+
+    /* 목소리 목록은 크롬에서 비동기로 온다 — 늦게 와도 다음 문단부터 반영된다 */
+    function pickVoice() {
+      try {
+        const vs = synth.getVoices() || [];
+        ttsVoice = vs.find((v) => /^ko/i.test(v.lang)) || null;
+      } catch (e) {}
+    }
+    if (synth) { pickVoice(); synth.onvoiceschanged = pickVoice; }
+
+    /* 읽을 만한 본문인지 — 엔진 태그만 믿지 않는다.
+       text_engine 이 llm 인데 추출이 실패해 블록이 몇 개뿐인 리포트가 실제로 있다. */
+    function ttsEligible() {
+      if (!synth || !READTEXT || llmEngine !== "llm") return false;
+      let n = 0;
+      for (const k of Object.keys(READTEXT)) {
+        for (const b of READTEXT[k] || []) {
+          if ((b.text || "").length >= TTS_MIN_LEN && ++n >= TTS_MIN_BLOCKS) return true;
+        }
+      }
+      return false;
+    }
+
+    function ttsChunks(text) {
+      const s = (text || "").replace(/\s+/g, " ").trim();
+      const out = [];
+      let cur = "";
+      for (const part of s.split(/(?<=[.!?。？！])\s+/)) {
+        if (cur && (cur + " " + part).length > TTS_CHUNK) { out.push(cur); cur = part; }
+        else cur = cur ? cur + " " + part : part;
+      }
+      if (cur) out.push(cur);
+      /* 마침표 없이 긴 문단(불릿·표제형 문장)은 위에서 안 잘린다.
+         글자 수로 뚝 자르면 말이 중간에서 끊기니, 쉼표 같은 절 경계를 먼저 노린다. */
+      return out.flatMap((c) => {
+        if (c.length <= TTS_CHUNK * 1.15) return [c];
+        const parts = [];
+        let buf = "";
+        for (const cl of c.split(/(?<=[,;·、])\s*/)) {
+          if (buf && (buf + cl).length > TTS_CHUNK) { parts.push(buf.trim()); buf = cl; }
+          else buf += cl;
+        }
+        if (buf.trim()) parts.push(buf.trim());
+        // 절 경계조차 없으면 그때야 글자 수로 자른다
+        return parts.flatMap((p) => {
+          if (p.length <= TTS_CHUNK * 1.15) return [p];
+          const hard = [];
+          for (let i = 0; i < p.length; i += TTS_CHUNK) hard.push(p.slice(i, i + TTS_CHUNK));
+          return hard;
+        });
+      });
+    }
+
+    function ttsMark(el) {
+      document.querySelectorAll("#readingContainer .tts-now").forEach((e) => e.classList.remove("tts-now"));
+      if (!el) return;
+      el.classList.add("tts-now");
+      // 화면 안에 편하게 들어와 있으면 굳이 움직이지 않는다(읽는 중 화면이 계속 튀지 않게)
+      const r = el.getBoundingClientRect();
+      if (r.top < 80 || r.bottom > window.innerHeight - 80) {
+        el.scrollIntoView({ block: "center", behavior: "smooth" });
+      }
+    }
+
+    function ttsCollect() {
+      ttsBlocks = [...document.querySelectorAll(
+        "#readingContainer .rd-h, #readingContainer .rd-para")]
+        .filter((el) => (el.textContent || "").trim().length >= 2);
+    }
+
+    function renderTtsUI() {
+      const btn = document.getElementById("ttsBtn");
+      const bar = document.getElementById("ttsBar");
+      const ok = ttsEligible();
+      btn.classList.toggle("tts-off", !ok);
+      btn.textContent = ttsOn && !ttsPaused ? "🔊…" : "🔊";
+      bar.style.display = ttsOn ? "" : "none";
+      document.getElementById("ttsPlay").textContent = ttsPaused ? "▶" : "⏸";
+      document.getElementById("ttsRate").textContent = TTS_RATES[ttsRateI].toFixed(2).replace(/0$/, "") + "×";
+    }
+
+    function ttsStop(quiet) {
+      ttsGen++;                       // 진행 중이던 콜백 사슬을 끊는다
+      ttsOn = false; ttsPaused = false; ttsIdx = -1;
+      try { synth && synth.cancel(); } catch (e) {}
+      ttsMark(null);
+      renderTtsUI();
+      if (!quiet) toast("낭독 끝");
+    }
+
+    function ttsPlayFrom(i) {
+      if (!ttsBlocks.length) ttsCollect();
+      if (!ttsBlocks.length) { toast("읽을 본문이 없습니다"); return; }
+      const gen = ++ttsGen;           // 이전 재생과 겹치지 않게(문단 점프·속도 변경 시)
+      try { synth.cancel(); } catch (e) {}
+      ttsOn = true; ttsPaused = false;
+      const step = (idx) => {
+        if (gen !== ttsGen) return;
+        if (idx < 0) idx = 0;
+        if (idx >= ttsBlocks.length) { ttsStop(true); toast("끝까지 읽었습니다"); return; }
+        ttsIdx = idx;
+        const el = ttsBlocks[idx];
+        ttsMark(el);
+        const isHead = el.classList.contains("rd-h");
+        const chunks = ttsChunks(el.textContent);
+        let c = 0;
+        const next = () => {
+          if (gen !== ttsGen) return;
+          if (c >= chunks.length) {
+            // 제목 뒤엔 조금 더 쉰다 — 붙여 읽으면 어디가 소제목인지 안 들린다
+            setTimeout(() => step(idx + 1), isHead ? 420 : 130);
+            return;
+          }
+          const u = new SpeechSynthesisUtterance(chunks[c++]);
+          u.lang = "ko-KR";
+          u.rate = TTS_RATES[ttsRateI];
+          if (ttsVoice) u.voice = ttsVoice;
+          u.onend = next;
+          u.onerror = next;           // 한 토막 실패로 낭독 전체가 멈추지 않게
+          synth.speak(u);
+        };
+        next();
+      };
+      step(i);
+      renderTtsUI();
+    }
+
+    document.getElementById("ttsBtn").onclick = () => {
+      if (!synth) { toast("이 브라우저는 음성 읽기를 지원하지 않습니다"); return; }
+      if (!ttsEligible()) {
+        toast(llmEngine === "llm" ? "읽을 만한 본문이 없습니다 — 🤖 LLM 정리를 다시 눌러주세요"
+                                  : "먼저 🤖 LLM 정리를 눌러주세요 (원문 그대로는 문장이 잘려 있습니다)");
+        return;
+      }
+      if (ttsOn) { ttsStop(); return; }
+      ttsCollect();
+      // 화면에 보이는 첫 문단부터 읽는다 — 스크롤해 둔 자리를 무시하고 1페이지로 돌아가면 곤란하다
+      const at = ttsBlocks.findIndex((el) => el.getBoundingClientRect().bottom > 90);
+      ttsPlayFrom(at < 0 ? 0 : at);
+    };
+    document.getElementById("ttsPlay").onclick = () => {
+      if (!ttsOn) return;
+      if (ttsPaused) { synth.resume(); ttsPaused = false; }
+      else { synth.pause(); ttsPaused = true; }
+      renderTtsUI();
+    };
+    document.getElementById("ttsPrev").onclick = () => ttsOn && ttsPlayFrom(Math.max(0, ttsIdx - 1));
+    document.getElementById("ttsNext").onclick = () => ttsOn && ttsPlayFrom(ttsIdx + 1);
+    document.getElementById("ttsRate").onclick = () => {
+      ttsRateI = (ttsRateI + 1) % TTS_RATES.length;
+      renderTtsUI();
+      if (ttsOn) ttsPlayFrom(ttsIdx);   // 속도는 재생 중 못 바꾼다 → 현재 문단을 새 속도로 다시
+    };
+    document.getElementById("ttsClose").onclick = () => ttsStop();
+
+    /* 낭독 중 문단을 탭하면 그 문단부터. 낭독이 꺼져 있을 땐 가로채지 않는다(글 선택 방해 금지) */
+    document.getElementById("readingContainer").addEventListener("click", (e) => {
+      if (!ttsOn) return;
+      if (window.getSelection && String(window.getSelection()).length > 1) return;   // 글 선택 중
+      const el = e.target.closest && e.target.closest(".rd-para, .rd-h");
+      if (!el) return;
+      const at = ttsBlocks.indexOf(el);
+      if (at >= 0) ttsPlayFrom(at);
+    });
+
+    // 탭을 닫거나 뒤로 가도 목소리가 계속 남는 브라우저가 있다
+    window.addEventListener("pagehide", () => { try { synth && synth.cancel(); } catch (e) {} });
 
     document.getElementById("modeBtn").onclick = () => setMode(mode === "pdf" ? "reading" : "pdf");
     document.getElementById("llmBtn").onclick = async () => {

@@ -61,7 +61,6 @@
     <button class="btn" id="modeBtn" title="읽기/PDF 전환">📖<span class="btn-txt"> 읽기</span></button>
     <button class="btn" id="llmBtn" title="읽기 본문을 LLM으로 정리 요청" style="display:none">🤖<span class="btn-txt"> LLM</span></button>
     <button class="btn" id="ttsBtn" title="본문 낭독" style="display:none">🔊</button>
-    <a class="btn" id="oldLink" title="기존 뷰어로 열기">v1</a>
     <a class="btn" id="hlLink" title="하이라이트 모아보기">📋<span class="btn-txt"> 모아보기</span></a>
     <button class="btn v2-del" id="delReportBtn" title="이 리포트 삭제" aria-label="이 리포트 삭제">🗑</button>
   </div>
@@ -771,7 +770,6 @@
     async function start() {
       if (!REPORT_ID) return fail("리포트 id가 없습니다. index.html에서 열어주세요.");
       document.getElementById("hlLink").href = "highlights.html?id=" + encodeURIComponent(REPORT_ID);
-      document.getElementById("oldLink").href = "viewer.html?id=" + encodeURIComponent(REPORT_ID);
 
       let report, anno;
       try {

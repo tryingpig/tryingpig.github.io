@@ -50,20 +50,55 @@
     const GOTO_PAGE = parseInt(params.get("page") || "0", 10);
     const GOTO_HL = params.get("hl") || "";
 
+    /* 읽던 페이지 이어보기.
+       30페이지짜리 리포트를 보다 나가면 다시 1페이지부터였다. 페이지가 바뀔 때마다
+       기록해 두고, 목록에서 그냥 열었을 때(딥링크 파라미터가 없을 때)만 그 자리로 되돌린다.
+       hl·page 로 들어온 경우는 사용자가 갈 곳을 지목한 것이므로 건드리지 않는다. */
+    const LASTPAGE_KEY = "rv_lastpage_" + REPORT_ID;
+    const RESUME_OK = !GOTO_HL && !GOTO_PAGE;
+    /* 문서를 열면 관찰자·스크롤 플러그인이 곧바로 '1페이지'를 알린다. 그걸 그대로 저장하면
+       복원하기도 전에 기록이 1로 덮여, 다음에 열 때 다시 처음부터가 된다.
+       그래서 초기 위치잡기가 끝난 뒤에야 기록을 시작한다. */
+    let trackReady = false;
+    const startTracking = () => { trackReady = true; };
+    function saveLastPage(n) {
+      if (!trackReady) return;
+      n = parseInt(n, 10);
+      if (!REPORT_ID || !n || n < 1) return;
+      try { localStorage.setItem(LASTPAGE_KEY, String(n)); } catch (e) {}
+    }
+    /* 1페이지면 되돌릴 것이 없으니 0을 준다(맨 위로 돌아온 상태를 저장해 두는 건 정상). */
+    function lastPage() {
+      if (!RESUME_OK) return 0;
+      const n = parseInt(localStorage.getItem(LASTPAGE_KEY) || "0", 10);
+      return n > 1 ? n : 0;
+    }
+
     /* 기존 하이라이트 색 이름 ↔ 화면 색.
        EmbedPDF 툴은 자유 색을 주므로, 저장할 때는 가장 가까운 이름으로 되돌린다
        (모아보기·노션·PDF 굽기가 이름을 쓴다). */
     const COLOR_HEX = { yellow: "#FFE066", green: "#7CE38B", pink: "#FF9FB1" };
-    const hex2rgb = (h) => {
-      const s = (h || "").replace("#", "");
-      const v = s.length === 3 ? s.split("").map((c) => c + c).join("") : s;
-      return [0, 2, 4].map((i) => parseInt(v.slice(i, i + 2), 16) || 0);
-    };
-    function nearestColorName(hex) {
-      const t = hex2rgb(hex);
+    /* 색 문자열 → [r,g,b]. 읽어내지 못하면 null 을 준다.
+       ★ 예전엔 실패해도 [0,0,0] 을 돌려줬는데, 검정에서 제일 가까운 이름이 초록이라
+         색을 못 읽을 때마다 하이라이트가 조용히 초록으로 저장됐다(노랑만 썼는데 초록이 섞인 원인).
+         그래서 '실패'와 '검정'을 구분한다. */
+    function parseColor(v) {
+      if (typeof v !== "string") return null;
+      const s = v.trim();
+      const m = s.match(/^rgba?\(\s*([\d.]+)\s*,\s*([\d.]+)\s*,\s*([\d.]+)/i);
+      if (m) return [ +m[1], +m[2], +m[3] ].map((x) => Math.max(0, Math.min(255, Math.round(x))));
+      const hx = s.replace("#", "");
+      const v6 = hx.length === 3 ? hx.split("").map((c) => c + c).join("") : hx;
+      if (!/^[0-9a-f]{6}/i.test(v6)) return null;
+      return [0, 2, 4].map((i) => parseInt(v6.slice(i, i + 2), 16));
+    }
+    /* 색을 못 읽으면 fallback 을 그대로 쓴다(기본 노랑). 억지로 가까운 이름을 만들지 않는다. */
+    function nearestColorName(color, fallback) {
+      const t = parseColor(color);
+      if (!t) return fallback || "yellow";
       let best = "yellow", bd = Infinity;
       for (const [name, h] of Object.entries(COLOR_HEX)) {
-        const c = hex2rgb(h);
+        const c = parseColor(h);
         const d = (t[0]-c[0])**2 + (t[1]-c[1])**2 + (t[2]-c[2])**2;
         if (d < bd) { bd = d; best = name; }
       }
@@ -570,7 +605,8 @@
       /* 딥링크 처리 — 목록의 '읽기로 열기', 모아보기의 '이 하이라이트로 점프' */
       const scrollApi = registry.getPlugin("scroll").provides();
       const target = highlights.find((h) => h.hid === GOTO_HL);
-      const gotoPage = target ? target.page : (GOTO_PAGE || 0);
+      const resumeTo = lastPage();                       // 딥링크가 없을 때만 0이 아니다
+      const gotoPage = target ? target.page : (GOTO_PAGE || resumeTo);
       if (START_MODE === "reading") {
         await setMode("reading");
         if (gotoPage) {
@@ -582,6 +618,38 @@
       } else if (gotoPage) {
         setTimeout(() => scrollApi.scrollToPage({ pageNumber: gotoPage }), 300);
       }
+      // 왜 여기서 알리냐면, 아무 말 없이 중간 페이지가 열리면 "왜 처음이 아니지?" 싶기 때문
+      if (resumeTo && gotoPage === resumeTo) {
+        setTimeout(() => toast(`${resumeTo}페이지부터 이어봅니다`), 700);
+      }
+
+      /* 현재 페이지 기록 — PDF 모드는 스크롤 플러그인이 알려준다({pageNumber}) */
+      try { scrollApi.onPageChange((e) => saveLastPage(e && e.pageNumber)); } catch (e) {}
+      /* 읽기 모드는 플러그인 바깥(직접 만든 DOM)이라 따로 본다.
+         .reading 은 자체 스크롤이 없어 window 가 움직이므로 기본 root 로 충분하다.
+         화면 위쪽에 걸친 페이지를 '지금 보는 페이지'로 친다. */
+      const rdIo = new IntersectionObserver((ents) => {
+        let top = null;
+        for (const en of ents) {
+          if (!en.isIntersecting) continue;
+          const n = parseInt(en.target.dataset.page, 10);
+          if (top === null || n < top) top = n;
+        }
+        if (top !== null) saveLastPage(top);
+      }, { rootMargin: "0px 0px -70% 0px" });
+      const watchReadingPages = () => {
+        document.querySelectorAll("#readingContainer .rd-page").forEach((p) => {
+          if (p.dataset.rvWatched) return;
+          p.dataset.rvWatched = "1";
+          rdIo.observe(p);
+        });
+      };
+      watchReadingPages();
+      // 읽기 본문은 모드를 처음 켤 때 만들어진다 → 늦게 생긴 페이지도 붙잡는다
+      new MutationObserver(watchReadingPages)
+        .observe(document.getElementById("readingContainer"), { childList: true });
+      // 위의 위치잡기 setTimeout(300·400ms)이 끝나고 나서부터 기록한다
+      setTimeout(startTracking, 1200);
 
       // 콘솔 디버그용 훅(문제 생겼을 때 상태를 바로 들여다볼 수 있게)
       window.__rv2 = { registry, annoApi, docApi, selApi, pageSizes,
@@ -623,7 +691,8 @@
           const h = highlights.find((x) => x.hid === hid);
           if (!h) return;
           h.rects = toNormRects(an.segmentRects, size);
-          h.color = nearestColorName(an.color);
+          // 위치만 바뀐 갱신이면 색 정보가 안 실려 온다 → 원래 색을 지킨다
+          h.color = nearestColorName(an.color, h.color);
           persist();
         } else if (ev.type === "delete") {
           const hid = idMap.get(an.id) || an.id;

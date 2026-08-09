@@ -38,6 +38,8 @@
     .tts-bar button:hover { background:var(--raise); }
     .tts-bar #ttsRate { font-size:12px; color:var(--sub); font-variant-numeric:tabular-nums; min-width:38px; }
     .tts-bar #ttsClose { color:var(--sub); }
+    .tts-bar #ttsVoice { max-width:96px; font-size:12px; color:var(--sub);
+      background:transparent; border:0; border-radius:999px; padding:6px 2px; cursor:pointer; }
     /* 폰에선 버튼 글자 라벨을 감춘다 — 아이콘만 남긴다.
        읽기 모드에선 컨트롤이 7개까지 늘어 414px 화면에서 제목과 🗑 이 밀려났다.
        (목록 화면 상단바는 건드리지 않게 .viewer-topbar 안으로 한정) */
@@ -70,6 +72,7 @@
     <button id="ttsPlay" title="재생/일시정지" aria-label="재생/일시정지">⏸</button>
     <button id="ttsNext" title="다음 문단" aria-label="다음 문단">⏭</button>
     <button id="ttsRate" title="읽는 속도">1.0×</button>
+    <select id="ttsVoice" title="목소리" aria-label="목소리"></select>
     <button id="ttsClose" title="낭독 끝내기" aria-label="낭독 끝내기">✕</button>
   </div>
   <div class="toast" id="toast"></div>
@@ -532,18 +535,58 @@
        문장 단위로 잘라 짧게 넘긴다(끊김 대신 자연스러운 쉼표가 된다). */
     const TTS_CHUNK = 140;
     const TTS_RATES = [1.0, 1.25, 1.5];
+    /* 사람이 읽듯 끊어 준다. 붙여 읽으면 내용은 같아도 기계처럼 들린다. */
+    const TTS_GAP_SENT = 200;    // 문장 사이
+    const TTS_GAP_PARA = 480;    // 문단 사이
+    const TTS_GAP_HEAD = 620;    // 소제목 뒤
+    const TTS_VOICE_KEY = "rv_tts_voice";
     let ttsBlocks = [], ttsIdx = -1, ttsOn = false, ttsPaused = false;
-    let ttsGen = 0, ttsRateI = 0, ttsVoice = null;
+    let ttsGen = 0, ttsRateI = 0, ttsVoice = null, ttsVoices = [];
     const synth = window.speechSynthesis;
 
-    /* 목소리 목록은 크롬에서 비동기로 온다 — 늦게 와도 다음 문단부터 반영된다 */
+    /* 목소리 고르기.
+       ★ 기본값을 '네트워크 음성 우선'으로 둔다. 예전엔 한국어 첫 번째를 그냥 집었는데,
+         목록 앞쪽은 보통 OS 내장 음성(윈도우10이면 Microsoft Heami)이라 신경망 이전
+         세대 목소리가 걸렸다. 크롬이 주는 'Google 한국의' 음성이 훨씬 자연스럽다.
+       목록은 크롬에서 비동기로 온다 — 늦게 와도 onvoiceschanged 로 다시 고른다. */
     function pickVoice() {
       try {
-        const vs = synth.getVoices() || [];
-        ttsVoice = vs.find((v) => /^ko/i.test(v.lang)) || null;
+        const all = synth.getVoices() || [];
+        ttsVoices = all.filter((v) => /^ko/i.test(v.lang));
+        const saved = localStorage.getItem(TTS_VOICE_KEY);
+        ttsVoice = (saved && ttsVoices.find((v) => v.voiceURI === saved))
+          || ttsVoices.find((v) => !v.localService)     // 네트워크(구글) 음성
+          || ttsVoices[0] || null;
+        renderVoiceSel();
       } catch (e) {}
     }
+    function renderVoiceSel() {
+      const sel = document.getElementById("ttsVoice");
+      if (!sel) return;
+      // 고를 게 하나뿐이면 메뉴를 띄울 이유가 없다
+      sel.style.display = ttsVoices.length > 1 ? "" : "none";
+      if (sel.dataset.n === String(ttsVoices.length)) { if (ttsVoice) sel.value = ttsVoice.voiceURI; return; }
+      sel.dataset.n = String(ttsVoices.length);
+      sel.innerHTML = "";
+      for (const v of ttsVoices) {
+        const o = document.createElement("option");
+        o.value = v.voiceURI;
+        o.textContent = v.name.replace(/^Microsoft\s+/, "").replace(/\s+Desktop$/, "");
+        sel.appendChild(o);
+      }
+      if (ttsVoice) sel.value = ttsVoice.voiceURI;
+    }
     if (synth) { pickVoice(); synth.onvoiceschanged = pickVoice; }
+
+    /* 읽을 때만 바꾸는 표기 — 화면 글자는 그대로 둔다.
+       리포트에 흔한 약어·기호를 그대로 읽히면 "와이오와이", "가운뎃점"처럼 나온다. */
+    const TTS_SAY = [
+      [/·/g, ", "],                                    // 제조·금융·데이터센터 → 끊어 읽기
+      [/\bYoY\b/gi, "전년 대비"], [/\bQoQ\b/gi, "전분기 대비"], [/\bMoM\b/gi, "전월 대비"],
+      [/%p\b/g, "퍼센트포인트"], [/\bbp\b/g, "베이시스포인트"],
+      [/(\d)\s*~\s*(\d)/g, "$1에서 $2"],
+    ];
+    const ttsSay = (s) => TTS_SAY.reduce((t, [re, to]) => t.replace(re, to), s);
 
     /* 읽을 만한 본문인지 — 엔진 태그만 믿지 않는다.
        text_engine 이 llm 인데 추출이 실패해 블록이 몇 개뿐인 리포트가 실제로 있다. */
@@ -644,16 +687,17 @@
         const next = () => {
           if (gen !== ttsGen) return;
           if (c >= chunks.length) {
-            // 제목 뒤엔 조금 더 쉰다 — 붙여 읽으면 어디가 소제목인지 안 들린다
-            setTimeout(() => step(idx + 1), isHead ? 420 : 130);
+            // 제목 뒤엔 더 쉰다 — 붙여 읽으면 어디가 소제목인지 안 들린다
+            setTimeout(() => step(idx + 1), isHead ? TTS_GAP_HEAD : TTS_GAP_PARA);
             return;
           }
-          const u = new SpeechSynthesisUtterance(chunks[c++]);
+          const u = new SpeechSynthesisUtterance(ttsSay(chunks[c++]));
           u.lang = "ko-KR";
           u.rate = TTS_RATES[ttsRateI];
           if (ttsVoice) u.voice = ttsVoice;
-          u.onend = next;
-          u.onerror = next;           // 한 토막 실패로 낭독 전체가 멈추지 않게
+          // 문장 사이에 숨을 넣는다. 곧바로 이으면 한 문장처럼 밀려 나온다
+          u.onend = () => setTimeout(next, TTS_GAP_SENT);
+          u.onerror = () => setTimeout(next, TTS_GAP_SENT);   // 한 토막 실패로 전체가 멈추지 않게
           synth.speak(u);
         };
         next();
@@ -687,6 +731,14 @@
       ttsRateI = (ttsRateI + 1) % TTS_RATES.length;
       renderTtsUI();
       if (ttsOn) ttsPlayFrom(ttsIdx);   // 속도는 재생 중 못 바꾼다 → 현재 문단을 새 속도로 다시
+    };
+    document.getElementById("ttsVoice").onchange = (e) => {
+      const v = ttsVoices.find((x) => x.voiceURI === e.target.value);
+      if (!v) return;
+      ttsVoice = v;
+      try { localStorage.setItem(TTS_VOICE_KEY, v.voiceURI); } catch (err) {}
+      if (ttsOn) ttsPlayFrom(ttsIdx);   // 목소리도 재생 중엔 안 바뀐다 → 현재 문단부터 새 목소리로
+      else toast("목소리: " + v.name);
     };
     document.getElementById("ttsClose").onclick = () => ttsStop();
 

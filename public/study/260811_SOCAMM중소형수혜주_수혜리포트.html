@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SOCAMM 중소형 수혜주 지도 — 대형주 말고, 밸류체인 하단에서 찾다</title>
+<link rel="stylesheet" href="/assets/report.css">
+<script src="/assets/report.js" defer></script>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<script>
+  (function () {
+    try {
+      var t = localStorage.getItem('theme');
+      if (!t) t = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      if (t === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+    } catch (e) {}
+  })();
+</script>
+</head>
+<body data-topic="tech">
+<div class="topbar">
+  <div class="topbar-in">
+    <a class="back" href="/#study">학습공간</a>
+    <span class="crumb">SOCAMM 중소형 수혜주</span>
+    <button class="theme-toggle" type="button" aria-label="다크/라이트 전환" title="다크/라이트 전환">
+      <svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      <svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+    </button>
+  </div>
+</div>
+<div class="wrap">
+
+  <span class="kicker">수혜 리포트 · SOCAMM 밸류체인 (중소형)</span>
+  <h1>SOCAMM 중소형 수혜주 지도<br>— 대형주 말고, 밸류체인 하단에서 찾다</h1>
+  <p class="sub">작성일 2026-08-11 · 개인 리서치 노트 · 밸류 epic.ai(2026-08-11) / 재무 DART 공시 / 연결고리 언론</p>
+
+  <div class="warn">
+    <b>⚠️ 투자 권유가 아닙니다.</b> 본 문서는 <b>DART 공시·epic.ai·언론</b>을 정리·해석한 <b>개인 학습 노트</b>이며 매수·매도 추천이 아닙니다. <b>중소형 테마주는 변동성이 극심</b>하고(52주 밴드 수 배), 밸류에 성장 기대가 이미 반영돼 있습니다. 최종 판단의 책임은 투자자에게 있습니다.
+  </div>
+
+  <div class="note">
+    <b>시리즈 3편(중소형 편).</b> 이 리포트는 아래 두 편에 이어집니다 — 개념·구조·용량삭감은 ①, 대형주(삼성·SK)와 원가 논리는 ②에서 다뤘습니다.
+    <br>① <a href="https://tryingpig.github.io/study/260731_SOCAMM_완전정복_수혜악재지도.html">SOCAMM 완전정복 — 수혜·악재 지도(7/31)</a>
+    &nbsp;·&nbsp; ② <a href="https://tryingpig.github.io/study/260811_SOCAMM2원가혁명_수혜리포트.html">SOCAMM2 원가 혁명과 가장 큰 수혜기업(8/11)</a>
+    <br>이번 편은 <b>대형 메모리 3사 말고, 밸류체인 하단(기판·테스트)의 중소형주</b>를 실데이터로 특정합니다.
+  </div>
+
+  <!-- 1 스냅샷 -->
+  <h2>1. 스냅샷 — 왜 '기판'이 핵심인가</h2>
+  <div class="kpi">
+    <div class="box"><div class="num">8모듈·32기판</div><div class="lab">Vera CPU 1개당 SOCAMM2 모듈·기판 개수</div></div>
+    <div class="box"><div class="num">개수 = 불변</div><div class="lab">용량이 줄어도 모듈·기판 개수는 그대로</div></div>
+    <div class="box"><div class="num">티엘비</div><div class="lab">시총 6,826억 '쏘캠 대장주'(순수 소형)</div></div>
+    <div class="box"><div class="num">~3,000억</div><div class="lab">2026 국내 SOCAMM PCB 시장 추정</div></div>
+  </div>
+  <div class="callout">
+    <b>한 줄 결론.</b> SOCAMM은 <b>모듈(기판 위에 LPDDR5X를 얹은 소형 메모리 카드)</b>이다. 그래서 대형 메모리 3사(칩) 외에, <b>모듈 기판(substrate/PCB) 업체가 새로 생긴 수혜층</b>이다. 특히 <b>"용량이 줄어도 CPU당 모듈 8개·기판 32개는 그대로"</b>라, 기판업체는 <b>용량 삭감 논란에도 개수 기반으로 방어적</b>이다(앞 ① 리포트 §5 논리). 중소형 순수도 순위: <b>①티엘비 → ②심텍 → ③대덕전자·코리아써키트 → ④ISC·티에스이(테스트, 간접)</b>.
+  </div>
+
+  <!-- 2 밸류체인 위치 -->
+  <h2>2. SOCAMM 밸류체인에서 중소형주의 자리</h2>
+  <div class="tablewrap">
+  <table>
+    <thead><tr><th>단계</th><th>하는 일</th><th>중소형 플레이어</th><th>SOCAMM 순수도</th></tr></thead>
+    <tbody>
+      <tr><td>DRAM 칩(LPDDR5X)</td><td>메모리 셀 (대형)</td><td>삼성·SK·마이크론 <span style="color:var(--muted)">(②편 참조)</span></td><td>—</td></tr>
+      <tr><td><b>모듈 기판(substrate/PCB)</b></td><td>LPDDR5X를 얹는 고다층 기판</td><td><b>티엘비·심텍·대덕전자·코리아써키트</b></td><td>★★★ 직접</td></tr>
+      <tr><td>모듈 조립·검사</td><td>기판+칩 실장·모듈 테스트</td><td>메모리 3사 내재화 + 일부 외주</td><td>★★</td></tr>
+      <tr><td><b>테스트 소켓·프로브</b></td><td>모듈·칩 검사 소모품/장비</td><td><b>ISC·티에스이</b></td><td>★★ 간접</td></tr>
+      <tr><td>인터페이스 칩·IP</td><td>SOCAMM2 칩셋·LPDDR PHY</td><td>Rambus(미국)·오픈엣지테크 <span style="color:var(--muted)">(참고)</span></td><td>★ 간접</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p class="note"><b>핵심:</b> 중소형 수혜의 무게중심은 <b>모듈 기판</b>이다. SOCAMM 모듈이 늘수록 <b>고다층·고부가 메모리 기판 수요</b>가 직접 늘고, 여기에 국내 순수 플레이어들이 몰려 있다.</p>
+
+  <!-- 3 종목 지도 -->
+  <h2>3. ★ 중소형 6종목 — 실데이터 지도</h2>
+  <div class="tablewrap">
+  <table>
+    <caption style="text-align:left;color:var(--muted);font-size:.85rem;padding:6px 0">표 1. SOCAMM 중소형 수혜주 (실적 DART 공시 / 시총·밴드 epic, 2026-08-11)</caption>
+    <thead><tr><th>종목</th><th>시장</th><th>시총</th><th>2025 영업이익 (YoY)</th><th>2025 순익</th><th>SOCAMM 연결고리</th></tr></thead>
+    <tbody>
+      <tr><td><b>티엘비</b><br>(356860)</td><td>코스닥</td><td><b>6,826억</b></td><td><b>260억</b><br>(34억→ +665%)</td><td>190억</td><td>메모리 모듈 PCB <b>순수 플레이</b>. SOCAMM2 기판 국내 메모리 2곳 <b>퀄 통과</b>, 2028 신규기판 비중 50% 목표. <b>'쏘캠 대장주'</b></td></tr>
+      <tr><td><b>심텍</b><br>(222800)</td><td>코스닥</td><td>4.34조</td><td>119억<br>(−470억→ <b>흑전</b>)</td><td>−1,646억</td><td>SOCAMM PCB 시장(~3천억) <b>50% 점유 목표</b>, MSAP 고부가 전환. 단 순익은 아직 적자(금융·일회성)</td></tr>
+      <tr><td><b>대덕전자</b><br>(353200)</td><td>코스피</td><td>5.32조</td><td>491억<br>(113억→ +334%)</td><td>476억</td><td>패키지기판·FC-BGA + 메모리기판. AI서버 수혜(SOCAMM은 일부)</td></tr>
+      <tr><td><b>코리아써키트</b><br>(007810)</td><td>코스피</td><td>1.42조</td><td>538억<br>(−332억→ <b>흑전</b>)</td><td>538억</td><td>반도체·AI서버 기판(대덕그룹). 흑자전환</td></tr>
+      <tr><td><b>ISC</b><br>(095340)</td><td>코스닥</td><td>3.01조</td><td>601억<br>(OPM <b>27%</b>)</td><td>563억</td><td>실리콘러버 테스트 소켓 강자. LPDDR/모듈 테스트 간접 수혜(고마진)</td></tr>
+      <tr><td><b>티에스이</b><br>(131290)</td><td>코스닥</td><td>2.51조</td><td>492억<br>(399억→ +23%)</td><td>400억</td><td>프로브카드·테스트 소켓. 메모리 테스트 밸류체인(간접)</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <figure>
+    <div class="svgbox">
+      <svg viewBox="0 0 560 220" role="img" aria-label="6종목 2025 영업이익">
+        <text x="12" y="16" fill="var(--ink)" font-size="13" font-weight="700">2025 영업이익 (억원) — 모두 이익 변곡</text>
+        <rect x="360" y="6" width="12" height="12" fill="#4a90d9"></rect><text x="376" y="16" fill="var(--muted)" font-size="10">기판</text>
+        <rect x="430" y="6" width="12" height="12" fill="#e0844a"></rect><text x="446" y="16" fill="var(--muted)" font-size="10">테스트</text>
+        <line x1="36" y1="175" x2="524" y2="175" stroke="var(--line)" stroke-width="1"></line>
+        <rect x="37" y="119" width="56" height="56" rx="3" fill="#4a90d9"></rect><text x="65" y="113" fill="var(--ink)" font-size="10" text-anchor="middle" font-weight="700">260</text><text x="65" y="190" fill="var(--muted)" font-size="9" text-anchor="middle">티엘비</text><text x="65" y="202" fill="#4a90d9" font-size="8" text-anchor="middle">+665%</text>
+        <rect x="122" y="149.4" width="56" height="25.6" rx="3" fill="#4a90d9"></rect><text x="150" y="143" fill="var(--ink)" font-size="10" text-anchor="middle" font-weight="700">119</text><text x="150" y="190" fill="var(--muted)" font-size="9" text-anchor="middle">심텍</text><text x="150" y="202" fill="#4a90d9" font-size="8" text-anchor="middle">흑전</text>
+        <rect x="207" y="69.2" width="56" height="105.8" rx="3" fill="#4a90d9"></rect><text x="235" y="63" fill="var(--ink)" font-size="10" text-anchor="middle" font-weight="700">491</text><text x="235" y="190" fill="var(--muted)" font-size="9" text-anchor="middle">대덕전자</text><text x="235" y="202" fill="#4a90d9" font-size="8" text-anchor="middle">+334%</text>
+        <rect x="292" y="59.1" width="56" height="115.9" rx="3" fill="#4a90d9"></rect><text x="320" y="53" fill="var(--ink)" font-size="10" text-anchor="middle" font-weight="700">538</text><text x="320" y="190" fill="var(--muted)" font-size="9" text-anchor="middle">코리아써키트</text><text x="320" y="202" fill="#4a90d9" font-size="8" text-anchor="middle">흑전</text>
+        <rect x="377" y="45.5" width="56" height="129.5" rx="3" fill="#e0844a"></rect><text x="405" y="39" fill="var(--ink)" font-size="10" text-anchor="middle" font-weight="700">601</text><text x="405" y="190" fill="var(--muted)" font-size="9" text-anchor="middle">ISC</text><text x="405" y="202" fill="#e0844a" font-size="8" text-anchor="middle">OPM 27%</text>
+        <rect x="462" y="69" width="56" height="106" rx="3" fill="#e0844a"></rect><text x="490" y="63" fill="var(--ink)" font-size="10" text-anchor="middle" font-weight="700">492</text><text x="490" y="190" fill="var(--muted)" font-size="9" text-anchor="middle">티에스이</text><text x="490" y="202" fill="#e0844a" font-size="8" text-anchor="middle">+23%</text>
+      </svg>
+    </div>
+    <figcaption>그림 1. 6종목 모두 2025년 이익이 위로 변곡(흑전·급증). AI 서버·SOCAMM 기판·테스트 수요가 실적으로 나타나기 시작. 출처: DART(2026-08-11).</figcaption>
+  </figure>
+
+  <figure>
+    <div class="svgbox">
+      <svg viewBox="0 0 560 200" role="img" aria-label="6종목 시총 규모">
+        <text x="12" y="16" fill="var(--ink)" font-size="13" font-weight="700">시가총액 (조원) — 소형에서 mid까지</text>
+        <line x1="36" y1="165" x2="524" y2="165" stroke="var(--line)" stroke-width="1"></line>
+        <rect x="37" y="149.8" width="56" height="15.2" rx="3" fill="var(--accent)"></rect><text x="65" y="143" fill="var(--ink)" font-size="10" text-anchor="middle" font-weight="700">0.68</text><text x="65" y="180" fill="var(--muted)" font-size="9" text-anchor="middle">티엘비</text>
+        <rect x="122" y="133.2" width="56" height="31.8" rx="3" fill="var(--accent)"></rect><text x="150" y="127" fill="var(--ink)" font-size="10" text-anchor="middle" font-weight="700">1.42</text><text x="150" y="180" fill="var(--muted)" font-size="9" text-anchor="middle">코리아써키트</text>
+        <rect x="207" y="108.7" width="56" height="56.3" rx="3" fill="var(--accent)"></rect><text x="235" y="102" fill="var(--ink)" font-size="10" text-anchor="middle" font-weight="700">2.51</text><text x="235" y="180" fill="var(--muted)" font-size="9" text-anchor="middle">티에스이</text>
+        <rect x="292" y="97.5" width="56" height="67.5" rx="3" fill="var(--accent)"></rect><text x="320" y="91" fill="var(--ink)" font-size="10" text-anchor="middle" font-weight="700">3.01</text><text x="320" y="180" fill="var(--muted)" font-size="9" text-anchor="middle">ISC</text>
+        <rect x="377" y="67.7" width="56" height="97.3" rx="3" fill="var(--accent)"></rect><text x="405" y="61" fill="var(--ink)" font-size="10" text-anchor="middle" font-weight="700">4.34</text><text x="405" y="180" fill="var(--muted)" font-size="9" text-anchor="middle">심텍</text>
+        <rect x="462" y="45.8" width="56" height="119.2" rx="3" fill="var(--accent)"></rect><text x="490" y="39" fill="var(--ink)" font-size="10" text-anchor="middle" font-weight="700">5.32</text><text x="490" y="180" fill="var(--muted)" font-size="9" text-anchor="middle">대덕전자</text>
+      </svg>
+    </div>
+    <figcaption>그림 2. 시총 스펙트럼. 티엘비만 진짜 소형(6,826억)이고 나머지는 1~5조대 mid-cap. '순수 소형 SOCAMM'을 원하면 티엘비가 유일에 가깝다. 출처: epic.ai(2026-08-11).</figcaption>
+  </figure>
+
+  <!-- 4 그룹 해설 -->
+  <h2>4. 세 그룹으로 읽기</h2>
+  <div class="grid3">
+    <div class="card"><b>① 기판 — 직접 수혜(핵심)</b><br><b>티엘비</b>가 가장 순수·소형. 메모리 모듈 PCB 전문 = SOCAMM이 곧 매출. 영업익 34→260억으로 수혜가 실적화. <b>심텍</b>은 SOCAMM PCB 50% 목표지만 mid-cap·턴어라운드 초입. 대덕전자·코리아써키트는 기판 전반(SOCAMM 순수도↓).</div>
+    <div class="card"><b>② 테스트 — 간접 수혜</b><br><b>ISC·티에스이</b>는 모듈·칩 검사 소켓/프로브. SOCAMM 모듈이 늘면 소모품 수요↑. 다만 SOCAMM 전용이 아니라 AI 메모리 테스트 <b>전반</b>에 걸쳐 순수도는 낮다. ISC는 OPM 27% 고마진.</div>
+    <div class="card"><b>③ 참고 — 더 간접</b><br>엑시콘·유니테스트(메모리 모듈 테스트 장비), 오픈엣지테크(LPDDR IP), 엠케이전자(본딩와이어), Rambus(미국·SOCAMM2 칩셋). SOCAMM 순수도는 더 낮아 '테마 확장' 성격.</div>
+  </div>
+
+  <!-- 5 밸류 -->
+  <h2>5. ★ 밸류에이션 — 이미 기대가 반영됐다</h2>
+  <div class="warn"><b>낮아 보이는 forward PER에 속지 마세요.</b> trailing(작년 실적) 기준으로는 대부분 비쌉니다.</div>
+  <div class="tablewrap">
+  <table>
+    <thead><tr><th>종목</th><th>trailing PER<br>(시총÷2025순익, 자체)</th><th>forward PER<br>(epic)</th><th>52주 밴드(원)</th></tr></thead>
+    <tbody>
+      <tr><td>티엘비</td><td>약 36배</td><td>11.4</td><td>12,014 ~ 67,608</td></tr>
+      <tr><td>심텍</td><td>적자(n/a)</td><td>16.7</td><td>22,750 ~ 164,200</td></tr>
+      <tr><td>대덕전자</td><td>약 112배</td><td>18.7</td><td>21,250 ~ 198,000</td></tr>
+      <tr><td>코리아써키트</td><td>약 26배</td><td>10.4</td><td>11,260 ~ 148,300</td></tr>
+      <tr><td>ISC</td><td>약 54배</td><td>27.5</td><td>55,100 ~ 292,500</td></tr>
+      <tr><td>티에스이</td><td>약 63배</td><td>15.8</td><td>36,150 ~ 294,000</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="callout">
+    <b>trailing과 forward의 간극이 곧 '기대'다.</b> 예컨대 대덕전자는 작년 실적 기준 112배지만 forward 18.7배 — 즉 <b>"내년 이익이 6배 난다"는 기대가 주가에 이미 반영</b>돼 있다. <b>실적이 기대만큼 안 나오면 밸류가 무너진다.</b> 게다가 52주 밴드를 보면 <b>1년 새 주가가 수 배</b> 출렁였다(티엘비 1.2만→6.8만, 대덕전자 2.1만→19.8만). <b>전형적 중소형 테마주 변동성</b>이다.
+  </div>
+
+  <!-- 6 리스크 -->
+  <h2>6. 리스크 &amp; 확인 체크리스트</h2>
+  <div class="grid2">
+    <div class="card"><b>⚠️ 리스크</b>
+      <ul style="margin:.4em 0 0">
+        <li><b>밸류 선반영</b> — forward 기대가 크다. 실적 미스 시 급조정.</li>
+        <li><b>극심한 변동성</b> — 52주 밴드 수 배. 테마 유행에 민감.</li>
+        <li><b>퀄 통과 ≠ 대량 매출</b> — 양산·수주로 이어져야 실적화.</li>
+        <li><b>용량 삭감(cut) 재현</b> — 기판은 개수 기반이라 방어적이나, 모듈 수(8개) 축소 시 타격.</li>
+        <li><b>순수도 편차</b> — 대덕전자·ISC 등은 SOCAMM 전용이 아닌 AI 전반 수혜.</li>
+      </ul></div>
+    <div class="card"><b>✅ 분기마다 볼 것</b>
+      <ul style="margin:.4em 0 0">
+        <li><b>티엘비·심텍 SOCAMM2 기판 양산 공급·수주 공시.</b></li>
+        <li><b>분기 영업이익률</b> — 고부가 기판 믹스 개선 확인.</li>
+        <li><b>NVIDIA Vera CPU당 모듈 수(8개)·1.5TB 유지 여부.</b></li>
+        <li><b>국내 SOCAMM PCB 시장 규모</b>(’26 ~3천억) 실현 여부.</li>
+        <li>테스트군은 <b>메모리 3사 capex·모듈 테스트 물량</b>.</li>
+      </ul></div>
+  </div>
+
+  <!-- 7 결론 -->
+  <h2>7. 결론 — 중소형에서의 순위</h2>
+  <div class="callout">
+    <p><b>SOCAMM 순수도 × 소형 기준</b>으로 정리하면:</p>
+    <ul>
+      <li><b>① 티엘비</b> — 유일한 '순수 소형 대장주'(시총 0.68조). SOCAMM이 곧 매출, 이익 변곡 확인. 대신 밸류 부담·변동성 최대.</li>
+      <li><b>② 심텍</b> — SOCAMM PCB 직접(50% 목표)이나 mid-cap·턴어라운드 초입(순익 아직 적자).</li>
+      <li><b>③ 대덕전자·코리아써키트</b> — 기판 전반 수혜, SOCAMM 순수도는 중간.</li>
+      <li><b>④ ISC·티에스이</b> — 테스트 소켓·프로브, 간접 수혜(고마진이나 SOCAMM 전용 아님).</li>
+    </ul>
+    <p>→ <b>"대형주 말고 SOCAMM 순수 소형"을 찾는다면 답은 티엘비에 수렴</b>하고, <b>규모·안정성을 조금 얹으면 심텍·대덕전자</b>다. 단 <b>전부 밸류에 기대가 선반영</b>돼 있어, 투자 판단이 아니라 <b>연결고리·확인지표로 추적</b>하는 것이 이 리포트의 목적이다.</p>
+  </div>
+
+  <hr>
+  <div class="warn" style="font-size:.9rem">
+    <b>면책.</b> 투자 판단의 최종 책임은 투자자에게 있습니다. 본 문서는 개인 학습용 정리이며 매수·매도 권유가 아닙니다. 목표주가를 제시하지 않으며, 밸류·점유 추정은 유동적이고 중소형 테마주는 변동성이 극심합니다.<br>
+    <b>데이터 출처·기준일:</b> ① 실적 — DART 전자공시(6종목, 공시, 조회 2026-08-11) ② 시총·주가·52주밴드·forward PER — epic.ai(2026-08-11) ③ trailing PER — 시총÷DART 순익 자체계산 ④ SOCAMM 연결고리 — 디일렉·뉴스핌·파이낸셜뉴스·핀포인트뉴스(2026). 언론·셀사이드 추정은 사실이 아닌 '주장'입니다.<br>
+    <b>시리즈:</b> <a href="https://tryingpig.github.io/study/260731_SOCAMM_완전정복_수혜악재지도.html">① SOCAMM 완전정복(7/31)</a> · <a href="https://tryingpig.github.io/study/260811_SOCAMM2원가혁명_수혜리포트.html">② SOCAMM2 원가 혁명·대형주(8/11)</a> · ③ 본 리포트(중소형)
+  </div>
+  <p style="text-align:center;color:var(--muted);font-size:.85rem;margin-top:2em">© 2026 노력하는뚱땡이 리서치 라이브러리.</p>
+
+</div>
+</body>
+</html>

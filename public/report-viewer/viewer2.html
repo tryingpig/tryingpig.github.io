@@ -891,6 +891,41 @@
          결과 blob은 PNG라서, 기존 파이프라인(clips/<id>/<hid>.jpg)에 맞춰 JPEG로 바꿔 올린다. */
       const capApi = registry.getPlugin("capture").provides();
       const capBtn = document.getElementById("capBtn");
+
+      /* EmbedPDF 캡처 플러그인은 캡처가 끝나면 자기 미리보기 창(Screenshot Preview)을 띄운다.
+         우리는 캡처를 곧바로 vault에 올리고 모아보기에서 보여주므로 이 창은 방해만 된다.
+         끄는 설정이 없고 컨테이너가 shadow DOM(open)이라 페이지 CSS로는 닿지 않는다
+         → 그림자 안에 스타일을 넣어 가리고(깜빡임 방지), 뜬 창은 Cancel 을 눌러 정리한다
+           (그래야 미리보기가 잡고 있던 objectURL 도 해제된다). */
+      const CAP_IMG = 'img[alt="Captured PDF area"]';
+      function capShadow() {
+        const el = box.querySelector("embedpdf-container");
+        const sr = el && el.shadowRoot;
+        if (!sr) return null;
+        if (!sr.querySelector("style[data-rv-nocap]")) {
+          const st = document.createElement("style");
+          st.setAttribute("data-rv-nocap", "1");
+          st.textContent = `.fixed.inset-0.z-50:has(${CAP_IMG}){display:none !important}`;
+          sr.appendChild(st);
+        }
+        return sr;
+      }
+      function dismissCapturePreview() {
+        const sr = capShadow();
+        const img = sr && sr.querySelector(CAP_IMG);
+        if (!img) return;
+        // 클래스 이름이 바뀌어도 동작하게, 이미지에서 위로 올라가 '떠 있는' 조상을 찾는다
+        let modal = img;
+        while (modal && modal !== sr && getComputedStyle(modal).position !== "fixed") {
+          modal = modal.parentElement;
+        }
+        if (modal && modal !== sr) modal.style.display = "none";
+        const scope = (modal && modal !== sr) ? modal : sr;
+        const btn = [...scope.querySelectorAll("button")]
+          .find((b) => (b.textContent || "").trim() === "Cancel") || scope.querySelector("button");
+        if (btn) btn.click();
+      }
+      capShadow();               // 첫 캡처 전에 미리 넣어 둔다(한 번도 안 보이게)
       capBtn.onclick = () => {
         capApi.toggleMarqueeCapture();
         const on = capApi.isMarqueeCaptureActive && capApi.isMarqueeCaptureActive();
@@ -914,6 +949,9 @@
       });
 
       capApi.onCaptureArea(async (ev) => {
+        // 플러그인 미리보기 창은 우리 핸들러와 순서가 정해져 있지 않다 — 지금과 잠시 뒤 두 번 정리
+        dismissCapturePreview();
+        setTimeout(dismissCapturePreview, 250);
         try {
           const pi = ev.pageIndex, size = pageSizes[pi];
           if (!size || !ev.blob) return;

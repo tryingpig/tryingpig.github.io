@@ -428,8 +428,14 @@
 
     /* ═══ 온디맨드 LLM 본문 재추출 (v1과 같은 큐를 쓴다) ═══ */
     const LLM_REQ = "contents/index/llm_requests.json";
+    /* 글자 레이어가 없는 통짜 이미지 PDF.
+       LLM 정리는 PDF에서 뽑은 '텍스트'를 다듬는 것이라 여기선 뽑을 원문이 없다 —
+       눌러봐야 빈 결과만 나오므로 아예 막고 이유를 알린다. */
+    const isImageOnly = () => REPORT && REPORT.has_text_layer === false;
+
     function renderLlmBtn() {
       const b = document.getElementById("llmBtn");
+      if (isImageOnly()) { setBtnLabel(b, "🚫", "이미지 PDF"); b.disabled = true; b.title = "글자 레이어가 없는 이미지 PDF라 본문 추출이 안 됩니다"; return; }
       if (llmQueued) { setBtnLabel(b, "⏳", "처리 대기중"); b.disabled = true; }
       else if (llmEngine === "llm") { setBtnLabel(b, "✅", "LLM 본문"); b.disabled = false; }
       else { setBtnLabel(b, "🤖", "LLM 정리"); b.disabled = false; }
@@ -756,6 +762,12 @@
 
     document.getElementById("modeBtn").onclick = () => setMode(mode === "pdf" ? "reading" : "pdf");
     document.getElementById("llmBtn").onclick = async () => {
+      if (isImageOnly()) {
+        // 그림으로 읽어둔 본문이 이미 있는 경우와, 본문 자체가 없는 경우를 구분해 알린다
+        toast(READTEXT ? "이미지 PDF라 LLM 정리는 안 됩니다 — 본문은 그림으로 읽어둔 것입니다"
+                       : "이미지 PDF라 본문 추출이 안 됩니다 — PDF 모드로 보세요");
+        return;
+      }
       if (llmQueued) return;
       if (llmEngine === "llm" && !confirm("이미 LLM으로 정리된 본문이에요. 다시 요청할까요?")) return;
       const b = document.getElementById("llmBtn"); b.disabled = true;

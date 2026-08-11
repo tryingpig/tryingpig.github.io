@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI 트래픽 수혜 ③ 에이전트 커머스·결제 — AI가 대신 결제하는 시대</title>
+<link rel="stylesheet" href="/assets/report.css">
+<script src="/assets/report.js" defer></script>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<script>
+  (function () {
+    try {
+      var t = localStorage.getItem('theme');
+      if (!t) t = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      if (t === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+    } catch (e) {}
+  })();
+</script>
+</head>
+<body data-topic="invest">
+<div class="topbar">
+  <div class="topbar-in">
+    <a class="back" href="/#study">학습공간</a>
+    <span class="crumb">에이전트 커머스·결제</span>
+    <button class="theme-toggle" type="button" aria-label="다크/라이트 전환" title="다크/라이트 전환">
+      <svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      <svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+    </button>
+  </div>
+</div>
+<div class="wrap">
+
+  <span class="kicker">AI 트래픽 수혜 3부작 · ③ 에이전트 커머스·결제</span>
+  <h1>AI 트래픽 수혜 ③ 에이전트 커머스·결제<br>— AI가 대신 결제하는 시대</h1>
+  <p class="sub">작성일 2026-08-12 · 개인 리서치 노트 · 에이전트 결제 이니셔티브(웹)</p>
+
+  <div class="warn">
+    <b>⚠️ 투자 권유가 아닙니다.</b> 본 문서는 <b>언론·기업 발표</b>를 정리·해석한 개인 학습 노트이며 매수·매도 추천이 아닙니다. <b>에이전트 커머스는 2026년 현재 초기·표준 경쟁 단계</b>로 승자가 불확실하고, 카드망에는 수혜와 <b>중개 탈락(disintermediation) 위험이 공존</b>합니다. 최종 판단의 책임은 투자자에게 있습니다.
+  </div>
+
+  <div class="note">
+    <b>3부작 마지막 편.</b> "AI가 트래픽을 장악한다"의 최상위 계층 — <b>AI 에이전트가 사람 대신 '행동(구매·거래)'하며 생기는 신경제</b>를 다룹니다. → ① <a href="https://tryingpig.github.io/study/260812_AI광통신네트워크_수혜리포트.html">광통신·네트워크</a> · ② <a href="https://tryingpig.github.io/study/260812_클라우드플레어_기업분석.html">클라우드플레어</a>
+  </div>
+
+  <!-- 1 -->
+  <h2>1. 스냅샷 — 무슨 일이 벌어지나</h2>
+  <div class="kpi">
+    <div class="box"><div class="num">ACP</div><div class="lab">OpenAI Instant Checkout + Stripe 프로토콜</div></div>
+    <div class="box"><div class="num">Agent Pay</div><div class="lab">Mastercard(’25.4) · Visa Trusted Agent(’25.10)</div></div>
+    <div class="box"><div class="num">30% / +25%</div><div class="lab">Visa 부가서비스(VAS) 매출 비중·성장</div></div>
+    <div class="box"><div class="num">ERC-8004</div><div class="lab">온체인 에이전트 신원 표준(’26.1 메인넷)</div></div>
+  </div>
+  <div class="callout">
+    <b>한 줄 결론.</b> AI 에이전트가 사람 대신 검색·비교·<b>구매</b>를 하면, "누가 사는지(신원)·어떻게 승인·정산하는지"의 <b>결제 인프라가 통째로 재편</b>된다. 가장 확실한 수혜는 <b>이미 레일을 쥔 카드망(Visa·Mastercard)</b>이다 — 에이전트 결제도 결국 이들 위를 지나기 때문. 단 <b>스테이블코인·계좌이체 등으로 우회</b>되면 중개 탈락 위험. 신생 승부처는 <b>에이전트 신원·사기방지·오케스트레이션</b>이며, 여긴 비상장 스타트업이 다수라 <b>공개시장 순수 플레이가 적다</b>.
+  </div>
+
+  <!-- 2 스택 -->
+  <h2>2. 에이전트 커머스 4계층 — 누가 무엇을 짓나</h2>
+  <div class="tablewrap">
+  <table>
+    <thead><tr><th>계층</th><th>역할</th><th>대표 플레이어(2026)</th><th>상장 여부</th></tr></thead>
+    <tbody>
+      <tr><td><b>① AI 플랫폼</b></td><td>에이전트를 호스팅·구매 개시</td><td>OpenAI(Instant Checkout)·구글·앤스로픽</td><td>대체로 비상장</td></tr>
+      <tr><td><b>② 결제망(레일)</b></td><td>인증·승인·정산</td><td><b>Visa</b>(Trusted Agent Protocol)·<b>Mastercard</b>(Agent Pay)</td><td><b>상장(V·MA)</b></td></tr>
+      <tr><td><b>③ 커머스·체크아웃</b></td><td>에이전트 호환 스토어프론트</td><td><b>Stripe</b>(ACP, +Coach·Etsy 등)·Shopify</td><td>Stripe 비상장 / Shopify 상장</td></tr>
+      <tr><td><b>④ 신원·인프라</b></td><td>에이전트 신원·사기·컴플라이언스</td><td>Coinbase(Agentic Wallets)·Basis Theory·Nekuda·Skyfire·ERC-8004</td><td>Coinbase 상장 / 대다수 비상장</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p class="note"><b>투자 관점의 핵심:</b> ①·③·④의 순수 플레이는 <b>비상장(OpenAI·Stripe·Basis Theory 등)</b>이 많다. <b>공개시장에서 잡을 수 있는 가장 큰 수혜는 ②결제망(Visa·Mastercard)</b>과, ④의 <b>Coinbase</b> 정도다.</p>
+
+  <!-- 3 카드망 -->
+  <h2>3. ★ 핵심 질문 — 카드망엔 수혜인가 위협인가</h2>
+  <p>에이전트 커머스의 최대 쟁점은 <b>"AI가 결제를 대신하면 Visa·Mastercard가 웃나 우나"</b>이다. 양쪽 논리를 다 본다.</p>
+  <div class="grid2">
+    <div class="card"><b>✅ 수혜 논리(Bull)</b>
+      <ul style="margin:.4em 0 0">
+        <li>에이전트 거래도 <b>결국 카드 레일 위</b>에서 승인·정산 → <b>결제량(volume) 증가</b>.</li>
+        <li>에이전트용 <b>신원·인증(KYA, Trusted Agent)·사기방지</b>가 새 <b>부가서비스(VAS)</b> 매출. Visa는 이미 <b>VAS가 순매출의 30%, +25% 성장</b>.</li>
+        <li>Visa/Mastercard가 <b>표준(프로토콜)을 선점</b>해 관문 유지.</li>
+      </ul></div>
+    <div class="card"><b>⚠️ 위협 논리(Bear)</b>
+      <ul style="margin:.4em 0 0">
+        <li>에이전트가 <b>더 싼 레일(스테이블코인·계좌이체·A2A)로 우회</b> → 중개 탈락.</li>
+        <li>ERC-8004·Coinbase 지갑 등 <b>온체인 결제</b>가 카드망을 건너뜀.</li>
+        <li>대량·반복 소액결제에서 <b>카드 수수료 모델 압박</b>.</li>
+      </ul></div>
+  </div>
+  <figure>
+    <div class="svgbox">
+      <svg viewBox="0 0 460 180" role="img" aria-label="Visa 부가서비스 비중">
+        <text x="12" y="16" fill="var(--ink)" font-size="13" font-weight="700">Visa 순매출 구성 — 부가서비스(VAS) 30%, +25% 성장</text>
+        <line x1="30" y1="150" x2="430" y2="150" stroke="var(--line)" stroke-width="1"></line>
+        <rect x="70" y="40" width="110" height="110" rx="3" fill="#9aa0a6"></rect><text x="125" y="34" fill="var(--ink)" font-size="12" text-anchor="middle" font-weight="700">70%</text><text x="125" y="167" fill="var(--muted)" font-size="10" text-anchor="middle">결제·데이터 처리</text>
+        <rect x="230" y="117" width="110" height="33" rx="3" fill="var(--accent)"></rect><text x="285" y="111" fill="var(--ink)" font-size="12" text-anchor="middle" font-weight="700">30%</text><text x="285" y="167" fill="var(--accent)" font-size="10" text-anchor="middle">부가서비스(+25%)</text>
+      </svg>
+    </div>
+    <figcaption>그림 1. 에이전트 인증·사기방지·데이터가 VAS로 흡수되면 카드망은 '레일'을 넘어 '신뢰 계층'으로 확장. 출처: Visa 실적 보도(2026).</figcaption>
+  </figure>
+  <div class="callout"><b>균형 판단.</b> 단기~중기는 <b>수혜 우위</b>다 — 에이전트 거래가 아직 <b>저위험·반복 구매부터</b> 시작하고, 신뢰·정산 인프라를 쥔 카드망이 표준을 선점하고 있다. <b>위협(우회)은 온체인·스테이블코인 결제가 대중화되는 장기 시나리오</b>다. 즉 <b>Visa·Mastercard는 "AI 결제의 디폴트 레일"로서 방어적 수혜, 동시에 우회 리스크를 안은 양날</b>이다.</p></div>
+
+  <!-- 4 어디에 -->
+  <h2>4. 공개시장에서 잡을 수 있는 수혜</h2>
+  <div class="grid3">
+    <div class="card"><b>레일(가장 직접·안전)</b><br><b>Visa·Mastercard</b> — 에이전트 결제의 디폴트 레일 + VAS 확장. 대형·현금창출 우량주라 "테마 베팅"보다 <b>구조적 수혜</b> 성격.</div>
+    <div class="card"><b>온체인·지갑</b><br><b>Coinbase</b> — Agentic Wallets(에이전트 전용 지갑), 스테이블코인 정산. 카드망 <b>우회 시나리오의 수혜</b>지만 변동성 큼.</div>
+    <div class="card"><b>커머스 플랫폼</b><br>Shopify(에이전트 체크아웃 대응), 가맹점. Stripe·OpenAI는 <b>비상장</b>이라 직접 투자 불가.</div>
+  </div>
+  <p class="note"><b>국내 연결고리(약함):</b> 카카오페이·네이버파이낸셜·토스(비상장) 등이 에이전트 커머스 대응 초기 단계이나, <b>글로벌 표준(ACP·Trusted Agent)에 종속</b>되고 순수 수혜 강도가 약하다. 이 테마는 <b>미국 대형 결제·커머스 중심</b>으로 보는 것이 정확하다.</p>
+
+  <!-- 5 리스크 -->
+  <h2>5. 리스크 &amp; 확인 체크리스트</h2>
+  <div class="grid2">
+    <div class="card"><b>⚠️ 리스크</b>
+      <ul style="margin:.4em 0 0">
+        <li><b>초기·표준 전쟁</b> — ACP vs 각사 프로토콜, 승자 불확실.</li>
+        <li><b>카드망 중개 탈락</b> — 스테이블코인·A2A 우회(장기).</li>
+        <li><b>사기·신뢰</b> — 에이전트 오결제·프롬프트 인젝션·책임 소재.</li>
+        <li><b>어트리뷰션 붕괴</b> — 에이전트가 사면 광고·추천 귀속이 깨짐(미디어·광고 피해).</li>
+        <li><b>규제</b> — 에이전트 결제 승인·소비자 보호 프레임 미비.</li>
+      </ul></div>
+    <div class="card"><b>✅ 볼 것</b>
+      <ul style="margin:.4em 0 0">
+        <li>Visa/Mastercard <b>에이전트 결제량·VAS 매출</b> 공시 언급.</li>
+        <li>ACP·Trusted Agent <b>가맹점·거래액</b> 확산.</li>
+        <li>스테이블코인 결제 비중(카드망 우회 신호).</li>
+        <li>ERC-8004 등 <b>에이전트 신원 표준</b> 채택 속도.</li>
+      </ul></div>
+  </div>
+
+  <!-- 6 결론 -->
+  <h2>6. 결론 — 3부작 종합</h2>
+  <div class="callout">
+    <p><b>이 편만의 결론:</b> 에이전트 커머스의 <b>공개시장 최대 수혜 = 결제 레일(Visa·Mastercard)</b>, 우회 시나리오 수혜 = Coinbase. 순수 신생 플레이(OpenAI·Stripe·신원 스타트업)는 <b>비상장이라 직접 투자 난망</b>. 초기 테마라 <b>서사 &gt; 실적</b> 구간이다.</p>
+    <p><b>3부작 전체 종합:</b> "AI가 트래픽을 장악한다"의 수혜는 계층별로 —
+    <b>①광통신(전송): 글로벌 대형이 확실, 국내는 적자 고위험</b> ·
+    <b>②클라우드플레어(관문): 서사 정중앙이나 밸류가 완벽 가정</b> ·
+    <b>③에이전트 커머스(행동): 카드망 방어적 수혜, 순수 플레이는 비상장</b>.
+    공통 교훈은 <b>"트래픽 양 ≠ 매출"</b> — 어느 계층이든 <b>과금 가능한 트래픽·거래로 전환되는지</b>를 실적으로 확인해야 한다.</p>
+  </div>
+
+  <hr>
+  <div class="warn" style="font-size:.9rem">
+    <b>면책.</b> 투자 판단의 최종 책임은 투자자에게 있습니다. 본 문서는 개인 학습용 정리이며 매수·매도 권유가 아닙니다. 에이전트 커머스는 초기 단계로 승자·표준이 미정이며 목표주가를 제시하지 않습니다.<br>
+    <b>데이터 출처·기준일:</b> ① 에이전트 결제 이니셔티브(Visa Trusted Agent·Mastercard Agent Pay·Stripe ACP·OpenAI Instant Checkout·Coinbase Agentic Wallets·ERC-8004) — 언론(PaySpace·Payments Dive·American Banker 등, 2026) ② Visa VAS 30%·+25% — Visa 실적 보도(2026). 언론·기업 발표는 사실이 아닌 <b>주장</b>이며, 시장 규모·승자 전망은 검증 불가한 추정입니다.<br>
+    <b>3부작:</b> ① <a href="https://tryingpig.github.io/study/260812_AI광통신네트워크_수혜리포트.html">광통신·네트워크</a> · ② <a href="https://tryingpig.github.io/study/260812_클라우드플레어_기업분석.html">클라우드플레어</a> · ③ 에이전트 커머스·결제(본편)
+  </div>
+  <p style="text-align:center;color:var(--muted);font-size:.85rem;margin-top:2em">© 2026 노력하는뚱땡이 리서치 라이브러리.</p>
+
+</div>
+</body>
+</html>

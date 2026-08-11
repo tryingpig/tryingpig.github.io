@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>클라우드플레어(NET) 기업분석 — AI 트래픽의 '관문'과 pay-per-crawl</title>
+<link rel="stylesheet" href="/assets/report.css">
+<script src="/assets/report.js" defer></script>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<script>
+  (function () {
+    try {
+      var t = localStorage.getItem('theme');
+      if (!t) t = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      if (t === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+    } catch (e) {}
+  })();
+</script>
+</head>
+<body data-topic="invest">
+<div class="topbar">
+  <div class="topbar-in">
+    <a class="back" href="/#study">학습공간</a>
+    <span class="crumb">클라우드플레어 기업분석</span>
+    <button class="theme-toggle" type="button" aria-label="다크/라이트 전환" title="다크/라이트 전환">
+      <svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      <svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+    </button>
+  </div>
+</div>
+<div class="wrap">
+
+  <span class="kicker">AI 트래픽 수혜 3부작 · ② 기업분석 — 클라우드플레어(NET)</span>
+  <h1>클라우드플레어(NET) 기업분석<br>— AI 트래픽의 '관문'과 pay-per-crawl</h1>
+  <p class="sub">작성일 2026-08-12 · 주가 기준 2026-08-10 종가 · 재무 valley.town(SEC)/컨센서스 · 개인 리서치 노트</p>
+
+  <div class="warn">
+    <b>⚠️ 투자 권유가 아닙니다.</b> 매수·매도 추천이 아니라 <b>SEC 공시·컨센서스·언론</b>을 정리·검증한 개인 학습 노트입니다. <b>Cloudflare는 P/E 244배·P/S 약 38배의 극단적 고밸류 성장주</b>로, 작은 성장률·멀티플 변화에도 주가가 크게 흔들립니다(§6·§7). 최종 판단의 책임은 투자자에게 있습니다.
+  </div>
+
+  <div class="note">
+    <b>3부작 중 ②편.</b> "AI가 인터넷 트래픽을 장악한다"의 수혜를 ①광통신 ②<b>클라우드플레어(본편)</b> ③에이전트 커머스로 나눠 봅니다. 이 편은 <b>트래픽이 지나가는 '관문'</b>에서 이를 <b>매출로 전환</b>하려는 단일 기업을 깊이 봅니다. → <a href="https://tryingpig.github.io/study/260812_AI광통신네트워크_수혜리포트.html">① 광통신·네트워크</a>
+  </div>
+
+  <!-- 1 스냅샷 -->
+  <h2>1. 스냅샷</h2>
+  <div class="kpi">
+    <div class="box"><div class="num">$310.59</div><div class="lab">종가(2026-08-10) · 52주 고점의 91%</div></div>
+    <div class="box"><div class="num">$110.8B</div><div class="lab">시총 · 주식수 322.6M · 순현금 ~$0.9B</div></div>
+    <div class="box"><div class="num">244배</div><div class="lab">Fwd P/E(FY26E) · P/S 약 38배 (밸리)</div></div>
+    <div class="box"><div class="num">+36%</div><div class="lab">Q2 2026 매출 성장(YoY, 재가속)</div></div>
+  </div>
+  <div class="callout">
+    <b>한 줄 결론(Base).</b> Cloudflare는 <b>"AI 트래픽 폭증 → 봇 관리·pay-per-crawl로 수익화"</b>라는 서사의 정중앙에 있고, 매출이 <b>둔화하다 재가속(+29%→+32%E)</b>하며 이야기를 실적으로 뒷받침한다. <b>다만 밸류가 완벽을 가정한 수준</b>(P/S 38배)이라, 성장 스토리는 매력적이되 <b>현재가에서의 기대수익은 비대칭(하방 위험 &gt; 상방 여력)</b>이다. Base 목표 <b>약 $287</b>(현재가 소폭 하회) — 이 종목의 관건은 '성장이 맞나'가 아니라 <b>'멀티플을 지킬 만큼 빠르냐'</b>다.
+  </div>
+  <figure>
+    <div class="svgbox">
+      <svg viewBox="0 0 540 120" role="img" aria-label="밸류에이션 시나리오 레인지">
+        <text x="12" y="16" fill="var(--ink)" font-size="12.5" font-weight="700">목표주가 시나리오 (P/S 기반, FY26E 매출 $2,864M)</text>
+        <line x1="60" y1="70" x2="500" y2="70" stroke="var(--line)" stroke-width="1.2"></line>
+        <line x1="144.5" y1="60" x2="457.8" y2="60" stroke="var(--accent)" stroke-width="6" stroke-linecap="round" opacity="0.5"></line>
+        <circle cx="144.5" cy="60" r="5" fill="#d9534f"></circle><text x="144.5" y="46" fill="var(--ink)" font-size="10" text-anchor="middle">Bear $198</text>
+        <circle cx="301.1" cy="60" r="5" fill="var(--accent)"></circle><text x="301.1" y="46" fill="var(--ink)" font-size="10" text-anchor="middle" font-weight="700">Base $287</text>
+        <circle cx="457.8" cy="60" r="5" fill="#7bc47f"></circle><text x="457.8" y="46" fill="var(--ink)" font-size="10" text-anchor="middle">Bull $376</text>
+        <line x1="342.6" y1="52" x2="342.6" y2="88" stroke="var(--muted)" stroke-width="1.5" stroke-dasharray="3 3"></line>
+        <text x="342.6" y="100" fill="var(--muted)" font-size="9.5" text-anchor="middle">현재가 $310.59</text>
+      </svg>
+    </div>
+    <figcaption>그림 1. Base가 현재가를 소폭 하회 — "적정~약간 고평가" 구간. Bear −36% / Bull +21%로 <b>하방이 더 크다</b>. 산출근거 §6.</figcaption>
+  </figure>
+
+  <!-- 2 투자 포인트 -->
+  <h2>2. 투자 포인트</h2>
+  <div class="card">
+    <p><b>① 트래픽의 '관문' 포지션.</b> Cloudflare 네트워크에서 <b>2026년 5~6월 비인간(봇) 트래픽이 52% 안팎으로 사람을 추월</b>했고, agentic AI 트래픽은 Q2에 <b>전분기 대비 폭증</b>했다(보도).<br>→ AI가 만드는 트래픽이 늘수록 <b>그 트래픽을 검사·차단·가속하는 관문</b>의 처리량이 늘어난다. Cloudflare는 CDN·보안·엣지를 한 데 묶어 이 관문을 판다.</p>
+  </div>
+  <div class="card">
+    <p><b>② pay-per-crawl → "Pay Per Use" 신수익 모델.</b> 2026-07-01 AI 크롤러 과금 정책을 공개했고, <b>2026-09-15부터 신규 도메인의 광고 기반 페이지에서 AI 학습·에이전트 봇을 기본 차단</b>하고 사용료를 물린다(보도).<br>→ "콘텐츠를 크롤당할 때"가 아니라 <b>"콘텐츠가 가치를 만들 때" 과금</b>으로 진화 중. 성공하면 Cloudflare가 <b>퍼블리셔와 AI 기업 사이의 통행료 징수자</b>가 된다 — 단, 아직 <b>매출 기여는 미미·미검증</b>(§7).</p>
+  </div>
+  <div class="card">
+    <p><b>③ 성장 재가속 + 대형고객.</b> 매출 성장률이 2024년 +28.8%까지 둔화했다가 <b>2025년 +29.9%, 2026E +32.1%로 방향을 틀었다</b>(밸리 컨센). Q2는 <b>대형고객·Workers(개발자 플랫폼)·agentic</b>이 성장을 견인했다(보도).<br>→ 성숙 국면에서의 <b>재가속</b>은 멀티플을 정당화하는 핵심 근거다. 이게 꺾이면 밸류가 무너진다(§3).</p>
+  </div>
+  <div class="warn">
+    <p><b>④ (역설) 밸류가 이미 완벽을 가정.</b> Fwd P/E 244배·EV/Sales 약 38배는 보안 피어(Zscaler ~13x·Fortinet ~10x)의 <b>2~3배</b>다(§9).<br>→ 성장·서사가 아무리 좋아도 <b>가격에 이미 반영</b>돼 있다. 이 리포트가 Base를 현재가 아래로 두는 이유다.</p>
+  </div>
+
+  <!-- 3 주가 팩터 -->
+  <h2>3. ★ 이 종목의 주가를 움직이는 것 — '매출 성장률의 방향'</h2>
+  <p>Cloudflare 같은 초고멀티플 성장주의 주가 팩터는 <b>절대 이익이 아니라 '성장률의 2차 미분(가속/감속)'과 순확장률(NRR)·대형고객 순증</b>이다. P/E 244배에서는 EPS 몇 센트가 아니라 <b>"성장이 재가속하고 있다는 증거"</b>가 멀티플을 지킨다.</p>
+  <div class="tablewrap">
+  <table>
+    <caption style="text-align:left;color:var(--muted);font-size:.85rem;padding:6px 0">표 1. 최근 실적 이벤트의 주가 반응</caption>
+    <thead><tr><th>발표</th><th>내용</th><th>주가 반응</th></tr></thead>
+    <tbody>
+      <tr><td>2026-08-06<br>Q2 2026</td><td>매출 $696.1M(+36% YoY, <b>재가속</b>) · 컨센 상회 · agentic/Workers/대형고객 강조</td><td><b>+8%, 사상 최고</b>(보도)</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p class="note"><b>해석·한계.</b> 이번 세션에서 <b>확증된 이벤트는 Q2 2026 한 건</b>이다(비트+재가속 → 신고가). 방향은 명확하다 — <b>Cloudflare는 "성장률이 다시 오르고 있다"에 반응</b>한다. 다만 완전한 이벤트 스터디(3~4분기 반응)를 이 문서에서 확증하진 못했으므로, 팩터는 <b>"성장 재가속 + 대형고객 순증"으로 특정하되 표는 1건으로 제한</b>한다. → 그래서 §8 체크리스트는 <b>성장률·대형고객·순확장률</b>을 숫자로 본다.</p>
+
+  <h3>3-1. 산업 → 회사 → 경쟁</h3>
+  <div class="tablewrap">
+  <table>
+    <thead><tr><th>구분</th><th>지표</th><th>최근</th><th>의미</th></tr></thead>
+    <tbody>
+      <tr><td>산업(수요)</td><td>비인간(봇) 트래픽 비중</td><td>2026-05 사람 추월, 6월 크롤 52%</td><td>관문 처리량의 근본 동인</td></tr>
+      <tr><td>회사</td><td>매출 성장률</td><td>+29.9%(’25)→+32.1%(’26E)</td><td>재가속 = 멀티플 근거</td></tr>
+      <tr><td>경쟁</td><td>대체 관문</td><td>AWS·Fastly·Akamai / 하이퍼스케일러 내재화</td><td>가격·번들 경쟁 압력</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p class="note">⚠️ <b>선행성:</b> "봇 트래픽 비중"은 수요의 방향은 보여주나 <b>매출과의 시차·과금 전환율이 검증되지 않았다.</b> 트래픽 양이 곧 매출이 아니므로(§7), 선행지표로 단정하지 말고 분기 매출로 확인한다.</p>
+
+  <!-- 4 비즈니스 모델 -->
+  <h2>4. 비즈니스 모델 — 무엇을 파나</h2>
+  <p>Cloudflare는 전 세계 엣지 네트워크 위에서 <b>①애플리케이션 서비스(CDN·보안·봇관리·DDoS·WAF) ②네트워크/제로트러스트 ③개발자 플랫폼(Workers 서버리스)</b>를 SaaS 구독으로 판다. 단일 리포트 세그먼트로 공시하며, 성장의 질은 <b>고객 코호트</b>로 드러난다 — <b>연 $100k 이상 대형고객 수</b>와 <b>순확장률(NRR)</b>이 핵심 KPI다.</p>
+  <div class="grid2">
+    <div class="card"><b>수익 공식</b><br>매출 ≈ (고객 수) × (고객당 ARR). 성장은 ⓐ 신규 대형고객 ⓑ 기존 고객 업셀(NRR)에서 나온다. <b>Workers·AI Gateway·pay-per-crawl</b>이 고객당 ARR을 올리는 신규 축.</div>
+    <div class="card"><b>AI 트래픽과의 연결</b><br>봇/에이전트 트래픽↑ → ①보안·봇관리 수요 ②Workers에서 AI 추론 실행 ③pay-per-crawl 과금. 최근 출시한 <b>Cloudflare OS·AI Gateway·Wallets·Kitesurf(에이전트용 브라우저)</b>가 'agentic 관문'을 겨냥.</div>
+  </div>
+
+  <!-- 5 실적 -->
+  <h2>5. 실적 — 매출 추이와 최근 분기</h2>
+  <figure>
+    <div class="svgbox">
+      <svg viewBox="0 0 560 220" role="img" aria-label="Cloudflare 연매출 추이">
+        <text x="12" y="16" fill="var(--ink)" font-size="13" font-weight="700">연매출 (백만$) — 둔화 후 재가속, 성장률 라벨</text>
+        <line x1="30" y1="185" x2="520" y2="185" stroke="var(--line)" stroke-width="1"></line>
+        <rect x="41" y="152.2" width="58" height="32.8" rx="3" fill="var(--accent)"></rect><text x="70" y="147" fill="var(--ink)" font-size="9" text-anchor="middle">656</text><text x="70" y="200" fill="var(--muted)" font-size="9" text-anchor="middle">’21 +52%</text>
+        <rect x="124" y="136.2" width="58" height="48.8" rx="3" fill="var(--accent)"></rect><text x="153" y="131" fill="var(--ink)" font-size="9" text-anchor="middle">975</text><text x="153" y="200" fill="var(--muted)" font-size="9" text-anchor="middle">’22 +49%</text>
+        <rect x="207" y="120" width="58" height="65" rx="3" fill="var(--accent)"></rect><text x="236" y="115" fill="var(--ink)" font-size="9" text-anchor="middle">1,300</text><text x="236" y="200" fill="var(--muted)" font-size="9" text-anchor="middle">’23 +33%</text>
+        <rect x="290" y="101.5" width="58" height="83.5" rx="3" fill="var(--accent)"></rect><text x="319" y="96" fill="var(--ink)" font-size="9" text-anchor="middle">1,670</text><text x="319" y="200" fill="var(--muted)" font-size="9" text-anchor="middle">’24 +29%</text>
+        <rect x="373" y="76.6" width="58" height="108.4" rx="3" fill="var(--accent)"></rect><text x="402" y="71" fill="var(--ink)" font-size="9" text-anchor="middle">2,168</text><text x="402" y="200" fill="var(--muted)" font-size="9" text-anchor="middle">’25 +30%</text>
+        <rect x="456" y="41.8" width="58" height="143.2" rx="3" fill="none" stroke="var(--accent)" stroke-width="2" stroke-dasharray="4 3"></rect><text x="485" y="36" fill="var(--ink)" font-size="9" text-anchor="middle">2,864</text><text x="485" y="200" fill="var(--muted)" font-size="9" text-anchor="middle">’26E +32%</text>
+      </svg>
+    </div>
+    <figcaption>그림 2. 성장률이 ’24 +28.8%까지 둔화했다가 ’25~’26E 재가속. 점선=컨센 추정(E). 출처: 매출 이력(WallStreetZen/stockanalysis), ’26E(밸리 컨센).</figcaption>
+  </figure>
+  <div class="tablewrap">
+  <table>
+    <caption style="text-align:left;color:var(--muted);font-size:.85rem;padding:6px 0">표 2. Q2 2026 실적 요약</caption>
+    <thead><tr><th>항목</th><th>값</th><th>비고</th></tr></thead>
+    <tbody>
+      <tr><td>매출</td><td>$696.1M</td><td>+36% YoY, 컨센 상회(보도)</td></tr>
+      <tr><td>영업이익(non-GAAP)</td><td>$96.1M</td><td>영업이익률 13.8%(GAAP)/14%(non-GAAP)</td></tr>
+      <tr><td>FY2026 가이던스</td><td>매출 $2.864~2.870B</td><td>+32%, 희석 EPS $1.25~1.26(보도)</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <div class="warn" style="font-size:.92rem"><b>영업외·GAAP 주의:</b> 구조조정으로 <b>GAAP 손실이 확대</b>됐고 이익 지표는 <b>non-GAAP 기준</b>이다. 주식보상비(SBC)가 큰 성장주 특성상 GAAP·non-GAAP 격차와 <b>희석(주식수 증가)</b>을 함께 봐야 한다.</div>
+
+  <!-- 6 밸류에이션 -->
+  <h2>6. 밸류에이션 — PSR/EV-Sales 기준</h2>
+  <p><b>방법론 선언.</b> Cloudflare는 GAAP 이익이 미미(P/E 244배)해 <b>EPS 배수가 무의미</b>하다. 셀사이드도 <b>EV/Sales(P/S)</b>로 평가한다 → <b>주 방법론 = FY2026E 매출($2,864M, 밸리 컨센)에 EV/Sales 배수</b>. 아래는 <b>예시적 시나리오</b>이며, 순현금 약 $0.9B·주식수 322.62M 기준.</p>
+  <div class="tablewrap">
+  <table>
+    <thead><tr><th>시나리오</th><th>EV/Sales</th><th>함의 EV</th><th>목표주가</th><th>상승여력</th><th>근거</th></tr></thead>
+    <tbody>
+      <tr><td><b>Bear</b></td><td>22배</td><td>$63.0B</td><td><b>$198</b></td><td>−36%</td><td>성장 둔화 우려 → 멀티플 급수축(그래도 피어 대비 프리미엄)</td></tr>
+      <tr><td><b>Base</b></td><td>32배</td><td>$91.6B</td><td><b>$287</b></td><td>−8%</td><td>재가속 지속하나 성숙화로 멀티플 소폭 하향</td></tr>
+      <tr><td><b>Bull</b></td><td>42배</td><td>$120.3B</td><td><b>$376</b></td><td>+21%</td><td>agentic·pay-per-crawl로 멀티플 유지·확장</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p class="note"><b>대안 방법론 병기(EPS).</b> FY2026E EPS $1.27(밸리 컨센)에 P/E 150/200/260배를 대입하면 <b>약 $190 / $254 / $330</b>으로, P/S 기준과 대체로 같은 구간(하방 −38%~상방 +6%)을 가리킨다. <b>두 방법 모두 "현재가는 완벽을 가정한 수준"</b>이라는 결론에 수렴한다.</p>
+  <div class="warn" style="font-size:.92rem">이 목표가들은 <b>멀티플 가정에 극도로 민감</b>하다(매출 1%p·배수 2x 변화가 목표가를 수십% 흔든다). 정밀한 목표가가 아니라 <b>비대칭(하방&gt;상방) 판단의 근거</b >로만 읽어야 한다.</div>
+
+  <!-- 7 리스크 -->
+  <h2>7. 리스크</h2>
+  <div class="grid2">
+    <div class="card"><b>⚠️ 핵심 리스크</b>
+      <ul style="margin:.4em 0 0">
+        <li><b>밸류 급수축</b>(정량): P/S 38→22배면 −36%. 성장주 멀티플은 금리·성장 둔화에 민감.</li>
+        <li><b>성장 재가속 좌초</b>: +32%E가 다시 20%대로 꺾이면 멀티플 근거 소멸.</li>
+        <li><b>pay-per-crawl 미실현</b>(정황→리스크): 신수익 모델이 <b>매출 기여 미검증</b>. AI 기업·퍼블리셔·규제(구글 CMA 반발 등) 변수로 <b>표준·과금이 정착 못 할 위험</b>.</li>
+        <li><b>경쟁·번들</b>: AWS CloudFront·Fastly·Akamai + 하이퍼스케일러 내재화가 가격 압박.</li>
+        <li><b>희석·GAAP 손실</b>: SBC로 주식수 증가·GAAP 적자 지속.</li>
+      </ul></div>
+    <div class="card"><b>Bear가 현실화되는 트리거</b>
+      <ul style="margin:.4em 0 0">
+        <li>분기 매출 성장률 <b>&lt;28%</b>로 둔화</li>
+        <li>대형고객 순증 둔화 / NRR 하락</li>
+        <li>pay-per-crawl 관련 <b>구체적 매출 언급 부재</b> 지속</li>
+        <li>금리·성장주 멀티플 리레이팅</li>
+      </ul></div>
+  </div>
+
+  <!-- 8 체크리스트 -->
+  <h2>8. 다음 분기 체크리스트 (숫자로 판정)</h2>
+  <div class="card">
+    <ul>
+      <li><b>[분기] 매출 성장률 ≥ 32%</b> 유지 — 미달 시 재가속 서사 훼손(Base→Bear).</li>
+      <li><b>[분기] 대형고객(≥$100k ARR) 순증</b>이 전분기 이상.</li>
+      <li><b>[분기] non-GAAP 영업이익률 ≥ 14%</b> — 수익성 개선 지속.</li>
+      <li><b>[분기] RPO/청구액(billings) 성장률</b>이 매출 성장률 이상(선행 수요).</li>
+      <li><b>[이벤트] pay-per-crawl/Pay Per Use 매출 기여</b>를 경영진이 <b>수치로 언급</b>하는가(9/15 시행 이후).</li>
+      <li><b>[월별] 봇/에이전트 트래픽 비중</b>(Cloudflare Radar) — 수요 방향의 중간 확인.</li>
+    </ul>
+  </div>
+
+  <!-- 9 피어 -->
+  <h2>9. 피어 비교 (EV/Sales)</h2>
+  <p class="note">밸리는 미국 종목 <b>피어 자동선정을 제공하지 않아</b>, 사업구조가 겹치는 <b>보안·엣지 SaaS</b>를 수동 선정했다(자의성 고지). 배수는 출처·시점에 따라 편차가 있어 <b>수준 비교용</b >이다.</p>
+  <figure>
+    <div class="svgbox">
+      <svg viewBox="0 0 480 190" role="img" aria-label="피어 EV/Sales 비교">
+        <text x="12" y="16" fill="var(--ink)" font-size="13" font-weight="700">Fwd EV/Sales (배) — Cloudflare가 압도적 프리미엄</text>
+        <line x1="30" y1="165" x2="450" y2="165" stroke="var(--line)" stroke-width="1"></line>
+        <rect x="60" y="47.4" width="90" height="117.6" rx="3" fill="var(--accent)"></rect><text x="105" y="42" fill="var(--ink)" font-size="12" text-anchor="middle" font-weight="700">~38</text><text x="105" y="180" fill="var(--muted)" font-size="10" text-anchor="middle">Cloudflare</text>
+        <rect x="195" y="123.8" width="90" height="41.2" rx="3" fill="#9aa0a6"></rect><text x="240" y="118" fill="var(--ink)" font-size="12" text-anchor="middle" font-weight="700">~13</text><text x="240" y="180" fill="var(--muted)" font-size="10" text-anchor="middle">Zscaler</text>
+        <rect x="330" y="133.1" width="90" height="31.9" rx="3" fill="#9aa0a6"></rect><text x="375" y="127" fill="var(--ink)" font-size="12" text-anchor="middle" font-weight="700">~10</text><text x="375" y="180" fill="var(--muted)" font-size="10" text-anchor="middle">Fortinet</text>
+      </svg>
+    </div>
+    <figcaption>그림 3. Cloudflare EV/Sales ~38배는 Zscaler(~13, 성장 26%)·Fortinet(~10)의 2~3배. 출처: 밸리(NET, EV/FY26E매출)·언론(피어). </figcaption>
+  </figure>
+  <p><b>해석:</b> Cloudflare의 성장률(+32%)이 Zscaler(+26%)보다 높지만, <b>배수 격차(3배)는 성장률 격차로 정당화되지 않는다.</b> 시장은 Cloudflare에 <b>"AI 트래픽 관문 + pay-per-crawl 옵션가치"</b>를 얹어주고 있다 — 즉 <b>실적이 아니라 서사에 프리미엄</b>이 붙어 있어, 서사가 흔들리면 배수 조정폭이 크다.</p>
+
+  <!-- 10 장기 사이클 -->
+  <h2>10. 장기 사이클 — 하이퍼그로스에서 스케일링으로</h2>
+  <ul>
+    <li><b>성장 사이클:</b> +52%(’21) → +49% → +33% → +29%(’24 저점) → +30% → <b>+32%E(’26)</b>. 전형적 <b>하이퍼그로스 감속</b> 후 <b>AI發 재가속</b> 시도 국면. 재가속의 <b>지속성</b>이 이 종목의 10년 화두다.</li>
+    <li><b>마진 사이클:</b> non-GAAP 영업이익률이 <b>14%대</b>로, 매출총이익률은 <b>2년 만에 처음 상승 전환</b>했다는 평가(보도). 규모의 경제로 <b>수익성 개선 초입</b>이나 GAAP는 여전히 적자 — <b>이익의 질</b>이 다음 단계 과제.</li>
+    <li><b>위치 판정:</b> "성장은 재가속·마진은 개선 초입"이나 <b>밸류가 이를 이미 선반영</b>. 즉 <b>펀더멘털 사이클은 상방, 밸류 사이클은 정점권</b>이 공존 — 그래서 기대수익이 비대칭.</li>
+  </ul>
+
+  <hr>
+  <div class="warn" style="font-size:.9rem">
+    <b>면책.</b> 투자 판단의 최종 책임은 투자자에게 있습니다. 본 문서는 개인 학습용 정리이며 매수·매도 권유가 아닙니다. 목표가는 멀티플 가정에 민감한 예시 시나리오이며 확정 예측이 아닙니다.<br>
+    <b>데이터 출처·기준일:</b> ① 시세·컨센서스·SEC 공시목록 — valley.town(NET, 수집 2026-08-12, 종가 2026-08-10) ② Q2 2026 실적·pay-per-crawl·신제품 — 보도(Perigon 등, 2026-08) ③ 연매출 이력 — WallStreetZen/stockanalysis(2021~2025) ④ 피어 배수 — 밸리(NET) 및 언론(Zscaler·Fortinet) ⑤ 밸류 시나리오 — 자체계산(EV/Sales·EPS). 컨센서스·보도·피어는 사실이 아닌 <b>추정·주장</b>이며, 밸리 유저 목표가(정황)는 산출에서 제외했습니다.<br>
+    <b>3부작:</b> ① <a href="https://tryingpig.github.io/study/260812_AI광통신네트워크_수혜리포트.html">광통신·네트워크</a> · ② 클라우드플레어(본편) · ③ 에이전트 커머스·결제
+  </div>
+  <p style="text-align:center;color:var(--muted);font-size:.85rem;margin-top:2em">© 2026 노력하는뚱땡이 리서치 라이브러리.</p>
+
+</div>
+</body>
+</html>

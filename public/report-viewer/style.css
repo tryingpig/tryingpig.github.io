@@ -182,6 +182,13 @@ a { color: inherit; text-decoration: none; }
   background: var(--raise); color: var(--sub); border: 1px solid var(--line);
 }
 .tag.warn { background: #fef2f2; color: #b91c1c; border-color: #fecaca; }
+/* 삭제예정 칩 = 연장 버튼(누를 수 있다는 걸 점선 밑줄로만 알림) */
+.pend-ext {
+  font: inherit; font-size: 11px; line-height: inherit;
+  cursor: pointer; text-decoration: underline dotted; text-underline-offset: 2px;
+}
+.pend-ext:hover { background: #fee2e2; }
+.pend-ext[data-busy] { opacity: .6; cursor: default; text-decoration: none; }
 .tag-hl {
   display: inline-flex; align-items: center; gap: 4px;
   background: var(--ink-bg); border-color: var(--ink-dim); color: var(--ink); font-weight: 600;
@@ -340,6 +347,13 @@ a { color: inherit; text-decoration: none; }
   padding: 8px; font-size: 13px; border-bottom: 1px solid #fecaca;
 }
 .banner.warn { background: #fff7ed; color: #c2410c; border-bottom-color: #fed7aa; }
+/* 배너 안 인라인 버튼(보관 연장) */
+.banner-btn {
+  margin-left: 8px; padding: 2px 9px; border-radius: 5px; font: inherit; font-size: 12px;
+  background: transparent; color: inherit; border: 1px solid currentColor; cursor: pointer;
+}
+.banner-btn:hover { background: rgba(0, 0, 0, .06); }
+.banner-btn:disabled { opacity: .6; cursor: default; }
 .toast {
   position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
   background: #1f2430; color: #fff; padding: 10px 16px; border-radius: 10px;
@@ -516,6 +530,7 @@ mark.rd-hl.pink   { background: rgba(255, 45, 120, .34); }
 
   /* 경고 태그(스캔본·삭제예정) */
   .tag.warn { background: #3a1f22; color: #fca5a5; border-color: #4a2a2e; }
+  .pend-ext:hover { background: #4a2a2e; }
 
   /* 비활성 버튼 */
   #submitBtn:disabled, #delBtn:disabled { background: #2a2e36; color: #6b7280; }
@@ -523,6 +538,7 @@ mark.rd-hl.pink   { background: rgba(255, 45, 120, .34); }
   /* 배너 */
   .banner { background: #3a1f22; color: #fca5a5; border-bottom-color: #4a2a2e; }
   .banner.warn { background: #3a2a17; color: #fdba74; border-bottom-color: #4a3420; }
+  .banner-btn:hover { background: rgba(255, 255, 255, .1); }
 
   /* 팝업 스와치 테두리 */
   .hl-popup .swatch { border-color: rgba(255,255,255,.18); }

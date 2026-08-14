@@ -9,7 +9,7 @@
   <title>리포트 마커</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
-  <link rel="stylesheet" href="style.css?v=28">
+  <link rel="stylesheet" href="style.css?v=29">
 </head>
 <body>
   <div class="topbar">
@@ -54,7 +54,7 @@
   <div id="thumbHover" style="display:none"><img alt="미리보기"></div>
   <div class="toast" id="toast"></div>
 
-  <script src="app.js?v=22"></script>
+  <script src="app.js?v=23"></script>
   <script>
     let ALL = [];
     /* 아래 3개 아이콘은 나머지 액션 아이콘(lucide)과 같은 '얇은 선' 스타일로 통일.
@@ -341,7 +341,10 @@
         const marked = (r.highlight_count || 0) > 0;
         const sector = r.sector ? `<span class="tag">${esc(r.sector)}</span>` : "";
         const scan = r.has_text_layer === false ? `<span class="tag warn">스캔본</span>` : "";
-        const pend = r.pending_deletion ? `<span class="tag warn">🗑 삭제예정 ~${esc((r.delete_after || "").slice(5))}</span>` : "";
+        // 삭제예정 칩 = 연장 버튼(탭하면 보관기간을 오늘부터 다시 30일)
+        const pend = r.pending_deletion
+          ? `<button class="tag warn pend-ext" data-id="${esc(r.id)}" title="탭하면 ${RV.RETENTION_DAYS}일 연장">🗑 삭제예정 ~${esc((r.delete_after || "").slice(5))}</button>`
+          : "";
         const hlChip = marked ? `<span class="tag tag-hl"><i data-lucide="highlighter"></i><span class="num">${r.highlight_count}</span></span>` : "";
         const pages = r.pages ? `<span class="pages num">${r.pages}p</span>` : "";
         // LLM으로 본문을 정리한 리포트에만 'AI' 배지(휴리스틱은 표시 안 함) — 선 아이콘으로 통일
@@ -414,6 +417,13 @@
             e.stopPropagation();
             if (delMode) return;
             postCardToNotion(ntBtn.dataset.id, ntBtn);
+            return;
+          }
+          const extBtn = e.target.closest(".pend-ext");
+          if (extBtn) {                           // 삭제예정 칩 = 보관 연장
+            e.stopPropagation();
+            if (delMode) return;
+            extendCard(extBtn.dataset.id, extBtn);
             return;
           }
           if (e.target.closest(".card-del")) {   // 삭제
@@ -527,6 +537,32 @@
       if (!on) SELECTED.clear();
       updateDelBar();
       renderList();
+    }
+
+    /* 삭제예정 칩 탭 → 보관기간을 오늘부터 다시 시작(retention_from).
+       성공하면 칩이 사라지고, RETENTION_DAYS 뒤에 다시 삭제예정으로 뜬다. */
+    async function extendCard(id, btn) {
+      if (btn.dataset.busy) return;
+      const r = ALL.find((x) => x.id === id);
+      const days = RV.RETENTION_DAYS;
+      if (!confirm(`"${(r && r.title) || id}" PDF를 ${days}일 더 보관할까요?`)) return;
+      btn.dataset.busy = "1";
+      btn.textContent = "연장 중…";
+      toast("연장 중…");
+      try {
+        await extendRetention(id);
+        if (r) {
+          r.retention_from = todayKst();
+          delete r.pending_deletion;
+          delete r.delete_after;
+        }
+        toast(`${days}일 연장했어요 · ${kstDatePlus(days).slice(5)} 이후 다시 삭제예정`);
+        renderList();
+      } catch (err) {
+        delete btn.dataset.busy;
+        renderList();
+        handleError(err, () => {});
+      }
     }
 
     /* 선택 리포트를 reports.json에서 제거(+deleted 목록에 기록 → 서버 prune이 파일 정리).

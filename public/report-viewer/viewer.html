@@ -7,7 +7,7 @@
   <meta name="theme-color" content="#101216" media="(prefers-color-scheme: dark)">
   <title>리포트 뷰어</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
-  <link rel="stylesheet" href="style.css?v=28">
+  <link rel="stylesheet" href="style.css?v=29">
 </head>
 <body>
   <div class="topbar viewer-topbar" id="topbar">
@@ -25,7 +25,7 @@
   <div id="captureHint" style="display:none">드래그로 영역 선택 · 표/그림 캡처<button id="captureHintX">✕</button></div>
   <div class="toast" id="toast"></div>
 
-  <script src="app.js?v=22"></script>
+  <script src="app.js?v=23"></script>
   <script type="module">
     import * as pdfjsLib from "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.6.82/pdf.min.mjs";
     pdfjsLib.GlobalWorkerOptions.workerSrc =
@@ -200,6 +200,24 @@
       setTimeout(() => t.classList.remove("show"), 1800);
     }
 
+    /* 삭제예정 배너의 '연장' — 보관기간을 오늘부터 다시 시작(retention_from) */
+    async function extendThisReport() {
+      const btn = document.getElementById("extendBtn");
+      if (!btn || btn.disabled) return;
+      const days = RV.RETENTION_DAYS;
+      if (!confirm(`이 PDF를 ${days}일 더 보관할까요?`)) return;
+      btn.disabled = true; btn.textContent = "연장 중…";
+      try {
+        await extendRetention(REPORT_ID);
+        const banner = document.getElementById("pendBanner");
+        if (banner) banner.remove();
+        toast(`${days}일 연장했어요 · ${kstDatePlus(days).slice(5)} 이후 다시 삭제예정`);
+      } catch (err) {
+        btn.disabled = false; btn.textContent = `${days}일 연장`;
+        toast(err.message || "연장 실패");
+      }
+    }
+
     /* ── 초기 로드 ── */
     async function start() {
       try {
@@ -262,10 +280,12 @@
           cacheThumb(REPORT_ID);   // 목록 썸네일용 (백그라운드)
         }
 
-        // 삭제 예정 배너
+        // 삭제 예정 배너 (+ 보관 연장 버튼)
         if (report.pending_deletion) {
           document.getElementById("banner").insertAdjacentHTML("beforeend",
-            `<div class="banner warn">🗑 이 PDF는 ${esc(report.delete_after)} 삭제 예정 — 하이라이트·요약은 Notion에 보존됩니다</div>`);
+            `<div class="banner warn" id="pendBanner">🗑 이 PDF는 ${esc(report.delete_after)} 삭제 예정 — 하이라이트·요약은 Notion에 보존됩니다`
+            + ` <button class="banner-btn" id="extendBtn">${RV.RETENTION_DAYS}일 연장</button></div>`);
+          document.getElementById("extendBtn").onclick = extendThisReport;
         }
 
         if (START_MODE === "reading") {

@@ -197,6 +197,50 @@ async function bumpCount(reportId, count) {
   }
 }
 
+/* ── 보관기간 연장 ───────────────────────────────────────
+   reports.json 항목에 retention_from(보관 기산일)을 오늘로 찍는다.
+   prune.py 는 uploaded_at 대신 이 날짜부터 보관기간을 다시 세므로,
+   연장분이 다음 prune 실행에 덮어써지지 않는다.
+   RV.RETENTION_DAYS 는 config.local.json 의 pdf_retention_days 와 맞춘 값(표시용). */
+RV.RETENTION_DAYS = 30;
+
+/* 오늘(KST) YYYY-MM-DD */
+function todayKst() { return nowKst().slice(0, 10); }
+
+/* KST 기준 오늘 + n일 → YYYY-MM-DD (연장 후 다시 삭제예정이 되는 날 안내용) */
+function kstDatePlus(days) {
+  const d = new Date(Date.now() + 9 * 3600 * 1000 + days * 86400 * 1000);
+  return d.toISOString().slice(0, 10);
+}
+
+/* 리포트 1건의 보관기간을 오늘부터 다시 시작시킨다. sha 충돌 시 최신 재조회 후 재시도.
+   성공하면 갱신된 리포트 객체를 반환(호출한 페이지가 화면 갱신에 사용). */
+async function extendRetention(reportId) {
+  const from = todayKst();
+  for (let attempt = 0; attempt < 3; attempt++) {
+    const res = await ghFetch("contents/index/reports.json", { cache: "no-store" });
+    if (!res.ok) throw new Error("목록 로드 실패: " + res.status);
+    const obj = await res.json();
+    const doc = JSON.parse(decodeB64Utf8(obj.content));
+    const r = (doc.reports || []).find((x) => x.id === reportId);
+    if (!r) throw new Error("이미 삭제된 리포트입니다.");
+    r.retention_from = from;
+    delete r.pending_deletion;   // 예정 표시는 즉시 해제(다음 prune이 재계산)
+    delete r.delete_after;
+    const put = await ghFetch("contents/index/reports.json", {
+      method: "PUT",
+      body: {
+        message: `extend: ${reportId} from ${from}`,
+        content: encodeUtf8B64(JSON.stringify(doc, null, 2)),
+        sha: obj.sha,
+      },
+    });
+    if (put.ok) return r;
+    if (put.status !== 409 && put.status !== 422) throw new Error("연장 실패: " + put.status);
+  }
+  throw new Error("연장 실패: 목록이 계속 바뀝니다. 잠시 후 다시 시도하세요.");
+}
+
 /* ── PAT 게이트: 없으면 입력 오버레이 표시 ───────────────── */
 function requirePat(onReady) {
   if (getPat()) {

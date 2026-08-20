@@ -50,6 +50,7 @@ export const TOPIC_ICONS: [RegExp, string][] = [
   [/광통신|네트워크/, 'networkswitch'],
   [/클라우드플레어/, 'cloudflare'],
   [/에이전트커머스|커머스결제/, 'creditcard'],
+  [/시멘트|턴어라운드|아세아|한일|성신/i, 'cementbag'],
 ];
 
 /* 매칭되는 주제가 없을 때 — 파일명 해시로 색과 무늬가 정해지는 픽셀 타일.

@@ -52,6 +52,9 @@ export const TOPIC_ICONS: [RegExp, string][] = [
   [/에이전트커머스|커머스결제/, 'creditcard'],
   [/시멘트|턴어라운드|아세아|한일|성신/i, 'cementbag'],
   [/비나텍|126340/, 'supercapacitor'],
+  [/삼화콘덴서|001820/i, 'samhwacon'],
+  [/성문전자|014910/i, 'metfilmroll'],
+  [/뉴인텍|012340/i, 'dclinkbox'],
 ];
 
 /* 매칭되는 주제가 없을 때 — 파일명 해시로 색과 무늬가 정해지는 픽셀 타일.

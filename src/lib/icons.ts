@@ -55,6 +55,8 @@ export const TOPIC_ICONS: [RegExp, string][] = [
   [/삼화콘덴서|001820/i, 'samhwacon'],
   [/성문전자|014910/i, 'metfilmroll'],
   [/뉴인텍|012340/i, 'dclinkbox'],
+  [/지엔씨에너지|119850|지엔씨/i, 'dieselgenerator'],
+  [/SGC에너지|005090|SGC/i, 'smokestack'],
 ];
 
 /* 매칭되는 주제가 없을 때 — 파일명 해시로 색과 무늬가 정해지는 픽셀 타일.

@@ -57,6 +57,8 @@ export const TOPIC_ICONS: [RegExp, string][] = [
   [/뉴인텍|012340/i, 'dclinkbox'],
   [/지엔씨에너지|119850|지엔씨/i, 'dieselgenerator'],
   [/SGC에너지|005090|SGC/i, 'smokestack'],
+  [/가스난|유럽가스|국내LNG|수혜리포트|밸류체인/i, 'lngcarrier'],
+  [/SK이노베이션|096770|이노베이션/i, 'fuelpump'],
 ];
 
 /* 매칭되는 주제가 없을 때 — 파일명 해시로 색과 무늬가 정해지는 픽셀 타일.

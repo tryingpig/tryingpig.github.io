@@ -1617,6 +1617,68 @@
         "...dddddddddd...",
         "................"
       ]
+    },
+    "lngcarrier": {
+      "bg": [
+        "#0e1a24",
+        "#04262e"
+      ],
+      "palette": {
+        "s": "#dfe6ee",
+        "l": "#ffffff",
+        "h": "#d64b3a",
+        "d": "#9e3428",
+        "w": "#2f7fb0"
+      },
+      "grid": [
+        "................",
+        "................",
+        "................",
+        "................",
+        "..ss...ss...ss..",
+        ".ssss.ssss.ssss.",
+        ".lsss.lsss.lsss.",
+        ".ssss.ssss.ssss.",
+        "..ss...ss...ss..",
+        ".hhhhhhhhhhhhhh.",
+        ".hhhhhhhhhhhhhh.",
+        "..dddddddddddd..",
+        "...dddddddddd...",
+        ".wwwwwwwwwwwwww.",
+        ".wwwwwwwwwwwwww.",
+        "................"
+      ]
+    },
+    "fuelpump": {
+      "bg": [
+        "#20140f",
+        "#0a1016"
+      ],
+      "palette": {
+        "b": "#e8402c",
+        "l": "#ff7a63",
+        "s": "#bfe9f0",
+        "n": "#39424f",
+        "k": "#7a2a20"
+      },
+      "grid": [
+        "................",
+        ".....bbbbbb.....",
+        ".....bbbbbb.....",
+        ".....blllbb.....",
+        ".....bssssb.....",
+        ".....bssssb.nn..",
+        ".....bbbbbbnnn..",
+        ".....bbbbbb..n..",
+        ".....bbbbbb..n..",
+        ".....bbbbbb..n..",
+        ".....bbbbbb.....",
+        ".....bbbbbb.....",
+        "....bbbbbbbb....",
+        "....kkkkkkkk....",
+        "................",
+        "................"
+      ]
     }
   }
 }

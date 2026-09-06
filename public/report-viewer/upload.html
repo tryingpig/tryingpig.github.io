@@ -7,7 +7,7 @@
   <meta name="theme-color" content="#101216" media="(prefers-color-scheme: dark)">
   <title>PDF 등록</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
-  <link rel="stylesheet" href="style.css?v=29">
+  <link rel="stylesheet" href="style.css?v=30">
 </head>
 <body>
   <div class="topbar">
@@ -49,7 +49,9 @@
     pdfjsLib.GlobalWorkerOptions.workerSrc =
       "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.6.82/pdf.worker.min.mjs";
 
-    const MAX_BYTES = 25 * 1024 * 1024;
+    const MAX_MB = 50;                          // 웹 수동 업로드 한도(텔레그램 경로는 Bot API 20MB 고정)
+    const MAX_BYTES = MAX_MB * 1024 * 1024;
+    const WARN_MB = 30;                         // base64 팽창(x1.33)으로 실패 가능성이 생기는 구간
     const KNOWN = ["NH","KB","삼성","미래에셋","한국투자","한투","신한","키움","대신","하나","메리츠",
       "유안타","교보","하이","IBK","DB","SK","이베스트","신영","다올","한화","BNK","유진","현대차","케이프","상상인",
       "iM","IM","아이엠","IR","DS"];
@@ -104,7 +106,8 @@
       $("fileLabel").textContent = "📄 " + FILE.name;
       const mb = FILE.size / 1024 / 1024;
       $("fileMeta").textContent = `${mb.toFixed(1)}MB`;
-      if (FILE.size > MAX_BYTES) { setStatus(`파일이 너무 큽니다 (${mb.toFixed(1)}MB > 25MB)`, true); $("submitBtn").disabled = true; return; }
+      if (FILE.size > MAX_BYTES) { setStatus(`파일이 너무 큽니다 (${mb.toFixed(1)}MB > ${MAX_MB}MB)`, true); $("submitBtn").disabled = true; return; }
+      if (mb > WARN_MB) setStatus(`${mb.toFixed(1)}MB — 큰 파일이라 업로드가 오래 걸리거나 실패할 수 있습니다`);
       const m = parseName(FILE.name);
       $("title").value = m.title || "";
       $("broker").value = m.broker === "미분류" ? "" : m.broker;

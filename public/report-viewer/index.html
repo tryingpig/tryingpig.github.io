@@ -9,7 +9,7 @@
   <title>리포트 마커</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
-  <link rel="stylesheet" href="style.css?v=29">
+  <link rel="stylesheet" href="style.css?v=30">
 </head>
 <body>
   <div class="topbar">
@@ -345,6 +345,10 @@
         const pend = r.pending_deletion
           ? `<button class="tag warn pend-ext" data-id="${esc(r.id)}" title="탭하면 ${RV.RETENTION_DAYS}일 연장">🗑 삭제예정 ~${esc((r.delete_after || "").slice(5))}</button>`
           : "";
+        // 정리 권장 칩 = 즐겨찾기라 자동 삭제 면제 중이지만 보관기간은 지난 리포트(안내 전용)
+        const sug = (!r.pending_deletion && r.delete_suggested)
+          ? `<button class="tag sug" data-id="${esc(r.id)}" title="즐겨찾기라 자동 삭제되지 않습니다">🧹 정리 권장</button>`
+          : "";
         const hlChip = marked ? `<span class="tag tag-hl"><i data-lucide="highlighter"></i><span class="num">${r.highlight_count}</span></span>` : "";
         const pages = r.pages ? `<span class="pages num">${r.pages}p</span>` : "";
         // LLM으로 본문을 정리한 리포트에만 'AI' 배지(휴리스틱은 표시 안 함) — 선 아이콘으로 통일
@@ -369,7 +373,7 @@
               </div>
               <p class="meta">${esc(r.broker || "미분류")}<span>·</span>${esc(cardDate(r))}<span>·</span>${r.size_mb ?? "?"}MB${llmSug}</p>
               <div class="tags">
-                ${sector}${scan}${pend}${hlChip}${pages}
+                ${sector}${scan}${pend}${sug}${hlChip}${pages}
                 <div class="acts">
                   <a class="act" href="viewer2.html?id=${encodeURIComponent(r.id)}&v=32" title="PDF로 보기" aria-label="PDF"><i data-lucide="file"></i></a>
                   <a class="act" href="highlights.html?id=${encodeURIComponent(r.id)}" title="하이라이트 모아보기" aria-label="모아보기"><i data-lucide="list"></i></a>
@@ -417,6 +421,13 @@
             e.stopPropagation();
             if (delMode) return;
             postCardToNotion(ntBtn.dataset.id, ntBtn);
+            return;
+          }
+          const sugBtn = e.target.closest(".tag.sug");
+          if (sugBtn) {                           // 정리 권장 칩 = 안내만 (삭제는 사람이 직접)
+            e.stopPropagation();
+            if (delMode) return;
+            toast("즐겨찾기라 자동 삭제되지 않습니다. 용량이 부담되면 ★를 해제하거나 직접 삭제하세요.");
             return;
           }
           const extBtn = e.target.closest(".pend-ext");

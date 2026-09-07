@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI 전력병목과 가스터빈 밸류체인 — 블레이드·초합금 병목, 국내 수혜 지도</title>
+<link rel="stylesheet" href="/assets/report.css">
+<script src="/assets/report.js" defer></script>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<script>
+  (function () {
+    try {
+      var t = localStorage.getItem('theme');
+      if (!t) t = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      if (t === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+    } catch (e) {}
+  })();
+</script>
+</head>
+<body data-topic="invest">
+<div class="topbar">
+  <div class="topbar-in">
+    <a class="back" href="/#study">학습공간</a>
+    <span class="crumb">AI 전력병목·가스터빈</span>
+    <button class="theme-toggle" type="button" aria-label="다크/라이트 전환" title="다크/라이트 전환">
+      <svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      <svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+    </button>
+  </div>
+</div>
+<div class="wrap">
+
+  <span class="kicker">수혜 리포트 · AI 전력 인프라 (가스터빈 밸류체인)</span>
+  <h1>AI 전력병목과 가스터빈 밸류체인<br>— 블레이드·초합금 병목, 국내 수혜 지도</h1>
+  <p class="sub">작성일 2026-09-07 · 개인 리서치 노트 · 머스크·SpaceX 언론 / 국내 실적 DART·epic</p>
+
+  <div class="warn">
+    <b>⚠️ 투자 권유가 아닙니다.</b> 본 문서는 <b>언론·DART 공시·epic.ai</b>를 정리·검증한 개인 학습 노트이며 매수·매도 추천이 아닙니다. 종목별 밸류·리스크는 개별 기업분석에서 별도로 다룹니다. 최종 판단의 책임은 투자자에게 있습니다.
+  </div>
+
+  <div class="note">
+    <b>후속 기업분석.</b> 이 지도의 핵심 종목은 개별 딥리서치로 이어집니다 → <a href="https://tryingpig.github.io/study/260907_두산에너빌리티_기업분석.html">두산에너빌리티</a> · <a href="https://tryingpig.github.io/study/260907_HD현대마린엔진_기업분석.html">HD현대마린엔진</a> · <a href="https://tryingpig.github.io/study/260907_비에이치아이_기업분석.html">비에이치아이</a>.
+  </div>
+
+  <!-- 1 팩트 -->
+  <h2>1. 팩트체크 — "AI의 새 병목은 전력, 가스터빈이 해법"</h2>
+  <div class="kpi">
+    <div class="box"><div class="num">15GW</div><div class="lab">2027년 예상 전력 부족(머스크)</div></div>
+    <div class="box"><div class="num">~2030</div><div class="lab">대형 가스터빈 납기 지연</div></div>
+    <div class="box"><div class="num">18개월</div><div class="lab">SpaceX 블레이드 내재화로 단축 목표</div></div>
+    <div class="box"><div class="num">단결정 초합금</div><div class="lab">블레이드/베인 = 최고난도 병목 부품</div></div>
+  </div>
+  <div class="callout">
+    <b>결론: 전부 사실.</b> 머스크는 AI 반도체는 연 40~50% 늘지만 <b>전력은 못 따라가 2027년 15GW 부족</b>을 경고했고, <b>SpaceX가 텍사스에 가스터빈 블레이드·베인 파운드리</b>를 추진한다(단결정 니켈 초합금·정밀주조·열차폐코팅). <b>GPU는 수개월, 발전·송변전은 수년</b> — "전력 가격보다 <b>언제 받느냐</b>"가 데이터센터 수익성 변수가 됐다. 가스터빈은 <b>원전보다 짧은 건설·출력조절·DC 인근 설치·브릿지 전원</b>으로 최적이고, <b>병목은 블레이드/베인(초합금·정밀주조)</b>이다. → <b>빅테크 수직계열화가 반도체를 넘어 '전력 인프라'로 확장</b>.
+  </div>
+
+  <!-- 2 왜 가스터빈 -->
+  <h2>2. 왜 가스터빈인가 — 그리고 왜 '블레이드'가 병목인가</h2>
+  <div class="grid2">
+    <div class="card"><b>가스터빈의 장점</b><ul style="margin:.4em 0 0">
+      <li>원전보다 <b>건설기간 짧음</b>·출력 조절 가능</li>
+      <li><b>데이터센터 인근 직접 설치</b> 가능</li>
+      <li>재생에너지 간헐성 보완 + <b>전력망 연결 대기 중 브릿지 전원</b></li>
+    </ul></div>
+    <div class="card"><b>블레이드/베인이 병목인 이유</b><ul style="margin:.4em 0 0">
+      <li>1,000℃+ 고온·고속 회전 견뎌야 함</li>
+      <li><b>단결정 니켈 초합금 + 정밀주조 + 내부냉각 + 열차폐코팅</b></li>
+      <li>불량률 높아 신규 라인 안착까지 오래 → <b>공급 최대 희소</b></li>
+    </ul></div>
+  </div>
+  <p class="note">→ SpaceX가 이 부품을 직접 만들겠다고 나선 것 자체가 <b>"블레이드/초합금/정밀주조가 가스터빈 확대의 진짜 병목"</b>이라는 방증이다. 국내에서도 <b>두산에너빌리티가 HD현대마린엔진과 블레이드 정밀주조 소재를 국산화</b>하는 흐름이 정확히 겹친다.</p>
+
+  <!-- 3 국내 지도 -->
+  <h2>3. ★ 국내 수혜 밸류체인 지도 (실적 급성장 확인)</h2>
+  <div class="tablewrap">
+  <table>
+    <caption style="text-align:left;color:var(--muted);font-size:.85rem;padding:6px 0">표 1. 국내 가스터빈·복합화력 수혜주 (실적 DART 공시, 2026-09-07)</caption>
+    <thead><tr><th>종목</th><th>포지션</th><th>2025 매출·영업이익</th><th>순수도</th></tr></thead>
+    <tbody>
+      <tr><td><b>두산에너빌리티</b>(034020)</td><td><b>국내 유일 대형 가스터빈 완제품</b> + 원전·SMR (단 두산밥캣 등 복합)</td><td>17.1조 · OP 7,627억</td><td>★★★ 대장</td></tr>
+      <tr><td><b>HD현대마린엔진</b>(071970)</td><td>선박엔진(조선 사이클) + <b>두산과 가스터빈 블레이드 정밀주조 소재 협력</b></td><td>4,024억 · OP 759억(ROE 41%)</td><td>★★ 가스터빈은 신규 옵션</td></tr>
+      <tr><td><b>비에이치아이</b>(083650)</td><td><b>HRSG(배열회수보일러)</b> = 가스복합화력 필수 기자재</td><td>7,741억 · OP 755억(ROE 44%)</td><td>★★ 복합화력 순수</td></tr>
+      <tr><td>성광벤드·태광</td><td>발전 플랜트 피팅·밸브</td><td>—</td><td>★ 기자재</td></tr>
+      <tr><td>터보파워텍</td><td>가스터빈 블레이드 재생·코팅·초합금(상장·데이터 미확보)</td><td>미확보</td><td>★ 확인 필요</td></tr>
+      <tr><td>전력기기(변압기)<br>HD현대일렉트릭·효성중공업·LS ELECTRIC</td><td>송·변전(별도 큰 테마)</td><td>—</td><td>★★ 인접 축</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <figure>
+    <div class="svgbox">
+      <svg viewBox="0 0 520 200" role="img" aria-label="3사 영업이익 성장">
+        <text x="12" y="16" fill="var(--ink)" font-size="13" font-weight="700">가스터빈·복합화력 3사 영업이익 성장 (억원)</text>
+        <rect x="330" y="6" width="12" height="12" fill="#9aa0a6"></rect><text x="346" y="16" fill="var(--muted)" font-size="10">2024</text>
+        <rect x="410" y="6" width="12" height="12" fill="var(--accent)"></rect><text x="426" y="16" fill="var(--muted)" font-size="10">2025</text>
+        <line x1="30" y1="170" x2="500" y2="170" stroke="var(--line)" stroke-width="1"></line>
+        <!-- 두산: 10176, 7627 (감소) — scale by each? use log-ish? just show. scale h=v/11000*130 -->
+        <rect x="60" y="49.7" width="45" height="120.3" rx="2" fill="#9aa0a6"></rect><text x="82" y="44" fill="var(--muted)" font-size="8">10,176</text>
+        <rect x="108" y="79.9" width="45" height="90.1" rx="2" fill="var(--accent)"></rect><text x="130" y="74" fill="var(--accent)" font-size="8">7,627</text>
+        <text x="105" y="185" fill="var(--muted)" font-size="9.5" text-anchor="middle">두산에너빌리티</text>
+        <!-- HD마린: 332, 759 -->
+        <rect x="215" y="166.1" width="45" height="3.9" rx="1" fill="#9aa0a6"></rect><text x="237" y="161" fill="var(--muted)" font-size="8">332</text>
+        <rect x="263" y="161" width="45" height="9" rx="1" fill="var(--accent)"></rect><text x="285" y="156" fill="var(--accent)" font-size="8">759</text>
+        <text x="262" y="185" fill="var(--muted)" font-size="9.5" text-anchor="middle">HD현대마린엔진</text>
+        <!-- 비에이치아이: 219, 755 -->
+        <rect x="375" y="167.4" width="45" height="2.6" rx="1" fill="#9aa0a6"></rect><text x="397" y="162" fill="var(--muted)" font-size="8">219</text>
+        <rect x="423" y="161.1" width="45" height="8.9" rx="1" fill="var(--accent)"></rect><text x="445" y="156" fill="var(--accent)" font-size="8">755</text>
+        <text x="422" y="185" fill="var(--muted)" font-size="9.5" text-anchor="middle">비에이치아이</text>
+      </svg>
+    </div>
+    <figcaption>그림 1. 부품·기자재(HD현대마린엔진·비에이치아이)는 영업이익이 2024→2025 두 배 이상 급증, 두산에너빌리티는 절대 규모는 크나 감소(밥캣·원전 사이클). 출처: DART(2026-09-07). ※막대는 회사별 스케일이 달라 절대 비교가 아닌 '성장 방향' 표시.</figcaption>
+  </figure>
+
+  <!-- 4 옥석 -->
+  <h2>4. 옥석 가리기</h2>
+  <div class="callout">
+    <ul>
+      <li><b>가스터빈 병목의 '대장' → 두산에너빌리티</b>(국내 유일 완제품 + 블레이드 국산화 주도). 단 연결 매출 절반이 <b>두산밥캣(건설기계)</b>이라 순수 가스터빈 노출은 별도(45%)이고 <b>밸류가 극단적으로 높다</b>(PER 100+, 성장 선반영).</li>
+      <li><b>복합화력 순수 부품 → 비에이치아이</b>(HRSG). 가스터빈이 늘면 HRSG가 짝으로 붙는다 — 실적 급성장·ROE 44%, 단 부채비율 높음.</li>
+      <li><b>블레이드 정밀주조 옵션 → HD현대마린엔진</b>. 본업은 선박엔진(조선 사이클)이고 <b>가스터빈은 두산 협력 초기 옵션</b> — 순수도는 낮으나 실적·ROE는 최상.</li>
+    </ul>
+    <p>→ 이 테마의 무게중심은 <b>두산에너빌리티(완제품)</b>이고, <b>비에이치아이(HRSG)</b>가 순수 부품 수혜, <b>HD현대마린엔진</b>은 조선+가스터빈 옵션의 하이브리드다.</p>
+  </div>
+
+  <!-- 5 리스크 -->
+  <h2>5. 리스크 &amp; 체크리스트</h2>
+  <div class="grid2">
+    <div class="card"><b>⚠️ 리스크</b>
+      <ul style="margin:.4em 0 0">
+        <li><b>밸류 선반영</b>: 두산 등 성장 기대가 이미 크게 반영.</li>
+        <li><b>수주→매출 시차</b>: 발전 기자재는 인식까지 수년.</li>
+        <li><b>가스터빈 옵션 미실현</b>: HD현대마린엔진의 블레이드는 아직 초기.</li>
+        <li><b>사이클 혼재</b>: 두산=밥캣(건설기계), HD마린=조선 사이클에 동반 노출.</li>
+        <li><b>부채</b>: 비에이치아이 부채비율 높음.</li>
+      </ul></div>
+    <div class="card"><b>✅ 볼 것</b>
+      <ul style="margin:.4em 0 0">
+        <li>두산에너빌리티 <b>가스터빈·원전 수주</b>·블레이드 국산화 진척.</li>
+        <li>비에이치아이 <b>HRSG 수주잔고</b>.</li>
+        <li>HD현대마린엔진 <b>가스터빈 블레이드 정밀주조 상용화</b>.</li>
+        <li>글로벌 대형터빈 납기·SpaceX 파운드리 진척.</li>
+        <li>변압기(전력기기) 병목 동반 흐름.</li>
+      </ul></div>
+  </div>
+
+  <hr>
+  <div class="warn" style="font-size:.9rem">
+    <b>면책.</b> 투자 판단의 최종 책임은 투자자에게 있습니다. 본 문서는 개인 학습용 정리이며 매수·매도 권유가 아닙니다. 종목 밸류·리스크는 개별 기업분석에서 확인.<br>
+    <b>데이터 출처·기준일:</b> ① 머스크 15GW·SpaceX 블레이드 파운드리 — 언론(Tom's Hardware·Dealroom·KuCoin, 2026-09) ② 두산-HD현대마린 블레이드 정밀주조 MOU — 언론(디일렉·헤럴드, 2026) ③ 국내 3사 실적 — DART 전자공시(공시, 조회 2026-09-07). 언론·추정은 사실이 아닌 <b>주장</b>.<br>
+    <b>시리즈:</b> <a href="https://tryingpig.github.io/study/260907_두산에너빌리티_기업분석.html">두산에너빌리티</a> · <a href="https://tryingpig.github.io/study/260907_HD현대마린엔진_기업분석.html">HD현대마린엔진</a> · <a href="https://tryingpig.github.io/study/260907_비에이치아이_기업분석.html">비에이치아이</a>
+  </div>
+  <p style="text-align:center;color:var(--muted);font-size:.85rem;margin-top:2em">© 2026 노력하는뚱땡이 리서치 라이브러리.</p>
+
+</div>
+</body>
+</html>

@@ -1679,6 +1679,95 @@
         "................",
         "................"
       ]
+    },
+    "reactordome": {
+      "bg": [
+        "#1a2230",
+        "#0d1119"
+      ],
+      "palette": {
+        "h": "#e8ebf0",
+        "b": "#c8ccd4",
+        "s": "#8b909c"
+      },
+      "grid": [
+        "................",
+        ".......hb.......",
+        "......hbbs......",
+        ".....hbbbbs.....",
+        "....hbbbbbbs....",
+        "....hbbbbbbs....",
+        "....hbbbbbbs....",
+        "....hbbbbbbs....",
+        "....hbbbbbbs....",
+        "....hbbbbbbs....",
+        "....hbbbbbbs....",
+        "....hbbbbbbs....",
+        "....hbbssbbs....",
+        "....hbbssbbs....",
+        "...sbbbbbbbbs...",
+        "................"
+      ]
+    },
+    "marineengine": {
+      "bg": [
+        "#141d29",
+        "#0a0f16"
+      ],
+      "palette": {
+        "c": "#2a3f57",
+        "l": "#a3c4e6",
+        "m": "#6b8fb5",
+        "d": "#3d5d7d"
+      },
+      "grid": [
+        "................",
+        "................",
+        "....cc.cc.cc....",
+        "....lm.lm.lm....",
+        "....lm.lm.lm....",
+        "....lm.lm.lm....",
+        "....lm.lm.lm....",
+        "....lm.lm.lm....",
+        "...lmmmmmmmmd...",
+        "...lmmmmmmmmd...",
+        "...lmmmmmmmmd...",
+        "...lmddmmddmd...",
+        "...lmmmmmmmmd...",
+        "...dddddddddd...",
+        "................",
+        "................"
+      ]
+    },
+    "hrsgboiler": {
+      "bg": [
+        "#241c14",
+        "#120d08"
+      ],
+      "palette": {
+        "k": "#6b6b6b",
+        "w": "#ddc9a0",
+        "g": "#c2a878",
+        "d": "#8a7a5c"
+      },
+      "grid": [
+        "................",
+        ".........kk.....",
+        ".........kk.....",
+        ".........kk.....",
+        ".........kk.....",
+        ".........kk.....",
+        "..wggggggggggd..",
+        "..wgddddddddgd..",
+        "..wggggggggggd..",
+        "..wgddddddddgd..",
+        "..wggggggggggd..",
+        "..wgddddddddgd..",
+        "..wggggggggggd..",
+        "..dddddddddddd..",
+        "................",
+        "................"
+      ]
     }
   }
 }

@@ -1768,6 +1768,36 @@
         "................",
         "................"
       ]
+    },
+    "opticalfilmstack": {
+      "bg": [
+        "#0d1b2a",
+        "#132b3d"
+      ],
+      "palette": {
+        "r": "#ffe27a",
+        "h": "#c8f0fa",
+        "f": "#5fc6e0",
+        "d": "#2b7fa0"
+      },
+      "grid": [
+        "................",
+        ".....r..r..r....",
+        ".....r..r..r....",
+        "................",
+        "..h.h.h.h.h.h.h.",
+        "..fffffffffffff.",
+        "..ddddddddddddd.",
+        "................",
+        "..hhhhhhhhhhhhh.",
+        "..fffffffffffff.",
+        "..ddddddddddddd.",
+        "..fffffffffffff.",
+        "..fffffffffffff.",
+        "..ddddddddddddd.",
+        "................",
+        "................"
+      ]
     }
   }
 }

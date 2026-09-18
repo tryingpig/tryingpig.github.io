@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI 데이터센터 인프라 밸류체인 산업분석 — 병목은 이제 '전력'으로 넘어갔다</title>
+<link rel="stylesheet" href="/assets/report.css">
+<script src="/assets/report.js" defer></script>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<script>
+  (function () {
+    try {
+      var t = localStorage.getItem('theme');
+      if (!t) t = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      if (t === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+    } catch (e) {}
+  })();
+</script>
+</head>
+<body data-topic="tech">
+<div class="topbar">
+  <div class="topbar-in">
+    <a class="back" href="/#study">학습공간</a>
+    <span class="crumb">AI 데이터센터 인프라 산업분석</span>
+    <button class="theme-toggle" type="button" aria-label="다크/라이트 전환" title="다크/라이트 전환">
+      <svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      <svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+    </button>
+  </div>
+</div>
+<div class="wrap">
+
+  <span class="kicker">산업분석 딥리서치 · AI 데이터센터 인프라 밸류체인 · 글로벌</span>
+  <h1>AI 데이터센터 인프라 밸류체인 산업분석<br>— 병목은 이제 'GPU'가 아니라 '전력'으로 넘어갔다</h1>
+  <p class="sub">작성일 2026-09-18 · 글로벌 테마(미국주 중심)라 epic 한국지표 대신 <b>웹 리서치·팩트체크 기반</b> · 8개 레이어 밸류체인 지도 + 사이클 판정</p>
+
+  <div class="warn">
+    <b>⚠️ 투자 권유가 아닙니다.</b> 본 문서는 공개된 시장조사·기업 발표·언론을 정리·교차검증한 개인 학습 노트이며 매수·매도 추천이 아닙니다. 점유율·capex 수치는 <b>출처마다 집계 기준·시점이 달라</b> 범위로 제시하며, 각 문장에 <b>(출처, 시점)</b>을 붙였습니다. 이 리포트는 개별 종목을 깊게 파지 않습니다 — 종목은 <b>company-deep-dive</b>로 따로 만들어 링크합니다.
+  </div>
+
+  <div class="note">
+    <b>함께 보면 좋은 기존 리포트(한국 밸류체인 심화):</b>
+    <a href="/study/260727_KKR_한국AI인프라생태계_심층분석.html">KKR·한국 AI인프라 생태계</a> ·
+    <a href="/study/260627_cpo_밸류체인_대해부.html">CPO(광통신) 밸류체인</a> ·
+    <a href="/study/260627_800VDC_3_밸류체인.html">800VDC 전력 밸류체인</a> ·
+    <a href="/study/260822_데이터센터전력캐패시터_수혜리포트.html">데이터센터 전력 캐패시터</a>
+  </div>
+
+  <!-- 1 스냅샷 -->
+  <h2>1. 스냅샷 — 8개 레이어와 각 레이어의 대장</h2>
+  <div class="kpi">
+    <div class="box"><div class="num">$630~725B</div><div class="lab">빅4 2026 capex 전망 · +60~77% YoY(’25 $388~410B)</div></div>
+    <div class="box"><div class="num">병목 = 전력</div><div class="lab">GPU공급(’24)→HBM·CoWoS(’25)→<b>전력(’26)</b>으로 이동</div></div>
+    <div class="box"><div class="num">370kW/랙</div><div class="lab">2026 AI랙 평균 전망(’25 GB200 120~150kW) → 공랭 불가</div></div>
+    <div class="box"><div class="num">$1.15T</div><div class="lab">골드만 추정 ’25~’27 하이퍼스케일러 누적 capex</div></div>
+  </div>
+  <div class="callout">
+    <b>한 줄 요약.</b> AI 인프라는 <b>수요(하이퍼스케일러 capex)가 사상 최대 확장 국면</b>이지만, 2026년의 진짜 이야기는 <b>병목이 연산(GPU)에서 전력·냉각·인터커넥트로 넘어갔다</b>는 것이다. 마이크로소프트가 <b>전력 부족으로 $80B 규모 Azure 수주를 못 채우고</b>(보도), 2026년 여름 <b>$130B 규모 미국 데이터센터 75곳이 전력 문제로 지연</b>됐다(보도). → <b>capex의 60% 이상이 이제 compute 하드웨어가 아니라 전력·냉각·건물</b>로 간다. 사용자가 짚은 4개 픽(서버 Dell·전력 Bloom·팹 Intel·광통신 Marvell)을 이 8레이어 지도 위에 놓으면 <b>전력·광통신 픽이 병목 이동의 정중앙</b>이고, <b>서버는 1위지만 경합, 팹/CPU(Intel)는 현재 대장이 아니라 정책·턴어라운드 옵션</b>이다(§4·§7).
+  </div>
+
+  <div class="tablewrap">
+  <table>
+    <caption style="text-align:left;color:var(--muted);font-size:.85rem;padding:6px 0">표 1. AI 인프라 8개 레이어와 대장 (점유율은 출처·집계기준 상이, 범위 표기)</caption>
+    <thead><tr><th>레이어</th><th>대장(점유율)</th><th>경쟁·차상위</th><th>병목 이동과의 관계</th></tr></thead>
+    <tbody>
+      <tr><td><b>연산(GPU)</b></td><td>Nvidia (독점적)</td><td>AMD, 커스텀 ASIC</td><td>2024년의 병목 → 지금은 완화</td></tr>
+      <tr><td><b>커스텀 ASIC</b></td><td>Broadcom (70%+)</td><td>Marvell (20~25%)</td><td>하이퍼스케일러 자체칩 수요 확대</td></tr>
+      <tr><td><b>메모리(HBM)</b></td><td>SK하이닉스 (50~62%)</td><td>삼성(33%)·마이크론(11%)</td><td>2025년의 병목 → HBM4로 이동</td></tr>
+      <tr><td><b>서버</b></td><td>Dell (~20%)</td><td>HPE(15%)·Supermicro·Lenovo</td><td>capex 확장의 직접 수혜, 경합</td></tr>
+      <tr><td><b>네트워킹(스위치)</b></td><td>Nvidia(21.5%)·Arista(18.9%)</td><td>Broadcom(칩 80%)·Cisco</td><td>이더넷이 인피니밴드 잠식</td></tr>
+      <tr><td><b>광통신(광 DSP)</b></td><td>Marvell (60~65%)</td><td>Broadcom·부품사(Coherent 등)</td><td>대역폭 병목 해소의 핵심</td></tr>
+      <tr><td><b>전력</b></td><td>Bloom(연료전지)·GE Vernova(터빈)</td><td>유틸리티·발전기(Cat·Cummins)</td><td><b>2026년의 새 병목 = 최대 격전지</b></td></tr>
+      <tr><td><b>냉각(액냉)</b></td><td>Vertiv·Schneider</td><td>Supermicro 등</td><td>고밀도 랙 필수, 공랭 한계 돌파</td></tr>
+      <tr><td><b>팹/CPU</b></td><td>TSMC(팹)·Nvidia(연산)</td><td>Intel(18A 턴어라운드)</td><td>CoWoS 패키징이 2025 병목</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <!-- 2 지금 어디쯤 -->
+  <h2>2. ★ 지금 이 산업은 어디쯤인가 — '수요 확장 + 병목의 대이동'</h2>
+  <p>이 산업의 위치는 <b>세 축</b>으로 읽는다: <b>①수요(하이퍼스케일러 capex) ②병목(무엇이 성장을 막는가) ③수익성(capex가 매출로 회수되는가)</b>. 결론부터: 수요는 <b>확장 국면 정점부</b>, 병목은 <b>연산 → 전력으로 이동 중</b>, 수익성은 <b>회수 검증이 시작되는 초입(사이클 리스크 축적)</b>이다.</p>
+
+  <h3>2-1. 수요 — 사상 최대 capex, 그런데도 "capacity가 모자라다"</h3>
+  <figure>
+    <div class="svgbox">
+      <svg viewBox="0 0 520 200" role="img" aria-label="하이퍼스케일러 capex 2025 vs 2026">
+        <text x="12" y="16" fill="var(--ink)" font-size="13" font-weight="700">하이퍼스케일러 capex ($B): 2025 → 2026(전망)</text>
+        <line x1="30" y1="160" x2="500" y2="160" stroke="var(--line)" stroke-width="1"></line>
+        <!-- Amazon -->
+        <rect x="40" y="78.75" width="26" height="81.25" rx="2" fill="var(--accent)" opacity="0.38"></rect>
+        <rect x="70" y="30" width="26" height="130" rx="2" fill="var(--accent)"></rect>
+        <text x="53" y="73" fill="var(--muted)" font-size="8.5" text-anchor="middle">125</text>
+        <text x="83" y="24" fill="var(--ink)" font-size="9" text-anchor="middle" font-weight="700">200</text>
+        <text x="68" y="174" fill="var(--muted)" font-size="9.5" text-anchor="middle">Amazon</text>
+        <!-- Google -->
+        <rect x="160" y="100.85" width="26" height="59.15" rx="2" fill="var(--accent)" opacity="0.38"></rect>
+        <rect x="190" y="43" width="26" height="117" rx="2" fill="var(--accent)"></rect>
+        <text x="173" y="95" fill="var(--muted)" font-size="8.5" text-anchor="middle">91</text>
+        <text x="203" y="37" fill="var(--ink)" font-size="9" text-anchor="middle" font-weight="700">~180</text>
+        <text x="188" y="174" fill="var(--muted)" font-size="9.5" text-anchor="middle">Google</text>
+        <!-- Meta -->
+        <rect x="280" y="113.2" width="26" height="46.8" rx="2" fill="var(--accent)" opacity="0.38"></rect>
+        <rect x="310" y="78.75" width="26" height="81.25" rx="2" fill="var(--accent)"></rect>
+        <text x="293" y="107" fill="var(--muted)" font-size="8.5" text-anchor="middle">72</text>
+        <text x="323" y="73" fill="var(--ink)" font-size="9" text-anchor="middle" font-weight="700">~125</text>
+        <text x="308" y="174" fill="var(--muted)" font-size="9.5" text-anchor="middle">Meta</text>
+        <!-- Microsoft -->
+        <rect x="400" y="101.5" width="26" height="58.5" rx="2" fill="var(--accent)" opacity="0.38"></rect>
+        <rect x="430" y="85.25" width="26" height="74.75" rx="2" fill="var(--accent)"></rect>
+        <text x="413" y="96" fill="var(--muted)" font-size="8.5" text-anchor="middle">90</text>
+        <text x="443" y="79" fill="var(--ink)" font-size="9" text-anchor="middle" font-weight="700">~115</text>
+        <text x="428" y="174" fill="var(--muted)" font-size="9.5" text-anchor="middle">Microsoft</text>
+        <text x="470" y="42" fill="var(--muted)" font-size="8">■ 옅음=2025</text>
+        <text x="470" y="54" fill="var(--accent)" font-size="8" font-weight="700">■ 진함=2026E</text>
+      </svg>
+    </div>
+    <figcaption>그림 1. 4대 하이퍼스케일러 모두 2026년 capex를 큰 폭 증액. 합산 $630~725B, 2025년($388~410B) 대비 +60~77%(출처: CNBC·valueaddvc·Introl, 2026-02~06). 개별값은 회사 가이던스 중간값.</figcaption>
+  </figure>
+  <p>4대 하이퍼스케일러의 2026년 capex는 <b>합산 $630~725B로 전년비 60~77% 증가</b>가 예상되고, 골드만삭스는 <b>2025~2027년 누적 $1.15조로 2022~2024년($477B)의 2배 이상</b>을 전망한다(출처: valueaddvc·Introl, 2026 / Goldman 인용). <b>2026 capex의 약 75%(~$545B)가 AI 인프라</b>이며 그중 <b>60% 이상이 compute가 아니라 전력·냉각·건물</b>로 간다(출처: Futurum·GPUSmith, 2026). → 즉 돈은 <b>칩에서 '칩을 돌릴 환경'으로 무게중심이 옮겨가는 중</b>이다.</p>
+
+  <h3>2-2. 병목 — GPU공급(’24) → HBM·CoWoS(’25) → <b>전력(’26)</b></h3>
+  <figure>
+    <div class="svgbox">
+      <svg viewBox="0 0 520 110" role="img" aria-label="병목의 이동">
+        <text x="12" y="16" fill="var(--ink)" font-size="13" font-weight="700">AI 인프라 병목의 이동 (무엇이 성장을 막는가)</text>
+        <rect x="20" y="40" width="140" height="42" rx="6" fill="var(--card)" stroke="var(--line)" stroke-width="1.2"></rect>
+        <text x="90" y="58" fill="var(--muted)" font-size="10.5" text-anchor="middle" font-weight="700">2024</text>
+        <text x="90" y="73" fill="var(--ink)" font-size="10" text-anchor="middle">GPU 공급</text>
+        <rect x="190" y="40" width="140" height="42" rx="6" fill="var(--card)" stroke="var(--line)" stroke-width="1.2"></rect>
+        <text x="260" y="58" fill="var(--muted)" font-size="10.5" text-anchor="middle" font-weight="700">2025</text>
+        <text x="260" y="73" fill="var(--ink)" font-size="10" text-anchor="middle">HBM · CoWoS 패키징</text>
+        <rect x="360" y="38" width="150" height="46" rx="6" fill="var(--accent)" opacity="0.16" stroke="var(--accent)" stroke-width="1.8"></rect>
+        <text x="435" y="57" fill="var(--accent)" font-size="10.5" text-anchor="middle" font-weight="700">2026</text>
+        <text x="435" y="73" fill="var(--ink)" font-size="10.5" text-anchor="middle" font-weight="700">전력 (Electricity)</text>
+        <text x="175" y="65" fill="var(--muted)" font-size="16">→</text>
+        <text x="345" y="65" fill="var(--muted)" font-size="16">→</text>
+      </svg>
+    </div>
+    <figcaption>그림 2. 병목은 매년 한 칸씩 다운스트림으로 이동했다. 2026년의 제약은 전력이다(출처: Pebblous·Tech Fund·Futurum, 2026).</figcaption>
+  </figure>
+  <p>병목이 전력으로 옮겨갔다는 증거는 정황이 아니라 숫자로 나온다. <b>마이크로소프트는 전력 부족으로 채우지 못한 Azure 수주 백로그가 $80B</b>라고 밝혔고(보도), 2026년 여름 <b>$130B 규모 미국 데이터센터 프로젝트 75곳이 전력 문제로 지연</b>됐다(보도). <b>미국 유틸리티는 AI 데이터센터 대응에 $1.4조 투자 계획</b>을 세웠다(출처: tech-insider, 2026). → <b>지금 병목의 정중앙에 있는 레이어가 곧 사이클의 승자</b>다: <b>전력(발전·연료전지·변압기)·냉각(액냉)·인터커넥트(광통신)</b>. 반대로 GPU 공급 부족은 완화됐다.</p>
+
+  <h3>2-3. 수익성 — capex가 매출로 돌아오는가 (사이클 리스크)</h3>
+  <p>확장의 반대편엔 <b>회수 리스크</b>가 있다. <b>capex는 폭증하는데 AI 매출이 그 속도를 못 따라가면</b>, 사상 최대 투자는 <b>과잉투자로 재분류되고 감가상각 부담</b>이 실적을 누른다(출처: Forbes·Goldman 인용, 2026). 이건 아직 현실화된 붕괴가 아니라 <b>사이클 후반에 쌓이는 리스크</b>다 — 수요는 여전히 확장이지만, <b>capex-매출 갭</b>이 벌어지는 국면이라는 점을 함께 봐야 한다(§5 사이클 판정).</p>
+
+  <!-- 3 레이어별 -->
+  <h2>3. 레이어별 지표 — 각 층에서 지금 무엇이 달라지고 있나</h2>
+
+  <h3>3-1. 연산(GPU) · 커스텀 ASIC — Nvidia 독점, 그 옆에서 커지는 자체칩</h3>
+  <div class="tablewrap">
+  <table>
+    <thead><tr><th>구분</th><th>대장(점유율)</th><th>도전자</th><th>지금의 변화</th></tr></thead>
+    <tbody>
+      <tr><td>범용 GPU</td><td>Nvidia (독점적)</td><td>AMD MI 시리즈</td><td>Blackwell(GB200/300)→Vera Rubin으로 세대 교체, GPU 소비전력 700W(H100)→2,300W(VR200)</td></tr>
+      <tr><td>커스텀 ASIC(co-design)</td><td>Broadcom (70%+)</td><td>Marvell (20~25%)</td><td>구글 TPU·메타 MTIA 등 하이퍼스케일러 자체칩 확대, 두 회사가 시장 95% 과점</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p class="note">→ <b>그래서 뭐가 달라지나:</b> 하이퍼스케일러가 Nvidia 의존을 줄이려 <b>자체칩</b>을 늘리면서, 순수 GPU 외에 <b>커스텀 실리콘 설계(Broadcom·Marvell)</b>가 별도 성장축이 됐다. 사용자 픽 중 Marvell이 여기 20~25%로 걸리지만, <b>이 축의 대장은 Broadcom</b>이다(출처: Tom's Hardware, 2026-05).</p>
+
+  <h3>3-2. 메모리(HBM) — SK하이닉스 리드, 그러나 삼성이 추격</h3>
+  <div class="tablewrap">
+  <table>
+    <thead><tr><th>기업</th><th>HBM 점유율(’26)</th><th>HBM4(Nvidia Rubin향)</th><th>비고</th></tr></thead>
+    <tbody>
+      <tr><td><b>SK하이닉스</b></td><td>50~62%</td><td>~70%(UBS 추정)</td><td>HBM4 선두, Nvidia 배분 mid-50%</td></tr>
+      <tr><td>삼성전자</td><td>33%(2Q, 21%→급등)</td><td>mid-20%</td><td>수율 회복, HBM4 Nvidia 첫 공급</td></tr>
+      <tr><td>마이크론</td><td>11%</td><td>~20%</td><td>3위, 인증 마일스톤이 관건</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p class="note">→ <b>그래서 뭐가 달라지나:</b> 2025년의 병목이던 HBM은 <b>HBM4 세대로 경쟁이 리셋</b>됐다. SK하이닉스가 리드를 지키지만 <b>삼성이 1개 분기에 점유율 21%→33%로 급반등</b>(출처: Seoul Economic, 2026-09). <b>한국 메모리가 AI 인프라 밸류체인에서 가장 확실한 대장 자리</b> 중 하나다(출처: Astute·Counterpoint, 2026).</p>
+
+  <h3>3-3. 서버 — Dell 1위, 단 'AI 순수 노출'은 Supermicro가 진함</h3>
+  <div class="tablewrap">
+  <table>
+    <thead><tr><th>기업</th><th>AI 서버 점유율</th><th>특징</th></tr></thead>
+    <tbody>
+      <tr><td><b>Dell</b></td><td>~20%</td><td>규모·엔터프라이즈 안정성 1위, 2026년 시스템 매출서 AI서버가 주력화</td></tr>
+      <tr><td>HPE</td><td>15%</td><td>ProLiant Gen12·Juniper 네트워킹 결합</td></tr>
+      <tr><td>Supermicro</td><td>9%(점유율) </td><td>매출의 80%+가 AI GPU 플랫폼(FY26 3Q $10.2B) — AI 집중도 최고</td></tr>
+      <tr><td>Lenovo·Inspur</td><td>11~12%</td><td>아시아 비중</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p class="note">→ <b>그래서 뭐가 달라지나:</b> 사용자 픽 Dell은 <b>점유율 1위가 맞다.</b> 다만 "대장"의 의미가 갈린다 — <b>규모·안정성의 Dell</b> vs <b>AI 집중도의 Supermicro</b>. 서버는 capex 확장의 직접 수혜지만 <b>조립·박스 사업이라 마진이 얇고 경쟁이 치열</b>하다(출처: 24/7 Wall St.·nextplatform, 2026). 점유율 수치는 2024 기준 집계가 섞여 있어 시점 유의.</p>
+
+  <h3>3-4. 네트워킹(스위치) — 이더넷이 인피니밴드를 잠식, Nvidia가 역전 1위</h3>
+  <div class="tablewrap">
+  <table>
+    <thead><tr><th>구분</th><th>대장</th><th>수치</th><th>변화</th></tr></thead>
+    <tbody>
+      <tr><td>데이터센터 이더넷 스위치(완제품)</td><td>Nvidia(Spectrum-X)</td><td>21.5%</td><td>1Q26 매출 YoY +192.7%, Cisco·Arista 추월</td></tr>
+      <tr><td>〃 차상위</td><td>Arista</td><td>18.9%</td><td>1Q26 매출 $2.2B(+37%)</td></tr>
+      <tr><td>스위치 실리콘(머천트 칩)</td><td><b>Broadcom(Tomahawk)</b></td><td>~80%</td><td>102.4Tbps 스위치 양산, UEC 대응</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p class="note">→ <b>그래서 뭐가 달라지나:</b> 데이터센터 이더넷 스위치 시장이 <b>1Q26 $15.4B로 +39.8% YoY</b> 급증(출처: IDC, 2026). <b>이더넷이 인피니밴드를 잠식</b>(UEC 표준화)하면서 완제품은 Nvidia·Arista, <b>칩은 Broadcom이 80% 장악</b>. 광통신과 함께 <b>'데이터를 옮기는' 인터커넥트가 병목 해소의 핵심축</b>으로 부상.</p>
+
+  <h3>3-5. 광통신(광 DSP) — Marvell의 진짜 대장 자리</h3>
+  <div class="tablewrap">
+  <table>
+    <thead><tr><th>구분</th><th>대장(점유율)</th><th>비고</th></tr></thead>
+    <tbody>
+      <tr><td>광 DSP(PAM4·코히어런트)</td><td><b>Marvell (60~65%)</b></td><td>AI 붐 이전부터 쌓은 1위, CPO(co-packaged optics)로 확장</td></tr>
+      <tr><td>광모듈·부품</td><td>Coherent·Lumentum·InnoLight 등</td><td>DSP 위의 트랜시버·레이저 계층</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p class="note">→ <b>그래서 뭐가 달라지나:</b> 랙 전력밀도·클러스터 규모가 커질수록 <b>노드 간 대역폭이 병목</b>이 되고, 그 해소의 핵심이 광 인터커넥트다. <b>광 DSP 60~65% 점유의 Marvell은 이 레이어의 명확한 대장</b>(출처: Yahoo Finance·phemex, 2026). 단 커스텀 ASIC(§3-1)에선 Broadcom에 밀린다 — 픽의 강점을 <b>광통신에 한정</b>하면 정확하다. ※ 한국 CPO 밸류체인은 <a href="/study/260627_cpo_밸류체인_대해부.html">별도 리포트</a> 참조.</p>
+
+  <h3>3-6. 전력 — 2026년의 새 병목이자 최대 격전지</h3>
+  <div class="tablewrap">
+  <table>
+    <thead><tr><th>세부 축</th><th>대장</th><th>지금의 변화</th></tr></thead>
+    <tbody>
+      <tr><td>연료전지(온사이트·behind-the-meter)</td><td><b>Bloom Energy</b></td><td>Oracle 최대 2.8GW MSA(1.2GW 진행), 90일간 $7.65B 수주, 백로그 ~$20B, 55일 만에 전력 공급</td></tr>
+      <tr><td>가스터빈·발전설비</td><td>GE Vernova·Siemens Energy</td><td>대형 발전 증설 수요</td></tr>
+      <tr><td>비상·분산 발전기</td><td>Caterpillar·Cummins</td><td>즉시 가용 전력 수요</td></tr>
+      <tr><td>변압기·전력기기</td><td>효성·HD현대일렉트릭 등</td><td>그리드 증설(한국 밸류체인 강함)</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p class="note">→ <b>그래서 뭐가 달라지나:</b> 그리드가 수요를 못 따라가니 <b>부지 내 자가발전(behind-the-meter)</b>이 급부상했고, <b>Bloom Energy가 그 서사의 대장</b>이다 — Oracle과의 대형 계약과 <b>55일 초고속 배치</b>가 핵심 차별점(출처: Oracle·Motley Fool, 2026-04~09). 다만 '전력'은 넓은 레이어라 <b>연료전지의 대장 = Bloom</b>이지 전력 전체는 아니다. ※ 전력 밸류체인 심화: <a href="/study/260627_800VDC_3_밸류체인.html">800VDC</a>·<a href="/study/260822_데이터센터전력캐패시터_수혜리포트.html">전력 캐패시터</a>.</p>
+
+  <h3>3-7. 냉각(액냉) — 공랭이 물리적으로 불가능해지는 지점</h3>
+  <figure>
+    <div class="svgbox">
+      <svg viewBox="0 0 460 190" role="img" aria-label="AI 랙 전력밀도 상승">
+        <text x="12" y="16" fill="var(--ink)" font-size="13" font-weight="700">AI 랙 전력밀도(kW/랙) — 공랭 한계 돌파</text>
+        <line x1="30" y1="160" x2="440" y2="160" stroke="var(--line)" stroke-width="1"></line>
+        <rect x="60" y="146" width="80" height="14" rx="2" fill="var(--accent)" opacity="0.5"></rect>
+        <text x="100" y="140" fill="var(--ink)" font-size="9.5" text-anchor="middle">~40</text>
+        <text x="100" y="174" fill="var(--muted)" font-size="9" text-anchor="middle">2023 H100(공랭)</text>
+        <rect x="180" y="114.4" width="80" height="45.6" rx="2" fill="var(--accent)" opacity="0.75"></rect>
+        <text x="220" y="108" fill="var(--ink)" font-size="9.5" text-anchor="middle">120~150</text>
+        <text x="220" y="174" fill="var(--muted)" font-size="9" text-anchor="middle">2025 GB200</text>
+        <rect x="300" y="30" width="80" height="130" rx="2" fill="var(--accent)"></rect>
+        <text x="340" y="24" fill="var(--ink)" font-size="9.5" text-anchor="middle" font-weight="700">~370</text>
+        <text x="340" y="174" fill="var(--muted)" font-size="9" text-anchor="middle">2026 평균(전망)</text>
+      </svg>
+    </div>
+    <figcaption>그림 3. 랙 전력밀도가 공랭 한계(대략 40~50kW)를 넘어서며 <b>액냉이 선택이 아닌 필수</b>로. 2026 평균 전망 ~370kW(출처: EnkiAI·mlq.ai, 2026).</figcaption>
+  </figure>
+  <p class="note">→ <b>그래서 뭐가 달라지나:</b> 액냉 시장은 <b>2026년 $4~6B에서 2033~35년 $27B대</b>로 고성장 전망(CAGR 18~31%)(출처: MarketsandMarkets·GMI, 2026). <b>Vertiv·Schneider가 선두</b>. 전력과 짝을 이루는 <b>병목 이동의 직접 수혜 레이어</b>다.</p>
+
+  <h3>3-8. 팹/CPU — 대장은 TSMC·Nvidia, Intel은 '턴어라운드 옵션'</h3>
+  <div class="tablewrap">
+  <table>
+    <thead><tr><th>구분</th><th>현재 대장</th><th>Intel의 위치</th></tr></thead>
+    <tbody>
+      <tr><td>파운드리(팹)</td><td><b>TSMC</b></td><td>18A 양산 진입, MS·AWS 커밋 확보 / 외부 고객은 아직 소수</td></tr>
+      <tr><td>AI 연산</td><td><b>Nvidia</b></td><td>Nvidia가 Intel에 $5B 투자(단 파운드리 수주 아닌 패키징 협의, 18A 테스트는 중단)</td></tr>
+      <tr><td>정책 지위</td><td>—</td><td>미국 정부 ~10% 지분 → "국가대표" · 14A 대규모 투자는 외부 고객 확약 전제(2026이 분기점)</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p class="note">→ <b>그래서 뭐가 달라지나:</b> 팹의 대장은 <b>TSMC</b>, 연산의 대장은 <b>Nvidia</b>다. <b>Intel은 현재 이 레이어의 대장이 아니라</b>, 18A 양산·정부 지분·Nvidia 투자로 <b>"대장이 될 수 있느냐를 2026~27년에 판가름하는 정책·턴어라운드 옵션"</b>이다(출처: CNBC·wccftech·Forbes, 2026). 2025 병목이던 <b>CoWoS 패키징</b>은 TSMC 증설로 완화 중.</p>
+
+  <!-- 4 사용자 4픽 검증 -->
+  <h2>4. 사용자의 4개 픽을 지도 위에 놓으면</h2>
+  <div class="tablewrap">
+  <table>
+    <thead><tr><th>레이어</th><th>사용자 픽</th><th>대장 근거</th><th>판정</th></tr></thead>
+    <tbody>
+      <tr><td>전력</td><td><b>Bloom Energy</b></td><td>연료전지 온사이트 전력 독보적 · Oracle 2.8GW · $20B 백로그 · 병목 정중앙</td><td class="vd v-o">근거 강함(연료전지 한정)</td></tr>
+      <tr><td>광통신</td><td><b>Marvell</b></td><td>광 DSP 60~65% 진짜 1위 · 대역폭 병목 수혜</td><td class="vd v-o">근거 강함(광 DSP 한정)</td></tr>
+      <tr><td>서버</td><td><b>Dell</b></td><td>AI 서버 점유율 ~20% 1위</td><td class="vd v-m">1위지만 경합(Supermicro 순수노출↑)</td></tr>
+      <tr><td>팹/CPU</td><td><b>Intel</b></td><td>18A·정부지분·Nvidia $5B</td><td class="vd v-u">현재 대장 아님 = 턴어라운드 옵션</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p class="note"><b>정리.</b> 4개 중 <b>전력(Bloom)·광통신(Marvell)은 "병목 이동의 정중앙 + 각 레이어 명확한 대장"</b>이라 프레임과 픽이 가장 잘 맞는다. <b>서버(Dell)는 1위지만 성격이 다른 경합</b>, <b>팹(Intel)은 대장 검증이 아직 진행 중인 옵션</b>이다. → 그래서 이어지는 <b>기업분석은 근거가 가장 단단한 Bloom·Marvell부터</b> 딥다이브할 예정(다음 리포트).</p>
+
+  <!-- 5 사이클 판정 -->
+  <h2>5. 사이클 판정 — '확장 국면 정점부 + 병목 로테이션', 단 후반 리스크 동시 축적</h2>
+  <div class="callout">
+    <b>판정: 확장(Expansion) 국면의 정점부.</b> 단, 성장의 <b>주도 레이어가 연산 → 전력·냉각·인터커넥트로 로테이션</b>하는 국면이다.
+    <ul style="margin:.5em 0 0">
+      <li><b>수요축(capex):</b> 확장 — 2026 $630~725B, +60~77% YoY. 명백한 상승.</li>
+      <li><b>병목축:</b> 전력으로 이동 — GPU 부족 완화, 전력·냉각·광통신이 새 승자.</li>
+      <li><b>수익성축:</b> 회수 검증 초입 — capex-매출 갭 확대로 <b>사이클 후반 리스크(과잉투자·감가상각)</b> 축적.</li>
+    </ul>
+    → 한 문장: <b>"돈은 계속 쏟아지되, 그 돈이 가는 곳이 칩에서 전력·냉각·인터커넥트로 옮겨가는 확장 후반 국면"</b>. 상방은 병목 레이어(전력·냉각·광통신)에, 하방 리스크는 "매출이 capex를 못 따라가는" 회수 검증에 있다.
+  </div>
+  <p class="note">⚠️ <b>선행성 주의:</b> capex·수주·점유율은 <b>실적을 선행할 수도, 이미 반영됐을 수도</b> 있다. 특히 주가엔 상당 부분 선반영됐을 가능성이 커, "capex가 느니 관련주가 오른다"는 단정은 금물이다. 종목별로 <b>수주가 실제 매출·이익으로 인식되는 시차</b>를 확인해야 한다(company-deep-dive에서 검증).</p>
+
+  <!-- 6 다음에 볼 것 -->
+  <h2>6. 다음에 볼 것 — 월·분기 체크리스트 (숫자·부호로 판정)</h2>
+  <div class="card">
+    <b>[분기] 실적·가이던스로 판정</b>
+    <ul>
+      <li><b>하이퍼스케일러 분기 capex 가이던스 상향/하향</b> — 4대사 실적 시즌(1·4·7·10월). 하향 전환은 사이클 피크 신호.</li>
+      <li><b>"capex ÷ AI 관련 매출" 갭</b> — 갭이 계속 벌어지면 회수 리스크 심화(과잉투자 논쟁 재점화).</li>
+      <li><b>HBM4 양산·점유율</b> — SK하이닉스 70%대 유지 vs 삼성 추격(2H26 가시화).</li>
+    </ul>
+    <b>[월·수시] 공시·보도로 판정</b>
+    <ul>
+      <li><b>전력 계약(연료전지·터빈·PPA) 신규 GW·금액</b> — Bloom 백로그($20B) 증가 여부. 병목 심화의 직접 지표.</li>
+      <li><b>데이터센터 프로젝트 지연·취소 건수</b> — 전력난이 완화되는지 악화되는지. 2026 여름 75곳/$130B 지연 대비.</li>
+      <li><b>이더넷 vs 인피니밴드 점유율</b> — UEC 스위치 출하로 이더넷 잠식 가속 여부(분기 IDC/Dell'Oro).</li>
+      <li><b>Intel 14A 외부 고객 확약</b> — 확약 공시가 나오면 '옵션→대장 후보' 전환 신호.</li>
+    </ul>
+  </div>
+
+  <hr>
+  <div class="warn" style="font-size:.9rem">
+    <b>면책.</b> 투자 판단의 최종 책임은 투자자에게 있습니다. 본 문서는 개인 학습용 정리이며 매수·매도 권유가 아닙니다. 점유율·capex 수치는 <b>출처·집계기준·시점이 상이</b>하여 범위로 제시했으며, 일부는 시장조사기관·언론의 추정으로 확정치가 아닙니다. 기업 발표·언론 정보는 사실이 아니라 <b>주장</b>일 수 있습니다.<br>
+    <b>데이터 출처·시점:</b> capex — CNBC·valueaddvc·Introl·Futurum(2026), Goldman 인용 / 병목·전력난 — Pebblous·Tech Fund·tech-insider(2026), MS·75곳 지연 보도 / HBM — Astute·Counterpoint·Seoul Economic·UBS 인용(2026) / 서버 — 24/7 Wall St.·nextplatform·ABI(2026, 일부 2024 집계) / 네트워킹 — IDC·SDxCentral·Dell'Oro(2026) / 광통신 — Tom's Hardware·Yahoo·phemex(2026) / 전력 — Oracle·Motley Fool·247wallst(2026) / 냉각 — MarketsandMarkets·GMI·EnkiAI(2026) / 팹 — CNBC·wccftech·Forbes(2026). epic.ai 한국 실물지표는 글로벌 테마 특성상 미적용.
+  </div>
+  <p style="text-align:center;color:var(--muted);font-size:.85rem;margin-top:2em">© 2026 노력하는뚱땡이 리서치 라이브러리.</p>
+
+</div>
+</body>
+</html>

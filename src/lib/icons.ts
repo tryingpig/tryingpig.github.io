@@ -63,6 +63,8 @@ export const TOPIC_ICONS: [RegExp, string][] = [
   [/HD현대마린엔진|071970/i, 'marineengine'],
   [/비에이치아이|083650/, 'hrsgboiler'],
   [/신화인터텍|056700/i, 'opticalfilmstack'],
+  [/블룸에너지|블룸|bloomenergy/i, 'fuelcellstack'],
+  [/마벨|marvell|mrvl/i, 'opticaltransceiver'],
 ];
 
 /* 매칭되는 주제가 없을 때 — 파일명 해시로 색과 무늬가 정해지는 픽셀 타일.

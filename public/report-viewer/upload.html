@@ -43,7 +43,7 @@
     </div>
   </div>
 
-  <script src="app.js?v=23"></script>
+  <script src="app.js?v=24"></script>
   <script type="module">
     import * as pdfjsLib from "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.6.82/pdf.min.mjs";
     pdfjsLib.GlobalWorkerOptions.workerSrc =
@@ -138,7 +138,7 @@
         // 중복 확인
         setStatus("목록 확인 중…");
         let rres = await ghFetch("contents/index/reports.json", { cache: "no-store" });
-        if (!rres.ok) throw new Error("목록 로드 실패: " + rres.status);
+        if (!rres.ok) throw new Error("목록 로드 실패: " + (await ghErrMsg(rres)));
         let robj = await rres.json();
         let rdoc = JSON.parse(decodeB64Utf8(robj.content));
         if ((rdoc.reports || []).some((r) => r.id === id)) {
@@ -161,15 +161,21 @@
         const pdfPath = `pdfs/${Y}/${Mo}/${id}_${safe}.pdf`;
         const thumbPath = `index/thumbs/${id}.jpg`;
 
-        setStatus("PDF 업로드 중…");
-        await putBinaryFile(pdfPath, FILE, `manual add: ${id}`);
+        // 이전 시도에서 PDF만 올라가고 끊긴 경우: 재업로드 없이 이어서 진행
+        setStatus("이전 업로드 확인 중…");
+        const already = await ghFileSha(pdfPath);
+        if (already) {
+          setStatus("PDF는 이미 올라가 있어 이어서 등록합니다…");
+        } else {
+          setStatus("PDF 업로드 중…");
+          await putBinaryFile(pdfPath, FILE, `manual add: ${id}`);
+        }
         setStatus("썸네일 업로드 중…");
         await putBinaryFile(thumbPath, thumbBlob, `thumb: ${id}`);
         setStatus("주석 생성 중…");
-        await ghFetch("contents/annotations/" + id + ".json", {
-          method: "PUT",
-          body: { message: `annotations: ${id}`, content: encodeUtf8B64(JSON.stringify({ report_id: id, updated_at: k, highlights: [] }, null, 2)) },
-        });
+        await ghPutFile("annotations/" + id + ".json",
+          encodeUtf8B64(JSON.stringify({ report_id: id, updated_at: k, highlights: [] }, null, 2)),
+          `annotations: ${id}`);
 
         const entry = {
           id, title, sector, broker,
@@ -197,7 +203,7 @@
             body: { message: `manual: +1 report (${id})`, content: encodeUtf8B64(JSON.stringify(rdoc, null, 2)), sha: robj.sha },
           });
           if (put.ok) break;
-          if (put.status !== 409 && put.status !== 422) throw new Error("목록 등록 실패: " + put.status);
+          if (put.status !== 409 && put.status !== 422) throw new Error("목록 등록 실패: " + (await ghErrMsg(put)));
         }
 
         setStatus("완료! 목록으로 이동합니다…");

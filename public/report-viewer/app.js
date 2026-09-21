@@ -94,15 +94,44 @@ function blobToDataURL(blob) {
   });
 }
 
-/* 바이너리 파일(이미지 캡처 등)을 vault에 PUT. hid로 경로가 유일하므로 sha 불필요(신규) */
+/* GitHub 오류 응답의 message를 뽑아 "상태코드: 메시지" 형태로 */
+async function ghErrMsg(res) {
+  let msg = "";
+  try { msg = (await res.clone().json()).message || ""; } catch (_) {}
+  return res.status + (msg ? ": " + msg : "");
+}
+
+/* vault 경로의 sha 조회 (없으면 null). object 미디어타입이라 1MB 넘는 파일도 메타만 받음 */
+async function ghFileSha(path) {
+  const res = await ghFetch("contents/" + path, { accept: "application/vnd.github.object", cache: "no-store" });
+  if (res.status === 404) return null;
+  if (!res.ok) throw new Error("경로 확인 실패: " + (await ghErrMsg(res)));
+  return (await res.json()).sha || null;
+}
+
+/* base64 내용을 vault에 PUT. 이미 있는 경로면(422 sha 누락) sha를 받아 덮어쓰기로 재시도,
+   409(동시 갱신 충돌)도 잠시 후 재시도. 실패 시 GitHub 메시지를 포함해 throw */
+async function ghPutFile(path, contentB64, message, sha = null) {
+  let lastErr = "";
+  for (let attempt = 0; attempt < 3; attempt++) {
+    const body = { message: message || ("add " + path), content: contentB64 };
+    if (sha) body.sha = sha;
+    const res = await ghFetch("contents/" + path, { method: "PUT", body });
+    if (res.ok) return await res.json();
+    lastErr = await ghErrMsg(res);
+    if (res.status === 422 || res.status === 409) {
+      const cur = await ghFileSha(path);
+      if (cur && cur !== sha) { sha = cur; continue; }   // 경로가 이미 있음 → sha 붙여 덮어쓰기
+      if (res.status === 409) { await new Promise((r) => setTimeout(r, 1200)); continue; }
+    }
+    break;
+  }
+  throw new Error("파일 업로드 실패: " + lastErr);
+}
+
+/* 바이너리 파일(PDF·썸네일·이미지 캡처)을 vault에 PUT. 같은 경로가 있으면 덮어씀 */
 async function putBinaryFile(path, blob, message) {
-  const content = await blobToBase64(blob);
-  const res = await ghFetch("contents/" + path, {
-    method: "PUT",
-    body: { message: message || ("add " + path), content },
-  });
-  if (!res.ok) throw new Error("파일 업로드 실패: " + res.status);
-  return await res.json();
+  return await ghPutFile(path, await blobToBase64(blob), message);
 }
 
 /* vault의 이미지 파일을 받아 data URL로 (모아보기 캡처 표시용) */

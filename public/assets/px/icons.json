@@ -1888,6 +1888,37 @@
         "................",
         "................"
       ]
+    },
+    "nandstack": {
+      "bg": [
+        "#141a26",
+        "#0a0e16"
+      ],
+      "palette": {
+        "a": "#d4dce8",
+        "b": "#9fb0c8",
+        "h": "#ffffff",
+        "d": "#1b2233",
+        "c": "#6b7890"
+      },
+      "grid": [
+        "................",
+        "................",
+        "..hhhddhhhddhh..",
+        "..bbbddbbbddbb..",
+        "..aaaddaaaddaa..",
+        "..bbbddbbbddbb..",
+        "..aaaddaaaddaa..",
+        "..bbbddbbbddbb..",
+        "..aaaddaaaddaa..",
+        "..bbbddbbbddbb..",
+        "..aaaddaaaddaa..",
+        "..bbbddbbbddbb..",
+        "..aaaddaaaddaa..",
+        "..cccccccccccc..",
+        "................",
+        "................"
+      ]
     }
   }
 }

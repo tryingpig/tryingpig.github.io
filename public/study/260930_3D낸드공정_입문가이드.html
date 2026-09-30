@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>3D NAND 공정 완전 이해 — 하드마스크(ACL)·고종횡비 식각·백사이드</title>
+<link rel="stylesheet" href="/assets/report.css">
+<script src="/assets/report.js" defer></script>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<script>
+  (function () {
+    try {
+      var t = localStorage.getItem('theme');
+      if (!t) t = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      if (t === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+    } catch (e) {}
+  })();
+</script>
+</head>
+<body data-topic="tech">
+<div class="topbar">
+  <div class="topbar-in">
+    <a class="back" href="/#study">학습공간</a>
+    <span class="crumb">3D NAND 공정 입문가이드</span>
+    <button class="theme-toggle" type="button" aria-label="다크/라이트 전환" title="다크/라이트 전환">
+      <svg class="i-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      <svg class="i-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+    </button>
+  </div>
+</div>
+<div class="wrap">
+
+  <span class="kicker">기술이해 가이드 · 반도체 공정 · 초보자용(기초→심화)</span>
+  <h1>3D NAND 공정 완전 이해<br>— 하드마스크(ACL)·고종횡비 식각·백사이드</h1>
+  <p class="sub">작성일 2026-09-30 · "낸드가 아파트처럼 위로 쌓이면서 왜 '깎고 뚫는 기술'이 승부처가 됐나"를 기초부터 딥하게</p>
+
+  <div class="warn">
+    <b>이 글의 목적.</b> 이 문서는 <b>기술·산업을 이해하기 위한 교육 자료</b>입니다. 특정 종목의 매수·매도를 권하지 않으며, 뒤에 나오는 회사 이름은 "이 기술을 누가 만드는가"를 설명하기 위한 예시일 뿐 투자 추천이 아닙니다. 그림은 개념 이해를 돕기 위한 <b>자체 제작 도식</b>이며 실제 소자의 축척과 다릅니다.
+  </div>
+
+  <div class="callout">
+    <b>3줄 요약.</b> ① 낸드(NAND)는 미세화의 한계에 부딪혀 <b>평면 대신 위로 쌓는(3D) 구조</b>로 바뀌었고, 층수(단수)가 128 → 300단+로 치솟았다. ② 그러자 <b>수백 층을 수직으로 관통해 뚫는 '고종횡비(HAR) 식각'</b>이 가장 어려운 병목이 됐고, 그 긴 식각을 버텨줄 <b>단단한 탄소 마스크 = ACL(비정질 탄소막)</b>의 품질이 곧 수율을 좌우하게 됐다. ③ 여기에 웨이퍼가 휘고 얇아지면서 <b>뒷면(백사이드) 공정</b>까지 중요해졌다. → 이 글은 이 세 가지(<b>하드마스크·식각·백사이드</b>)를 기초부터 풀어낸다.
+  </div>
+
+  <div class="toc"><b>목차</b><ol>
+    <li>큰 그림 — 반도체는 결국 "쌓고·깎고·채우는" 일</li>
+    <li>낸드가 뭐고, 왜 '3D'가 됐나</li>
+    <li>3D NAND 구조 뜯어보기 — ONON·채널홀·워드라인</li>
+    <li>공정의 3대 난관 — 고단화가 만든 병목</li>
+    <li>하드마스크와 ACL — 이 글의 심장</li>
+    <li>백사이드(BSD) 공정 — 웨이퍼 뒷면 이야기</li>
+    <li>누가 만드나 — 장비·소재 지도</li>
+    <li>왜 '지금' 중요한가 — 고단화 경쟁과 AI</li>
+    <li>한 장 요약 · 용어사전 · FAQ</li>
+  </ol></div>
+
+  <!-- 1 -->
+  <h2>1. 큰 그림 — 반도체는 결국 "쌓고·깎고·채우는" 일</h2>
+  <p>반도체 칩을 만드는 과정을 아주 크게 보면 <b>세 가지 동작의 무한 반복</b>이다. 이 셋만 머리에 넣으면 뒤 내용이 훨씬 쉬워진다.</p>
+  <div class="grid2">
+    <div class="card"><b>① 쌓기 (증착, Deposition)</b><br>웨이퍼(실리콘 원판) 위에 얇은 막을 입힌다. 산화막·질화막·금속·탄소막 등. 페인트를 균일하게 칠하는 것에 가깝다. 장비: CVD·ALD.</div>
+    <div class="card"><b>② 깎기 (식각, Etch)</b><br>필요 없는 부분을 화학·플라스마로 파낸다. 조각칼로 깎아내는 단계. 이 글의 주인공인 <b>깊은 구멍 뚫기</b>가 여기 속한다.</div>
+  </div>
+  <div class="grid2">
+    <div class="card"><b>③ 그리기 (노광, Photo)</b><br>"어디를 남기고 어디를 깎을지" 설계도를 빛으로 새긴다. 감광액(PR)에 마스크 패턴을 노광. 깎기 전에 <b>본을 뜨는</b> 단계.</div>
+    <div class="card"><b>+ 채우기·닦기</b><br>깎아 만든 빈 공간에 금속·물질을 채우고(fill), 남은 마스크나 이물을 <b>세정(clean)</b>한다. 그리고 다시 ①로 돌아가 반복.</div>
+  </div>
+  <p class="note">👉 <b>핵심.</b> "그린 대로(노광) → 깎는다(식각)"가 반도체 미세공정의 본질이다. 그런데 <b>깊이 깎을수록</b> "그려놓은 본(마스크)"이 먼저 닳아 없어지는 문제가 생긴다. 이 문제를 푸는 게 바로 <b>하드마스크(§5)</b>이고, 낸드가 3D로 높아질수록(§2) 이 문제가 극심해진다. 이야기의 뼈대가 여기서 시작된다.</p>
+
+  <!-- 2 -->
+  <h2>2. 낸드가 뭐고, 왜 '3D'가 됐나</h2>
+  <p><b>NAND 플래시</b>는 전원을 꺼도 데이터가 남는 <b>비휘발성 메모리</b>다. USB·SSD·스마트폰 저장공간이 전부 낸드다. 데이터를 저장하는 최소 단위인 <b>셀(cell)</b>을 얼마나 많이, 싸게 집어넣느냐가 경쟁의 전부다.</p>
+  <h3>2-1. 평면(2D)의 한계 — 더 이상 못 좁힌다</h3>
+  <p>예전 낸드는 셀을 <b>바닥에 평평하게(2D)</b> 깔고, 그 간격을 좁혀(미세화) 용량을 늘렸다. 그런데 셀을 너무 붙이면 <b>옆 셀끼리 전자가 간섭</b>해 데이터가 깨진다. 10나노대 근처에서 물리적 한계에 부딪혔다. "더 좁히기"가 막힌 것이다.</p>
+  <h3>2-2. 해법 — 아파트처럼 위로 쌓는다(3D)</h3>
+  <p>그래서 발상을 바꿨다. <b>땅값이 비싸면 아파트를 올리듯</b>, 셀을 옆으로 붙이는 대신 <b>위로 쌓아 올렸다.</b> 이것이 <b>3D NAND</b>다. 한 층(단)에 셀을 깔고, 그 위에 또 한 층, 또 한 층 — 지금은 수백 층이다. 같은 바닥 면적에 층수만큼 용량이 늘어난다.</p>
+  <figure>
+    <div class="svgbox">
+      <svg viewBox="0 0 640 220" role="img" aria-label="2D 낸드와 3D 낸드 비교">
+        <text x="20" y="22" fill="var(--ink)" font-size="14" font-weight="700">평면(2D): 옆으로 붙이기 — 한계</text>
+        <line x1="20" y1="150" x2="300" y2="150" stroke="var(--line)" stroke-width="1.5"></line>
+        <rect x="30" y="128" width="26" height="22" rx="2" fill="var(--accent)" opacity="0.7"></rect>
+        <rect x="66" y="128" width="26" height="22" rx="2" fill="var(--accent)" opacity="0.7"></rect>
+        <rect x="102" y="128" width="26" height="22" rx="2" fill="var(--accent)" opacity="0.7"></rect>
+        <rect x="138" y="128" width="26" height="22" rx="2" fill="var(--accent)" opacity="0.7"></rect>
+        <rect x="174" y="128" width="26" height="22" rx="2" fill="var(--accent)" opacity="0.7"></rect>
+        <text x="30" y="172" fill="var(--muted)" font-size="10">셀을 좁히면 옆 셀과 간섭 → 막힘</text>
+        <text x="360" y="22" fill="var(--ink)" font-size="14" font-weight="700">수직(3D): 위로 쌓기 — 아파트</text>
+        <line x1="360" y1="200" x2="620" y2="200" stroke="var(--line)" stroke-width="1.5"></line>
+        <g>
+          <rect x="380" y="40" width="180" height="16" rx="2" fill="var(--accent)" opacity="0.85"></rect>
+          <rect x="380" y="60" width="180" height="16" rx="2" fill="var(--accent)" opacity="0.75"></rect>
+          <rect x="380" y="80" width="180" height="16" rx="2" fill="var(--accent)" opacity="0.65"></rect>
+          <rect x="380" y="100" width="180" height="16" rx="2" fill="var(--accent)" opacity="0.55"></rect>
+          <rect x="380" y="120" width="180" height="16" rx="2" fill="var(--accent)" opacity="0.45"></rect>
+          <rect x="380" y="140" width="180" height="16" rx="2" fill="var(--accent)" opacity="0.35"></rect>
+          <rect x="380" y="160" width="180" height="16" rx="2" fill="var(--accent)" opacity="0.28"></rect>
+          <rect x="380" y="180" width="180" height="16" rx="2" fill="var(--accent)" opacity="0.22"></rect>
+        </g>
+        <line x1="470" y1="36" x2="470" y2="200" stroke="#d9534f" stroke-width="3"></line>
+        <text x="478" y="120" fill="#d9534f" font-size="10">수직 구멍</text>
+        <text x="478" y="134" fill="#d9534f" font-size="10">(채널홀)</text>
+        <text x="360" y="216" fill="var(--muted)" font-size="10">층(단)을 쌓고 한 번에 관통해 뚫는다</text>
+      </svg>
+    </div>
+    <figcaption>그림 1. 2D는 옆으로 좁히다 한계에 도달했고, 3D는 층을 위로 쌓아 용량을 늘린다. 대신 <b>쌓은 층 전체를 수직으로 관통해 뚫는 일(빨간 선 = 채널홀)</b>이 새로운 숙제가 됐다. (자체 제작 도식)</figcaption>
+  </figure>
+  <p class="note">👉 <b>여기서 반전.</b> 위로 쌓는 건 쉬운데, <b>쌓아 놓은 수백 층을 한 번에 수직으로 뚫는 것</b>이 지옥이다. 층수를 올릴수록 뚫어야 할 깊이가 깊어진다. 그래서 3D NAND의 경쟁은 사실상 <b>"누가 더 깊은 구멍을 안 무너뜨리고 똑바로 뚫느냐"</b>의 싸움이 됐다. 이것을 이해하려면 먼저 구조를 봐야 한다(§3).</p>
+
+  <!-- 3 -->
+  <h2>3. 3D NAND 구조 뜯어보기 — ONON·채널홀·워드라인</h2>
+  <p>3D NAND는 처음부터 셀을 완성해서 쌓는 게 아니다. <b>①먼저 두 종류의 막을 번갈아 수백 층 쌓고 → ②수직으로 구멍을 뚫고 → ③나중에 셀을 만든다.</b> 순서가 직관과 반대라 헷갈리는데, 이 순서가 핵심이다.</p>
+  <h3>3-1. ONON — 산화막·질화막을 번갈아 쌓기</h3>
+  <p>먼저 <b>산화막(Oxide)</b>과 <b>질화막(Nitride)</b>을 <b>번갈아(O-N-O-N…) 수백 층</b> 쌓는다. 그래서 이 적층을 <b>ONON 스택</b>이라 부른다. 여기서 질화막은 <b>'가짜(희생) 층'</b>이다 — 나중에 빼내고 그 자리에 금속을 채울 예정이다.</p>
+  <h3>3-2. 채널홀 — 수직으로 관통해 뚫기</h3>
+  <p>쌓아 놓은 ONON 스택을 <b>위에서 아래까지 수직으로 관통하는 구멍</b>을 뚫는다. 이것이 <b>채널홀(Channel Hole)</b>이다. 이 구멍 안벽에 데이터를 저장하는 막을 입히고 <b>폴리실리콘(채널)</b>으로 채우면, 구멍 하나가 <b>수백 개의 셀이 세로로 꿰인 기둥</b>이 된다.</p>
+  <h3>3-3. 게이트 교체(Gate Replacement) — 가짜 층을 금속으로</h3>
+  <p>마지막에 <b>질화막(가짜 층)만 화학적으로 녹여 빼내고</b>, 그 빈 자리에 <b>텅스텐(금속)을 채운다.</b> 이 금속층이 각 층 셀을 제어하는 <b>워드라인(Word Line)</b>이 된다. 이 "가짜 층을 진짜 금속으로 바꿔치기"하는 방식을 <b>게이트 교체(gate-replacement)</b>라 하며, 2014년 이후 상용 낸드의 표준 구조다(업계 문헌).</p>
+  <figure>
+    <div class="svgbox">
+      <svg viewBox="0 0 620 260" role="img" aria-label="3D NAND 단면 구조">
+        <text x="20" y="20" fill="var(--ink)" font-size="14" font-weight="700">3D NAND 단면 — ONON 적층과 채널홀</text>
+        <!-- ONON layers -->
+        <g>
+          <rect x="60" y="40" width="360" height="14" fill="var(--accent)" opacity="0.5"></rect>
+          <rect x="60" y="54" width="360" height="14" fill="var(--muted)" opacity="0.35"></rect>
+          <rect x="60" y="68" width="360" height="14" fill="var(--accent)" opacity="0.5"></rect>
+          <rect x="60" y="82" width="360" height="14" fill="var(--muted)" opacity="0.35"></rect>
+          <rect x="60" y="96" width="360" height="14" fill="var(--accent)" opacity="0.5"></rect>
+          <rect x="60" y="110" width="360" height="14" fill="var(--muted)" opacity="0.35"></rect>
+          <rect x="60" y="124" width="360" height="14" fill="var(--accent)" opacity="0.5"></rect>
+          <rect x="60" y="138" width="360" height="14" fill="var(--muted)" opacity="0.35"></rect>
+          <rect x="60" y="152" width="360" height="14" fill="var(--accent)" opacity="0.5"></rect>
+          <rect x="60" y="166" width="360" height="14" fill="var(--muted)" opacity="0.35"></rect>
+          <rect x="60" y="180" width="360" height="14" fill="var(--accent)" opacity="0.5"></rect>
+          <rect x="60" y="194" width="360" height="14" fill="var(--muted)" opacity="0.35"></rect>
+        </g>
+        <!-- channel holes -->
+        <rect x="150" y="40" width="18" height="168" rx="9" fill="var(--bg)" stroke="#d9534f" stroke-width="2.5"></rect>
+        <rect x="300" y="40" width="18" height="168" rx="9" fill="var(--bg)" stroke="#d9534f" stroke-width="2.5"></rect>
+        <!-- labels -->
+        <text x="440" y="52" fill="var(--ink)" font-size="11">■ 산화막(Oxide)</text>
+        <text x="440" y="70" fill="var(--ink)" font-size="11">■ 질화막(Nitride)</text>
+        <text x="440" y="84" fill="var(--muted)" font-size="9.5">→ 나중에 빼고 텅스텐(워드라인)</text>
+        <text x="440" y="110" fill="#d9534f" font-size="11">▮ 채널홀(수직 관통)</text>
+        <text x="440" y="124" fill="var(--muted)" font-size="9.5">→ 안벽에 저장막 + 폴리실리콘</text>
+        <text x="60" y="228" fill="var(--muted)" font-size="10">수백 층(O-N-O-N…)을 쌓은 뒤, 위→아래로 한 번에 관통해 뚫는다</text>
+        <text x="60" y="244" fill="var(--muted)" font-size="10">구멍 하나 = 세로로 꿰인 수백 개 셀의 기둥</text>
+      </svg>
+    </div>
+    <figcaption>그림 2. ONON 적층 → 채널홀 관통 → (나중에) 질화막 자리를 텅스텐 워드라인으로 교체. 실제로는 수백 층이지만 도식에선 몇 층만 표현. (자체 제작 도식)</figcaption>
+  </figure>
+  <div class="note"><b>왜 이 순서가 중요한가.</b> 셀을 하나씩 만들어 쌓는 게 아니라 <b>"막을 다 쌓아 놓고 한 번에 뚫는다"</b>는 점 때문에, 낸드의 원가·수율이 <b>단 한 번의 초고난도 식각</b>에 걸리게 된다. 층이 200층이든 300층이든 <b>구멍은 한 번에 뚫어야</b> 하므로, 층이 높아질수록 이 한 번의 식각이 기하급수적으로 어려워진다. 다음 장이 그 이야기다.</p></div>
+
+  <!-- 4 -->
+  <h2>4. 공정의 3대 난관 — 고단화가 만든 병목</h2>
+  <h3>4-1. 채널홀 식각 = 100층 아파트를 관통하는 바늘구멍</h3>
+  <p>가장 어려운 게 <b>채널홀 식각</b>이다. 구멍의 <b>지름은 100나노미터(nm) 안팎</b>인데, 깊이는 수백 층을 관통해 <b>수 마이크로미터(㎛)</b>에 이른다. 이 "깊이 ÷ 지름"을 <b>종횡비(Aspect Ratio, AR)</b>라 하는데, 수백 층 스택에서는 <b>AR이 100:1을 넘어선다</b>(업계 문헌). 비유하면 <b>지름 1m 우물을 100m 깊이로, 그것도 완벽히 수직으로, 수십억 개를 동시에</b> 뚫는 셈이다.</p>
+  <div class="callout"><b>고종횡비(HAR, High Aspect Ratio) 식각</b>이란 이렇게 <b>가늘고 깊은</b> 구멍을 파는 공정을 말한다. 3D NAND·DRAM 캐패시터의 핵심 난관이며, 낸드 원가의 상당 부분이 여기 걸려 있다.</p>
+  <h3>4-2. 왜 그렇게 어려운가 — 세 가지 불량</h3>
+  <p>깊이 파 내려갈수록 플라스마·반응가스가 구멍 바닥까지 도달하기 어려워지고, 조금만 틀어져도 아래처럼 망가진다.</p>
+  <figure>
+    <div class="svgbox">
+      <svg viewBox="0 0 620 210" role="img" aria-label="고종횡비 식각의 대표 불량">
+        <text x="20" y="20" fill="var(--ink)" font-size="14" font-weight="700">깊이 뚫을 때 생기는 대표 불량</text>
+        <!-- ideal -->
+        <rect x="40" y="40" width="90" height="140" fill="var(--muted)" opacity="0.15"></rect>
+        <rect x="78" y="40" width="14" height="140" fill="var(--bg)" stroke="#7bc47f" stroke-width="2.5"></rect>
+        <text x="85" y="198" fill="#7bc47f" font-size="10.5" text-anchor="middle" font-weight="700">이상적</text>
+        <text x="85" y="34" fill="var(--muted)" font-size="9" text-anchor="middle">똑바로</text>
+        <!-- bowing -->
+        <rect x="190" y="40" width="90" height="140" fill="var(--muted)" opacity="0.15"></rect>
+        <path d="M228 40 Q214 110 228 180 M242 40 Q256 110 242 180" fill="none" stroke="#d9534f" stroke-width="2.5"></path>
+        <text x="235" y="198" fill="#d9534f" font-size="10.5" text-anchor="middle" font-weight="700">보잉(Bowing)</text>
+        <text x="235" y="34" fill="var(--muted)" font-size="9" text-anchor="middle">중간이 불룩</text>
+        <!-- twisting -->
+        <rect x="340" y="40" width="90" height="140" fill="var(--muted)" opacity="0.15"></rect>
+        <path d="M378 40 Q400 90 372 130 Q350 165 388 180 M392 40 Q414 90 386 130 Q364 165 402 180" fill="none" stroke="#d9534f" stroke-width="2.5"></path>
+        <text x="385" y="198" fill="#d9534f" font-size="10.5" text-anchor="middle" font-weight="700">트위스팅</text>
+        <text x="385" y="34" fill="var(--muted)" font-size="9" text-anchor="middle">휘어짐</text>
+        <!-- not open -->
+        <rect x="490" y="40" width="90" height="140" fill="var(--muted)" opacity="0.15"></rect>
+        <path d="M528 40 L528 150 L535 150 L535 40 M542 40 L542 150 L549 150 L549 40" fill="none" stroke="#d9534f" stroke-width="2.5"></path>
+        <line x1="528" y1="150" x2="549" y2="150" stroke="#d9534f" stroke-width="2.5"></line>
+        <text x="538" y="198" fill="#d9534f" font-size="10.5" text-anchor="middle" font-weight="700">미개통</text>
+        <text x="538" y="34" fill="var(--muted)" font-size="9" text-anchor="middle">바닥 막힘</text>
+      </svg>
+    </div>
+    <figcaption>그림 3. 고종횡비 식각의 3대 불량 — 중간이 불룩해지는 <b>보잉(bowing)</b>, 구멍이 휘는 <b>트위스팅(twisting)</b>, 바닥까지 못 뚫는 <b>미개통(not-open)</b>. 하나라도 생기면 그 기둥의 셀 전체가 불량이 된다. (자체 제작 도식)</figcaption>
+  </figure>
+  <p>구멍 하나가 망가지면 <b>그 기둥에 세로로 꿰인 수백 개 셀이 통째로 죽는다.</b> 그래서 채널홀 식각의 정밀도가 곧 <b>수율(양품 비율) = 원가</b>다.</p>
+  <h3>4-3. 스테어케이스(계단) 식각</h3>
+  <p>또 하나의 난관은 <b>계단(staircase) 식각</b>이다. 각 층의 워드라인에 전기 배선을 연결하려면, 스택의 한쪽 끝을 <b>계단처럼 층층이 깎아</b> 각 층을 노출시켜야 한다. 층수가 많을수록 계단도 길고 정밀해져야 한다. 채널홀만큼 유명하진 않지만 역시 <b>깊고 반복적인 식각</b>이라 마스크 부담이 크다.</p>
+  <h3>4-4. 결론 — 식각이 낸드의 '진짜 병목'</h3>
+  <p>과거 반도체 경쟁은 "얼마나 작게 그리느냐(노광)"였다. 하지만 3D NAND에서는 <b>"얼마나 깊게, 똑바로 깎느냐(식각)"</b>가 병목이다. 채널홀 하나를 뚫는 데 걸리는 시간이 매우 길고, 층이 높아질수록 더 길어진다. → 그래서 <b>이 긴 식각을 처음부터 끝까지 버텨줄 '마스크'</b>가 결정적으로 중요해진다. 드디어 이 글의 주인공이 등장한다.</p>
+
+  <!-- 5 -->
+  <h2>5. 하드마스크와 ACL — 이 글의 심장</h2>
+  <h3>5-1. 마스크가 뭔가 — 스텐실(본) 이야기</h3>
+  <p>벽에 글자를 스프레이로 칠할 때 <b>글자 모양으로 구멍 뚫린 스텐실(본)</b>을 대고 뿌린다. 반도체의 <b>마스크</b>도 똑같다. "여기는 깎고 저기는 남겨라"를 정하는 본이다. 원래 이 본 역할은 <b>감광액(PR, Photoresist)</b>이 한다 — 빛(노광)으로 패턴을 새긴 얇은 유기막이다.</p>
+  <h3>5-2. PR만으로 안 되는 이유 — 본이 먼저 닳는다</h3>
+  <p>문제는 <b>깊이 깎을수록 본(PR)이 먼저 닳아 없어진다</b>는 것. 식각은 바닥만 파는 게 아니라 <b>마스크 표면도 조금씩 갉아낸다.</b> 얕은 구멍이면 괜찮지만, 수백 층을 뚫는 긴 식각에서는 <b>구멍을 다 뚫기도 전에 PR이 사라져</b> 패턴이 무너진다. 부드러운 연필로 깊은 홈을 파려다 연필이 먼저 닳는 격이다.</p>
+  <h3>5-3. 그래서 ACL — 단단한 탄소 하드마스크</h3>
+  <p>해법은 PR 밑에 <b>훨씬 단단하고 식각에 강한 '보조 마스크'</b>를 한 겹 더 까는 것이다. 이 단단한 마스크를 <b>하드마스크(Hard Mask)</b>라 하고, 그중 <b>탄소(Carbon)로 만든 막</b>이 바로 <b>ACL(Amorphous Carbon Layer, 비정질 탄소막)</b>이다.</p>
+  <div class="grid2">
+    <div class="card"><b>왜 하필 탄소(ACL)인가</b>
+      <ul style="margin:.4em 0 0">
+        <li><b>식각 내성 우수</b> — 불소(F)·염소(Cl) 계열 식각가스에 잘 안 깎인다</li>
+        <li><b>고온 안정성</b> — 오래 걸리는 고온 식각을 버틴다</li>
+        <li><b>두껍게 형성 가능</b> — 깊이 팔수록 마스크도 두꺼워야 하는데 두께 확보가 쉽다</li>
+        <li><b>깔끔한 제거</b> — 식각 끝나면 산소 플라스마로 태워 없애기 좋다(탄소라서)</li>
+      </ul></div>
+    <div class="card"><b>마스크는 '층층이' 쌓는다</b><br>
+      실제로는 한 겹이 아니라 여러 겹을 쌓아 마스크를 강화한다:
+      <div style="margin:.5em 0 0;font-family:monospace;font-size:.9em;line-height:1.7">
+      맨 위 &nbsp;<b>PR</b> (빛으로 패턴)<br>
+      &nbsp;&nbsp;↓ &nbsp;<b>ACL</b> (단단한 탄소 — 버팀)<br>
+      &nbsp;&nbsp;↓ &nbsp;산화막/질화막 (중간 마스크)<br>
+      맨 아래 <b>ONON 스택</b> (진짜 뚫을 대상)</div>
+    </div>
+  </div>
+  <figure>
+    <div class="svgbox">
+      <svg viewBox="0 0 620 220" role="img" aria-label="하드마스크 스택과 식각">
+        <text x="20" y="20" fill="var(--ink)" font-size="14" font-weight="700">마스크 스택 — PR은 먼저 닳고, ACL이 끝까지 버틴다</text>
+        <!-- stack -->
+        <rect x="120" y="40" width="360" height="18" fill="var(--muted)" opacity="0.5"></rect><text x="490" y="53" fill="var(--ink)" font-size="10.5">PR (얇음·먼저 소모)</text>
+        <rect x="120" y="58" width="360" height="34" fill="var(--accent)" opacity="0.85"></rect><text x="490" y="79" fill="var(--ink)" font-size="10.5">ACL (두꺼운 탄소·버팀)</text>
+        <rect x="120" y="92" width="360" height="16" fill="var(--muted)" opacity="0.35"></rect><text x="490" y="104" fill="var(--ink)" font-size="10.5">중간 산화막</text>
+        <rect x="120" y="108" width="360" height="86" fill="var(--accent)" opacity="0.28"></rect><text x="490" y="155" fill="var(--ink)" font-size="10.5">ONON 스택</text>
+        <text x="490" y="169" fill="var(--muted)" font-size="9">(진짜 뚫을 대상)</text>
+        <!-- etch arrow holes -->
+        <rect x="200" y="40" width="14" height="154" fill="var(--bg)" stroke="#d9534f" stroke-width="2"></rect>
+        <rect x="330" y="40" width="14" height="154" fill="var(--bg)" stroke="#d9534f" stroke-width="2"></rect>
+        <text x="120" y="212" fill="var(--muted)" font-size="10">식각은 아래로 파면서 마스크 표면도 갉는다 → 그래서 두껍고 단단한 ACL이 필요</text>
+      </svg>
+    </div>
+    <figcaption>그림 4. PR → ACL → 산화막 → ONON 순서로 마스크를 강화한다. 얇은 PR은 식각 중 소모되지만, 두껍고 단단한 <b>ACL이 구멍을 다 뚫을 때까지 패턴을 지킨다.</b> (자체 제작 도식)</figcaption>
+  </figure>
+  <h3>5-4. ACL은 어떻게 만드나 — 전구체와 PECVD</h3>
+  <p>ACL은 <b>탄소를 포함한 기체(전구체)를 웨이퍼 위에서 반응시켜 탄소막으로 굳히는</b> 증착 공정으로 만든다. 대표 전구체는 <b>프로필렌(C₃H₆)·아세틸렌(C₂H₂)</b> 같은 탄화수소 가스이고, 대략 <b>400℃ 부근에서 플라스마를 이용한 화학증착(PECVD)</b>으로 입힌다(업계 문헌). 최근에는 <b>질소를 살짝 섞은(N-doped) ACL</b>이 식각 선택비를 약 10% 높여 양산에 쓰인다.</p>
+  <div class="callout"><b>ACL 품질 = 수율.</b> 같은 탄소막이라도 <b>①두께가 균일한가 ②식각에 얼마나 강한가(선택비) ③이물(파티클)이 없는가</b>가 다르다. 앞서 본 보잉·트위스팅·미개통(그림 3)은 상당 부분 <b>마스크 품질에서 갈린다.</b> 그래서 3D NAND가 고단화될수록 <b>"ACL을 얼마나 균일하고 깨끗하게, 두껍게 입히느냐"</b>가 곧 수율·원가·경쟁력이 됐다. 이것이 ACL 증착 장비의 진입장벽이다.</p>
+
+  <!-- 6 -->
+  <h2>6. 백사이드(BSD) 공정 — 웨이퍼 뒷면 이야기</h2>
+  <p>지금까지는 웨이퍼 <b>앞면(회로가 그려지는 면)</b> 이야기였다. 그런데 최근 <b>뒷면(백사이드, Backside)</b>도 중요해졌다. BSD는 문맥에 따라 <b>Backside Deposition(뒷면 증착)·Backside Damage·backside 처리 공정</b>을 두루 가리킨다.</p>
+  <h3>6-1. 뒷면이 왜 문제가 되나</h3>
+  <p>수백 층을 쌓으면 그 막들의 <b>내부 응력(stress) 때문에 웨이퍼가 휜다(warpage/bowing).</b> 종잇장에 테이프를 여러 겹 붙이면 말리는 것과 같다. 웨이퍼가 휘면 노광·식각 정밀도가 떨어지고 장비에서 다루기도 어렵다. 또 뒷면이 <b>오염되거나 막 두께가 불균일</b>하면 앞면 공정까지 흔들린다. 그래서 <b>뒷면에 응력 보상막을 입히거나(증착), 뒷면을 세정·보호</b>하는 공정이 필요해졌다.</p>
+  <h3>6-2. 백사이드 수요를 미는 세 갈래</h3>
+  <figure>
+    <div class="svgbox">
+      <svg viewBox="0 0 620 180" role="img" aria-label="백사이드 공정 수요 세 갈래">
+        <text x="20" y="20" fill="var(--ink)" font-size="14" font-weight="700">백사이드 공정을 키우는 세 갈래 수요</text>
+        <rect x="30" y="40" width="180" height="110" rx="8" fill="var(--card)" stroke="var(--line)" stroke-width="1.2"></rect>
+        <text x="120" y="64" fill="var(--accent)" font-size="12" text-anchor="middle" font-weight="700">① NAND 고단화</text>
+        <text x="120" y="88" fill="var(--ink)" font-size="10" text-anchor="middle">웨이퍼 휨·뒷면 오염</text>
+        <text x="120" y="106" fill="var(--ink)" font-size="10" text-anchor="middle">→ 뒷면 세정·응력</text>
+        <text x="120" y="122" fill="var(--ink)" font-size="10" text-anchor="middle">보상막·보호</text>
+        <rect x="220" y="40" width="180" height="110" rx="8" fill="var(--card)" stroke="var(--line)" stroke-width="1.2"></rect>
+        <text x="310" y="64" fill="var(--accent)" font-size="12" text-anchor="middle" font-weight="700">② HBM·적층</text>
+        <text x="310" y="88" fill="var(--ink)" font-size="10" text-anchor="middle">웨이퍼 얇게 갈기</text>
+        <text x="310" y="106" fill="var(--ink)" font-size="10" text-anchor="middle">(thinning)+TSV</text>
+        <text x="310" y="122" fill="var(--ink)" font-size="10" text-anchor="middle">→ 박막화·핸들링</text>
+        <rect x="410" y="40" width="180" height="110" rx="8" fill="var(--accent)" opacity="0.14" stroke="var(--accent)" stroke-width="1.6"></rect>
+        <text x="500" y="64" fill="var(--accent)" font-size="12" text-anchor="middle" font-weight="700">③ 로직 후면전력</text>
+        <text x="500" y="88" fill="var(--ink)" font-size="10" text-anchor="middle">전력을 뒷면으로</text>
+        <text x="500" y="106" fill="var(--ink)" font-size="10" text-anchor="middle">(BSPDN)</text>
+        <text x="500" y="122" fill="var(--ink)" font-size="10" text-anchor="middle">→ 새 공정 통째로</text>
+      </svg>
+    </div>
+    <figcaption>그림 5. 백사이드 공정은 NAND(휨·오염)뿐 아니라 <b>HBM(웨이퍼 박막화·TSV)</b>과 <b>로직의 후면전력공급(BSPDN)</b>까지 세 갈래가 동시에 밀고 있다. (자체 제작 도식)</figcaption>
+  </figure>
+  <ul>
+    <li><b>① NAND 고단화</b> — 층이 높을수록 휨·뒷면 오염·막 불균일이 심해져 <b>뒷면 세정·증착·보호</b> 수요가 늘어난다.</li>
+    <li><b>② HBM·적층 메모리</b> — 칩을 여러 장 쌓으려면 웨이퍼를 <b>아주 얇게 갈고(thinning)</b> 관통전극(TSV)으로 뚫는다. 얇아진 웨이퍼는 더 잘 휘고 다루기 어려워 백사이드 관리가 필수다.</li>
+    <li><b>③ 로직의 후면전력공급(BSPDN)</b> — 가장 구조적인 대형 변화다. 전력을 칩 <b>앞면이 아니라 뒷면으로 공급</b>하는 차세대 설계(인텔·파운드리들이 도입 중)로, <b>뒷면 증착·식각·본딩 공정이 통째로 새로 생긴다.</b></li>
+  </ul>
+  <p class="note">👉 <b>정리.</b> 발열↑·적층↑·박막화↑가 전부 백사이드 공정을 키우는 방향이다. 그래서 장비 이야기에서 "backside"가 자주 등장한다. 다만 <b>어떤 회사가 실제로 백사이드로 매출을 내는지는 별도 확인이 필요</b>하다(아직 초기 단계가 많다).</p>
+
+  <!-- 7 -->
+  <h2>7. 누가 만드나 — 장비·소재 지도</h2>
+  <p>지금까지 나온 기술(ACL 증착·HAR 식각·백사이드)을 실제로 구현하는 <b>장비·소재</b>를 큰 지도로 정리한다. <b>회사 이름은 "이 기술을 누가 하는가"의 예시일 뿐, 투자 추천이 아니다.</b></p>
+  <div class="tablewrap">
+  <table>
+    <thead><tr><th>공정 단계</th><th>하는 일</th><th>대표 플레이어(예시)</th></tr></thead>
+    <tbody>
+      <tr><td><b>ACL 증착(PECVD)</b></td><td>탄소 하드마스크 막을 입힌다</td><td>Applied Materials·Lam(외산) · <b>테스(국내 대표 ACL PECVD 장비사)</b></td></tr>
+      <tr><td><b>HAR 식각(진짜 병목)</b></td><td>수백 층을 수직으로 뚫는다</td><td><b>Lam Research(HAR 식각 강자)</b>·TEL·Applied Materials</td></tr>
+      <tr><td><b>워드라인 채우기(ALD)</b></td><td>질화막 자리에 텅스텐을 채운다</td><td>Applied Materials·Lam 등</td></tr>
+      <tr><td><b>세정(Clean)·백사이드</b></td><td>이물·뒷면 오염 제거, 뒷면 처리</td><td>SCREEN·TEL·Lam · 국내 세정 장비사</td></tr>
+      <tr><td><b>하드마스크 소재</b></td><td>ACL 전구체(탄소가스), 스핀온 하드마스크(SOC)</td><td>특수가스·전구체 소재사 · <b>스핀온: DCT머티리얼 등 국산화</b></td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p class="note"><b>보충 — 하드마스크는 두 갈래.</b> ① <b>CVD형(ACL)</b> = 탄소 전구체를 장비로 증착(이 글의 주인공). ② <b>스핀온형(SOC, 유기 하드마스크)</b> = 액체를 웨이퍼에 코팅. 둘은 보완 관계이고, 국내에서는 스핀온 하드마스크 소재의 <b>국산화(일본 의존 탈피)</b>가 진행됐다(DCT머티리얼·나노종합기술원, 보도).</p>
+  <div class="callout"><b>왜 진입장벽이 높은가.</b> ACL 장비의 경쟁력은 <b>①막 균일도 ②고종횡비 대응 ③파티클 제어 ④생산성</b>에서 갈린다(강의 코멘트 요지). 이 네 가지는 <b>고객(삼성·SK하이닉스·마이크론)의 실제 라인에서 수년간 검증</b>돼야 채택된다. 한 번 들어가면 잘 안 바뀌고(교체 리스크), 신규 진입은 어렵다. 그래서 소부장(소재·부품·장비)에서 <b>"고객 라인에 들어가 있느냐"</b>가 핵심이다.</p>
+
+  <!-- 8 -->
+  <h2>8. 왜 '지금' 중요한가 — 고단화 경쟁과 AI</h2>
+  <h3>8-1. 단수 경쟁 — 128단에서 1,000단 로드맵까지</h3>
+  <p>3D NAND의 단수는 빠르게 올라왔고, 업계는 <b>AI 시대의 1,000단 로드맵</b>까지 이야기한다(장비업계 문헌). 단수가 오를수록 앞서 본 모든 난관(식각 깊이·마스크 부담·웨이퍼 휨)이 함께 커진다.</p>
+  <figure>
+    <div class="svgbox">
+      <svg viewBox="0 0 560 200" role="img" aria-label="3D NAND 단수 로드맵">
+        <text x="16" y="20" fill="var(--ink)" font-size="13" font-weight="700">3D NAND 단수 추이(대략) — 오를수록 식각·마스크 난도 급증</text>
+        <line x1="40" y1="165" x2="540" y2="165" stroke="var(--line)" stroke-width="1"></line>
+        <rect x="60" y="140" width="60" height="25" rx="2" fill="var(--accent)" opacity="0.7"></rect><text x="90" y="134" fill="var(--ink)" font-size="10" text-anchor="middle">128</text><text x="90" y="180" fill="var(--muted)" font-size="9" text-anchor="middle">128단</text>
+        <rect x="150" y="130" width="60" height="35" rx="2" fill="var(--accent)" opacity="0.78"></rect><text x="180" y="124" fill="var(--ink)" font-size="10" text-anchor="middle">176</text><text x="180" y="180" fill="var(--muted)" font-size="9" text-anchor="middle">176단</text>
+        <rect x="240" y="118" width="60" height="47" rx="2" fill="var(--accent)" opacity="0.86"></rect><text x="270" y="112" fill="var(--ink)" font-size="10" text-anchor="middle">238</text><text x="270" y="180" fill="var(--muted)" font-size="9" text-anchor="middle">238단</text>
+        <rect x="330" y="100" width="60" height="65" rx="2" fill="var(--accent)"></rect><text x="360" y="94" fill="var(--ink)" font-size="10" text-anchor="middle" font-weight="700">300+</text><text x="360" y="180" fill="var(--muted)" font-size="9" text-anchor="middle">300단+</text>
+        <rect x="420" y="55" width="60" height="110" rx="2" fill="none" stroke="var(--accent)" stroke-width="1.8" stroke-dasharray="5 3"></rect><text x="450" y="49" fill="var(--ink)" font-size="10" text-anchor="middle">1,000</text><text x="450" y="180" fill="var(--muted)" font-size="9" text-anchor="middle">로드맵(E)</text>
+      </svg>
+    </div>
+    <figcaption>그림 6. 단수는 128 → 300단+로 올라왔고 업계는 1,000단 로드맵까지 본다(점선=미래 로드맵). 단수가 오를수록 식각 깊이·마스크 두께·웨이퍼 휨이 모두 커진다. (자체 제작 도식, 수치는 업계 통용 대략치)</figcaption>
+  </figure>
+  <h3>8-2. AI가 낸드 수요를 다시 밀다</h3>
+  <p>낸드는 오랫동안 공급과잉·가격하락에 시달렸지만, <b>AI 데이터센터의 폭발적 데이터 저장 수요</b>가 고용량 SSD(기업용) 수요를 밀어올리고 있다. 수요가 살아나면 삼성·SK하이닉스·마이크론이 <b>단수 경쟁(고단화 투자)</b>을 재개하고, 그러면 <b>ACL·HAR 식각·백사이드 장비/소재</b> 소비가 함께 늘어난다. → "낸드가 좋아진다"의 실체는 상당 부분 <b>이 소부장의 일감이 늘어난다</b>는 뜻이다.</p>
+  <div class="note"><b>선행성 주의(중요).</b> "AI가 좋으니 낸드 소부장이 무조건 오른다"는 단정은 위험하다. 실제 장비 발주는 <b>메모리 3사의 투자(CAPEX) 결정</b>에 달렸고, 투자 사이클은 가격·재고에 따라 급변한다. 개별 회사의 수혜는 <b>"어느 고객 라인에, 어떤 공정에 들어가 있는가"</b>로 갈리므로, 종목을 볼 땐 실제 수주·매출로 확인해야 한다(이 글은 기술 이해까지가 목적이다).</p>
+
+  <!-- 9 -->
+  <h2>9. 한 장 요약 · 용어사전 · FAQ</h2>
+  <div class="callout">
+    <b>한 장 요약.</b><br>
+    · 낸드는 미세화 한계로 <b>평면(2D)→수직(3D)</b>으로 바뀌었고, 단수가 <b>128→300단+</b>로 치솟았다.<br>
+    · 3D는 <b>ONON을 쌓고 → 채널홀을 관통해 뚫고 → 질화막을 텅스텐(워드라인)으로 교체</b>하는 구조.<br>
+    · 최대 난관은 <b>수백 층을 수직으로 뚫는 고종횡비(HAR) 식각</b>(AR 100:1+). 보잉·트위스팅·미개통이 수율을 죽인다.<br>
+    · 그 긴 식각을 버티는 <b>단단한 탄소 마스크 = ACL</b>의 <b>균일도·식각내성·파티클 제어</b>가 곧 수율·원가·경쟁력.<br>
+    · 웨이퍼 휨·박막화·후면전력으로 <b>백사이드 공정</b>도 부상.<br>
+    · AI가 낸드 수요를 밀며 <b>고단화 투자 → ACL·식각·백사이드 소부장 일감</b>으로 이어진다.
+  </div>
+  <h3>9-1. 핵심 용어사전</h3>
+  <div class="tablewrap">
+  <table>
+    <thead><tr><th>용어</th><th>쉽게</th></tr></thead>
+    <tbody>
+      <tr><td><b>NAND 플래시</b></td><td>전원 꺼도 남는 저장용 메모리(SSD·USB)</td></tr>
+      <tr><td><b>3D NAND</b></td><td>셀을 위로 쌓아 올린 낸드(아파트 방식)</td></tr>
+      <tr><td><b>단(Layer)</b></td><td>쌓아 올린 층수. 많을수록 고용량</td></tr>
+      <tr><td><b>ONON</b></td><td>산화막·질화막을 번갈아 쌓은 적층</td></tr>
+      <tr><td><b>채널홀</b></td><td>스택을 수직 관통하는 구멍(셀 기둥)</td></tr>
+      <tr><td><b>워드라인</b></td><td>각 층 셀을 제어하는 금속선(텅스텐)</td></tr>
+      <tr><td><b>게이트 교체</b></td><td>가짜(질화)층을 빼고 금속으로 바꿔치기</td></tr>
+      <tr><td><b>종횡비(AR)</b></td><td>구멍의 깊이÷지름. 클수록 뚫기 어렵다</td></tr>
+      <tr><td><b>HAR 식각</b></td><td>가늘고 깊은 구멍을 파는 고난도 식각</td></tr>
+      <tr><td><b>보잉/트위스팅</b></td><td>구멍이 불룩해지거나 휘는 식각 불량</td></tr>
+      <tr><td><b>마스크/하드마스크</b></td><td>깎을 곳을 정하는 본. 단단한 본=하드마스크</td></tr>
+      <tr><td><b>PR(감광액)</b></td><td>빛으로 패턴을 새기는 얇은 본(먼저 닳음)</td></tr>
+      <tr><td><b>ACL</b></td><td>비정질 탄소막. 식각을 버티는 단단한 하드마스크</td></tr>
+      <tr><td><b>전구체</b></td><td>막을 만들 재료 기체(ACL은 C₃H₆·C₂H₂)</td></tr>
+      <tr><td><b>PECVD</b></td><td>플라스마로 막을 입히는 증착 방식</td></tr>
+      <tr><td><b>백사이드(BSD)</b></td><td>웨이퍼 뒷면 처리(증착·세정·보호)</td></tr>
+      <tr><td><b>BSPDN</b></td><td>전력을 칩 뒷면으로 공급하는 차세대 설계</td></tr>
+      <tr><td><b>소부장</b></td><td>소재·부품·장비. 반도체의 '삽 파는' 산업</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <h3>9-2. FAQ</h3>
+  <div class="card"><p><b>Q. ACL은 칩 안에 남는 부품인가요?</b><br>아니요. ACL은 <b>공정 중에만 쓰는 '일회용 본(마스크)'</b>입니다. 식각이 끝나면 산소 플라스마로 태워 제거합니다. 그래도 <b>매 식각마다 새로 입혀야</b> 하므로 소모가 꾸준합니다.</p></div>
+  <div class="card"><p><b>Q. 단수만 올리면 용량이 느는데 왜 경쟁이 어렵나요?</b><br>단수를 올릴수록 <b>한 번에 뚫어야 할 깊이</b>가 깊어져 식각·마스크 난도가 급증합니다. 층을 쌓는 건 쉬워도 <b>안 무너지게 뚫는 것</b>이 기술 장벽이라, 결국 "높이 경쟁 = 식각·마스크 경쟁"입니다.</p></div>
+  <div class="card"><p><b>Q. 노광(EUV)이 제일 중요하다던데, 낸드는 왜 식각인가요?</b><br>미세 로직(CPU·GPU)은 "얼마나 작게 그리느냐(EUV 노광)"가 핵심입니다. 반면 <b>3D NAND는 옆으로 좁히지 않고 위로 쌓기</b> 때문에, 승부처가 노광이 아니라 <b>"깊게 뚫는 식각과 그걸 버티는 마스크"</b>로 옮겨간 것입니다.</p></div>
+  <div class="card"><p><b>Q. 이 기술로 어떤 회사가 수혜인가요?</b><br>이 글은 <b>기술 이해가 목적</b>이라 특정 종목을 추천하지 않습니다. 다만 큰 그림은 <b>ACL 증착·HAR 식각·백사이드 장비/소재</b> 쪽입니다(§7). 실제 수혜는 회사마다 <b>고객 라인 진입 여부·매출 비중</b>이 달라, 개별 검증이 필요합니다.</p></div>
+
+  <hr>
+  <div class="warn" style="font-size:.9rem">
+    <b>면책.</b> 본 문서는 <b>기술·산업 이해를 돕기 위한 교육 자료</b>이며, 특정 종목의 매수·매도 권유가 아닙니다. 투자 판단과 책임은 투자자 본인에게 있습니다. 그림은 개념 설명용 자체 제작 도식으로 실제 소자의 축척·구조와 다릅니다. 단수·종횡비 등 수치는 업계에서 통용되는 대략치이며 제조사·세대별로 다릅니다.<br>
+    <b>참고 출처:</b> 3D NAND 구조·게이트교체·종횡비 — 반도체 공정 문헌 및 Lam Research·업계 자료(2017~2026) / ACL·N-doped·전구체(C₃H₆·C₂H₂)·PECVD — 학술·업계 문헌 / 하드마스크 소재 국산화(DCT머티리얼) — 보도 / 백사이드·BSPDN — 업계 자료 / ACL 장비 4대 경쟁력·테스 적용처 — 강의 코멘트 및 업계 자료. 세부 수치는 기억이 아니라 공개 문헌·보도를 근거로 정리했습니다.
+  </div>
+  <p class="foot" style="text-align:center;color:var(--muted);font-size:.85rem;margin-top:2em">© 2026 노력하는뚱땡이 리서치 라이브러리.</p>
+
+</div>
+</body>
+</html>

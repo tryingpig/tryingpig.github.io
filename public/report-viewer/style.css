@@ -367,6 +367,21 @@ a { color: inherit; text-decoration: none; }
 }
 .toast.show { opacity: 1; }
 
+/* 텔레그램 전송 실패 내역(닫을 때까지 유지) */
+.tg-err {
+  position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%);
+  width: min(560px, calc(100vw - 32px)); max-height: 60vh; overflow: auto;
+  background: var(--card); color: var(--text); border: 1px solid var(--up);
+  border-radius: 10px; padding: 12px 14px; z-index: 210; font-size: 13px;
+  box-shadow: 0 6px 24px rgba(0,0,0,.18); user-select: text;
+}
+.tg-err-head { display: flex; justify-content: space-between; align-items: center; font-weight: 700; color: var(--up); }
+.tg-err-head button { border: 0; background: none; color: var(--sub); font-size: 16px; cursor: pointer; padding: 0 4px; }
+.tg-err-title { color: var(--sub); margin: 4px 0 8px; }
+.tg-err ul { margin: 0; padding-left: 18px; }
+.tg-err li { margin: 6px 0; line-height: 1.45; word-break: break-all; }
+.tg-err li span { color: var(--sub); font-size: 12px; }
+
 /* ── 읽기 모드 (텍스트 리플로우) ── */
 .reading { max-width: 720px; margin: 0 auto; padding: 8px 18px 90px; }
 .rd-page { margin-bottom: 26px; border-bottom: 1px dashed var(--line); padding-bottom: 18px; }

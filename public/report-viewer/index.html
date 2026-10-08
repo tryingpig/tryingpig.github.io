@@ -9,7 +9,7 @@
   <title>리포트 마커</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
-  <link rel="stylesheet" href="style.css?v=30">
+  <link rel="stylesheet" href="style.css?v=31">
 </head>
 <body>
   <div class="topbar">
@@ -54,7 +54,7 @@
   <div id="thumbHover" style="display:none"><img alt="미리보기"></div>
   <div class="toast" id="toast"></div>
 
-  <script src="app.js?v=24"></script>
+  <script src="app.js?v=25"></script>
   <script>
     let ALL = [];
     /* 아래 3개 아이콘은 나머지 액션 아이콘(lucide)과 같은 '얇은 선' 스타일로 통일.
@@ -122,6 +122,27 @@
       setTimeout(() => t.classList.remove("show"), 2000);
     }
 
+    /* 텔레그램 전송 실패 내역: 어디서(커버/인용/캡처 p.N) 무슨 오류였는지 닫을 때까지 띄운다.
+       같은 사유는 묶어서 "×N"으로. 텍스트는 드래그해 복사 가능. */
+    function showTgErrors(title, errors, nothing) {
+      document.getElementById("tgErr")?.remove();
+      const groups = new Map();
+      for (const e of errors) {
+        const g = groups.get(e.msg) || { msg: e.msg, where: [] };
+        g.where.push(e.where); groups.set(e.msg, g);
+      }
+      const rows = [...groups.values()].map((g) =>
+        `<li><b>${esc(g.msg)}</b><br><span>${esc(g.where.join(", "))}${g.where.length > 1 ? ` (×${g.where.length})` : ""}</span></li>`).join("");
+      const box = document.createElement("div");
+      box.id = "tgErr";
+      box.className = "tg-err";
+      box.innerHTML = `<div class="tg-err-head">${nothing ? "텔레그램 전송 실패 — 아무것도 안 갔어요" : `텔레그램 일부 실패 (${errors.length}건)`}`
+        + `<button type="button" aria-label="닫기">✕</button></div>`
+        + `<div class="tg-err-title">${esc(title)}</div><ul>${rows}</ul>`;
+      box.querySelector("button").onclick = () => box.remove();
+      document.body.appendChild(box);
+    }
+
     /* 카드 텔레그램 버튼: 확인 → 전송 → 회색 처리. 이미 보낸 리포트는 재확인. */
     async function sendCardToTelegram(id, btn) {
       const r = ALL.find((x) => x.id === id);
@@ -140,18 +161,26 @@
         btn.innerHTML = SENT_SVG;
         toast("전송 중…");
         try {
-          const res = await tgSendReport(r);   // best-effort: 부분 실패는 res.failed로만
-          toast(res.failed
-            ? `보냈어요 · 일부 ${res.failed}건 실패(다시 눌러 재전송 가능)`
-            : `텔레그램으로 보냈어요 (텍스트 ${res.texts}·이미지 ${res.images})`);
-          // 부분 실패든 성공이든 X 유지(한번 누르면 계속 X)
+          const res = await tgSendReport(r);   // best-effort: 부분 실패는 res.errors에 위치·사유
+          const nothing = !res.coverSent && !res.sentMsg && !res.images;
+          if (nothing) {
+            // 하나도 안 갔으면 '보냄' 표시를 되돌린다(조용히 X만 남던 문제)
+            unmarkTgSent(id);
+            btn.classList.remove("sent");
+            btn.innerHTML = TG_SVG;
+          }
+          if (res.errors.length) {
+            showTgErrors(r.title || id, res.errors, nothing);
+          } else {
+            toast(`텔레그램으로 보냈어요 (텍스트 ${res.texts}·이미지 ${res.images})`);
+          }
         } catch (err) {
           // 여기까지 오면 인증오류(토큰) = 아무것도 못 보냄 → 그때만 원래대로 되돌리고 토큰 재입력
           console.error(err);
           unmarkTgSent(id);
           btn.classList.remove("sent");
           btn.innerHTML = TG_SVG;
-          toast(err.message || "전송 실패");
+          showTgErrors(r.title || id, [{ where: "전송 시작", msg: err.message || String(err) }], true);
           if (err instanceof TgError && /토큰|chat_id/.test(err.message)) {
             clearTgCreds(); showTgOverlay(() => sendCardToTelegram(id, btn));
           }

@@ -345,12 +345,17 @@ async function tgCall(method, body, _retry = 0) {
     init.headers = { "Content-Type": "application/json" };
     init.body = JSON.stringify(body);
   }
-  let j = null;
+  let j = null, res = null;
   try {
-    const res = await fetch(`https://api.telegram.org/bot${token}/${method}`, init);
+    res = await fetch(`https://api.telegram.org/bot${token}/${method}`, init);
+  } catch (e) {
+    // 서버에 닿지도 못함(차단·CORS·오프라인) — 브라우저가 준 원문을 같이 남겨 원인 추적
+    throw new TgError(`네트워크 오류(${method}): ${(e && e.message) || e}`);
+  }
+  try {
     j = await res.json();
   } catch (e) {
-    throw new TgError("네트워크 오류 — 연결을 확인하세요");
+    throw new TgError(`응답 해석 실패(${method}): HTTP ${res.status} ${res.statusText || ""}`.trim());
   }
   if (!j || !j.ok) {
     const code = j && j.error_code;
@@ -364,7 +369,7 @@ async function tgCall(method, body, _retry = 0) {
     if (code === 400 && /chat not found/i.test(j.description || "")) {
       throw new TgError("chat_id를 찾을 수 없습니다 (봇에게 먼저 말을 걸어두세요)");
     }
-    throw new TgError("텔레그램 오류: " + ((j && j.description) || "알 수 없음"));
+    throw new TgError(`텔레그램 오류 ${code || "?"}(${method}): ` + ((j && j.description) || "알 수 없음"));
   }
   return j.result;
 }
@@ -626,17 +631,22 @@ async function tgSendHighlights(highlights, pageItems) {
   const images = sorted.filter((h) => h.type === "image" && h.clip);
   const blocks = texts.map((h) =>
     `<blockquote>(p.${h.page}) ${tgEsc(hlDisplayText(h, pageItems).replace(/\n/g, " "))}</blockquote>`);
-  // 개별 전송은 best-effort: 인증오류(토큰)만 위로 던지고, 나머지 실패는 세고 계속.
-  let failed = 0;
-  const send = async (fn) => {
+  // 개별 전송은 best-effort: 인증오류(토큰)만 위로 던지고, 나머지 실패는 어디서 왜 났는지 errors에 남기고 계속.
+  let failed = 0, sentMsg = 0;
+  const errors = [];   // [{where, msg}] — 호출부가 화면에 그대로 보여줌
+  const send = async (where, fn) => {
     try { await fn(); return true; }
     catch (e) {
       if (e instanceof TgError && /토큰|chat_id/.test(e.message)) throw e;
-      console.error("tg 항목 전송 실패:", e); failed++; return false;
+      console.error("tg 항목 전송 실패:", where, e);
+      failed++; errors.push({ where, msg: (e && e.message) || String(e) });
+      return false;
     }
   };
-  let buf = "";
-  const flush = async () => { if (buf.trim()) { await send(() => tgSendMessage(buf)); buf = ""; } };
+  let buf = "", part = 0;
+  const flush = async () => {
+    if (buf.trim()) { part++; if (await send(`인용 메시지 ${part}`, () => tgSendMessage(buf))) sentMsg++; buf = ""; }
+  };
   for (const b of blocks) {
     if ((buf + "\n\n" + b).length > 3800) await flush();
     buf = buf ? buf + "\n\n" + b : b;
@@ -645,10 +655,11 @@ async function tgSendHighlights(highlights, pageItems) {
   let sentImg = 0;
   for (const h of images) {
     const blob = await fetchImageBlob(h.clip);
-    if (blob && await send(() => tgSendPhoto(blob, `(p.${h.page}) ✂️ 캡처`))) sentImg++;
+    if (!blob) { failed++; errors.push({ where: `캡처 p.${h.page}`, msg: "GitHub에서 이미지 못 받음: " + h.clip }); continue; }
+    if (await send(`캡처 p.${h.page}`, () => tgSendPhoto(blob, `(p.${h.page}) ✂️ 캡처`))) sentImg++;
     await new Promise((r) => setTimeout(r, 350));   // 사진 연속 전송 시 속도제한(429) 완화
   }
-  return { texts: texts.length, images: sentImg, failed };
+  return { texts: texts.length, images: sentImg, sentMsg, failed, errors };
 }
 
 /* 리포트 항목(reports.json entry)을 텔레그램으로: ① 제목 + 첫 페이지 이미지 → ② 모아보기 내용.
@@ -682,14 +693,22 @@ async function tgSendReport(report) {
     + (info ? `\n${tgEsc(info)}` : "");
   const coverPath = (report.pages_dir ? report.pages_dir + "/1.jpg" : null) || report.thumb || null;
   // 커버도 best-effort: 인증오류만 위로, 사진 실패 시 제목 텍스트로 폴백
-  const coverErr = (e) => { if (e instanceof TgError && /토큰|chat_id/.test(e.message)) throw e; console.error("커버 전송 실패:", e); };
+  const coverErrors = [];
+  const coverErr = (where, e) => {
+    if (e instanceof TgError && /토큰|chat_id/.test(e.message)) throw e;
+    console.error("커버 전송 실패:", where, e);
+    coverErrors.push({ where, msg: (e && e.message) || String(e) });
+  };
   let coverSent = false;
   if (coverPath) {
     const blob = await fetchImageBlob(coverPath);
-    if (blob) { try { await tgSendPhoto(blob, caption); coverSent = true; } catch (e) { coverErr(e); } }
+    if (!blob) coverErrors.push({ where: "커버 사진", msg: "GitHub에서 이미지 못 받음: " + coverPath });
+    else { try { await tgSendPhoto(blob, caption); coverSent = true; } catch (e) { coverErr("커버 사진", e); } }
   }
-  if (!coverSent) { try { await tgSendMessage(caption); } catch (e) { coverErr(e); } }
+  if (!coverSent) { try { await tgSendMessage(caption); coverSent = true; } catch (e) { coverErr("커버 제목", e); } }
   // ② 모아보기 내용
   const res = await tgSendHighlights(hls, pageItems);
+  res.coverSent = coverSent;
+  res.errors = coverErrors.concat(res.errors);
   return res;   // 전송 이력(markTgSent)은 호출부에서 낙관적으로 처리
 }

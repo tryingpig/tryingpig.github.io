@@ -61,6 +61,9 @@ async function loadReports() {
   const res = await ghFetch("contents/index/reports.json", {
     accept: "application/vnd.github.raw",
   });
+  // reports.json 은 항상 있는 파일이라 404/403 = 토큰이 비공개 저장소를 못 봄(만료·권한 빠짐).
+  // 깃허브는 이때 401 이 아니라 404 를 줘서 입력창이 안 뜨고 막혔다(2026-10-22 웨일).
+  if (res.status === 404 || res.status === 403) throw new AuthError("토큰이 저장소에 접근 못함 (" + res.status + ")");
   if (!res.ok) throw new Error("목록 로드 실패: " + res.status);
   return await res.json();
 }

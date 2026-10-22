@@ -68,6 +68,31 @@ async function loadReports() {
   return await res.json();
 }
 
+/* 섹터 대분류 표 = vault config.shared.json 의 sector_groups ({대분류: [섹터,…]}).
+   파일명 섹터가 96종으로 흩어져서(2026-10-22) 필터는 대분류로 고른다.
+   표에 없는 섹터는 '기타' — 수집기가 텔레그램 버튼으로 어디 넣을지 물어 표에 추가한다. */
+let SECTOR_GROUPS = {};
+async function loadSectorGroups() {
+  try {
+    const res = await ghFetch("contents/config.shared.json", { accept: "application/vnd.github.raw", cache: "no-store" });
+    if (res.ok) SECTOR_GROUPS = (await res.json()).sector_groups || {};
+  } catch (e) { /* 표 못 받으면 전부 '기타'로 보일 뿐 목록은 뜬다 */ }
+  return SECTOR_GROUPS;
+}
+/* '자동차,로봇' → ["자동차","로봇"] */
+function splitSectors(sector) {
+  return (sector || "").split(",").map((s) => s.trim()).filter(Boolean);
+}
+function sectorGroupOf(sub) {
+  for (const [g, subs] of Object.entries(SECTOR_GROUPS)) if (subs.includes(sub)) return g;
+  return "기타";
+}
+/* 리포트가 속한 대분류들(쉼표로 여러 섹터면 여러 개) */
+function reportGroups(r) {
+  const subs = splitSectors(r.sector);
+  return subs.length ? [...new Set(subs.map(sectorGroupOf))] : ["기타"];
+}
+
 /* PDF 로드 (raw arraybuffer). pdfPath는 reports.json의 pdf_path */
 async function loadPdf(pdfPath) {
   const res = await ghFetch("contents/" + pdfPath, {

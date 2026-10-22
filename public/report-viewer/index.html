@@ -32,6 +32,7 @@
       <button id="filterToggle" class="chip filter-toggle" type="button"><i data-lucide="sliders-horizontal"></i>필터</button>
       <select id="qBroker" class="s-input chip-select"><option value="">증권사 전체</option></select>
       <select id="qSector" class="s-input chip-select"><option value="">섹터 전체</option></select>
+      <select id="qSub" class="s-input chip-select" hidden><option value="">세부 전체</option></select>
       <input type="date" id="qFrom" class="s-input s-date" title="발행일">
       <label class="s-chk"><input type="checkbox" id="qRange"> 종료일</label>
       <span class="s-tilde" id="qTilde" hidden>~</span>
@@ -54,7 +55,7 @@
   <div id="thumbHover" style="display:none"><img alt="미리보기"></div>
   <div class="toast" id="toast"></div>
 
-  <script src="app.js?v=26"></script>
+  <script src="app.js?v=27"></script>
   <script>
     let ALL = [];
     /* 아래 3개 아이콘은 나머지 액션 아이콘(lucide)과 같은 '얇은 선' 스타일로 통일.
@@ -69,7 +70,7 @@
     /* 노션: 둥근 사각형 + N (선 아이콘). 상태색·채움은 CSS .nt-post 에서 (.nt-box 안쪽 채움) */
     const NOTION_SVG = `<svg ${LUCIDE_ATTR}>`
       + '<rect class="nt-box" x="3" y="3" width="18" height="18" rx="3"/><path class="nt-n" d="M8.5 16.5V7.5l7 9V7.5"/></svg>';
-    let FILTER = { title: "", broker: "", sector: "", from: "", to: "", range: false, onlyHl: false, onlyFav: false };
+    let FILTER = { title: "", broker: "", sector: "", sub: "", from: "", to: "", range: false, onlyHl: false, onlyFav: false };
     let SORT = "pub";   // pub=발행일 · up=수집순 · hl=하이라이트 · title=제목
     let SORT_DIR = "desc";   // 같은 정렬 버튼 재클릭 시 asc↔desc 토글(↑/↓)
     const SORT_LABEL = { pub: "발행일", up: "수집순", hl: "하이라이트", title: "제목" };
@@ -288,12 +289,28 @@
       sel.innerHTML = opts.join("");
       sel.value = FILTER.broker || "";
 
+      // 섹터 = 대분류(표 순서, 건수 표시) → 고르면 그 안의 세부 섹터 드롭다운이 나타난다
       const ssel = document.getElementById("qSector");
-      const sectors = [...new Set(ALL.map((r) => r.sector).filter(Boolean))].sort();
+      const cnt = {};
+      for (const r of ALL) for (const g of reportGroups(r)) cnt[g] = (cnt[g] || 0) + 1;
+      const order = [...Object.keys(SECTOR_GROUPS), "기타"].filter((g) => cnt[g]);
       const sOpts = [`<option value="">섹터 전체</option>`];
-      for (const s of sectors) sOpts.push(`<option value="${esc(s)}">${esc(s)}</option>`);
+      for (const g of order) sOpts.push(`<option value="${esc(g)}">${esc(g)} (${cnt[g]})</option>`);
       ssel.innerHTML = sOpts.join("");
       ssel.value = FILTER.sector || "";
+      renderSubSelect();
+    }
+
+    function renderSubSelect() {
+      const g = document.getElementById("qSector").value;
+      const sub = document.getElementById("qSub");
+      const cnt = {};
+      if (g) for (const r of ALL) for (const s of splitSectors(r.sector)) if (sectorGroupOf(s) === g) cnt[s] = (cnt[s] || 0) + 1;
+      const subs = Object.keys(cnt).sort((a, b) => cnt[b] - cnt[a]);
+      sub.hidden = subs.length < 2;              // 세부가 하나뿐이면 고를 필요 없음
+      sub.innerHTML = [`<option value="">세부 전체</option>`]
+        .concat(subs.map((s) => `<option value="${esc(s)}">${esc(s)} (${cnt[s]})</option>`)).join("");
+      sub.value = subs.includes(FILTER.sub) ? FILTER.sub : "";
     }
 
     /* '종료일' 토글: 켜면 ~ 와 종료일 입력칸 표시(범위 검색), 끄면 단일 날짜 */
@@ -307,6 +324,7 @@
       FILTER.title = document.getElementById("qTitle").value || "";
       FILTER.broker = document.getElementById("qBroker").value || "";
       FILTER.sector = document.getElementById("qSector").value || "";
+      FILTER.sub = FILTER.sector ? (document.getElementById("qSub").value || "") : "";
       FILTER.from = document.getElementById("qFrom").value || "";
       FILTER.range = document.getElementById("qRange").checked;
       FILTER.to = FILTER.range ? (document.getElementById("qTo").value || "") : "";
@@ -316,11 +334,12 @@
     }
 
     function resetSearch() {
-      FILTER = { title: "", broker: "", sector: "", from: "", to: "", range: false, onlyHl: false, onlyFav: false };
+      FILTER = { title: "", broker: "", sector: "", sub: "", from: "", to: "", range: false, onlyHl: false, onlyFav: false };
       SORT = "pub"; SORT_DIR = "desc";
       document.getElementById("qTitle").value = "";
       document.getElementById("qBroker").value = "";
       document.getElementById("qSector").value = "";
+      renderSubSelect();
       document.getElementById("qFrom").value = "";
       document.getElementById("qTo").value = "";
       document.getElementById("qRange").checked = false;
@@ -337,7 +356,8 @@
       if (q) rows = rows.filter((r) => (r.title || "").toLowerCase().includes(q));
       if (FILTER.broker === "__none__") rows = rows.filter((r) => !r.broker || r.broker === "미분류");
       else if (FILTER.broker) rows = rows.filter((r) => r.broker === FILTER.broker);
-      if (FILTER.sector) rows = rows.filter((r) => r.sector === FILTER.sector);
+      if (FILTER.sub) rows = rows.filter((r) => splitSectors(r.sector).includes(FILTER.sub));
+      else if (FILTER.sector) rows = rows.filter((r) => reportGroups(r).includes(FILTER.sector));
       if (FILTER.range) {                       // 범위 검색
         if (FILTER.from) rows = rows.filter((r) => cardDate(r) >= FILTER.from);
         if (FILTER.to) rows = rows.filter((r) => cardDate(r) <= FILTER.to);
@@ -540,7 +560,7 @@
     async function load() {
       document.getElementById("list").innerHTML = `<div class="loading">불러오는 중…</div>`;
       try {
-        const doc = await loadReports();
+        const [doc] = await Promise.all([loadReports(), loadSectorGroups()]);
         ALL = doc.reports || [];
         const cEl = document.getElementById("count"); if (cEl) cEl.textContent = ALL.length;
         renderSearchBar();
@@ -681,6 +701,7 @@
     document.getElementById("qRange").addEventListener("change", (e) => {
       setRange(e.target.checked);              // 종료일 토글 → 종료일 칸 표시/숨김
     });
+    document.getElementById("qSector").addEventListener("change", renderSubSelect);   // 대분류 바꾸면 세부 목록 갱신
     document.getElementById("qHl").addEventListener("change", applySearch);   // 하이라이트만 보기: 즉시 반영
     document.getElementById("qFav").addEventListener("change", applySearch);  // 즐겨찾기만 보기: 즉시 반영
 

@@ -651,14 +651,52 @@ function hlDisplayText(h, pageItems) {
   return h.text || "";
 }
 
-/* 모아보기 내용만 전송: 텍스트 하이라이트(인용, 4096자 분할) → 이미지 캡처 개별.
-   제목은 커버(tgSendReport)에서 이미 보냈으므로 여기선 넣지 않는다. 반환 {texts, images}. */
+/* ── 텔레그램용 하이라이트 서식 (2026-10-22) ──────────────────
+   내용은 한 글자도 줄이거나 바꾸지 않고 "읽기 좋게"만 한다. 이미 읽은 리포트를 다시 볼 때 빨리 떠오르게.
+   - PDF 줄바꿈으로 끊긴 문장은 잇고, 문장마다 줄을 나눈다(글머리표 줄은 유지)
+   - 첫 문장(대개 그 단락의 요지)은 굵게, 나머지 문장의 단위 붙은 숫자(357GW·22.0%·10배)는 굵게
+   - 긴 하이라이트는 펼쳐보기 인용으로 접어 처음 몇 줄만 보이게
+   페이지 번호는 뺐다 — 사용자가 "중요한 건 내용"이라고 함. */
+const TG_NUM_RE = /(\d[\d,]*(?:\.\d+)?\s?(?:%p|%|bp|배|조\s?원|억\s?원|만\s?원|원|조|억|달러|GWh|TWh|GW|MW|kV|nm|만\s?대|대|개|x|X))/g;
+function tgSentences(raw) {
+  const lines = (raw || "").replace(/\r/g, "").split("\n").map((l) => l.trim()).filter(Boolean);
+  const merged = [];
+  for (const l of lines) {
+    if (!merged.length || /^([•·\-–▶▷■□◆◇○●※*]|\d+[.)]\s)/.test(l)) merged.push(l);
+    else merged[merged.length - 1] += " " + l;
+  }
+  // 문장 끝(. ! ?) 뒤 공백에서 나눈다 — 3.5 같은 소수점은 뒤에 공백이 없어 안 끊긴다
+  return merged.join("\n").split(/\n|(?<=[.!?])\s+(?=\S)/).map((s) => s.trim()).filter(Boolean);
+}
+function tgHlBlock(raw) {
+  const ss = tgSentences(raw);
+  if (!ss.length) return "";
+  const body = ss.map((s, i) => (i === 0 ? `<b>${tgEsc(s)}</b>` : tgEsc(s).replace(TG_NUM_RE, "<b>$1</b>"))).join("\n");
+  const long = ss.length > 4 || ss.join(" ").length > 400;
+  return `<blockquote${long ? " expandable" : ""}>${body}</blockquote>`;
+}
+/* 캡처 여러 장 = 앨범 1개(최대 10장씩). 1장이면 그냥 사진. */
+async function tgSendAlbum(blobs) {
+  if (blobs.length === 1) return tgSendPhoto(blobs[0], "");
+  const fd = new FormData();
+  fd.append("chat_id", getTgChat());
+  fd.append("media", JSON.stringify(blobs.map((_, i) => ({ type: "photo", media: `attach://p${i}` }))));
+  blobs.forEach((b, i) => fd.append(`p${i}`, b, `clip${i}.jpg`));
+  return tgCall("sendMediaGroup", fd);
+}
+/* 읽은 순서 = 페이지 → 페이지 안 위치(위에서 아래) */
+function hlReadOrder(a, b) {
+  const y = (h) => Math.min(...((h.rects || []).map((r) => r.y)), 1);
+  return a.page - b.page || y(a) - y(b);
+}
+
+/* 모아보기 내용 전송: 읽은 순서대로 글 하이라이트(서식 인용, 3800자 단위 메시지)와
+   캡처(연속된 것끼리 앨범)를 번갈아 보낸다. 제목은 커버(tgSendReport)에서 이미 보냈다.
+   반환 {texts, images, sentMsg, failed, errors}. */
 async function tgSendHighlights(highlights, pageItems) {
-  const sorted = highlights.slice().sort((a, b) => a.page - b.page);
+  const sorted = highlights.slice().sort(hlReadOrder);
   const texts = sorted.filter((h) => h.type !== "image");
   const images = sorted.filter((h) => h.type === "image" && h.clip);
-  const blocks = texts.map((h) =>
-    `<blockquote>(p.${h.page}) ${tgEsc(hlDisplayText(h, pageItems).replace(/\n/g, " "))}</blockquote>`);
   // 개별 전송은 best-effort: 인증오류(토큰)만 위로 던지고, 나머지 실패는 어디서 왜 났는지 errors에 남기고 계속.
   let failed = 0, sentMsg = 0;
   const errors = [];   // [{where, msg}] — 호출부가 화면에 그대로 보여줌
@@ -675,18 +713,36 @@ async function tgSendHighlights(highlights, pageItems) {
   const flush = async () => {
     if (buf.trim()) { part++; if (await send(`인용 메시지 ${part}`, () => tgSendMessage(buf))) sentMsg++; buf = ""; }
   };
-  for (const b of blocks) {
+  let sentImg = 0, clips = [];
+  const flushClips = async () => {
+    for (let i = 0; i < clips.length; i += 10) {
+      const group = clips.slice(i, i + 10);
+      const blobs = [];
+      for (const h of group) {
+        const blob = await fetchImageBlob(h.clip);
+        if (blob) blobs.push(blob);
+        else { failed++; errors.push({ where: `캡처 p.${h.page}`, msg: "GitHub에서 이미지 못 받음: " + h.clip }); }
+      }
+      if (blobs.length && await send(`캡처 ${blobs.length}장`, () => tgSendAlbum(blobs))) sentImg += blobs.length;
+      await new Promise((r) => setTimeout(r, 350));   // 연속 전송 시 속도제한(429) 완화
+    }
+    clips = [];
+  };
+  for (const h of sorted) {
+    if (h.type === "image") {
+      if (!h.clip) continue;
+      await flush();                 // 캡처 앞의 글을 먼저 보내 읽은 순서를 지킨다
+      clips.push(h);
+      continue;
+    }
+    const b = tgHlBlock(hlDisplayText(h, pageItems));
+    if (!b) continue;
+    await flushClips();
     if ((buf + "\n\n" + b).length > 3800) await flush();
     buf = buf ? buf + "\n\n" + b : b;
   }
   await flush();
-  let sentImg = 0;
-  for (const h of images) {
-    const blob = await fetchImageBlob(h.clip);
-    if (!blob) { failed++; errors.push({ where: `캡처 p.${h.page}`, msg: "GitHub에서 이미지 못 받음: " + h.clip }); continue; }
-    if (await send(`캡처 p.${h.page}`, () => tgSendPhoto(blob, `(p.${h.page}) ✂️ 캡처`))) sentImg++;
-    await new Promise((r) => setTimeout(r, 350));   // 사진 연속 전송 시 속도제한(429) 완화
-  }
+  await flushClips();
   return { texts: texts.length, images: sentImg, sentMsg, failed, errors };
 }
 
@@ -714,11 +770,11 @@ async function tgSendReport(report) {
   const info = [
     report.broker, report.sector,
     report.publish_date || (report.uploaded_at || "").slice(0, 10),
-    report.pages ? report.pages + "p" : null,
-    (report.size_mb != null) ? report.size_mb + "MB" : null,
   ].filter(Boolean).join(" · ");
+  const nText = hls.filter((h) => h.type !== "image").length, nImg = hls.filter((h) => h.type === "image").length;
+  const counts = [nText ? `✏️ 하이라이트 ${nText}` : "", nImg ? `🖼 캡처 ${nImg}` : ""].filter(Boolean).join(" · ");
   const caption = `📄 <b>${tgEsc(report.title || report.id)}</b>`
-    + (info ? `\n${tgEsc(info)}` : "");
+    + (info ? `\n${tgEsc(info)}` : "") + (counts ? `\n${counts}` : "");
   const coverPath = (report.pages_dir ? report.pages_dir + "/1.jpg" : null) || report.thumb || null;
   // 커버도 best-effort: 인증오류만 위로, 사진 실패 시 제목 텍스트로 폴백
   const coverErrors = [];

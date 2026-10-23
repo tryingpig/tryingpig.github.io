@@ -68,6 +68,7 @@ export const TOPIC_ICONS: [RegExp, string][] = [
   [/가온전선|버스덕트|000500/i, 'busduct'],
   [/3D낸드|낸드|3D.?NAND/i, 'nandstack'],
   [/명신산업|009900|명신/, 'cybercab'],
+  [/스페이스X|스페이스엑스|SPCX/i, 'falcon9'],
 ];
 
 /* 매칭되는 주제가 없을 때 — 파일명 해시로 색과 무늬가 정해지는 픽셀 타일.

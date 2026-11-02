@@ -38,8 +38,31 @@ function encodeUtf8B64(str) {
 }
 
 /* ── GitHub API ────────────────────────────────────────── */
+/* 응답이 ms 안에 안 오면 끊고 오류로 — 폰에서 연결이 걸려 '아무 반응 없음'이 되는 걸 막는다(2026-11-02). */
+async function fetchTimeout(url, init, ms, label) {
+  const ctl = new AbortController();
+  const timer = setTimeout(() => ctl.abort(), ms);
+  try {
+    return await fetch(url, { ...init, signal: ctl.signal });
+  } catch (e) {
+    if (ctl.signal.aborted) throw new Error(`${label}: ${Math.round(ms / 1000)}초 동안 응답 없음`);
+    throw e;
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+/* fetch 가 아닌 작업(여러 요청 묶음)에 시간 제한 */
+function withTimeout(promise, ms, label) {
+  let timer;
+  return Promise.race([
+    promise,
+    new Promise((_, rej) => { timer = setTimeout(() => rej(new Error(`${label}: ${Math.round(ms / 1000)}초 동안 응답 없음`)), ms); }),
+  ]).finally(() => clearTimeout(timer));
+}
+
 async function ghFetch(path, opts = {}) {
-  const { accept = "application/vnd.github+json", method = "GET", body = null, cache } = opts;
+  const { accept = "application/vnd.github+json", method = "GET", body = null, cache, timeout } = opts;
   const headers = {
     Authorization: "Bearer " + getPat(),
     Accept: accept,
@@ -51,7 +74,9 @@ async function ghFetch(path, opts = {}) {
     headers["Content-Type"] = "application/json";
     init.body = JSON.stringify(body);
   }
-  const res = await fetch(`${RV.API}/repos/${RV.OWNER}/${RV.REPO}/${path}`, init);
+  const res = timeout
+    ? await fetchTimeout(`${RV.API}/repos/${RV.OWNER}/${RV.REPO}/${path}`, init, timeout, "GitHub " + path)
+    : await fetch(`${RV.API}/repos/${RV.OWNER}/${RV.REPO}/${path}`, init);
   if (res.status === 401) throw new AuthError("인증 실패 (PAT 확인)");
   return res;
 }
@@ -375,7 +400,7 @@ async function tgCall(method, body, _retry = 0) {
   }
   let j = null, res = null;
   try {
-    res = await fetch(`https://api.telegram.org/bot${token}/${method}`, init);
+    res = await fetchTimeout(`https://api.telegram.org/bot${token}/${method}`, init, 60000, "텔레그램 " + method);
   } catch (e) {
     // 서버에 닿지도 못함(차단·CORS·오프라인) — 브라우저가 준 원문을 같이 남겨 원인 추적
     throw new TgError(`네트워크 오류(${method}): ${(e && e.message) || e}`);
@@ -423,7 +448,7 @@ async function tgSendPhoto(blob, caption) {
 
 /* vault 이미지 파일 → Blob (sendPhoto용) */
 async function fetchImageBlob(path) {
-  const res = await ghFetch("contents/" + path, { accept: "application/vnd.github.raw" });
+  const res = await ghFetch("contents/" + path, { accept: "application/vnd.github.raw", timeout: 30000 });
   if (!res.ok) return null;
   return await res.blob();
 }
@@ -692,8 +717,8 @@ function hlReadOrder(a, b) {
 
 /* 모아보기 내용 전송: 읽은 순서대로 글 하이라이트(서식 인용, 3800자 단위 메시지)와
    캡처(연속된 것끼리 앨범)를 번갈아 보낸다. 제목은 커버(tgSendReport)에서 이미 보냈다.
-   반환 {texts, images, sentMsg, failed, errors}. */
-async function tgSendHighlights(highlights, pageItems) {
+   반환 {texts, images, sentMsg, failed, errors}. onProgress(문구)로 진행 상황을 알린다. */
+async function tgSendHighlights(highlights, pageItems, onProgress = () => {}) {
   const sorted = highlights.slice().sort(hlReadOrder);
   const texts = sorted.filter((h) => h.type !== "image");
   const images = sorted.filter((h) => h.type === "image" && h.clip);
@@ -710,20 +735,31 @@ async function tgSendHighlights(highlights, pageItems) {
     }
   };
   let buf = "", part = 0;
-  const flush = async () => {
-    if (buf.trim()) { part++; if (await send(`인용 메시지 ${part}`, () => tgSendMessage(buf))) sentMsg++; buf = ""; }
-  };
   let sentImg = 0, clips = [];
+  const progress = () => onProgress(`글 ${sentMsg}묶음 · 캡처 ${sentImg}/${images.length}장 보냄`);
+  const flush = async () => {
+    if (buf.trim()) {
+      part++;
+      onProgress(`글 ${part}번째 묶음 보내는 중… (캡처 ${sentImg}/${images.length})`);
+      if (await send(`인용 메시지 ${part}`, () => tgSendMessage(buf))) sentMsg++;
+      buf = "";
+      progress();
+    }
+  };
   const flushClips = async () => {
     for (let i = 0; i < clips.length; i += 10) {
       const group = clips.slice(i, i + 10);
       const blobs = [];
+      onProgress(`캡처 ${group.length}장 받는 중… (보냄 ${sentImg}/${images.length})`);
       for (const h of group) {
-        const blob = await fetchImageBlob(h.clip);
+        let blob = null, why = "GitHub에서 이미지 못 받음";
+        try { blob = await fetchImageBlob(h.clip); } catch (e) { why = (e && e.message) || String(e); }
         if (blob) blobs.push(blob);
-        else { failed++; errors.push({ where: `캡처 p.${h.page}`, msg: "GitHub에서 이미지 못 받음: " + h.clip }); }
+        else { failed++; errors.push({ where: `캡처 p.${h.page}`, msg: why + ": " + h.clip }); }
       }
+      onProgress(`캡처 ${blobs.length}장 보내는 중… (보냄 ${sentImg}/${images.length})`);
       if (blobs.length && await send(`캡처 ${blobs.length}장`, () => tgSendAlbum(blobs))) sentImg += blobs.length;
+      progress();
       await new Promise((r) => setTimeout(r, 350));   // 연속 전송 시 속도제한(429) 완화
     }
     clips = [];
@@ -748,15 +784,17 @@ async function tgSendHighlights(highlights, pageItems) {
 
 /* 리포트 항목(reports.json entry)을 텔레그램으로: ① 제목 + 첫 페이지 이미지 → ② 모아보기 내용.
    index 카드에서 사용. 하이라이트 0개면 오류. */
-async function tgSendReport(report) {
-  const anno = await loadAnnotations(report.id);
+async function tgSendReport(report, onProgress = () => {}) {
+  onProgress("하이라이트 불러오는 중…");
+  const anno = await withTimeout(loadAnnotations(report.id), 30000, "하이라이트 불러오기");
   const hls = (anno.data && anno.data.highlights) || [];
   if (!hls.length) throw new Error("보낼 하이라이트가 없습니다");
   // 좌표(텍스트 복원용)
   let pageItems = null;
   if (report.layout_path) {
     try {
-      const lr = await ghFetch("contents/" + report.layout_path, { accept: "application/vnd.github.raw", cache: "no-store" });
+      onProgress("본문 좌표 불러오는 중…");
+      const lr = await ghFetch("contents/" + report.layout_path, { accept: "application/vnd.github.raw", cache: "no-store", timeout: 30000 });
       if (lr.ok) {
         const j = await lr.json();
         pageItems = {};
@@ -785,13 +823,15 @@ async function tgSendReport(report) {
   };
   let coverSent = false;
   if (coverPath) {
-    const blob = await fetchImageBlob(coverPath);
-    if (!blob) coverErrors.push({ where: "커버 사진", msg: "GitHub에서 이미지 못 받음: " + coverPath });
+    onProgress("커버 보내는 중…");
+    let blob = null, why = "GitHub에서 이미지 못 받음";
+    try { blob = await fetchImageBlob(coverPath); } catch (e) { why = (e && e.message) || String(e); }
+    if (!blob) coverErrors.push({ where: "커버 사진", msg: why + ": " + coverPath });
     else { try { await tgSendPhoto(blob, caption); coverSent = true; } catch (e) { coverErr("커버 사진", e); } }
   }
   if (!coverSent) { try { await tgSendMessage(caption); coverSent = true; } catch (e) { coverErr("커버 제목", e); } }
   // ② 모아보기 내용
-  const res = await tgSendHighlights(hls, pageItems);
+  const res = await tgSendHighlights(hls, pageItems, onProgress);
   res.coverSent = coverSent;
   res.errors = coverErrors.concat(res.errors);
   return res;   // 전송 이력(markTgSent)은 호출부에서 낙관적으로 처리

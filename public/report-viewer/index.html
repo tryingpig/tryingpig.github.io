@@ -55,7 +55,7 @@
   <div id="thumbHover" style="display:none"><img alt="미리보기"></div>
   <div class="toast" id="toast"></div>
 
-  <script src="app.js?v=28"></script>
+  <script src="app.js?v=29"></script>
   <script>
     let ALL = [];
     /* 아래 3개 아이콘은 나머지 액션 아이콘(lucide)과 같은 '얇은 선' 스타일로 통일.
@@ -117,10 +117,22 @@
         ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
     }
 
+    let toastTimer = null;
     function toast(m) {
       const t = document.getElementById("toast");
       t.textContent = m; t.classList.add("show");
-      setTimeout(() => t.classList.remove("show"), 2000);
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => t.classList.remove("show"), 2000);
+    }
+    /* 끝날 때까지 남는 안내(텔레그램 전송 진행 상황). 끝나면 toast()로 덮거나 toastHide(). */
+    function toastHold(m) {
+      const t = document.getElementById("toast");
+      clearTimeout(toastTimer);
+      t.textContent = m; t.classList.add("show");
+    }
+    function toastHide() {
+      clearTimeout(toastTimer);
+      document.getElementById("toast").classList.remove("show");
     }
 
     /* 텔레그램 전송 실패 내역: 어디서(커버/인용/캡처 p.N) 무슨 오류였는지 닫을 때까지 띄운다.
@@ -153,16 +165,29 @@
         ? `"${r.title || id}"\n이미 텔레그램으로 보낸 리포트입니다. 다시 보낼까요?`
         : `"${r.title || id}"\n하이라이트를 텔레그램으로 보낼까요?`;
       if (!confirm(msg)) return;
-      requireTg(async () => {
-        if (btn.dataset.busy) return;
+      // 확인 뒤 어디서든 오류가 나면 조용히 묻히지 않게 화면에 띄운다(2026-11-02, 폰에서 '아무 반응 없음' 추적용)
+      let step = "전송 준비";
+      const fail = (where, err) => {
+        console.error(err);
+        toastHide();
+        showTgErrors(r.title || id, [{ where, msg: (err && err.message) || String(err) }], true);
+      };
+      if (btn.dataset.busy) { toast("이미 보내는 중이에요…"); return; }
+      try {
+        requireTg(() => run().catch((err) => fail(step, err)));
+      } catch (err) {
+        fail("텔레그램 설정 확인", err);
+      }
+      async function run() {
         btn.dataset.busy = "1";
         // ① 누르는 즉시 아이콘을 동그라미 X로 교체(낙관적) — 전송은 뒤에서 처리
         markTgSent(id);
         btn.classList.add("sent");
         btn.innerHTML = SENT_SVG;
-        toast("전송 중…");
+        toastHold("텔레그램 전송 시작…");
         try {
-          const res = await tgSendReport(r);   // best-effort: 부분 실패는 res.errors에 위치·사유
+          const res = await tgSendReport(r, (m) => { step = m; toastHold("✈️ " + m); });
+          toastHide();
           const nothing = !res.coverSent && !res.sentMsg && !res.images;
           if (nothing) {
             // 하나도 안 갔으면 '보냄' 표시를 되돌린다(조용히 X만 남던 문제)
@@ -177,18 +202,17 @@
           }
         } catch (err) {
           // 여기까지 오면 인증오류(토큰) = 아무것도 못 보냄 → 그때만 원래대로 되돌리고 토큰 재입력
-          console.error(err);
           unmarkTgSent(id);
           btn.classList.remove("sent");
           btn.innerHTML = TG_SVG;
-          showTgErrors(r.title || id, [{ where: "전송 시작", msg: err.message || String(err) }], true);
+          fail(step, err);
           if (err instanceof TgError && /토큰|chat_id/.test(err.message)) {
             clearTgCreds(); showTgOverlay(() => sendCardToTelegram(id, btn));
           }
         } finally {
           delete btn.dataset.busy;
         }
-      });
+      }
     }
 
     /* ── 노션 버튼 ────────────────────────────────────────

@@ -70,6 +70,7 @@ export const TOPIC_ICONS: [RegExp, string][] = [
   [/명신산업|009900|명신/, 'cybercab'],
   [/스페이스X|스페이스엑스|SPCX/i, 'falcon9'],
   [/앱로빈|applovin/i, 'applovin'],
+  [/나노신소재|121600|CNT|nanotube/i, 'carbonnanotube'],
 ];
 
 /* 매칭되는 주제가 없을 때 — 파일명 해시로 색과 무늬가 정해지는 픽셀 타일.

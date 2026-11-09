@@ -622,32 +622,60 @@ async function fetchBookmarksShared() {
   } catch (e) { /* 네트워크 실패 시 캐시 유지 */ }
 }
 
-/* vault 파일에 id 추가/삭제 반영(sha 충돌 409/422 재시도). 비필수 — 실패해도 캐시엔 남음. */
+/* vault 파일에 id 추가/삭제 반영(sha 충돌 409/422 재시도). 비필수 — 실패해도 캐시엔 남음.
+   반환 {ok, msg}: 실패하면 어느 단계(읽기/쓰기)에서 무슨 응답이었는지 msg에 담는다(2026-11-09 모바일 ★ 진단). */
 async function persistBookmark(id, add) {
+  let last = "알 수 없음";
   for (let attempt = 0; attempt < 3; attempt++) {
     try {
       let sha = null, ids = [];
-      const res = await ghFetch("contents/" + RV.BOOKMARK_PATH, { cache: "no-store" });
-      if (res.ok) { const o = await res.json(); sha = o.sha; try { ids = JSON.parse(decodeB64Utf8(o.content)).ids || []; } catch (e) {} }
-      else if (res.status !== 404) return;
+      const res = await ghFetch("contents/" + RV.BOOKMARK_PATH, { cache: "no-store", timeout: 30000 });
+      if (res.ok) { const o = await res.json(); sha = o.sha; try { ids = JSON.parse(decodeB64Utf8(o.content)).ids || []; } catch (e) { return { ok: false, msg: "목록 해석 실패: " + e.message }; } }
+      else if (res.status !== 404) return { ok: false, msg: `목록 읽기 실패: HTTP ${res.status}` };
       const set = new Set(ids);
       if (add) set.add(id); else set.delete(id);
       const body = { message: `bookmark ${add ? "+" : "-"}${id}`, content: encodeUtf8B64(JSON.stringify({ ids: [...set] }, null, 2)) };
       if (sha) body.sha = sha;
-      const put = await ghFetch("contents/" + RV.BOOKMARK_PATH, { method: "PUT", body });
-      if (put.ok) return;
-      if (put.status !== 409 && put.status !== 422) return;
-    } catch (e) { return; }
+      const put = await ghFetch("contents/" + RV.BOOKMARK_PATH, { method: "PUT", body, timeout: 30000 });
+      if (put.ok) return { ok: true };
+      let desc = ""; try { desc = (await put.json()).message || ""; } catch (e) {}
+      last = `저장 실패: HTTP ${put.status}${desc ? " " + desc : ""}`;
+      if (put.status !== 409 && put.status !== 422) return { ok: false, msg: last };
+    } catch (e) { return { ok: false, msg: (e && e.message) || String(e) }; }
   }
+  return { ok: false, msg: last + " (3회 재시도)" };
 }
 
-/* 낙관적 토글: 메모리·캐시 즉시 반영 후 vault에 백그라운드 저장. 반영된 상태 반환. */
-function toggleBookmark(id) {
+/* 낙관적 토글: 메모리·캐시 즉시 반영 후 vault에 백그라운드 저장. 반영된 상태 반환.
+   onSaved(result)를 주면 저장 결과({ok, msg})를 알려준다. */
+function toggleBookmark(id, onSaved) {
   const add = !BOOKMARKS.has(id);
   if (add) BOOKMARKS.add(id); else BOOKMARKS.delete(id);
-  saveBookmarkCache();
-  persistBookmark(id, add);
+  try { saveBookmarkCache(); } catch (e) { /* 저장공간 꽉 참 등 — 메모리 상태는 유지 */ }
+  persistBookmark(id, add).then((r) => { if (onSaved) onSaved(r); });
   return add;
+}
+
+/* 진단 패널: 닫을 때까지 화면 아래에 남는 오류 표시(글자 복사 가능). 모든 페이지 공용. */
+function showDiagPanel(head, lines) {
+  document.getElementById("diagPanel")?.remove();
+  const e = (s) => (s == null ? "" : String(s)).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+  const box = document.createElement("div");
+  box.id = "diagPanel";
+  box.className = "tg-err";
+  box.innerHTML = `<div class="tg-err-head">${e(head)}<button type="button" aria-label="닫기">✕</button></div>`
+    + `<ul>${lines.map((l) => `<li>${e(l)}</li>`).join("")}</ul>`
+    + `<div class="tg-err-title">${e(navigator.userAgent)}</div>`;
+  box.querySelector("button").onclick = () => box.remove();
+  document.body.appendChild(box);
+}
+
+/* ★ 저장 결과 공용 처리: 성공은 짧은 토스트, 실패는 진단 패널 */
+function bookmarkSavedFeedback(toastFn) {
+  return (r) => {
+    if (r && r.ok) { if (toastFn) toastFn("★ 저장 완료"); }
+    else showDiagPanel("즐겨찾기 저장 실패", [(r && r.msg) || "알 수 없음"]);
+  };
 }
 
 function tgEsc(s) {

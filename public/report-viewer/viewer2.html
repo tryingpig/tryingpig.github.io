@@ -83,7 +83,7 @@
   </div>
   <div class="toast" id="toast"></div>
 
-  <script src="app.js?v=29"></script>
+  <script src="app.js?v=30"></script>
   <script type="module">
     import EmbedPDF, { PdfAnnotationSubtype }
       from "https://cdn.jsdelivr.net/npm/@embedpdf/snippet@2/dist/embedpdf.js";
@@ -798,7 +798,7 @@
       b.setAttribute("aria-pressed", on ? "true" : "false");
     }
     document.getElementById("favBtn").onclick = () => {
-      const on = toggleBookmark(REPORT_ID);
+      const on = toggleBookmark(REPORT_ID, bookmarkSavedFeedback(null));   // 저장 실패 시 진단 패널
       paintFav();
       toast(on ? "★ 즐겨찾기에 담았어요" : "즐겨찾기에서 뺐어요");
     };

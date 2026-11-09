@@ -57,7 +57,7 @@
   </div>
   <div class="toast" id="toast"></div>
 
-  <script src="app.js?v=30"></script>
+  <script src="app.js?v=31"></script>
   <script>
     /* 리포트 한 건씩만 보던 highlights.html 과 달리, 하이라이트가 있는 리포트를 전부 모아 보여준다.
        reports.json 의 highlight_count 로 대상을 먼저 걸러서, 있는 것만 annotations 를 받는다
@@ -212,7 +212,7 @@
       document.getElementById("segRead").classList.toggle("active", OPEN_MODE === "read");
       document.getElementById("segPdf").classList.toggle("active", OPEN_MODE === "pdf");
     }
-    function setOpenMode(m) { OPEN_MODE = m; localStorage.setItem(OPEN_KEY, m); renderSeg(); render(); }
+    function setOpenMode(m) { OPEN_MODE = m; lsSet(OPEN_KEY, m); renderSeg(); render(); }
     document.getElementById("segRead").onclick = () => setOpenMode("read");
     document.getElementById("segPdf").onclick = () => setOpenMode("pdf");
     renderSeg();

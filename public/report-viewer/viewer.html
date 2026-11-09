@@ -25,7 +25,7 @@
   <div id="captureHint" style="display:none">드래그로 영역 선택 · 표/그림 캡처<button id="captureHintX">✕</button></div>
   <div class="toast" id="toast"></div>
 
-  <script src="app.js?v=30"></script>
+  <script src="app.js?v=31"></script>
   <script type="module">
     import * as pdfjsLib from "https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.6.82/pdf.min.mjs";
     pdfjsLib.GlobalWorkerOptions.workerSrc =
@@ -1172,7 +1172,7 @@
         const tctx = c.getContext("2d");
         tctx.fillStyle = "#fff"; tctx.fillRect(0, 0, c.width, c.height);   // JPEG는 알파 없음 → 흰 배경
         await p1.render({ canvasContext: tctx, viewport: vp }).promise;
-        localStorage.setItem("rv_thumb_" + id, c.toDataURL("image/jpeg", 0.7));
+        cacheThumb(id, c.toDataURL("image/jpeg", 0.7));
       } catch (e) { /* 용량초과 등 무시 */ }
     }
 

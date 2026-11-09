@@ -11,9 +11,58 @@ const RV = {
   PAT_KEY: "rv_pat",
 };
 
+/* ── localStorage 안전 쓰기 ─────────────────────────────────
+   썸네일 캐시(rv_thumb_*)가 용량(~5MB)을 꽉 채우면 다른 setItem이 QuotaExceeded를 던져
+   그 뒤 로직(★ 저장 등)이 통째로 멈췄다(2026-11-09 모바일 ★ 무반응).
+   → 모든 쓰기는 lsSet으로: 실패하면 오래된 썸네일부터 비우고 1번 더 시도, 그래도 안 되면 false. */
+RV.THUMB_PREFIX = "rv_thumb_";
+RV.THUMB_MAX = 120;   // 썸네일 캐시 상한(개). 넘으면 오래된 리포트(id=YYYYMMDD_…) 것부터 지운다
+
+function thumbKeys() {
+  const ks = [];
+  for (let i = 0; i < localStorage.length; i++) {
+    const k = localStorage.key(i);
+    if (k && k.startsWith(RV.THUMB_PREFIX)) ks.push(k);
+  }
+  return ks.sort();   // id가 날짜로 시작 → 사전순 = 오래된 순
+}
+/* 썸네일 캐시를 keep개까지 줄인다(오래된 것부터). 지운 개수 반환 */
+function trimThumbCache(keep) {
+  const ks = thumbKeys();
+  const drop = ks.slice(0, Math.max(0, ks.length - keep));
+  drop.forEach((k) => { try { localStorage.removeItem(k); } catch (e) {} });
+  return drop.length;
+}
+function lsSet(key, value) {
+  try { localStorage.setItem(key, value); return true; } catch (e) {}
+  try {
+    trimThumbCache(Math.floor(thumbKeys().length / 2));   // 공간 확보: 썸네일 절반 비움
+    localStorage.setItem(key, value);
+    return true;
+  } catch (e) {
+    console.warn("localStorage 저장 실패:", key, e);
+    return false;
+  }
+}
+/* 썸네일 캐시 저장: 상한을 먼저 맞춘 뒤 저장. 썸네일 자체는 실패해도 그만(다음에 다시 받음) */
+function cacheThumb(id, dataUrl) {
+  const key = RV.THUMB_PREFIX + id;
+  if (localStorage.getItem(key) == null) {
+    const ks = thumbKeys();
+    if (ks.length >= RV.THUMB_MAX) {
+      if (key < ks[0]) return;   // 캐시된 것보다 더 오래된 리포트면 저장 안 함(서로 밀어내기 반복 방지)
+      trimThumbCache(RV.THUMB_MAX - 1);
+    }
+  }
+  try { localStorage.setItem(key, dataUrl); } catch (e) {
+    trimThumbCache(Math.floor(thumbKeys().length / 2));
+    try { localStorage.setItem(key, dataUrl); } catch (e2) {}
+  }
+}
+
 /* ── PAT 관리 ───────────────────────────────────────────── */
 function getPat() { return localStorage.getItem(RV.PAT_KEY) || ""; }
-function setPat(v) { localStorage.setItem(RV.PAT_KEY, (v || "").trim()); }
+function setPat(v) { lsSet(RV.PAT_KEY, (v || "").trim()); }
 function clearPat() { localStorage.removeItem(RV.PAT_KEY); }
 
 class AuthError extends Error {}
@@ -377,8 +426,8 @@ RV.TG_CHAT_DEFAULT = "-1004346135391";   // 저장방 기본값(비밀 아님) �
 function getTgToken() { return localStorage.getItem(RV.TG_TOKEN_KEY) || ""; }
 function getTgChat() { return localStorage.getItem(RV.TG_CHAT_KEY) || RV.TG_CHAT_DEFAULT; }
 function setTgCreds(token, chat) {
-  localStorage.setItem(RV.TG_TOKEN_KEY, (token || "").trim());
-  localStorage.setItem(RV.TG_CHAT_KEY, (chat || "").trim());
+  lsSet(RV.TG_TOKEN_KEY, (token || "").trim());
+  lsSet(RV.TG_CHAT_KEY, (chat || "").trim());
 }
 function clearTgCreds() {
   localStorage.removeItem(RV.TG_TOKEN_KEY);
@@ -494,7 +543,7 @@ RV.TG_SENT_KEY = "rv_tg_sent";              // localStorage 캐시
 RV.TG_SENT_PATH = "index/tg_sent.json";     // vault 공유 원본
 let TG_SENT = new Set();
 
-function saveTgSentCache() { localStorage.setItem(RV.TG_SENT_KEY, JSON.stringify([...TG_SENT])); }
+function saveTgSentCache() { lsSet(RV.TG_SENT_KEY, JSON.stringify([...TG_SENT])); }
 function isTgSent(id) { return TG_SENT.has(id); }
 
 /* 캐시에서 즉시 초기화(스크립트 로드 시 1회) */
@@ -597,7 +646,7 @@ RV.BOOKMARK_KEY = "rv_bookmarks";            // localStorage 캐시
 RV.BOOKMARK_PATH = "index/bookmarks.json";   // vault 공유 원본
 let BOOKMARKS = new Set();
 
-function saveBookmarkCache() { localStorage.setItem(RV.BOOKMARK_KEY, JSON.stringify([...BOOKMARKS])); }
+function saveBookmarkCache() { lsSet(RV.BOOKMARK_KEY, JSON.stringify([...BOOKMARKS])); }
 function isBookmarked(id) { return BOOKMARKS.has(id); }
 
 /* 캐시에서 즉시 초기화(스크립트 로드 시 1회) */

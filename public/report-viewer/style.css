@@ -396,6 +396,23 @@ a { color: inherit; text-decoration: none; }
 /* 페이지 전체 이미지(기본 펼침, 탭하면 접힘) */
 /* position:relative 는 CSS로 — 캡처 오버레이가 닫히며 인라인 style을 지워도 유지돼야 한다 */
 .rd-pageimg { position: relative; margin: 4px 0 8px; border-radius: 8px; background: var(--card); }
+/* 표 글자로 보기 (접힘, 2026-11-14) — 쪽 그림 바로 아래 */
+.rd-tables { margin: 0 0 14px; }
+.rd-tables > summary {
+  display: inline-block; padding: 6px 12px; font-size: 13px; cursor: pointer; list-style: none;
+  border: 1px solid var(--line); background: var(--card); color: var(--sub); border-radius: 8px;
+}
+.rd-tables > summary::-webkit-details-marker { display: none; }
+.rd-tables[open] > summary { color: var(--text); border-color: var(--sub); margin-bottom: 8px; }
+.rd-tcap { font-size: 13.5px; font-weight: 700; margin: 12px 0 4px; }
+.rd-tblwrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 6px; -webkit-overflow-scrolling: touch; }
+.rd-tbl { border-collapse: collapse; font-size: 13px; font-variant-numeric: tabular-nums; min-width: 100%; }
+.rd-tbl td { padding: 4px 8px; border-bottom: 1px solid var(--line-soft); white-space: nowrap; }
+.rd-tbl tr:last-child td { border-bottom: 0; }
+.rd-tbl td.num { text-align: right; }
+.rd-tbl td.head { font-weight: 700; background: var(--line-soft); }
+.rd-tbl td:first-child { position: sticky; left: 0; background: var(--card); }
+.rd-tbl td.head:first-child { background: var(--line-soft); }
 /* 이미지 캡처 버튼 */
 .rd-capture {
   display: inline-block; margin: 0 0 14px; padding: 6px 12px; font-size: 13px;

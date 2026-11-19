@@ -2071,6 +2071,36 @@
         "................",
         "................"
       ]
+    },
+    "casinochip": {
+      "bg": [
+        "#2a0a12",
+        "#0c0f1f"
+      ],
+      "palette": {
+        "a": "#e5383b",
+        "b": "#f8f4ec",
+        "c": "#7a1020",
+        "d": "#f2c14e"
+      },
+      "grid": [
+        "................",
+        ".....aabbaa.....",
+        "...baaabbaaab...",
+        "..bbaaaaaaaabb..",
+        "..aaaaccccaaaa..",
+        ".aaaacddddcaaaa.",
+        ".baacddddddcaab.",
+        ".bbacddddddcabb.",
+        ".bbacddddddcabb.",
+        ".baacddddddcaab.",
+        ".aaaacddddcaaaa.",
+        "..aaaaccccaaaa..",
+        "..bbaaaaaaaabb..",
+        "...baaabbaaab...",
+        ".....aabbaa.....",
+        "................"
+      ]
     }
   }
 }

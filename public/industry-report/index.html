@@ -110,6 +110,10 @@
 
   function start() {
     if (!getPat()) { showGate(); return; }
+    // 토큰은 영문·숫자·기호뿐이어야 한다. 한글이나 보이지 않는 문자가 섞여 있으면 요청 자체가 만들어지지 않는다.
+    if (!/^[\x21-\x7e]+$/.test(getPat())) {
+      showGate("이 기기에 저장된 토큰에 한글이나 공백 같은 글자가 섞여 있어 쓸 수 없습니다. 토큰을 다시 넣어 주세요.", true); return;
+    }
     $("status").hidden = false; $("status").textContent = "불러오는 중…"; $("gate").hidden = true;
     gh("contents/site/index.html", true).then(function (r) {
       if (r.status === 401) { showGate("토큰이 만료됐거나 잘못됐습니다. 다시 넣어 주세요.", true); return null; }
@@ -133,8 +137,11 @@
   }
 
   $("save").addEventListener("click", function () {
-    var v = $("pat").value.trim();
+    var v = $("pat").value.replace(/\s+/g, "");
     if (!v) { $("gateerr").textContent = "토큰을 넣어 주세요."; $("gateerr").hidden = false; return; }
+    if (!/^[\x21-\x7e]+$/.test(v)) {
+      $("gateerr").textContent = "토큰에는 영문·숫자·기호만 들어갑니다. GitHub에서 복사한 토큰을 그대로 붙여 넣어 주세요."; $("gateerr").hidden = false; return;
+    }
     setPat(v); $("pat").value = ""; $("gateerr").hidden = true; start();
   });
   $("pat").addEventListener("keydown", function (e) { if (e.key === "Enter") $("save").click(); });

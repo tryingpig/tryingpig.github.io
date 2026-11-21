@@ -95,6 +95,8 @@
     });
     var lb = app.querySelector("#lb"), big = lb ? lb.querySelector("img") : null;
     app.addEventListener("click", function (e) {
+      var f = e.target.closest(".fold");
+      if (f) { var t = f.closest("details.topic"); if (t) { t.open = false; t.scrollIntoView({ block: "start" }); } return; }
       var z = e.target.closest(".zoom");
       if (z && lb) {
         var im = z.querySelector("img");

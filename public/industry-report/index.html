@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>산업 스터디 노트</title>
+<!--
+  산업 스터디 노트 뷰어 (껍데기).
+  내용은 비공개 저장소 tryingpig/industry-report 의 site/index.html 과 site/f/*.jpg 에 있고,
+  PC가 매일 새벽 다시 만들어 올린다. 이 페이지는 열 때마다 그 최신본을 GitHub API 로 읽어 와 보여준다.
+  이 파일에는 내용도 토큰도 없다. 토큰은 리포트 뷰어와 같은 자리(이 기기 localStorage 'rv_pat')를 쓴다.
+-->
+<style>
+  :root{--sbg:#f2f5f4;--sfg:#19231f;--smuted:#5c6b65;--sline:#d8e0dc;--saccent:#0f6b5c;--ssurface:#fff}
+  @media (prefers-color-scheme: dark){:root{--sbg:#111715;--sfg:#e4ebe8;--smuted:#98a7a1;--sline:#2a3531;--saccent:#62c7b1;--ssurface:#19211e;color-scheme:dark}}
+  html,body{margin:0}
+  body{background:var(--sbg);color:var(--sfg);font-family:"Malgun Gothic","Apple SD Gothic Neo",sans-serif}
+  img{max-width:100%}
+  [hidden]{display:none!important}
+  #gate{max-width:30rem;margin:12vh auto;padding:24px;background:var(--ssurface);border:1px solid var(--sline);border-radius:10px;line-height:1.7}
+  #gate h1{font-size:1.3rem;margin:0 0 8px}
+  #gate p{margin:0 0 12px;color:var(--smuted);font-size:.93rem}
+  #gate input{width:100%;box-sizing:border-box;padding:10px;font-size:1rem;border:1px solid var(--sline);border-radius:6px;background:var(--sbg);color:var(--sfg)}
+  #gate button{margin-top:12px;padding:10px 18px;font-size:1rem;border:0;border-radius:6px;background:var(--saccent);color:var(--ssurface);cursor:pointer}
+  #gate .err{color:#b3443f;font-size:.9rem;margin-top:10px}
+  #status{padding:40px 16px;text-align:center;color:var(--smuted)}
+  #shellbar{max-width:54rem;margin:0 auto;padding:8px 16px 40px;font-size:.8rem;color:var(--smuted);display:flex;gap:16px;flex-wrap:wrap}
+  #shellbar button{border:0;background:none;color:var(--smuted);text-decoration:underline;cursor:pointer;font-size:.8rem;padding:0}
+  img.wait{min-height:120px;background:repeating-linear-gradient(135deg,transparent 0 10px,rgba(128,128,128,.08) 10px 20px)}
+</style>
+</head>
+<body>
+<div id="status">불러오는 중…</div>
+<div id="gate" hidden>
+  <h1>산업 스터디 노트</h1>
+  <p id="gatemsg">비공개 저장소라 열람용 GitHub 토큰이 필요합니다. 토큰은 이 기기에만 저장됩니다.</p>
+  <label for="pat" style="font-size:.85rem">GitHub 토큰 (tryingpig/industry-report 를 읽을 수 있어야 합니다)</label>
+  <input id="pat" type="password" autocomplete="off" spellcheck="false" placeholder="github_pat_… 또는 ghp_…">
+  <button id="save" type="button">저장하고 열기</button>
+  <div class="err" id="gateerr" hidden></div>
+</div>
+<div id="app" hidden></div>
+<div id="shellbar" hidden><span id="updated"></span><button id="reset" type="button">토큰 바꾸기</button></div>
+
+<script>
+(function () {
+  var OWNER = "tryingpig", REPO = "industry-report", API = "https://api.github.com", PAT_KEY = "rv_pat";
+  var $ = function (id) { return document.getElementById(id); };
+  var urls = {};            // 그림 경로 → 받아 둔 blob 주소
+
+  function getPat() { try { return localStorage.getItem(PAT_KEY) || ""; } catch (e) { return ""; } }
+  function setPat(v) { try { localStorage.setItem(PAT_KEY, v); } catch (e) {} }
+
+  function gh(path, raw) {
+    return fetch(API + "/repos/" + OWNER + "/" + REPO + "/" + path, {
+      headers: { "Authorization": "Bearer " + getPat(), "Accept": raw ? "application/vnd.github.raw" : "application/vnd.github+json",
+                 "X-GitHub-Api-Version": "2022-11-28" },
+      cache: "no-store"
+    });
+  }
+
+  function showGate(msg, isErr) {
+    $("status").hidden = true; $("app").hidden = true; $("shellbar").hidden = true; $("gate").hidden = false;
+    if (msg) { $("gateerr").textContent = msg; $("gateerr").hidden = !isErr; if (!isErr) $("gatemsg").textContent = msg; }
+  }
+
+  function loadImage(img) {
+    var path = img.getAttribute("data-path");
+    if (!path || img.getAttribute("data-state")) return Promise.resolve();
+    img.setAttribute("data-state", "loading");
+    var p = urls[path] ? Promise.resolve(urls[path]) : gh("contents/" + path, true).then(function (r) {
+      if (!r.ok) throw new Error("그림 " + r.status);
+      return r.blob();
+    }).then(function (b) { urls[path] = URL.createObjectURL(b); return urls[path]; });
+    return p.then(function (u) { img.src = u; img.classList.remove("wait"); img.setAttribute("data-state", "done"); })
+            .catch(function () { img.removeAttribute("data-state"); });
+  }
+
+  function render(html) {
+    var doc = new DOMParser().parseFromString(html, "text/html");
+    doc.querySelectorAll('link[rel="stylesheet"], style').forEach(function (n) { document.head.appendChild(document.importNode(n, true)); });
+    doc.querySelectorAll("script").forEach(function (n) { n.remove(); });
+    var app = $("app");
+    app.innerHTML = doc.body.innerHTML;
+    var io = ("IntersectionObserver" in window) ? new IntersectionObserver(function (es) {
+      es.forEach(function (e) { if (e.isIntersecting) { io.unobserve(e.target); loadImage(e.target); } });
+    }, { rootMargin: "600px" }) : null;
+    app.querySelectorAll("img").forEach(function (img) {
+      var src = img.getAttribute("src") || "";
+      if (!src || /^(data:|blob:|https?:)/.test(src)) return;
+      img.setAttribute("data-path", "site/" + src);
+      img.removeAttribute("src"); img.removeAttribute("loading"); img.classList.add("wait");
+      if (io) io.observe(img); else loadImage(img);
+    });
+    var lb = app.querySelector("#lb"), big = lb ? lb.querySelector("img") : null;
+    app.addEventListener("click", function (e) {
+      var z = e.target.closest(".zoom");
+      if (z && lb) {
+        var im = z.querySelector("img");
+        loadImage(im).then(function () { if (im.src) { big.src = im.src; lb.hidden = false; } });
+        return;
+      }
+      if (lb && !lb.hidden) lb.hidden = true;
+    });
+    document.addEventListener("keydown", function (e) { if (e.key === "Escape" && lb) lb.hidden = true; });
+    $("status").hidden = true; $("gate").hidden = true; app.hidden = false; $("shellbar").hidden = false;
+    if (location.hash) { var t = document.getElementById(location.hash.slice(1)); if (t) t.scrollIntoView(); }
+  }
+
+  function start() {
+    if (!getPat()) { showGate(); return; }
+    $("status").hidden = false; $("status").textContent = "불러오는 중…"; $("gate").hidden = true;
+    gh("contents/site/index.html", true).then(function (r) {
+      if (r.status === 401) { showGate("토큰이 만료됐거나 잘못됐습니다. 다시 넣어 주세요.", true); return null; }
+      if (r.status === 403 || r.status === 404) {
+        showGate("이 토큰으로는 tryingpig/industry-report 저장소를 볼 수 없습니다. 이 저장소 읽기 권한이 있는 토큰을 넣어 주세요.", true); return null;
+      }
+      if (!r.ok) throw new Error("GitHub 응답 " + r.status);
+      return r.text();
+    }).then(function (html) {
+      if (html == null) return;
+      render(html);
+      gh("commits?path=site/index.html&per_page=1").then(function (r) { return r.ok ? r.json() : []; }).then(function (c) {
+        if (c && c[0]) {
+          var d = new Date(c[0].commit.committer.date);
+          $("updated").textContent = "저장소 마지막 갱신: " + d.toLocaleString("ko-KR", { dateStyle: "medium", timeStyle: "short" });
+        }
+      }).catch(function () {});
+    }).catch(function (e) {
+      $("status").hidden = false; $("status").textContent = "불러오지 못했습니다: " + e.message + " (새로고침해 보세요)";
+    });
+  }
+
+  $("save").addEventListener("click", function () {
+    var v = $("pat").value.trim();
+    if (!v) { $("gateerr").textContent = "토큰을 넣어 주세요."; $("gateerr").hidden = false; return; }
+    setPat(v); $("pat").value = ""; $("gateerr").hidden = true; start();
+  });
+  $("pat").addEventListener("keydown", function (e) { if (e.key === "Enter") $("save").click(); });
+  $("reset").addEventListener("click", function () { showGate("새 토큰을 넣으면 이 기기에 저장된 토큰이 바뀝니다. 리포트 뷰어도 같은 토큰을 씁니다."); });
+  start();
+})();
+</script>
+</body>
+</html>

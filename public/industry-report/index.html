@@ -77,48 +77,81 @@
             .catch(function () { img.removeAttribute("data-state"); });
   }
 
+  var PAGE_RE = /^[a-z0-9_-]+\.html$/;      // 저장소 site/ 안의 쪽 이름만 허용
+  var imgWatch = null;
+
+  function curPage() {
+    var p = new URLSearchParams(location.search).get("p") || "index.html";
+    return PAGE_RE.test(p) ? p : "index.html";
+  }
+
   function render(html) {
     var doc = new DOMParser().parseFromString(html, "text/html");
-    doc.querySelectorAll('link[rel="stylesheet"], style').forEach(function (n) { document.head.appendChild(document.importNode(n, true)); });
+    // 쪽을 옮길 때마다 앞 쪽의 스타일은 걷어 내고 새 쪽 것을 넣는다
+    document.head.querySelectorAll("[data-from-site]").forEach(function (n) { n.remove(); });
+    doc.querySelectorAll('link[rel="stylesheet"], style').forEach(function (n) {
+      var c = document.importNode(n, true); c.setAttribute("data-from-site", "1"); document.head.appendChild(c);
+    });
     doc.querySelectorAll("script").forEach(function (n) { n.remove(); });
     var app = $("app");
     app.innerHTML = doc.body.innerHTML;
-    var io = ("IntersectionObserver" in window) ? new IntersectionObserver(function (es) {
-      es.forEach(function (e) { if (e.isIntersecting) { io.unobserve(e.target); loadImage(e.target); } });
+    if (imgWatch) imgWatch.disconnect();
+    imgWatch = ("IntersectionObserver" in window) ? new IntersectionObserver(function (es) {
+      es.forEach(function (e) { if (e.isIntersecting) { imgWatch.unobserve(e.target); loadImage(e.target); } });
     }, { rootMargin: "600px" }) : null;
     app.querySelectorAll("img").forEach(function (img) {
       var src = img.getAttribute("src") || "";
       if (!src || /^(data:|blob:|https?:)/.test(src)) return;
       img.setAttribute("data-path", "site/" + src);
       img.removeAttribute("src"); img.removeAttribute("loading"); img.classList.add("wait");
-      if (io) io.observe(img); else loadImage(img);
+      if (imgWatch) imgWatch.observe(img); else loadImage(img);
     });
-    var lb = app.querySelector("#lb"), big = lb ? lb.querySelector("img") : null;
-    app.addEventListener("click", function (e) {
-      var f = e.target.closest(".fold");
-      if (f) { var t = f.closest("details.topic"); if (t) { t.open = false; t.scrollIntoView({ block: "start" }); } return; }
-      var z = e.target.closest(".zoom");
-      if (z && lb) {
-        var im = z.querySelector("img");
-        loadImage(im).then(function () { if (im.src) { big.src = im.src; lb.hidden = false; } });
-        return;
-      }
-      if (lb && !lb.hidden) lb.hidden = true;
-    });
-    document.addEventListener("keydown", function (e) { if (e.key === "Escape" && lb) lb.hidden = true; });
     $("status").hidden = true; $("gate").hidden = true; app.hidden = false; $("shellbar").hidden = false;
-    if (location.hash) { var t = document.getElementById(location.hash.slice(1)); if (t) t.scrollIntoView(); }
   }
 
-  function start() {
+  // 눌림 처리는 한 번만 건다(쪽을 옮겨도 그대로 쓴다)
+  $("app").addEventListener("click", function (e) {
+    var app = $("app"), lb = app.querySelector("#lb");
+    var f = e.target.closest(".fold");
+    if (f) { var t = f.closest("details.topic"); if (t) { t.open = false; t.scrollIntoView({ block: "start" }); } return; }
+    var a = e.target.closest("a[href]");
+    if (a) {
+      var href = a.getAttribute("href") || "";
+      if (PAGE_RE.test(href)) {            // 산업 쪽·첫 화면으로 가는 연결: 새로 읽어 와 바꿔 끼운다
+        e.preventDefault();
+        history.pushState(null, "", href === "index.html" ? location.pathname : location.pathname + "?p=" + href);
+        start(true);
+      }
+      return;
+    }
+    var z = e.target.closest(".zoom");
+    if (z && lb) {
+      var im = z.querySelector("img");
+      loadImage(im).then(function () { if (im.src) { lb.querySelector("img").src = im.src; lb.hidden = false; } });
+      return;
+    }
+    if (lb && !lb.hidden) lb.hidden = true;
+  });
+  document.addEventListener("keydown", function (e) {
+    var lb = $("app").querySelector("#lb");
+    if (e.key === "Escape" && lb) lb.hidden = true;
+  });
+  window.addEventListener("popstate", function () { start(true); });
+
+  function start(toTop) {
     if (!getPat()) { showGate(); return; }
     // 토큰은 영문·숫자·기호뿐이어야 한다. 한글이나 보이지 않는 문자가 섞여 있으면 요청 자체가 만들어지지 않는다.
     if (!/^[\x21-\x7e]+$/.test(getPat())) {
       showGate("이 기기에 저장된 토큰에 한글이나 공백 같은 글자가 섞여 있어 쓸 수 없습니다. 토큰을 다시 넣어 주세요.", true); return;
     }
+    var page = curPage();
+    $("app").hidden = true; $("shellbar").hidden = true;
     $("status").hidden = false; $("status").textContent = "불러오는 중…"; $("gate").hidden = true;
-    gh("contents/site/index.html", true).then(function (r) {
+    gh("contents/site/" + page, true).then(function (r) {
       if (r.status === 401) { showGate("토큰이 만료됐거나 잘못됐습니다. 다시 넣어 주세요.", true); return null; }
+      if (r.status === 404 && page !== "index.html") {       // 없어진 쪽이면 첫 화면으로
+        history.replaceState(null, "", location.pathname); start(true); return null;
+      }
       if (r.status === 403 || r.status === 404) {
         showGate("이 토큰으로는 tryingpig/industry-report 저장소를 볼 수 없습니다. 이 저장소 읽기 권한이 있는 토큰을 넣어 주세요.", true); return null;
       }
@@ -127,10 +160,12 @@
     }).then(function (html) {
       if (html == null) return;
       render(html);
-      gh("commits?path=site/index.html&per_page=1").then(function (r) { return r.ok ? r.json() : []; }).then(function (c) {
+      if (toTop) window.scrollTo(0, 0);
+      else if (location.hash) { var t = document.getElementById(location.hash.slice(1)); if (t) t.scrollIntoView(); }
+      gh("commits?path=site/" + page + "&per_page=1").then(function (r) { return r.ok ? r.json() : []; }).then(function (c) {
         if (c && c[0]) {
           var d = new Date(c[0].commit.committer.date);
-          $("updated").textContent = "저장소 마지막 갱신: " + d.toLocaleString("ko-KR", { dateStyle: "medium", timeStyle: "short" });
+          $("updated").textContent = "이 쪽 마지막 갱신: " + d.toLocaleString("ko-KR", { dateStyle: "medium", timeStyle: "short" });
         }
       }).catch(function () {});
     }).catch(function (e) {

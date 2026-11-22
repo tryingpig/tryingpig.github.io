@@ -115,6 +115,12 @@
     var app = $("app"), lb = app.querySelector("#lb");
     var f = e.target.closest(".fold");
     if (f) { var t = f.closest("details.topic"); if (t) { t.open = false; t.scrollIntoView({ block: "start" }); } return; }
+    var j = e.target.closest("a.jump");
+    if (j) {                               // 같은 쪽 안의 카드로: 접혀 있으면 펼치고 그리로 간다
+      var g = document.getElementById((j.getAttribute("href") || "").slice(1));
+      if (g) { e.preventDefault(); if (g.tagName === "DETAILS") g.open = true; g.scrollIntoView({ block: "start" }); }
+      return;
+    }
     var a = e.target.closest("a[href]");
     if (a) {
       var href = a.getAttribute("href") || "";

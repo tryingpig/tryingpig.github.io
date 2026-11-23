@@ -44,6 +44,7 @@
 <div id="app" hidden></div>
 <div id="shellbar" hidden><span id="updated"></span><button id="reset" type="button">토큰 바꾸기</button></div>
 
+<script src="share.js"></script>
 <script>
 (function () {
   var OWNER = "tryingpig", REPO = "industry-report", API = "https://api.github.com", PAT_KEY = "rv_pat";
@@ -77,6 +78,8 @@
     return p.then(function (u) { img.src = u; img.classList.remove("wait"); img.setAttribute("data-state", "done"); })
             .catch(function () { img.removeAttribute("data-state"); });
   }
+
+  window.IL_loadImage = loadImage;          // 카드 공유(share.js)가 아직 안 받은 그림을 받을 때 쓴다
 
   var PAGE_RE = /^[a-z0-9_-]+\.html$/;      // 저장소 site/ 안의 쪽 이름만 허용
   var imgWatch = null;
@@ -113,6 +116,8 @@
   // 눌림 처리는 한 번만 건다(쪽을 옮겨도 그대로 쓴다)
   $("app").addEventListener("click", function (e) {
     var app = $("app"), lb = app.querySelector("#lb");
+    var sh = e.target.closest(".share");
+    if (sh) { if (window.ILShare) window.ILShare(sh.closest("details.topic")); return; }
     var f = e.target.closest(".fold");
     if (f) { var t = f.closest("details.topic"); if (t) { t.open = false; t.scrollIntoView({ block: "start" }); } return; }
     var j = e.target.closest("a.jump");

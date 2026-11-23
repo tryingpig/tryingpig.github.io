@@ -113,6 +113,14 @@
     $("status").hidden = true; $("gate").hidden = true; app.hidden = false; $("shellbar").hidden = false;
   }
 
+  // 카드 하나를 펼치면 다른 카드는 접는다. 위쪽 카드가 접혀 화면이 밀리지 않게 펼친 카드 자리를 유지한다.
+  $("app").addEventListener("toggle", function (e) {
+    var t = e.target; if (!t.matches || !t.matches("details.topic") || !t.open) return;
+    var y = t.getBoundingClientRect().top, n = 0;
+    $("app").querySelectorAll("details.topic[open]").forEach(function (o) { if (o !== t && !o.contains(t) && !t.contains(o)) { o.open = false; n++; } });
+    if (n) window.scrollBy(0, t.getBoundingClientRect().top - y);
+  }, true);
+
   // 눌림 처리는 한 번만 건다(쪽을 옮겨도 그대로 쓴다)
   $("app").addEventListener("click", function (e) {
     var app = $("app"), lb = app.querySelector("#lb");

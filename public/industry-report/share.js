@@ -24,7 +24,8 @@
     ".ils-badge{display:inline-block;font-size:26px;font-weight:700;background:#fde68a;border-radius:99px;padding:4px 18px;margin-right:12px}",
     ".ils-meta{font-size:28px;color:#667085;margin:18px 0 34px}",
     ".ils-one{font-size:40px;line-height:1.6;font-weight:500}",
-    "#ils-stage mark{background:#fde68a;color:inherit;font-weight:700}",
+    "#ils-stage{word-break:keep-all;overflow-wrap:break-word}",
+    "#ils-stage mark{background:#fde68a;color:inherit;font-weight:700;white-space:nowrap}",   // 형광펜이 줄을 넘으면 html2canvas가 큰 덩어리로 칠함
     ".ils-blk{margin-bottom:38px}",
     ".ils-blk h3{font-size:39px;font-weight:700;letter-spacing:-.03em;line-height:1.35;display:flex;gap:20px;margin-bottom:20px}",
     ".ils-blk h3 .n{flex:0 0 56px;height:56px;border-radius:50%;background:#0b0b0c;color:#fff;font-size:30px;display:flex;align-items:center;justify-content:center;margin-top:2px}",

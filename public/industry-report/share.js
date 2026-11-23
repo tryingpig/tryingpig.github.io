@@ -16,7 +16,8 @@
     ".ils-body{flex:1;overflow:hidden;display:flex;flex-direction:column}",
     ".ils-foot{height:110px;display:flex;align-items:center;gap:20px;border-top:2px solid #e4e4da;font-size:26px;color:#667085;font-weight:500}",
     ".ils-foot b{color:#0b0b0c;font-weight:700;letter-spacing:-.03em}",
-    ".ils-foot .src{flex:1;text-align:center;font-size:22px}.ils-foot .pn{margin-left:auto}",
+    ".ils-foot .ils-brand{min-width:0}.ils-foot .ils-tg{margin-left:12px;font-size:21px;color:#a6adb8;font-weight:400;letter-spacing:-.01em}",
+    ".ils-foot .src{font-size:20px;color:#8a93a3;margin-top:6px}.ils-foot .pn{margin-left:auto;flex:0 0 auto}",
     ".ils-cover{padding-bottom:40px;margin-bottom:44px;border-bottom:2px solid #e4e4da}",
     ".ils-cemo{width:120px;height:120px;border-radius:28px;background:#f7f7f1;border:2px solid #e4e4da;display:flex;align-items:center;justify-content:center;font-size:68px;margin-bottom:32px}",
     ".ils-cover h1{font-size:68px;font-weight:700;letter-spacing:-.04em;line-height:1.2}",
@@ -187,7 +188,7 @@
       var foot = "Industry Log";
       var pages = groups.map(function (g) {
         var p = document.createElement("div"); p.className = "ils-page";
-        p.innerHTML = "<div class='bar'></div><div class='ils-body'></div><div class='ils-foot'><b>🏭 Industry Log</b><span class='pn'></span></div>";
+        p.innerHTML = "<div class='bar'></div><div class='ils-body'></div><div class='ils-foot'><div class='ils-brand'><div><b>🏭 Industry Log</b><span class='ils-tg'>(텔레그램 : 마켓타이쿤 https://t.me/+NNb91uySqThjMTA1)</span></div></div><span class='pn'></span></div>";
         stage.appendChild(p); var body = p.querySelector(".ils-body"); g.forEach(function (k) { body.appendChild(items[k]); }); return p;
       });
       src.remove();
@@ -209,7 +210,7 @@
         });
         if (b.children.length === 1 && b.querySelector(".ils-fig")) b.style.justifyContent = "center";
       });
-      if (d.brokers.length) pages[pages.length - 1].querySelector(".ils-foot b").insertAdjacentHTML("afterend", "<span class='src'>" + esc(d.brokers.join(" · ")) + " 리포트를 바탕으로 정리</span>");
+      if (d.brokers.length) pages[pages.length - 1].querySelector(".ils-foot .ils-brand").insertAdjacentHTML("beforeend", "<div class='src'>" + esc(d.brokers.join(" · ")) + " 리포트를 바탕으로 정리</div>");
       pages.forEach(function (p, i) { p.querySelector(".pn").textContent = (i + 1) + " / " + pages.length; });
       return pages;
     });

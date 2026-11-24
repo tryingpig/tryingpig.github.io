@@ -355,3 +355,33 @@ figcaption { font-size: 13px; color: var(--muted); margin-top: 8px; }
 @media (prefers-reduced-motion: reduce) {
   * { transition: none !important; animation: none !important; }
 }
+
+/* ── Easy Ver(2026-11-25): 쉬운 설명 먼저, 근거는 접어서 ──
+   <p class="easy-one">한 줄 결론</p>
+   <ul class="say"><li><b>하향 근거</b> … <span class="src">(출처)</span></li></ul>   ← Company Log 식 머리말 줄
+   <details class="ev"><summary>근거 보기</summary> 표·인용·차트 </details> */
+.easy-one {
+  font-size: 1.12em; font-weight: 700; line-height: 1.6;
+  padding: 12px 16px; margin: 14px 0 18px; border-radius: 10px;
+  background: color-mix(in srgb, var(--accent) 10%, var(--bg));
+  border-left: 5px solid var(--accent);
+}
+ul.say { list-style: none; padding-left: 0; margin: 14px 0; }
+ul.say li { padding: 8px 0; border-bottom: 1px dashed var(--line); line-height: 1.7; }
+ul.say li:last-child { border-bottom: 0; }
+ul.say li > b:first-child {
+  display: inline-block; min-width: 5.5em; margin-right: 8px; padding: 1px 8px; border-radius: 999px;
+  font-size: 0.86em; background: var(--card); border: 1px solid var(--line); color: var(--ink);
+}
+details.ev {
+  margin: 12px 0 22px; border: 1px solid var(--line); border-radius: 10px; background: var(--card);
+}
+details.ev > summary {
+  cursor: pointer; padding: 10px 14px; font-size: 0.92em; color: var(--ink-soft); list-style: none;
+}
+details.ev > summary::-webkit-details-marker { display: none; }
+details.ev > summary::before { content: "▸ "; color: var(--accent); }
+details.ev[open] > summary::before { content: "▾ "; }
+details.ev[open] > summary { border-bottom: 1px solid var(--line-soft); }
+details.ev > :not(summary) { margin-left: 14px; margin-right: 14px; }
+details.ev > :last-child { margin-bottom: 14px; }

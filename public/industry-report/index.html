@@ -158,15 +158,33 @@
   });
   window.addEventListener("popstate", function () { start(true); });
 
+  // 한 번 받은 쪽은 이 기기에 넣어 두고(Cache API), 다음에 열 때 그것부터 바로 보여 준 뒤 GitHub에서 새 것을 받아 바뀌었으면 바꿔 끼운다.
+  var CACHE = "il-pages-v1", startSeq = 0;
+  function ckey(page) { return location.origin + "/__il_cache__/" + page; }
+  function cacheGet(page) {
+    try { return caches.open(CACHE).then(function (c) { return c.match(ckey(page)); }).then(function (r) { return r ? r.text() : null; }).catch(function () { return null; }); }
+    catch (e) { return Promise.resolve(null); }
+  }
+  function cachePut(page, html) {
+    try { caches.open(CACHE).then(function (c) { return c.put(ckey(page), new Response(html, { headers: { "Content-Type": "text/html" } })); }).catch(function () {}); } catch (e) {}
+  }
+  function placeAfterRender(toTop) {
+    if (toTop) window.scrollTo(0, 0);
+    else if (location.hash) { var t = document.getElementById(location.hash.slice(1)); if (t) { if (t.tagName === "DETAILS") t.open = true; t.scrollIntoView({ block: "start" }); } }
+  }
+
   function start(toTop) {
     if (!getPat()) { showGate(); return; }
     // 토큰은 영문·숫자·기호뿐이어야 한다. 한글이나 보이지 않는 문자가 섞여 있으면 요청 자체가 만들어지지 않는다.
     if (!/^[\x21-\x7e]+$/.test(getPat())) {
       showGate("이 기기에 저장된 토큰에 한글이나 공백 같은 글자가 섞여 있어 쓸 수 없습니다. 토큰을 다시 넣어 주세요.", true); return;
     }
-    var page = curPage();
+    var page = curPage(), seq = ++startSeq, shown = null;
     $("app").hidden = true; $("shellbar").hidden = true;
     $("status").hidden = false; $("status").textContent = "불러오는 중…"; $("gate").hidden = true;
+    cacheGet(page).then(function (h) {
+      if (h && seq === startSeq && shown === null) { shown = h; render(h); placeAfterRender(toTop); }
+    });
     gh("contents/site/" + page, true).then(function (r) {
       if (r.status === 401) { showGate("토큰이 만료됐거나 잘못됐습니다. 다시 넣어 주세요.", true); return null; }
       if (r.status === 404 && page !== "index.html") {       // 없어진 쪽이면 첫 화면으로
@@ -178,10 +196,12 @@
       if (!r.ok) throw new Error("GitHub 응답 " + r.status);
       return r.text();
     }).then(function (html) {
-      if (html == null) return;
-      render(html);
-      if (toTop) window.scrollTo(0, 0);
-      else if (location.hash) { var t = document.getElementById(location.hash.slice(1)); if (t) { if (t.tagName === "DETAILS") t.open = true; t.scrollIntoView({ block: "start" }); } }
+      if (html == null || seq !== startSeq) return;
+      cachePut(page, html);
+      if (shown === null) { shown = html; render(html); placeAfterRender(toTop); }
+      else if (html !== shown && !$("app").querySelector("details.topic[open], details.recent[open]")) {
+        var y = window.scrollY; shown = html; render(html); window.scrollTo(0, y);      // 밤사이 바뀐 쪽: 보고 있는 카드가 없을 때만 조용히 바꿔 끼운다
+      }
       gh("commits?path=site/" + page + "&per_page=1").then(function (r) { return r.ok ? r.json() : []; }).then(function (c) {
         if (c && c[0]) {
           var d = new Date(c[0].commit.committer.date);
@@ -189,6 +209,7 @@
         }
       }).catch(function () {});
     }).catch(function (e) {
+      if (shown !== null) return;           // 넣어 둔 것을 이미 보여 주고 있으면 그대로 둔다
       $("status").hidden = false; $("status").textContent = "불러오지 못했습니다: " + e.message + " (새로고침해 보세요)";
     });
   }

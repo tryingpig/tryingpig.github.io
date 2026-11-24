@@ -2101,6 +2101,36 @@
         ".....aabbaa.....",
         "................"
       ]
+    },
+    "bubblephone": {
+      "bg": [
+        "#2a1638",
+        "#120a1f"
+      ],
+      "palette": {
+        "w": "#E9EDF5",
+        "s": "#8C95AA",
+        "p": "#FF5C9E",
+        "h": "#FFFFFF"
+      },
+      "grid": [
+        "................",
+        "....wwwwwwws....",
+        "...wwwwsswwws...",
+        "...wpppppppps...",
+        "...wphhhhhhps...",
+        "...wphhhhhhps...",
+        "...wphpppppps...",
+        "...wpppppppps...",
+        "...wpphhphhps...",
+        "...wpphhhhhps...",
+        "...wppphhhpps...",
+        "...wpppphppps...",
+        "...wwwwwwwwws...",
+        "...wwwwsswwws...",
+        "....ssssssss....",
+        "................"
+      ]
     }
   }
 }

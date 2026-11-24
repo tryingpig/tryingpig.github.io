@@ -136,11 +136,11 @@
     }
     var a = e.target.closest("a[href]");
     if (a) {
-      var href = a.getAttribute("href") || "";
-      if (PAGE_RE.test(href)) {            // 산업 쪽·첫 화면으로 가는 연결: 새로 읽어 와 바꿔 끼운다
+      var href = a.getAttribute("href") || "", hp = href.split("#"), hash = hp[1] && /^[\w-]+$/.test(hp[1]) ? "#" + hp[1] : "";
+      if (PAGE_RE.test(hp[0])) {           // 산업 쪽·날짜 쪽·첫 화면으로 가는 연결: 새로 읽어 와 바꿔 끼운다(#카드 가 붙으면 그 카드를 펼친다)
         e.preventDefault();
-        history.pushState(null, "", href === "index.html" ? location.pathname : location.pathname + "?p=" + href);
-        start(true);
+        history.pushState(null, "", (hp[0] === "index.html" ? location.pathname : location.pathname + "?p=" + hp[0]) + hash);
+        start(!hash);
       }
       return;
     }
@@ -181,7 +181,7 @@
       if (html == null) return;
       render(html);
       if (toTop) window.scrollTo(0, 0);
-      else if (location.hash) { var t = document.getElementById(location.hash.slice(1)); if (t) t.scrollIntoView(); }
+      else if (location.hash) { var t = document.getElementById(location.hash.slice(1)); if (t) { if (t.tagName === "DETAILS") t.open = true; t.scrollIntoView({ block: "start" }); } }
       gh("commits?path=site/" + page + "&per_page=1").then(function (r) { return r.ok ? r.json() : []; }).then(function (c) {
         if (c && c[0]) {
           var d = new Date(c[0].commit.committer.date);

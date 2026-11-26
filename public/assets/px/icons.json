@@ -2161,6 +2161,36 @@
         "....dddddddd....",
         "................"
       ]
+    },
+    "shoppingbag": {
+      "bg": [
+        "#2a1e2e",
+        "#120d16"
+      ],
+      "palette": {
+        "a": "#f2d16b",
+        "b": "#fff4c2",
+        "c": "#b8862b",
+        "d": "#d9a06a"
+      },
+      "grid": [
+        "................",
+        "................",
+        "......dddd......",
+        ".....d....d.....",
+        ".....d....d.....",
+        "..aaaaaaaaaaaa..",
+        "..abaaaaaaaaac..",
+        "..abaaaaaaaaac..",
+        "..abaaccccaaac..",
+        "..abaaccccaaac..",
+        "..abaaaaaaaaac..",
+        "..abaaaaaaaaac..",
+        "..abaaaaaaaaac..",
+        "..cccccccccccc..",
+        "................",
+        "................"
+      ]
     }
   }
 }

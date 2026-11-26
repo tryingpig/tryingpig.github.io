@@ -75,6 +75,7 @@ export const TOPIC_ICONS: [RegExp, string][] = [
   [/파라다이스|카지노|034230/i, 'casinochip'],
   [/디어유|dear_?u|376300/i, 'bubblephone'],
   [/하이트진로|하이트|진로|참이슬|소주/i, 'sojubottle'],
+  [/신세계|백화점|shinsegae/i, 'shoppingbag'],
 ];
 
 /* 매칭되는 주제가 없을 때 — 파일명 해시로 색과 무늬가 정해지는 픽셀 타일.

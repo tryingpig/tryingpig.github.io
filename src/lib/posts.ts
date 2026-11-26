@@ -42,6 +42,9 @@ export function loadPosts(): Post[] {
 
   const posts: Post[] = [];
   for (const entry of raw) {
+    // 기업분석 딥다이브는 Company Log 의 'AI 분석' 탭으로 옮김 (사용자 요청 2026-11-26) — 파일·주소는 그대로, 목록에서만 뺀다.
+    // 봇은 지금처럼 study/ 에 쓰고 posts.json 에 등록하면 되고, company-log/tools/ai_reports.py 가 그 목록을 읽어 간다.
+    if (/_기업분석\.html$/.test(entry.file)) continue;
     const abs = path.join(PUBLIC, entry.file);
     if (!fs.existsSync(abs)) {
       console.warn(`[posts] posts.json 에 있으나 파일이 없음 — 건너뜀: ${entry.file}`);

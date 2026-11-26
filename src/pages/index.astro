@@ -3,14 +3,10 @@ import '../styles/tokens.css';
 import Nav from '../components/Nav.astro';
 import Hero from '../components/Hero.astro';
 import Projects from '../components/Projects.astro';
-// 유일한 React 아일랜드. 검색·페이저만 클라이언트에서 살아 움직인다.
-import PostList from '../components/PostList.tsx';
 import Footer from '../components/Footer.astro';
-import { loadPosts } from '../lib/posts';
 
 // ★ 빌드 타임에 딱 한 번 실행된다. 브라우저는 이 코드를 절대 받지 않는다.
 // 프로젝트 목록은 본문에서 빠지고 Nav 의 드롭다운으로 들어갔다.
-const posts = loadPosts();
 
 // og:image·canonical 은 상대경로가 통하지 않아 절대 URL 이 필요하다 (끝의 / 유지)
 const SITE = 'https://tryingpig.github.io/';
@@ -73,13 +69,7 @@ const desc = '노력하는뚱땡이의 학습공간 — 투자·개발 학습 �
     <Hero />
     <Projects />
 
-    <section id="study" class="sec wrap reveal">
-      {/* 섹션 헤더는 PostList 안으로 옮겼다 — 검색하면 개수가 '3 / 64' 로 바뀌어야 하므로 */}
-      {posts.length === 0
-        ? <div class="sec-head"><h2>Study &amp; Writings</h2></div>
-        : <PostList posts={posts} perPage={10} client:load />}
-      {posts.length === 0 && <div class="empty">학습글(기업분석·입문 가이드·투자 안내서·밸류체인·산업분석)은 <a href="https://tryingpig.github.io/company-log/#ai">Company Log → AI 분석</a>으로 옮겼어요 (2026-11-26).</div>}
-    </section>
+    {/* STUDY 칸은 없앰 (사용자 요청 2026-11-26) — 학습글은 전부 Company Log AI 분석 탭으로 옮김 */}
   </main>
 
   <Footer />
@@ -99,5 +89,4 @@ const desc = '노력하는뚱땡이의 학습공간 — 투자·개발 학습 �
 <style>
   /* Projects 카드가 히어로와 STUDY 사이에 들어왔다. 두 섹션이 붙어 보이지 않게 간격만 정리 */
   #projects { padding-top: 12px; padding-bottom: 8px; }
-  #study { padding-top: 24px; }
 </style>

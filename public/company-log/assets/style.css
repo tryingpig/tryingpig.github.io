@@ -1718,3 +1718,15 @@ body.t3 .legend { column-gap: 14px; }
 .legend .ma-rel .sw { width: 10px; margin-right: 4px; }
 .legend .ma-ar { margin-left: 1px; }
 body.t3 .legend { column-gap: 12px; }
+
+/* 종목 넘기기 화살표 (11-27): 넓은 화면은 본문 양옆 가운데, 좁은 화면은 아래 양 끝 */
+.st-nav { position: fixed; top: 50%; transform: translateY(-50%); z-index: 14; width: 56px; padding: 14px 4px 10px;
+  display: flex; flex-direction: column; align-items: center; gap: 6px; border: 1px solid var(--line); border-radius: 14px;
+  background: var(--bg); color: var(--text); cursor: pointer; box-shadow: 0 2px 10px rgba(0,0,0,.08); font: inherit; }
+.st-nav:hover { border-color: var(--text); }
+.st-nav .st-na { font-size: 30px; line-height: .8; font-weight: 300; }
+.st-nav .st-nn { font-size: 11px; line-height: 1.3; color: var(--muted); word-break: keep-all; max-height: 4em; overflow: hidden; text-align: center; }
+.st-nav.narrow { top: auto; bottom: 16px; transform: none; width: 48px; height: 48px; padding: 0; justify-content: center; border-radius: 50%; opacity: .94; }
+.st-nav.narrow.prev { left: 12px; }
+.st-nav.narrow.next { right: 12px; }
+.st-nav.narrow .st-nn { display: none; }

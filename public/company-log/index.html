@@ -22,7 +22,7 @@
   // 다크/라이트: 리포트 페이지와 같은 저장값(localStorage 'theme') — 그리기 전에 적용해 깜빡임 없게 (사용자 요청 11-26)
   (function () { try { var t = localStorage.getItem('theme'); if (t === 'dark' || t === 'light') document.documentElement.setAttribute('data-theme', t); } catch (e) {} })();
 </script>
-<link rel="stylesheet" href="assets/style.css?v=20261127j">
+<link rel="stylesheet" href="assets/style.css?v=20261127l">
 <script src="https://cdn.jsdelivr.net/npm/lightweight-charts@4.2.0/dist/lightweight-charts.standalone.production.js"></script>
 </head>
 <body class="t3">
@@ -330,6 +330,8 @@
       <nav class="st-toc" id="stToc" aria-label="종목 페이지 목차"></nav>
       <a class="st-vnew" id="stVnew" target="_blank" rel="noopener" title="새 탭으로 열기">새 탭 ↗</a></div>
     <iframe id="stFrame" title="종목 페이지" scrolling="no"></iframe>
+    <button type="button" class="st-nav prev" id="stPrev" hidden aria-label="이전 종목"><span class="st-na">‹</span><span class="st-nn"></span></button>
+    <button type="button" class="st-nav next" id="stNext" hidden aria-label="다음 종목"><span class="st-na">›</span><span class="st-nn"></span></button>
   </div>
 
   <div role="tabpanel" id="pane-list" aria-labelledby="tab-list">
@@ -835,15 +837,89 @@ function stOpen(arg) {
   document.getElementById('stVt').textContent = s ? `${s.name} ${code}` : code;
   document.getElementById('stVnew').href = url + (anc ? '#' + anc : '');
   const want = url + '&m=' + Math.floor(Date.now() / 60000) + (anc ? '#' + anc : '');
-  if (!fr.src.includes('code=' + encodeURIComponent(code) + '&') || anc) fr.src = want;
+  // 칸 주소를 바꿀 때 방문 기록을 남기지 않는다(replace) — 화살표로 넘긴 뒤에도 「돌아가기」·뒤로가 목록으로 (11-27)
+  // (src 를 다시 쓰면 그 자체가 이동이라 기록이 쌓이므로, 어느 종목이 떠 있는지는 data-code 로 본다)
+  if (fr.dataset.code !== code || anc) {
+    fr.dataset.code = code;
+    let done = false;
+    try { if (fr.contentWindow) { fr.contentWindow.location.replace(new URL(want, location.href).href); done = true; } } catch (e) {}
+    if (!done) fr.src = want;
+  }
   window.scrollTo(0, 0);
+  stNavUpdate(code);
 }
+// ── 종목 넘기기 (사용자 요청 11-27): 목록에서 종목을 열면 그 목록 순서를 기억해 두고, 화면 양옆 화살표로 이전(위)·다음(아래) 종목으로.
+// 목록 = 누른 링크가 있는 탭에서 지금 보이는(접히지 않은) 종목 링크 전부, 위에서 아래 순서. 키보드 ← → 도 같음. 새로고침해도 이 탭 안에서는 유지
+let stList = null;
+try { stList = JSON.parse(sessionStorage.getItem('cl_stlist') || 'null'); } catch (e) {}
+function stListFrom(a) {
+  const pane = a.closest('[role=tabpanel]'); if (!pane || pane.id === 'pane-stock') return;
+  const codes = [], names = {};
+  pane.querySelectorAll('a[href^="stock.html?code="]').forEach(x => {
+    if (!x.offsetParent) return;
+    const c = new URL(x.href).searchParams.get('code'); if (!c) return;
+    if (!(c in names)) { codes.push(c); names[c] = ''; }
+    const t = x.textContent.trim();
+    if (!names[c] && t && t.length <= 24 && !/[↗→]/.test(t)) names[c] = t;
+  });
+  stList = codes.length > 1 ? {codes, names} : null;
+  try { sessionStorage.setItem('cl_stlist', JSON.stringify(stList)); } catch (e) {}
+}
+let stNavCode = null;
+function stNavName(c) { return (typeof stocks !== 'undefined' && stocks.find(x => x.code === c)?.name) || stList?.names?.[c] || c; }
+function stNavUpdate(code) {
+  stNavCode = code;
+  const i = stList ? stList.codes.indexOf(code) : -1, n = stList ? stList.codes.length : 0;
+  [['stPrev', i - 1, '이전'], ['stNext', i + 1, '다음']].forEach(([id, j, w]) => {
+    const b = document.getElementById(id); if (!b) return;
+    const ok = i >= 0 && j >= 0 && j < n;
+    b.hidden = !ok;
+    if (ok) {
+      const nm = stNavName(stList.codes[j]);
+      b.title = `${w} 종목: ${nm} (${j + 1} / ${n}) · 키보드 ${w === '이전' ? '←' : '→'}`;
+      b.querySelector('.st-nn').textContent = nm;
+    }
+  });
+  stNavPos(); requestAnimationFrame(stNavPos); setTimeout(stNavPos, 400);   // 칸이 화면에 나타난 뒤 다시
+}
+function stGo(d) {
+  if (!stList || document.getElementById('pane-stock').hidden) return;
+  const i = stList.codes.indexOf(stNavCode), c = stList.codes[i + d];
+  if (i < 0 || !c) return;
+  history.replaceState(null, '', location.pathname + location.search + '#stock:' + encodeURIComponent(c));
+  stOpen(c);
+}
+// 넓은 화면은 본문 양옆 빈 곳 가운데 높이, 좁은 화면(옆이 모자람)은 아래 양 끝 동그란 버튼
+// 기준 = 칸 안 종목 본문(.wrap)의 글자 영역 좌우 끝. 양옆 빈 곳이 화살표보다 좁으면 좁은 화면 모양
+function stNavPos() {
+  const pane = document.getElementById('pane-stock'); if (pane.hidden) return;
+  const fr = document.getElementById('stFrame'), f = fr.getBoundingClientRect();
+  let L = f.left, R = f.right;
+  try { const w = fr.contentDocument.querySelector('.wrap'); if (w) { const r = w.getBoundingClientRect(); L = f.left + r.left + 16; R = f.left + r.right - 16; } } catch (e) {}
+  const p = document.getElementById('stPrev'), q = document.getElementById('stNext'), W = 56, G = 12;
+  const wide = L - W - G >= 8 && innerWidth - R - W - G >= 8;
+  [p, q].forEach(b => b.classList.toggle('narrow', !wide));
+  p.style.left = wide ? (L - W - G) + 'px' : '';
+  q.style.left = wide ? (R + G) + 'px' : '';
+}
+addEventListener('resize', stNavPos);
+document.getElementById('stPrev')?.addEventListener('click', () => stGo(-1));
+document.getElementById('stNext')?.addEventListener('click', () => stGo(1));
+function stNavKey(e) {
+  if (e.defaultPrevented || e.altKey || e.ctrlKey || e.metaKey || e.shiftKey) return;
+  if (e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') return;
+  if (/^(INPUT|TEXTAREA|SELECT)$/.test(e.target?.tagName || '') || e.target?.isContentEditable) return;
+  if (document.getElementById('pane-stock').hidden) return;
+  e.preventDefault(); stGo(e.key === 'ArrowLeft' ? -1 : 1);
+}
+document.addEventListener('keydown', stNavKey);
 document.addEventListener('click', e => {
   if (e.defaultPrevented || e.ctrlKey || e.metaKey || e.shiftKey || e.button) return;
   const a = e.target.closest('a[href^="stock.html?code="]'); if (!a || a.target === '_blank') return;
   const u = new URL(a.href), code = u.searchParams.get('code'); if (!code) return;
   e.preventDefault();
   stInApp = true;
+  stListFrom(a);
   location.hash = 'stock:' + encodeURIComponent(code + (u.hash ? '|' + u.hash.slice(1) : ''));
 });
 document.getElementById('stBack')?.addEventListener('click', () => {
@@ -855,8 +931,13 @@ document.getElementById('stFrame')?.addEventListener('load', e => {   // 종목 
     // 종목 페이지가 이름을 채우기 전 제목('Company Log')이면 목록에서 찾은 이름을 그대로 둔다
     const nm = (t || '').includes(' · ') ? t.replace(/\s*·\s*Company Log\s*$/, '') : (stocks.find(x => x.code === code)?.name || '');
     if (nm) document.getElementById('stVt').textContent = nm + (code ? ' ' + code : '');
+    // 종목 칸이 보일 때만 주소를 따라 바꾼다 — 뒤로 가기로 목록에 돌아올 때 브라우저가 칸을 예전 종목으로 다시 불러와도 목록 주소를 덮지 않게 (11-27)
+    if (document.getElementById('pane-stock').hidden) { if (code) e.target.dataset.code = code; return; }
     if (code && !location.hash.startsWith('#stock:' + encodeURIComponent(code))) history.replaceState(null, '', location.pathname + location.search + '#stock:' + encodeURIComponent(code));
     if (code) document.getElementById('stVnew').href = 'stock.html?code=' + encodeURIComponent(code);
+    if (code) e.target.dataset.code = code;
+    if (code && code !== stNavCode) stNavUpdate(code); else stNavPos();
+    e.target.contentDocument.addEventListener('keydown', stNavKey);   // 차트를 누른 뒤(칸 안에 초점)에도 ← →
   } catch (er) {}
 });
 

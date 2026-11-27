@@ -78,6 +78,7 @@ export const TOPIC_ICONS: [RegExp, string][] = [
   [/신세계|백화점|shinsegae/i, 'shoppingbag'],
   [/CJ제일제당|제일제당|비비고|햇반/i, 'mandu'],
   [/현대오토에버|오토에버|autoever/i, 'carnavi'],
+  [/RFHIC|알에프에이치아이씨|GaN.?트랜지스터/i, 'rftransistor'],
 ];
 
 /* 매칭되는 주제가 없을 때 — 파일명 해시로 색과 무늬가 정해지는 픽셀 타일.

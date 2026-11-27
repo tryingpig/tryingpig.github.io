@@ -616,7 +616,7 @@ function edgeBadge(s) {
   const t = `${e.since.slice(5).replace('-', '.')}부터`;
   const rl = e.s === 1 && EDGE_RL[s.code];          // 재점등은 매수 에지 메뉴(edges.json) 계산 결과를 그대로
   return e.s === 1 ? `<span class="edgec up" title="${t} · 5·10일선 > 20일선 > 60일선, 10·20·60일선 상승(보합 포함) · 5일선은 10일선 위면 꺾여도 유지">▲ 매수 에지 D+${e.run}</span>` +
-                     (rl ? `<span class="edgec relit" title="우상향 중 쉬었다 다시 켜짐 — 앞서 ${rl.prev}일 켜짐 → ${rl.gap}일 쉼(${rl.why} · 앞 고점 대비 ${rl.dip.toFixed(1)}%, 60일선 위 유지) → 다시 켜짐">↻ 재점등</span>` : '')
+                     (rl ? `<span class="edgec relit" title="우상향 중 쉬었다 다시 켜짐 — 앞서 ${rl.prev}일 켜짐${rl.skip ? `(짧은 쉼 ${rl.skip}번 포함)` : ''} → ${rl.gap}일 쉼(${rl.why} · 앞 고점 대비 ${rl.dip.toFixed(1)}%, 60일선 위 유지) → 다시 켜짐">↻ 재점등</span>` : '')
                    : `<span class="edgec dn" title="${t} · 5·10일선 < 20일선 < 60일선, 10·20·60일선 하락(보합 포함) · 5일선은 10일선 아래면 올라도 유지">▼ 매도 에지 D+${e.run}</span>`;
 }
 
@@ -1679,7 +1679,7 @@ const EF = {KOSPI: x => x.market === 'KOSPI', KOSDAQ: x => x.market === 'KOSDAQ'
 const ES = {new: (a, b) => a.run - b.run || (b.cap || 0) - (a.cap || 0), old: (a, b) => b.run - a.run || (b.cap || 0) - (a.cap || 0), cap: (a, b) => (b.cap || 0) - (a.cap || 0),
   chg: (a, b) => b.chg - a.chg, tv: (a, b) => b.tv - a.tv};
 // 재점등(사용자 요청 11-16) — 우상향 중 잠깐 쉬었다 다시 켜진 매수 에지. 아래를 모두 만족:
-//   1) 직전 매수 에지가 3거래일 이상 이어졌다 (RL_PREV)
+//   1) 직전 매수 에지가 3거래일 이상 이어졌다 (RL_PREV — 11-27 사용자: 사이에 낀 짧은 쉼은 건너뛰고 앞 켜짐과 이어 셈, rlScan)
 //   2) 그 뒤 1~5거래일 꺼져 있었다 (RL_GAP — 11-19 사용자: 하루 쉼도 재점등. 5일선만 꺾인 날은 에지 기준이 바뀌어 애초에 안 꺼짐,
 //      5거래일(1주)보다 길면 앞 상승과 이어진 흐름으로 보지 않고 새로 켜진 것으로 본다)
 //   3) 쉬는 동안 매도 에지('-')가 한 번도 없었다
@@ -1702,16 +1702,36 @@ function gapWhy(c, i0, n) {
 }
 
 let EDGE_RL = {};                                   // {code: 재점등 정보} — 종목 목록 칩용
+// 직전 켜짐 세기 (사용자 11-27): 켜짐 사이에 낀 짧은 쉼(1~5거래일 · 매도 에지 없음 · 종가 60일선 위)은 건너뛰고 앞 켜짐과 이어 센다.
+//   예) 8일 켜짐 → 1일 쉼 → 1일 켜짐 → 1일 쉼 → 지금 켜짐 = 「직전 9일 켜짐(짧은 쉼 1번 포함) → 1일 쉼 → 다시 켜짐」
+// pre = 지금 켜짐 직전까지의 에지 문자열, ok(i) = pre 의 i칸 날 종가가 60일선 위인지. 맨 뒤 쉼이 조건에 안 맞으면 null
+function rlScan(pre, ok) {
+  const gapAt = j => { let g = 0; while (j - g > 0 && pre[j - g - 1] !== '+') g++; return g; };
+  const good = (j, g) => g >= RL_GAP[0] && g <= RL_GAP[1] && j - g > 0 &&
+    Array.from({length: g}, (_, k) => j - 1 - k).every(i => pre[i] === '.' && ok(i));
+  let j = pre.length;
+  const gap = gapAt(j);
+  if (!good(j, gap)) return null;
+  const g0 = j - gap;
+  let prev = 0, skip = -1;
+  j = g0;
+  for (;;) {
+    while (j > 0 && pre[j - 1] === '+') { prev++; j--; }
+    skip++;
+    const g = gapAt(j);
+    if (!good(j, g)) break;
+    j -= g;
+  }
+  return prev < RL_PREV ? null : {prev, gap, g0, start: j, skip};
+}
 function relit(x) {
-  const e = x.e, c = x.c, pre = e.slice(0, e.length - x.run), m = pre.match(/(\++)([^+]*)$/);
-  if (!m) return null;
-  const prev = m[1].length, gap = m[2].length;
-  if (prev < RL_PREV || gap < RL_GAP[0] || gap > RL_GAP[1] || m[2].includes('-')) return null;
-  const off = c.length - e.length, g0 = off + pre.length - gap;
+  const e = x.e, c = x.c, pre = e.slice(0, e.length - x.run), off = c.length - e.length;
   const ma60 = i => c.slice(i - 59, i + 1).reduce((s, v) => s + v, 0) / 60;
-  for (let i = g0; i < g0 + gap; i++) if (i < 59 || c[i] <= ma60(i)) return null;
-  const hi = Math.max(...c.slice(g0 - prev, g0)), lo = Math.min(...c.slice(g0, g0 + gap));
-  return {prev, gap, dip: (lo / hi - 1) * 100, g0: pre.length - gap, why: gapWhy(c, g0, gap)};
+  const r = rlScan(pre, i => i + off >= 59 && c[i + off] > ma60(i + off));
+  if (!r) return null;
+  const {prev, gap, skip} = r, g0 = off + r.g0;
+  const hi = Math.max(...c.slice(off + r.start, g0)), lo = Math.min(...c.slice(g0, g0 + gap));
+  return {prev, gap, skip, dip: (lo / hi - 1) * 100, g0: r.g0, why: gapWhy(c, g0, gap)};
 }
 function edgeSvg(x) {
   const W = 300, H = 84, B = 6, n = x.e.length, c = x.c, off = c.length - n;
@@ -1757,7 +1777,7 @@ function renderEdge() {
       <span class="eh"><span class="fn">${esc(x.name)}<small class="mk">${MK[x.market] || ''}</small>${x.inlog ? '<small class="mk rp" title="리포트 로그 종목 — 종목 페이지에 리포트까지 나와요">리포트</small>' : ''}</span>
         <span class="edgec ${edgeSide === 1 ? 'up' : 'dn'}" title="${x.run}거래일째 켜져 있음">${edgeDay(x.since)} D+${x.run}</span></span>
       ${x.sv ? `<span class="edge-rl"><span class="edgec ${x.sv.up ? 'up' : 'dn'}">🔊 ${SLAB(edgeSide, x.sv.up)}</span> ${edgeDay(x.sv.d)} D+${x.sv.run} · 거래량 에지 기간 평균의 <b>${x.sv.x}배</b> · 그날 ${pc(x.sv.chg)}</span>` : ''}
-      ${x.rl ? `<span class="edge-rl"><span class="edgec relit">↻ 재점등</span> 앞서 <b>${x.rl.prev}일</b> 켜짐 → <b>${x.rl.gap}일</b> 쉼 (${esc(x.rl.why)} · 앞 고점 대비 <b>${x.rl.dip.toFixed(1)}%</b>, 60일선 위 유지) → 다시 켜짐</span>` : ''}
+      ${x.rl ? `<span class="edge-rl"><span class="edgec relit">↻ 재점등</span> 앞서 <b>${x.rl.prev}일</b> 켜짐${x.rl.skip ? `(짧은 쉼 ${x.rl.skip}번 포함)` : ''} → <b>${x.rl.gap}일</b> 쉼 (${esc(x.rl.why)} · 앞 고점 대비 <b>${x.rl.dip.toFixed(1)}%</b>, 60일선 위 유지) → 다시 켜짐</span>` : ''}
       <span class="em"><span><small>시총</small>${x.cap ? eok(x.cap) : '-'}</span><span><small>켜진 뒤</small>${pc(x.chg)}</span><span><small title="최근 20거래일 하루 평균">거래대금 20일 평균</small>${eok(x.tv)}</span></span>
       ${surgeSvg(x)}${cl}</li>`;
   };

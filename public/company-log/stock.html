@@ -514,7 +514,7 @@ function drawChart() {
 }
 
 // 재점등(index.html relit() 과 같은 기준, 사용자 요청 11-16) — 우상향 중 잠깐 쉬었다 다시 켜진 매수 에지:
-//   직전 매수 에지 3거래일↑ → 1~5거래일 꺼짐(11-19 하루 쉼 포함)(매도 에지 없음 · 종가가 매일 60일선 위) → 지금 다시 켜짐
+//   직전 매수 에지 3거래일↑(사이 짧은 쉼은 건너뛰고 이어 셈, 11-27) → 1~5거래일 꺼짐(11-19 하루 쉼 포함)(매도 에지 없음 · 종가가 매일 60일선 위) → 지금 다시 켜짐
 // e = 에지 문자열('+'/'-'/'.'), c = 종가 — 둘 다 data.prices 와 같은 날짜 순서. g0 = 쉼 시작 칸
 const RL_PREV = 3, RL_GAP = [1, 5];
 // 쉰 날마다 매수 에지 조건 중 무엇이 깨졌는지 (사용자 요청 11-19) — c = 종가, i0 = 쉼 첫날(c 기준), n = 쉰 날 수
@@ -531,18 +531,38 @@ function gapWhy(c, i0, n) {
   return Object.entries(cnt).map(([t, k]) => n > 1 ? `${t} ${k}일` : t).join(' · ');
 }
 
+// 직전 켜짐 세기 (사용자 11-27): 켜짐 사이에 낀 짧은 쉼(1~5거래일 · 매도 에지 없음 · 종가 60일선 위)은 건너뛰고 앞 켜짐과 이어 센다.
+//   예) 8일 켜짐 → 1일 쉼 → 1일 켜짐 → 1일 쉼 → 지금 켜짐 = 「직전 9일 켜짐(짧은 쉼 1번 포함) → 1일 쉼 → 다시 켜짐」
+// pre = 지금 켜짐 직전까지의 에지 문자열, ok(i) = pre 의 i칸 날 종가가 60일선 위인지. 맨 뒤 쉼이 조건에 안 맞으면 null
+function rlScan(pre, ok) {
+  const gapAt = j => { let g = 0; while (j - g > 0 && pre[j - g - 1] !== '+') g++; return g; };
+  const good = (j, g) => g >= RL_GAP[0] && g <= RL_GAP[1] && j - g > 0 &&
+    Array.from({length: g}, (_, k) => j - 1 - k).every(i => pre[i] === '.' && ok(i));
+  let j = pre.length;
+  const gap = gapAt(j);
+  if (!good(j, gap)) return null;
+  const g0 = j - gap;
+  let prev = 0, skip = -1;
+  j = g0;
+  for (;;) {
+    while (j > 0 && pre[j - 1] === '+') { prev++; j--; }
+    skip++;
+    const g = gapAt(j);
+    if (!good(j, g)) break;
+    j -= g;
+  }
+  return prev < RL_PREV ? null : {prev, gap, g0, start: j, skip};
+}
 function relitAt(e, c) {
   let run = 0;
   for (let i = e.length - 1; i >= 0 && e[i] === '+'; i--) run++;
   if (!run) return null;
-  const pre = e.slice(0, e.length - run), m = pre.match(/(\++)([^+]*)$/);
-  if (!m) return null;
-  const prev = m[1].length, gap = m[2].length;
-  if (prev < RL_PREV || gap < RL_GAP[0] || gap > RL_GAP[1] || m[2].includes('-')) return null;
-  const g0 = pre.length - gap, ma60 = i => c.slice(i - 59, i + 1).reduce((s, v) => s + v, 0) / 60;
-  for (let i = g0; i < g0 + gap; i++) if (i < 59 || c[i] <= ma60(i)) return null;
-  const hi = Math.max(...c.slice(g0 - prev, g0)), lo = Math.min(...c.slice(g0, g0 + gap));
-  return {prev, gap, dip: (lo / hi - 1) * 100, g0, why: gapWhy(c, g0, gap)};
+  const pre = e.slice(0, e.length - run), ma60 = i => c.slice(i - 59, i + 1).reduce((s, v) => s + v, 0) / 60;
+  const r = rlScan(pre, i => i >= 59 && c[i] > ma60(i));
+  if (!r) return null;
+  const {prev, gap, g0, start, skip} = r;
+  const hi = Math.max(...c.slice(start, g0)), lo = Math.min(...c.slice(g0, g0 + gap));
+  return {prev, gap, skip, dip: (lo / hi - 1) * 100, g0, why: gapWhy(c, g0, gap)};
 }
 
 // 매수·매도 에지: 지금 상태(둘 다 아니면 숨김) + 차트 아래 날짜별 띠 + 큰 차트 배경(매수 에지였던 날 옅은 빨강·매도 에지였던 날 옅은 파랑, 재점등 쉼 구간 점선 — 범례 「에지 배경」으로 켜고 끔)
@@ -592,7 +612,7 @@ function drawEdge(vis) {
   const rl = cur === 1 && !ex && e.length === data.prices.length ? relitAt(e, data.prices.map(b => b.c)) : null;
   if (rl) {
     box.insertAdjacentHTML('afterbegin', `<span class="edgec relit" title="우상향 중 잠깐 꺼졌다 다시 켜짐 — 3거래일↑ 켜져 있다가 1~5거래일 꺼진 뒤(그사이 매도 에지 없음·종가 60일선 위) 다시 켜짐">↻ 재점등</span>`);
-    box.insertAdjacentHTML('beforeend', `<span class="es-br"></span><span class="es-t">직전 <b>${rl.prev}일</b> 켜짐 → <b>${rl.gap}일</b> 꺼짐 → 다시 켜짐 · 꺼진 사이 ${esc(rl.why)}, 앞 고점보다 <b>${rl.dip.toFixed(1)}%</b>, 60일선 위는 지킴</span>`);
+    box.insertAdjacentHTML('beforeend', `<span class="es-br"></span><span class="es-t">직전 <b>${rl.prev}일</b> 켜짐${rl.skip ? `(짧은 쉼 ${rl.skip}번 포함)` : ''} → <b>${rl.gap}일</b> 꺼짐 → 다시 켜짐 · 꺼진 사이 ${esc(rl.why)}, 앞 고점보다 <b>${rl.dip.toFixed(1)}%</b>, 60일선 위는 지킴</span>`);
   }
   if (!e) return;
   // 큰 차트 배경: 차트 뒤 캔버스(차트 배경이 투명이라 비친다)

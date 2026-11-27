@@ -24,7 +24,7 @@
   // Company Log 메인의 종목 칸(iframe) 안에서 열렸으면 위쪽 줄은 메인 것을 씀 (사용자 요청 11-26)
   (function () { var f = false; try { f = window.self !== window.top; } catch (e) { f = true; } if (f) document.documentElement.classList.add('in-frame'); })();
 </script>
-<link rel="stylesheet" href="assets/style.css?v=20261127e">
+<link rel="stylesheet" href="assets/style.css?v=20261127g">
 <script src="https://cdn.jsdelivr.net/npm/lightweight-charts@4.2.0/dist/lightweight-charts.standalone.production.js"></script>
 </head>
 <body class="t3">
@@ -817,6 +817,36 @@ function renderRelPerf() {
     <p class="rel-note">차이 = 종목 수익률 − 지수 수익률. 플러스면 그 기간 시장보다 잘 오른 것(아웃퍼폼), 마이너스면 덜 오른 것(언더퍼폼) · 1주 5거래일 · 1개월 21거래일 · 3개월 63거래일 · 6개월 = 차트 첫날부터</p>`;
 }
 
+// 이평선 줄에 에지 조건을 그대로 보여 준다 (사용자 요청 11-27): 5·10일 > 20일 > 60일 부등호 + 전일 대비 기울기 화살표.
+// 판정은 build.py edge_states 와 같은 식(기울기 = 들어온 종가 vs 빠진 종가). 켜진 에지(또는 더 가까운 쪽) 기준으로 안 맞는 것만 주황 표시.
+function maRelHtml(bars, i, mas) {
+  const sw = (n, v, k) => `<span class="sw" style="background:var(${v})"></span>${n}일 ${fmt(mas[k])}`;
+  const plain = () => MAS.map(([n, v], k) => `<span>${sw(n, v, k)}</span>`).join('');
+  if (i < 60) return plain();
+  const c = bars.map(b => b.c);
+  const m = n => { let s = 0; for (let j = i - n + 1; j <= i; j++) s += c[j]; return s / n; };
+  const d = n => c[i] - c[i - n];
+  const M = {5: m(5), 10: m(10), 20: m(20), 60: m(60)}, D = {5: d(5), 10: d(10), 20: d(20), 60: d(60)};
+  // 매수 쪽 조건 · 매도 쪽 조건 (각각 6개)
+  const buy = {o1: Math.min(M[5], M[10]) > M[20], o2: M[20] > M[60], 5: D[5] >= 0 || M[5] > M[10], 10: D[10] >= 0, 20: D[20] >= 0, 60: D[60] >= 0};
+  const sell = {o1: Math.max(M[5], M[10]) < M[20], o2: M[20] < M[60], 5: D[5] <= 0 || M[5] < M[10], 10: D[10] <= 0, 20: D[20] <= 0, 60: D[60] <= 0};
+  const cnt = o => Object.values(o).filter(Boolean).length;
+  const side = cnt(buy) >= cnt(sell) ? 1 : -1, ok = side === 1 ? buy : sell;
+  const on = cnt(ok) === 6;
+  const bad = k => on || ok[k] ? '' : ' bad';
+  const arrow = n => `<b class="ma-ar${bad(n)}" title="전일 대비 ${D[n] > 0 ? '상승' : D[n] < 0 ? '하락' : '보합'}">${D[n] > 0 ? '↑' : D[n] < 0 ? '↓' : '→'}</b>`;
+  // 5·10일 vs 20일: 둘 다 위면 >, 둘 다 아래면 <, 엇갈리면 ≶
+  const r1 = Math.min(M[5], M[10]) > M[20] ? '&gt;' : Math.max(M[5], M[10]) < M[20] ? '&lt;' : '≶';
+  const r2 = M[20] > M[60] ? '&gt;' : M[20] < M[60] ? '&lt;' : '=';
+  const tip = side === 1 ? '매수 에지 조건: 5·10일선 &gt; 20일선 &gt; 60일선, 10·20·60일선 상승(보합 포함), 5일선은 10일선 위면 꺾여도 유지'
+                         : '매도 에지 조건: 5·10일선 &lt; 20일선 &lt; 60일선, 10·20·60일선 하락(보합 포함), 5일선은 10일선 아래면 올라도 유지';
+  const it = (n, v, k, op = '') => `<span>${op}${sw(n, v, k)}${arrow(n)}</span>`;   // 부등호는 뒤 항목과 한 덩어리(좁은 화면 줄바꿈)
+  return `<span class="ma-rel${on ? (side === 1 ? ' on-up' : ' on-dn') : ''}" title="${tip}">` +
+    it(5, '--ma5', 0) + it(10, '--ma10', 1) +
+    it(20, '--ma20', 2, `<b class="ma-op${bad('o1')}">${r1}</b>`) +
+    it(60, '--ma60', 3, `<b class="ma-op${bad('o2')}">${r2}</b>`) + `</span>`;
+}
+
 function updateLegend(p) {
   const bars = data.prices;
   let bar, mas, bb;
@@ -846,7 +876,7 @@ function updateLegend(p) {
     : `${fmtVol(vb?.v)}${vr != null ? ` · 평소의 ${vr.toFixed(1)}배 <b class="vol-${volWord(vr) === '급증' || volWord(vr) === '많음' ? 'hi' : volWord(vr) === '적음' ? 'lo' : 'mid'}">${volWord(vr)}</b>` : ''}${live ? ' <span class="muted">(장중 집계)</span>' : ''}`;
   document.getElementById('legend').innerHTML =
     `<span class="date">${bar.d.slice(2)} (${'일월화수목금토'[new Date(bar.d + 'T00:00:00').getDay()]})</span><span>종가 ${fmt(bar.c)}${dchg != null ? ` <b class="${dchg > 0 ? 'pos' : dchg < 0 ? 'neg' : ''}">${dchg > 0 ? '+' : ''}${dchg.toFixed(2)}%</b>` : ''}</span>` +
-    MAS.map(([n, v], i) => `<span><span class="sw" style="background:var(${v})"></span>${n}일 ${fmt(mas[i])}</span>`).join('') +
+    maRelHtml(bars, vi, mas) +
     `<span class="lg-br" aria-hidden="true"></span>` +
     `<button type="button" class="bb-tog${bbOn ? ' on' : ''}" id="bbTog" aria-pressed="${bbOn}"><span class="sw dash"></span>볼린저 ${bbOn ? `${fmt(bb[0])} / ${fmt(bb[1])}` : '끔'}</button>` +
     `<button type="button" class="bb-tog vol-tog${volOn ? ' on' : ''}" id="volTog" aria-pressed="${volOn}" title="평소 = 그날을 뺀 직전 20거래일 평균 거래량. 1.5배 이상 많음 · 2배 이상 급증 · 0.7배 미만 적음"><span class="sw bar"></span>거래량 ${volTxt}</button>` +

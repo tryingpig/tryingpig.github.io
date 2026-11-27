@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+<!-- Company Log 로고 (사용자 결정 11-25 D안): 빌딩 + 상승선. 브라우저 탭 아이콘용, 어두운 탭에선 건물 선을 밝게 -->
+<style>.b{stroke:#0b0b0b}.w{stroke:#0b0b0b}@media (prefers-color-scheme:dark){.b,.w{stroke:#f0efec}}</style>
+<g fill="none" stroke-linecap="round" stroke-linejoin="round">
+<path class="b" d="M4 21V5.5L11 3v18M11 21V9l7 2.2V21" stroke-width="1.7"/>
+<path class="b" d="M2.5 21h19" stroke-width="1.7"/>
+<path class="w" d="M7 8v.1M7 11.5v.1M7 15v.1M14.5 14v.1M14.5 17.5v.1" stroke-width="2"/>
+<path d="M3 15.5l5-4 4 2.5 8.5-8" stroke="#e34948" stroke-width="2.2"/>
+<path d="M16.5 6h4v4" stroke="#e34948" stroke-width="2.2"/>
+</g>
+</svg>

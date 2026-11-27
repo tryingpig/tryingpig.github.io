@@ -1,0 +1,444 @@
+/* ─────────────────────────────────────────────────────────────
+   리포트 공용 스타일 — public/study/*.html 이 공유한다.
+
+   이전에는 리포트마다 <style> 블록을 통째로 안고 있었다(64개 전부).
+   그 결과 accent 색 28종, 본문 폰트 3종, 본문 폭 4종으로 갈라졌다.
+   여기 한 장만 고치면 전부 같이 바뀐다.
+
+   쓰는 법:
+     <link rel="stylesheet" href="/assets/report.css">
+     <body data-topic="invest">   ← invest | tech | market | culture
+   ───────────────────────────────────────────────────────────── */
+
+:root {
+  /* 포털(src/styles/tokens.css)과 같은 값 — 목록에서 글로 넘어갈 때 이질감이 없도록 */
+  --bg: #f4f1ea;
+  --bg-2: #efebe1;
+  --card: #faf8f2;
+  --ink: #1c1a17;
+  --ink-soft: #5c574d;
+  --muted: #726e63;          /* AA 4.51:1 (라이트 배경 기준) */
+  --line: #ddd6c6;
+  --line-soft: #e7e1d3;
+  --nav-bg: rgba(244, 241, 234, 0.9);
+  --card-shadow: rgba(28, 26, 23, 0.08);
+
+  --mono: "JetBrains Mono", "D2Coding", ui-monospace, SFMono-Regular, Menlo, monospace;
+  --sans: "Pretendard", -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", sans-serif;
+
+  /* 본문·표·도표를 같은 920px 로 맞춘다.
+     처음에는 본문만 760px 로 좁혔는데, 표와 도표만 좌우로 삐져나와
+     읽는 내내 가장자리가 들쭉날쭉해 보였다 → 한 폭으로 통일. */
+  --w-text: 920px;
+  --w-wide: 920px;
+
+  --accent: #b15209;          /* data-topic 이 없을 때의 기본값 = invest */
+  color-scheme: light;
+}
+
+:root[data-theme="dark"] {
+  --bg: #17150f;
+  --bg-2: #1e1b14;
+  --card: #201d16;
+  --ink: #ece7db;
+  --ink-soft: #b8b0a0;
+  --muted: #8b8372;
+  --line: #37322a;
+  --line-soft: #2b2721;
+  --nav-bg: rgba(23, 21, 15, 0.9);
+  --card-shadow: rgba(0, 0, 0, 0.38);
+  --accent: #ce5f0a;
+  color-scheme: dark;
+}
+
+/* ── 주제별 accent (4색) ──
+   전부 라이트/다크 배경에서 4.5:1 이상으로 검증한 값이다. 임의로 바꾸지 말 것.
+   주제 구분은 목록의 픽셀 아이콘이 이미 하고 있으므로 색은 큰 갈래만 나눈다. */
+[data-topic="invest"]  { --accent: #b15209; }   /* 투자·종목·재무 */
+[data-topic="tech"]    { --accent: #0f766e; }   /* 기술·산업·개념 */
+[data-topic="market"]  { --accent: #3949ab; }   /* 시황·거시 */
+[data-topic="culture"] { --accent: #a21caf; }   /* 음악·문화 */
+
+:root[data-theme="dark"] [data-topic="invest"]  { --accent: #ce5f0a; }
+:root[data-theme="dark"] [data-topic="tech"]    { --accent: #129086; }
+:root[data-theme="dark"] [data-topic="market"]  { --accent: #5b72fd; }
+:root[data-theme="dark"] [data-topic="culture"] { --accent: #d425e5; }
+
+/* ── 예전 리포트가 쓰던 변수 이름들 ──
+   리포트 64개가 저마다 <style> 안에 --gray, --soft, --accent-dark 같은 이름을 정의해 썼다.
+   그 <style> 을 걷어내면 참조가 끊기므로 여기서 새 토큰으로 이어준다.
+   :root 가 아니라 body 에 두는 이유 — --accent 는 body 의 data-topic 이 정하므로,
+   :root 에서 var(--accent) 를 읽으면 주제색이 아니라 기본색이 잡힌다. */
+body {
+  --accent-dark: var(--accent);
+  --accent2: var(--accent);
+  --gray: var(--muted);
+  --soft: var(--card);
+  --light: var(--bg-2);
+  --light2: var(--bg-2);
+  --warn: var(--accent);
+  --warnln: var(--accent);
+  --warn-line: var(--accent);
+  --warnbg: color-mix(in srgb, var(--accent) 9%, var(--bg));
+  --warn-bg: color-mix(in srgb, var(--accent) 9%, var(--bg));
+  --kr: #3949ab;
+  --good: #047857;
+  --bad: #b91c1c;
+  --mid: var(--accent);
+}
+:root[data-theme="dark"] body {
+  --kr: #5b72fd;
+  --good: #6ee7b7;
+  --bad: #fca5a5;
+}
+
+/* ── 베이스 ── */
+* { box-sizing: border-box; }
+body {
+  margin: 0; background: var(--bg); color: var(--ink);
+  font-family: var(--sans); font-size: 16.5px; line-height: 1.78; letter-spacing: -0.1px;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* 키보드 포커스 — 마우스 클릭에는 뜨지 않는다 */
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+
+/* ── 레이아웃 ──
+   본문·표·도표 모두 같은 폭(--w-text = --w-wide = 920px)이라 가장자리가 한 줄로 맞는다.
+   그리드 구조는 남겨둔다 — 나중에 특정 블록만 넓히고 싶으면 --w-wide 만 키우면
+   .wide/figure/table 이 그만큼 넘치고, 값이 같으면 아무 일도 일어나지 않는다.
+   음수 마진 대신 그리드를 쓰므로 좁은 화면에서 가로 스크롤이 생기지 않는다. */
+/* 컨테이너 이름이 둘로 갈려 있다 — .page 41개 / .wrap 23개. 둘을 같게 취급한다.
+   (.page 는 예전에 흰 종이 느낌의 그림자 박스였는데, 포털의 평평한 크림 톤에 맞춰 걷어냈다) */
+.wrap, .page {
+  display: grid;
+  grid-template-columns: 1fr min(var(--w-text), 100% - 44px) 1fr;
+  padding: 34px 0 90px;
+  margin: 0;
+  max-width: none;
+  background: none;
+  box-shadow: none;
+}
+.wrap > *, .page > * { grid-column: 2; }
+.wrap > figure, .page > figure,
+.wrap > table, .page > table,
+.wrap > .wide, .page > .wide,
+.wrap > .tablewrap, .page > .tablewrap {
+  grid-column: 1 / -1;
+  width: min(var(--w-wide), 100% - 44px);
+  margin-inline: auto;
+}
+
+/* ── 상단 복귀 바 ──
+   글 링크가 같은 탭에서 열리므로 돌아갈 길이 반드시 있어야 한다. */
+.topbar {
+  position: sticky; top: 0; z-index: 40;
+  background: var(--nav-bg); backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--line-soft);
+  margin-bottom: 8px;
+}
+.topbar-in {
+  max-width: var(--w-wide); margin: 0 auto; padding: 0 22px;
+  height: 52px; display: flex; align-items: center; justify-content: space-between; gap: 14px;
+}
+.topbar a.back {
+  font-family: var(--mono); font-size: 12px; letter-spacing: 0.3px;
+  color: var(--ink-soft); text-decoration: none; flex: none;
+  display: inline-flex; align-items: center; gap: 7px;
+}
+/* 집 아이콘은 마크업이 아니라 여기서 붙인다 — 리포트 64개를 다시 고치지 않고
+   이 한 곳만 바꾸면 전부 반영된다. currentColor 를 쓰므로 다크모드도 자동으로 따라온다. */
+.topbar a.back::before {
+  content: ""; flex: none; width: 14px; height: 14px;
+  background: currentColor;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 10.5 12 3l9 7.5'/%3E%3Cpath d='M5 9.5V20a1 1 0 0 0 1 1h3v-6h6v6h3a1 1 0 0 0 1-1V9.5'/%3E%3C/svg%3E") center / contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 10.5 12 3l9 7.5'/%3E%3Cpath d='M5 9.5V20a1 1 0 0 0 1 1h3v-6h6v6h3a1 1 0 0 0 1-1V9.5'/%3E%3C/svg%3E") center / contain no-repeat;
+}
+.topbar a.back:hover { color: var(--ink); text-decoration: none; }
+.topbar .crumb {
+  font-size: 12.5px; color: var(--muted); min-width: 0;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.theme-toggle {
+  flex: none; width: 32px; height: 32px; padding: 0; border-radius: 999px; cursor: pointer;
+  display: inline-flex; align-items: center; justify-content: center;
+  background: transparent; border: 1px solid var(--line); color: var(--ink-soft);
+}
+.theme-toggle:hover { color: var(--ink); border-color: var(--muted); background: var(--bg-2); }
+.theme-toggle svg { width: 15px; height: 15px; }
+.theme-toggle .i-sun { display: none; }
+:root[data-theme="dark"] .theme-toggle .i-moon { display: none; }
+:root[data-theme="dark"] .theme-toggle .i-sun { display: inline; }
+
+/* ── 타이포 ── */
+h1 { font-size: 29px; line-height: 1.32; margin: 10px 0 6px; letter-spacing: -0.6px; }
+h2 {
+  font-size: 22px; margin: 50px 0 12px; padding-top: 14px;
+  border-top: 3px solid var(--accent); letter-spacing: -0.4px; scroll-margin-top: 66px;
+}
+h3 { font-size: 18.5px; margin: 30px 0 8px; color: var(--ink); scroll-margin-top: 66px; }
+h4 { font-size: 16px; margin: 18px 0 6px; color: var(--accent); }
+p { margin: 10px 0; }
+ul, ol { margin: 10px 0 10px 4px; padding-left: 22px; }
+li { margin: 6px 0; }
+hr { border: none; border-top: 1px solid var(--line); margin: 34px 0; }
+
+.sub { color: var(--muted); font-size: 15px; }
+.lead { font-size: 17.5px; color: var(--ink-soft); }
+.big { font-size: 19px; font-weight: 800; color: var(--accent); line-height: 1.5; }
+.src { font-size: 13px; color: var(--muted); word-break: break-all; }
+.foot { color: var(--muted); font-size: 13px; margin-top: 40px; }
+
+.kicker {
+  display: inline-block; font-family: var(--mono);
+  font-size: 12px; font-weight: 700; letter-spacing: 1.5px;
+  color: var(--bg); background: var(--accent); padding: 5px 12px; border-radius: 999px;
+}
+
+/* ── 블록 컴포넌트 ──
+   색만으로 뜻을 전하지 않도록 각 블록은 굵은 글자 라벨을 함께 쓰는 것을 전제로 한다. */
+.note, .warn, .callout, .card, .dark {
+  border-radius: 10px; padding: 16px 18px; margin: 20px 0;
+}
+.note { background: var(--card); border: 1px solid var(--line); }
+.card { background: var(--card); border: 1px solid var(--line); }
+.warn {
+  background: color-mix(in srgb, var(--accent) 9%, var(--bg));
+  border: 1px solid color-mix(in srgb, var(--accent) 38%, var(--bg));
+  border-left: 6px solid var(--accent);
+  font-size: 15px;
+}
+.callout {
+  background: color-mix(in srgb, var(--accent) 13%, var(--bg));
+  border: 1px solid color-mix(in srgb, var(--accent) 30%, var(--bg));
+  border-left: 6px solid var(--accent);
+}
+/* 강조 반전 블록 — 라이트/다크 모두에서 본문과 명확히 분리된다 */
+.dark { background: var(--ink); color: var(--bg); }
+.dark b { color: #fff; }
+:root[data-theme="dark"] .dark { background: var(--bg-2); color: var(--ink); border: 1px solid var(--line); }
+
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+
+/* ── 리포트 64개가 이미 반복해서 쓰던 조각들 ──
+   .cover 41개, .kpi 17개, .refimg 16개처럼 사실상 공용이 된 것들을 여기로 올렸다.
+   파일마다 값이 조금씩 달랐으므로 가장 흔한 정의를 기준으로 통일했다. */
+.cover { text-align: center; padding: 96px 0 72px; }
+.cover .big { font-size: 2.15rem; font-weight: 800; color: var(--accent); line-height: 1.3; }
+.cover .sub { font-size: 1.12rem; color: var(--ink-soft); margin-top: 14px; }
+.cover .sub2 { font-size: 1rem; color: var(--muted); margin-top: 22px; }
+.cover .date { font-family: var(--mono); font-size: .88rem; color: var(--muted); margin-top: 50px; }
+.cover .tag { font-size: .95rem; color: var(--muted); font-style: italic; margin-top: 64px; }
+
+.em { color: var(--accent); font-weight: 700; }
+.muted { color: var(--muted); font-size: .9rem; }
+.kr { color: var(--kr); font-weight: 700; }
+
+.kpi { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 20px 0; }
+.kpi .box {
+  border: 1px solid var(--line); border-radius: 12px;
+  padding: 14px; text-align: center; background: var(--card);
+}
+.kpi .num { font-size: 21px; font-weight: 800; color: var(--accent); letter-spacing: -0.5px; }
+.kpi .lab { font-size: 12.5px; color: var(--muted); margin-top: 3px; }
+
+.refimg {
+  display: block; max-width: 100%; height: auto; margin: 0 auto;
+  border: 1px solid var(--line); border-radius: 6px;
+}
+
+/* 시리즈 리포트(①②③) 사이를 오가는 안내 박스 */
+.seriesnav {
+  background: color-mix(in srgb, var(--accent) 8%, var(--bg));
+  border: 1px solid color-mix(in srgb, var(--accent) 32%, var(--bg));
+  border-radius: 10px; padding: 14px 18px; margin: 20px 0; font-size: 14.5px;
+}
+
+/* 등급 라벨 */
+.t-hi { color: var(--good); font-weight: 700; }
+.t-mid { color: var(--accent); font-weight: 700; }
+.t-low { color: var(--bad); font-weight: 700; }
+
+/* 표 줄무늬 — 41개 파일이 전부 같은 정의로 쓰고 있었다 */
+tbody tr:nth-child(even) td { background: var(--bg-2); }
+
+/* ── 표 ──
+   좁은 화면에서 표가 화면을 밀지 않도록 .tablewrap 으로 감싸는 것을 권장한다. */
+.tablewrap { overflow-x: auto; margin: 18px 0; }
+table { width: 100%; border-collapse: collapse; margin: 18px 0; font-size: 14.5px; }
+.tablewrap > table { margin: 0; min-width: 520px; }
+th, td { border: 1px solid var(--line); padding: 9px 11px; text-align: left; vertical-align: top; }
+th { background: var(--bg-2); font-weight: 700; }
+td.c, th.c { text-align: center; }
+
+/* ── 도표 ── */
+figure { margin: 24px 0; text-align: center; }
+figcaption { font-size: 13px; color: var(--muted); margin-top: 8px; }
+.svgbox {
+  border: 1px solid var(--line); border-radius: 12px; padding: 14px;
+  background: var(--card); overflow-x: auto;
+}
+/* 도표 안에서 fill 을 지정하지 않은 글자는 검정으로 그려진다 → 다크에서 안 보인다.
+   fill 이 명시된 글자(색칠된 상자 위의 라벨 등)는 의도된 색이므로 건드리지 않는다. */
+.svgbox text:not([fill]) { fill: var(--ink); }
+.svgbox text { font-family: var(--sans); }
+
+/* ── 목차 ──
+   report.js 가 h2 에 id 를 붙이고 목차 항목을 링크로 바꿔준다. */
+.toc {
+  background: var(--card); border: 1px solid var(--line);
+  border-radius: 12px; padding: 18px 22px; margin: 26px 0;
+}
+.toc ol { columns: 2; column-gap: 34px; }
+.toc a { color: var(--ink-soft); }
+.toc a:hover { color: var(--accent); }
+
+/* ── 판정 배지 ──
+   색과 함께 항상 글자(사실/부분참/과장·주의/미확인)를 넣는다. 색만으로 구분하지 않는다. */
+.vd {
+  display: inline-block; min-width: 74px; text-align: center;
+  font-weight: 800; padding: 2px 8px; border-radius: 6px; font-size: 13px;
+}
+.v-o { background: #dcfce7; color: #14532d; }
+.v-x { background: #fee2e2; color: #7f1d1d; }
+.v-m { background: #fef9c3; color: #713f12; }
+.v-u { background: #e2e8f0; color: #1e293b; }
+/* 다크에서는 배경을 눌러 깔고 글자를 밝게 — 라이트용 파스텔을 그대로 쓰면 눈이 아프다 */
+:root[data-theme="dark"] .v-o { background: #14532d; color: #bbf7d0; }
+:root[data-theme="dark"] .v-x { background: #7f1d1d; color: #fecaca; }
+:root[data-theme="dark"] .v-m { background: #713f12; color: #fef08a; }
+:root[data-theme="dark"] .v-u { background: #334155; color: #e2e8f0; }
+
+.good { color: #047857; font-weight: 700; }
+.bad  { color: #b91c1c; font-weight: 700; }
+.mid  { color: var(--accent); font-weight: 700; }
+:root[data-theme="dark"] .good { color: #6ee7b7; }
+:root[data-theme="dark"] .bad  { color: #fca5a5; }
+
+/* ── 반응형 ── */
+@media (max-width: 680px) {
+  body { font-size: 16px; }
+  .grid2, .grid3 { grid-template-columns: 1fr; }
+  .kpi { grid-template-columns: repeat(2, 1fr); }
+  .cover { padding: 56px 0 44px; }
+  .cover .big { font-size: 1.72rem; }
+  .toc ol { columns: 1; }
+  h1 { font-size: 24px; }
+  h2 { font-size: 20px; }
+  /* 좁은 화면에서 표는 스스로 가로 스크롤한다 — 표가 화면을 밀어내지 않게.
+     .tablewrap 으로 감싸지 않은 예전 리포트도 이 규칙으로 함께 구제된다. */
+  .wrap > table { display: block; overflow-x: auto; white-space: nowrap; }
+  .wrap > table td, .wrap > table th { white-space: normal; min-width: 108px; }
+}
+@media (pointer: coarse) {
+  .theme-toggle { width: 44px; height: 44px; }
+}
+
+/* ── 인쇄 ──
+   이 리포트들은 실제로 인쇄/PDF 로 나가므로 인쇄 스타일은 자산이다. 유지할 것. */
+@media print {
+  :root { --bg: #fff; --ink: #000; --card: #fff; --line: #ccc; }
+  body { font-size: 11.5pt; background: #fff; color: #000; }
+  .topbar, .theme-toggle { display: none; }
+  .wrap, .page { display: block; padding: 0; max-width: 100%; }
+  .wrap > figure, .wrap > table, .wrap > .wide, .wrap > .tablewrap,
+  .page > figure, .page > table, .page > .wide, .page > .tablewrap { width: 100%; }
+  h2 { break-after: avoid; }
+  figure, table, .card, .warn, .callout, .note, .dark { break-inside: avoid; }
+  a { color: #000; }
+  .dark { background: #f2f2f2 !important; color: #000 !important; border: 1px solid #ccc; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; animation: none !important; }
+}
+
+/* ── Easy Ver(2026-11-25): 쉬운 설명 먼저, 근거는 접어서 ──
+   <p class="easy-one">한 줄 결론</p>
+   <ul class="say"><li><b>하향 근거</b> … <span class="src">(출처)</span></li></ul>   ← Company Log 식 머리말 줄
+   <details class="ev"><summary>근거 보기</summary> 표·인용·차트 </details> */
+.easy-one {
+  font-size: 1.12em; font-weight: 700; line-height: 1.6;
+  padding: 12px 16px; margin: 14px 0 18px; border-radius: 10px;
+  background: color-mix(in srgb, var(--accent) 10%, var(--bg));
+  border-left: 5px solid var(--accent);
+}
+ul.say { list-style: none; padding-left: 0; margin: 14px 0; }
+ul.say li { padding: 8px 0; border-bottom: 1px dashed var(--line); line-height: 1.7; }
+ul.say li:last-child { border-bottom: 0; }
+ul.say li > b:first-child {
+  display: inline-block; min-width: 5.5em; margin-right: 8px; padding: 1px 8px; border-radius: 999px;
+  font-size: 0.86em; background: var(--card); border: 1px solid var(--line); color: var(--ink);
+}
+details.ev {
+  margin: 12px 0 22px; border: 1px solid var(--line); border-radius: 10px; background: var(--card);
+}
+details.ev > summary {
+  cursor: pointer; padding: 10px 14px; font-size: 0.92em; color: var(--ink-soft); list-style: none;
+}
+details.ev > summary::-webkit-details-marker { display: none; }
+details.ev > summary::before { content: "▸ "; color: var(--accent); }
+details.ev[open] > summary::before { content: "▾ "; }
+details.ev[open] > summary { border-bottom: 1px solid var(--line-soft); }
+details.ev > :not(summary) { margin-left: 14px; margin-right: 14px; }
+details.ev > :last-child { margin-bottom: 14px; }
+
+/* ════════════════════════════════════════════════════════════════════
+   Company Log 판 (사용자 요청 2026-11-26) — 위는 포털 리포트 공용 스타일 그대로, 여기서 Company Log 디자인으로 덮어쓴다.
+   기업분석 딥다이브 리포트(company-log/ai/*.html) 전용. 색·선·글꼴은 Company Log(assets/style.css) 토큰과 같은 값.
+   ════════════════════════════════════════════════════════════════════ */
+:root {
+  --bg: #f7f7f5; --bg-2: #efeeea; --card: #fcfcfb; --ink: #0b0b0b; --ink-soft: #52514e; --muted: #8a8984;
+  --line: #e4e3df; --line-soft: #ecebe7; --nav-bg: #fcfcfb; --card-shadow: rgba(0,0,0,.06);
+  --accent: #0b0b0b; --up: #e34948; --down: #2a78d6;
+  --sans: "Pretendard Variable", "Pretendard", -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", sans-serif;
+}
+:root[data-theme="dark"] {
+  --bg: #121211; --bg-2: #1a1a19; --card: #1a1a19; --ink: #f0efec; --ink-soft: #c3c2b7; --muted: #8d8c85;
+  --line: #2e2e2c; --line-soft: #262624; --nav-bg: #1a1a19; --accent: #f0efec; --up: #e66767; --down: #3987e5;
+}
+/* 차트 색 (사용자 지적 11-26 "검정·흰색뿐이라 보기 어렵다"): 리포트 차트의 기본 막대·선은 --accent, 나쁨·음수 --bad, 좋음·강조 --good.
+   글자·장 제목은 검정(--ink)으로 따로 고정하고, 차트만 남색 계열로. dataviz 검증(라이트·다크, 색약 구분 포함) 통과한 값. */
+:root [data-topic] { --accent: #5b6bd8; --good: #047857; --bad: #b91c1c; }
+:root[data-theme="dark"] [data-topic] { --accent: #7b88e8; --good: #2fa877; --bad: #c4423c; }
+body { font-family: var(--sans); background: var(--bg); color: var(--ink); }
+
+/* 상단 바 = Company Log 상단 바와 같은 모양: 로고 · ← AI 분석 · (종목) 차트·리포트 · 다크 토글 */
+.topbar { background: var(--nav-bg); backdrop-filter: none; border-bottom: 1px solid var(--line); margin-bottom: 18px; }
+.topbar-in { max-width: var(--w-wide); height: 56px; gap: 16px; }
+.topbar .cl-brand { display: inline-flex; align-items: center; gap: 7px; font-weight: 700; font-size: 16px; color: var(--ink); text-decoration: none; flex: none; }
+.topbar .cl-brand img { width: 20px; height: 20px; }
+.topbar a.back { font-family: var(--sans); font-size: 14px; font-weight: 600; letter-spacing: 0; color: var(--ink-soft); }
+.topbar a.back::before { content: "←"; width: auto; height: auto; background: none; -webkit-mask: none; mask: none; }
+.topbar .crumb { margin-right: auto; font-size: 13px; }
+.topbar a.cl-stock { flex: none; font-size: 13px; color: var(--muted); text-decoration: none; border-bottom: 1px solid var(--line); }
+.topbar a.cl-stock:hover { color: var(--ink); border-bottom-color: var(--ink); }
+@media (max-width: 640px) { .topbar .cl-brand span, .topbar .crumb { display: none; } }
+
+/* 머리: 주황 띠 → 차분한 글자 줄 */
+.kicker { display: block; font-family: var(--sans); font-size: 13px; font-weight: 600; letter-spacing: 0; color: var(--muted);
+  background: none; padding: 0; border-radius: 0; margin-top: 8px; }
+h1 { font-size: 30px; letter-spacing: -0.03em; }
+
+/* 장(章) 제목 = Company Log 섹션: 위 굵은 검은 줄 + 아래 가는 줄 */
+h2 { font-size: 22px; letter-spacing: -0.02em; border-top: 1.5px solid var(--ink); border-bottom: 1px solid var(--line); padding: 14px 0; margin-top: 48px; }
+h4 { color: var(--ink); }
+.big { color: var(--ink); }
+
+/* 상자는 가볍게 — 둥근 모서리·그림자를 줄이고 면 색만 */
+.note, .card, .callout, .warn, .dark { border-radius: 6px; box-shadow: none; }
+.note, .card { background: var(--card); border: 1px solid var(--line); }
+.callout { background: var(--bg-2); border: 1px solid var(--line); }
+.warn { background: var(--card); border: 1px solid var(--line); border-left: 4px solid var(--ink); }
+a { color: inherit; text-decoration-color: var(--line); text-underline-offset: 3px; }
+.kpi .box { border-radius: 6px; box-shadow: none; }
+.kpi .num { color: var(--ink); }   /* 한눈에 보기 숫자는 검정 — 색은 차트에만 */
+/* Company Log 'AI 분석' 칸 안에서 볼 때 — 위쪽 줄은 메인 페이지 것을 쓰므로 숨김 (report.js 가 html.in-frame 을 붙임) */
+html.in-frame .topbar { display: none; }
+html.in-frame .wrap { padding-top: 6px; }
+/* 공유 카드 버튼 (기업분석 리포트 위쪽 줄, assets/ai-share.js 가 넣음) */
+.topbar .ais-btn { flex: none; font: inherit; font-size: 13px; font-weight: 600; color: var(--ink-soft); background: none; border: 1px solid var(--line); border-radius: 999px; padding: 5px 12px; cursor: pointer; }
+.topbar .ais-btn:hover { color: var(--ink); border-color: var(--muted); }

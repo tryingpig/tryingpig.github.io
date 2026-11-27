@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>페이지를 찾을 수 없어요</title>
+<script>
+  // Company Log 는 2026-11-27 비공개 전환으로 AI 분석 리포트를 메인 페이지 칸(#ai:파일)에서 연다.
+  // 예전에 보낸 /company-log/ai/<파일>.html 링크는 그 자리로 넘겨준다.
+  (function () {
+    var m = location.pathname.match(/^\/company-log\/ai\/([^\/]+\.html)$/);
+    if (m) { location.replace('/company-log/#ai:' + encodeURIComponent(decodeURIComponent(m[1]))); return; }
+    if (/^\/company-log\//.test(location.pathname)) location.replace('/company-log/');
+  })();
+</script>
+<style>
+  :root { --bg: #fffffc; --text: #0b0b0c; --muted: #667085; }
+  @media (prefers-color-scheme: dark) { :root { --bg: #0e0e0d; --text: #f4f4ee; --muted: #9aa1ad; } }
+  body { margin: 0; background: var(--bg); color: var(--text); font-family: "Pretendard Variable", Pretendard, "Malgun Gothic", sans-serif; }
+  main { max-width: 30rem; margin: 18vh auto; padding: 0 16px; line-height: 1.7; }
+  p { color: var(--muted); }
+  a { color: inherit; }
+</style>
+</head>
+<body>
+<main>
+  <h1>페이지를 찾을 수 없어요</h1>
+  <p>주소가 바뀌었거나 없어진 페이지예요. <a href="/">첫 화면으로</a></p>
+</main>
+</body>
+</html>

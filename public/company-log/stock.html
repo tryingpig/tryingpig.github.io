@@ -24,7 +24,7 @@
   // Company Log 메인의 종목 칸(iframe) 안에서 열렸으면 위쪽 줄은 메인 것을 씀 (사용자 요청 11-26)
   (function () { var f = false; try { f = window.self !== window.top; } catch (e) { f = true; } if (f) document.documentElement.classList.add('in-frame'); })();
 </script>
-<link rel="stylesheet" href="assets/style.css?v=20261127g">
+<link rel="stylesheet" href="assets/style.css?v=20261127h">
 <script src="https://cdn.jsdelivr.net/npm/lightweight-charts@4.2.0/dist/lightweight-charts.standalone.production.js"></script>
 </head>
 <body class="t3">
@@ -836,15 +836,16 @@ function maRelHtml(bars, i, mas) {
   const bad = k => on || ok[k] ? '' : ' bad';
   const arrow = n => `<b class="ma-ar${bad(n)}" title="전일 대비 ${D[n] > 0 ? '상승' : D[n] < 0 ? '하락' : '보합'}">${D[n] > 0 ? '↑' : D[n] < 0 ? '↓' : '→'}</b>`;
   // 5·10일 vs 20일: 둘 다 위면 >, 둘 다 아래면 <, 엇갈리면 ≶
-  const r1 = Math.min(M[5], M[10]) > M[20] ? '&gt;' : Math.max(M[5], M[10]) < M[20] ? '&lt;' : '≶';
-  const r2 = M[20] > M[60] ? '&gt;' : M[20] < M[60] ? '&lt;' : '=';
+  // 부등호 배경: > 빨강 · < 파랑(차트 에지 배경색과 같음) — 빨강 두 개면 매수 에지 순서, 파랑 두 개면 매도 에지 순서 (사용자 11-27)
+  const op = (a, b) => a ? '<b class="ma-op gt">&gt;</b>' : b ? '<b class="ma-op lt">&lt;</b>' : '<b class="ma-op mix">≶</b>';
+  const r1 = op(Math.min(M[5], M[10]) > M[20], Math.max(M[5], M[10]) < M[20]);
+  const r2 = M[20] === M[60] ? '<b class="ma-op mix">=</b>' : op(M[20] > M[60], M[20] < M[60]);
   const tip = side === 1 ? '매수 에지 조건: 5·10일선 &gt; 20일선 &gt; 60일선, 10·20·60일선 상승(보합 포함), 5일선은 10일선 위면 꺾여도 유지'
                          : '매도 에지 조건: 5·10일선 &lt; 20일선 &lt; 60일선, 10·20·60일선 하락(보합 포함), 5일선은 10일선 아래면 올라도 유지';
   const it = (n, v, k, op = '') => `<span>${op}${sw(n, v, k)}${arrow(n)}</span>`;   // 부등호는 뒤 항목과 한 덩어리(좁은 화면 줄바꿈)
   return `<span class="ma-rel${on ? (side === 1 ? ' on-up' : ' on-dn') : ''}" title="${tip}">` +
     it(5, '--ma5', 0) + it(10, '--ma10', 1) +
-    it(20, '--ma20', 2, `<b class="ma-op${bad('o1')}">${r1}</b>`) +
-    it(60, '--ma60', 3, `<b class="ma-op${bad('o2')}">${r2}</b>`) + `</span>`;
+    it(20, '--ma20', 2, r1) + it(60, '--ma60', 3, r2) + `</span>`;
 }
 
 function updateLegend(p) {

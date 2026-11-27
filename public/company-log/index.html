@@ -961,7 +961,11 @@ function fitFrame(fr) {
   fr.addEventListener('load', () => {
     try {
       const d = fr.contentDocument, set = () => {
-        const h = Math.min(d.documentElement.scrollHeight, 80000);
+        // 다음 종목으로 넘어가며 나가는 페이지가 높이 0을 알려 오면 무시 — 칸이 잠깐 0이 되어 화면이 깜빡이던 것 (11-27)
+        if (fr.contentDocument !== d) return;
+        // scrollHeight 는 칸 크기보다 작아지지 않아 짧은 종목으로 넘어가면 줄지 않음 → 내용 높이(html 상자)로 잰다
+        const h = Math.min(Math.ceil(d.documentElement.getBoundingClientRect().height), 80000);
+        if (h < 50) return;
         if (Math.abs((parseFloat(fr.style.height) || 0) - h) > 2) fr.style.height = h + 'px';
       };
       set(); ro?.disconnect(); ro = new ResizeObserver(set); ro.observe(d.documentElement); ro.observe(d.body);

@@ -22,7 +22,7 @@
   // 다크/라이트: 리포트 페이지와 같은 저장값(localStorage 'theme') — 그리기 전에 적용해 깜빡임 없게 (사용자 요청 11-26)
   (function () { try { var t = localStorage.getItem('theme'); if (t === 'dark' || t === 'light') document.documentElement.setAttribute('data-theme', t); } catch (e) {} })();
 </script>
-<link rel="stylesheet" href="assets/style.css?v=20261127o">
+<link rel="stylesheet" href="assets/style.css?v=20261127q">
 <script src="https://cdn.jsdelivr.net/npm/lightweight-charts@4.2.0/dist/lightweight-charts.standalone.production.js"></script>
 </head>
 <body class="t3">
@@ -249,6 +249,7 @@
   <div role="tabpanel" id="pane-watch" aria-labelledby="tab-watch" hidden>
     <div class="mk-hd"><p class="mk-eb" id="watchSub"></p><h2 class="mk-h1">관심 종목</h2>
       <p class="mk-lead">소곤소곤 방에서 <b>/추가 종목명</b>으로 넣고 <b>/제거 종목명</b>으로 빼요(<b>/제거</b>만 보내면 버튼) · <b>/목록</b> · 이슬이 봇이 바로 처리</p></div>
+    <div id="watchScore"></div>
     <div id="watchList"></div>
   </div>
 
@@ -556,9 +557,46 @@ function renderWatch() {
     `${watchItems.length}종목 · 매수 에지 켜짐 ${eon} · 최근 5거래일 강도·거래량 신호 ${sig} · 최근 1주 새 리포트 ${wk}` +
     (watchDocUpd ? ` · 목록 ${watchDocUpd.slice(5).replace('-', '.')} 갱신` : '');
 }
-let watchDocUpd = '';
+let watchDocUpd = '', watchRemoved = [], watchHist = null;
+// 선택 성적표 (사용자 요청 11-27): 지금 보유(지금 종가까지) + 뺀 종목(뺀 날 종가로 고정, tools/watch_hist.py)을 합쳐
+// ① 종합 한 줄 ② 추가한 달별 표(기록이 해를 넘기면 연도 줄도) ③ 뺀 종목 목록(접힘). 평균은 같은 금액씩 샀다고 본 단순 평균
+function renderWatchScore() {
+  const box = document.getElementById('watchScore'); if (!box) return;
+  const open = watchItems.map(w => ({w, v: watchRet(w)})).filter(q => q.v).map(({w, v}) => ({name: w.name, code: w.code, added: w.added, r: v.r, x: v.x, open: true}));
+  const shut = (watchHist?.items || []).map(h => ({...h, open: false}));
+  const wait = watchRemoved.filter(x => !shut.some(h => h.code === x.code && h.added === x.added && h.removed === x.removed)).length;
+  const all = [...open, ...shut];
+  if (!shut.length && !wait) { box.innerHTML = ''; return; }
+  const avg = a => a.length ? a.reduce((t, v) => t + v, 0) / a.length : null;
+  const pv = (n, u) => n == null ? '-' : `<b class="${n > 0 ? 'pos' : n < 0 ? 'neg' : ''}">${sg(n)}${u}</b>`;
+  const stat = rs => { const xs = rs.filter(q => q.x != null); return {n: rs.length, r: avg(rs.map(q => q.r)), x: avg(xs.map(q => q.x)),
+    beat: xs.length ? Math.round(100 * xs.filter(q => q.x > 0).length / xs.length) : null}; };
+  const t = stat(all);
+  const months = {};
+  all.forEach(q => (months[q.added.slice(0, 7)] ||= []).push(q));
+  const mk = Object.keys(months).sort((a, b) => b.localeCompare(a));
+  const years = [...new Set(mk.map(m => m.slice(0, 4)))];
+  const row = (lab, rs, cls = '') => { const v = stat(rs), o = rs.filter(q => q.open).length;
+    return `<tr class="${cls}"><th>${lab}</th><td>${v.n}종목 <small>보유 ${o} · 뺀 ${v.n - o}</small></td><td>${pv(v.r, '%')}</td><td>${pv(v.x, '%p')}</td><td>${v.beat == null ? '-' : v.beat + '%'}</td></tr>`; };
+  let body = '';
+  years.forEach(y => {
+    if (years.length > 1) body += row(`${y}년`, all.filter(q => q.added.startsWith(y)), 'ws-y');
+    mk.filter(m => m.startsWith(y)).forEach(m => { body += row(`${+m.slice(5)}월`, months[m]); });
+  });
+  const dd = d => d.slice(5).replace('-', '.');
+  const gone = [...shut].sort((a, b) => b.removed.localeCompare(a.removed));
+  box.innerHTML = `<section class="ws">
+    <h3 class="ws-h">선택 성적표 <small>뺀 종목은 뺀 날 종가에 판 것으로, 보유 중인 종목은 지금 종가까지</small></h3>
+    <p class="ws-all">지금까지 고른 <b>${t.n}종목</b> <small>보유 ${open.length} · 뺀 ${shut.length}${wait ? ` · 계산 대기 ${wait}` : ''}</small>
+      <span>평균 ${pv(t.r, '%')} · 시장 대비 ${pv(t.x, '%p')} · 시장 이긴 비율 <b>${t.beat == null ? '-' : t.beat + '%'}</b></span></p>
+    <div class="tbl-wrap"><table class="ws-t"><thead><tr><th>추가한 달</th><th>고른 종목</th><th>평균</th><th>시장 대비</th><th title="시장 대비가 플러스인 종목 비율">이긴 비율</th></tr></thead><tbody>${body}</tbody></table></div>
+    ${gone.length ? `<details class="ws-gone"><summary>뺀 종목 ${gone.length}개</summary><ul>${gone.map(h =>
+      `<li><span class="ws-nm">${esc(h.name)}</span><span class="ws-d">${dd(h.d0)} ${fmt(h.p0)} → ${dd(h.d1)} ${fmt(h.p1)}</span><span>${pv(h.r, '%')}</span><span>시장 대비 ${pv(h.x, '%p')}</span></li>`).join('')}</ul></details>` : ''}
+    ${wait ? `<p class="ws-note">오늘 뺀 종목은 장 마감 뒤 저녁 갱신에서 뺀 날 종가로 계산해요</p>` : ''}
+  </section>`;
+}
 fetch('data/watch.json', {cache: 'no-cache'}).then(r => r.ok ? r.json() : null).then(async d => {
-  watchItems = d?.items || []; watchDocUpd = d?.updated || '';
+  watchItems = d?.items || []; watchDocUpd = d?.updated || ''; watchRemoved = d?.removed || [];
   WATCH = new Set(watchItems.map(w => w.code));
   // 리포트 없는 관심 종목: 차트 화면 파일(data/charts)이 있는지 — 있으면 종목 화면, 없으면 네이버
   await Promise.all(watchItems.map(w => fetch(`data/charts/${w.code}.json`, {method: 'HEAD', cache: 'no-cache'})
@@ -566,11 +604,11 @@ fetch('data/watch.json', {cache: 'no-cache'}).then(r => r.ok ? r.json() : null).
   renderWatch(); if (stocks.length) render();
   // 추가 후 수익률용 종가 + 시장 지수 — 받는 대로 다시 그림 (11-27)
   const j = u => fetch(u, {cache: 'no-cache'}).then(r => r.ok ? r.json() : null).catch(() => null);
-  const [mk] = await Promise.all([j('data/market.json'), ...watchItems.map(async w => {
+  const [mk, hist] = await Promise.all([j('data/market.json'), j('data/watch_hist.json'), ...watchItems.map(async w => {
     const d = (await j(`data/stocks/${w.code}.json`)) || (watchChart[w.code] ? await j(`data/charts/${w.code}.json`) : null);
     if (d?.prices?.length) watchPx[w.code] = d.prices.map(b => ({d: b.d, c: b.c}));
   })]);
-  MKT = mk; renderWatch();
+  MKT = mk; watchHist = hist; renderWatch(); renderWatchScore();
 }).catch(() => renderWatch());
 
 function dayHead(day, rows) {

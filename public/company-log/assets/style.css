@@ -1756,3 +1756,28 @@ body.t3 .legend { column-gap: 12px; }
 #watchList .w-ret .w-x { margin-left: 10px; color: var(--text-2); }
 #watchList .w-ret .w-x b { font-size: 13.5px; }
 #watchList .w-ret .w-r2 { font-size: 12.5px; color: var(--muted); font-variant-numeric: tabular-nums; }
+
+/* 관심 종목 선택 성적표 (11-27) */
+#watchScore .ws { margin: 4px 0 28px; padding: 16px 18px; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); }
+#watchScore .ws-h { margin: 0 0 8px; font-size: 16px; display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; }
+#watchScore .ws-h small, #watchScore small { font-size: 12px; font-weight: 400; color: var(--muted); }
+#watchScore .ws-all { margin: 0 0 12px; font-size: 14.5px; display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; }
+#watchScore .ws-t { width: 100%; border-collapse: collapse; font-size: 13.5px; font-variant-numeric: tabular-nums; }
+#watchScore .ws-t th, #watchScore .ws-t td { padding: 7px 8px; text-align: right; border-bottom: 1px solid var(--line); white-space: nowrap; }
+#watchScore .ws-t th:first-child, #watchScore .ws-t td:nth-child(2) { text-align: left; }
+#watchScore .ws-t thead th { font-size: 12.5px; font-weight: 600; color: var(--text-2); }
+#watchScore .ws-t tr.ws-y th, #watchScore .ws-t tr.ws-y td { font-weight: 700; background: color-mix(in srgb, var(--text) 5%, transparent); }
+#watchScore .ws-gone { margin-top: 12px; font-size: 13.5px; }
+#watchScore .ws-gone summary { cursor: pointer; color: var(--text-2); }
+#watchScore .ws-gone ul { list-style: none; margin: 8px 0 0; padding: 0; }
+#watchScore .ws-gone li { display: flex; flex-wrap: wrap; gap: 4px 14px; padding: 6px 0; border-top: 1px solid var(--line); font-variant-numeric: tabular-nums; }
+#watchScore .ws-gone .ws-nm { font-weight: 700; min-width: 7em; }
+#watchScore .ws-gone .ws-d { color: var(--muted); }
+#watchScore .ws-note { margin: 10px 0 0; font-size: 12.5px; color: var(--muted); }
+#watchScore .ws-t { max-width: 640px; }
+#watchScore .ws-t thead th:nth-child(2) { text-align: left; }
+@media (max-width: 560px) {
+  #watchScore .ws { padding: 14px 12px; }
+  #watchScore .ws-t small { display: none; }
+  #watchScore .ws-t th, #watchScore .ws-t td { padding: 7px 5px; font-size: 13px; }
+}

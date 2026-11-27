@@ -22,7 +22,7 @@
   // 다크/라이트: 리포트 페이지와 같은 저장값(localStorage 'theme') — 그리기 전에 적용해 깜빡임 없게 (사용자 요청 11-26)
   (function () { try { var t = localStorage.getItem('theme'); if (t === 'dark' || t === 'light') document.documentElement.setAttribute('data-theme', t); } catch (e) {} })();
 </script>
-<link rel="stylesheet" href="assets/style.css?v=20261127q">
+<link rel="stylesheet" href="assets/style.css?v=20261127r">
 <script src="https://cdn.jsdelivr.net/npm/lightweight-charts@4.2.0/dist/lightweight-charts.standalone.production.js"></script>
 </head>
 <body class="t3">
@@ -387,7 +387,8 @@
 <dialog class="rep-dlg" id="repDlg" aria-labelledby="repDlgT">
   <div class="rd-hd"><b id="repDlgT"></b><button type="button" class="rd-x" id="repDlgX" aria-label="닫기">✕</button></div>
   <div class="rd-body" id="repDlgB"></div>
-  <div class="rd-ft"><a class="rd-sub" id="repDlgR" href="#">이 리포트 위치로</a><a class="rd-all" id="repDlgA" href="#">종목 전체 보기 →</a></div>
+  <div class="rd-ft"><span class="rd-nav" id="repNav" hidden><button type="button" class="st-nav prev" id="repPrev" aria-label="이전 의견 전환"><span class="st-na">‹</span></button><span class="rd-pos" id="repPos"></span><button type="button" class="st-nav next" id="repNext" aria-label="다음 의견 전환"><span class="st-na">›</span></button></span><a class="rd-sub" id="repDlgR" href="#">이 리포트 위치로</a><a class="rd-all" id="repDlgA" href="#">종목 전체 보기 →</a></div>
+  <div class="rd-day" id="repDay" role="status"></div>
 </dialog>
 <script>
 const fmt = n => n == null ? '-' : Math.round(n).toLocaleString('ko-KR');
@@ -2277,13 +2278,63 @@ function dayBoxes(ol) {
     const r = d?.reports?.find(x => String(x.id) === String(id));
     body.innerHTML = r ? card(r, an) : '<p class="mut">리포트를 찾지 못했어요 — 아래 「전체 보기」로 종목 페이지에서 확인해 주세요</p>';
   }
+  // 이전·다음 의견 전환으로 넘기기 (사용자 요청 11-27) — 지금 보이는 의견 전환 목록 순서(위=이전, 아래=다음), 키보드 ← →,
+  // 끝은 옅게, 날짜가 바뀌면 잠깐 알림. 넓은 화면은 창 양옆, 좁은 화면은 창 아래 줄 왼쪽
+  let fl = [], fi = -1;
+  const items = () => { const out = []; let day = '';
+    document.querySelectorAll('#feed li').forEach(li => {
+      const a = li.querySelector('a[href^="stock.html"]'); if (!a) return;
+      const t = li.querySelector('.c-d')?.textContent.trim(); if (t) day = t;
+      const u = new URL(a.href), id = u.hash.replace('#r', '');
+      if (id) out.push({code: u.searchParams.get('code'), id, name: a.querySelector('.c-n b')?.textContent || '', href: a.getAttribute('href'), day});
+    });
+    return out; };
+  const nav = document.getElementById('repNav'), pv = document.getElementById('repPrev'), nx = document.getElementById('repNext');
+  function navPos() {
+    if (!dlg.open) return;
+    const r = dlg.getBoundingClientRect(), W = 48, G = 24, wide = r.left - W - G >= 8;
+    nav.classList.toggle('side', wide);
+    [pv, nx].forEach(b => b.classList.toggle('narrow', !wide));
+    pv.style.left = wide ? (r.left - W - G) + 'px' : '';
+    nx.style.left = wide ? (r.right + G) + 'px' : '';
+  }
+  function navUpd() {
+    nav.hidden = fl.length < 2 || fi < 0;
+    [[pv, fi - 1, '이전'], [nx, fi + 1, '다음']].forEach(([b, j, w]) => {
+      const ok = j >= 0 && j < fl.length;
+      b.disabled = !ok; b.classList.toggle('off', !ok);
+      b.title = ok ? `${w}: ${fl[j].name} (${j + 1} / ${fl.length}) · 키보드 ${w === '이전' ? '←' : '→'}` : `${w} 없음 (목록 ${w === '이전' ? '처음' : '끝'})`;
+    });
+    document.getElementById('repPos').textContent = fi >= 0 ? `${fi + 1} / ${fl.length}` : '';
+    navPos(); requestAnimationFrame(navPos);
+  }
+  function go(d) {
+    const j = fi + d; if (!dlg.open || j < 0 || j >= fl.length) return;
+    const x = fl[j];
+    if (x.day && fl[fi]?.day && x.day !== fl[fi].day) {
+      const t = document.getElementById('repDay');
+      t.textContent = d < 0 ? `‹ ${x.day}` : `${x.day} ›`;
+      t.classList.remove('show'); void t.offsetWidth; t.classList.add('show');
+      clearTimeout(go.tm); go.tm = setTimeout(() => t.classList.remove('show'), 1800);
+    }
+    fi = j; open(x.code, x.id, x.name, x.href); navUpd();
+  }
+  pv.addEventListener('click', () => go(-1));
+  nx.addEventListener('click', () => go(1));
+  dlg.addEventListener('keydown', e => {
+    if (e.altKey || e.ctrlKey || e.metaKey || e.shiftKey) return;
+    if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') { e.preventDefault(); go(e.key === 'ArrowLeft' ? -1 : 1); }
+  });
+  addEventListener('resize', navPos);
   document.getElementById('feed').addEventListener('click', e => {
     const a = e.target.closest('a[href^="stock.html"]');
     if (!a || e.ctrlKey || e.metaKey || e.shiftKey || e.button) return;     // 새 탭 열기는 그대로
     const u = new URL(a.href), code = u.searchParams.get('code'), id = u.hash.replace('#r', '');
     if (!code || !id) return;
     e.preventDefault();
+    fl = items(); fi = fl.findIndex(x => x.code === code && x.id === id);
     open(code, id, a.querySelector('.c-n b')?.textContent || '', a.getAttribute('href'));
+    navUpd();
   });
   document.getElementById('repDlgX').addEventListener('click', () => dlg.close());
   dlg.addEventListener('click', e => { if (e.target === dlg) dlg.close(); });     // 바깥(어두운 곳) 누르면 닫기

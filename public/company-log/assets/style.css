@@ -1781,3 +1781,15 @@ body.t3 .legend { column-gap: 12px; }
   #watchScore .ws-t small { display: none; }
   #watchScore .ws-t th, #watchScore .ws-t td { padding: 7px 5px; font-size: 13px; }
 }
+
+/* 의견 전환 미리보기 창 이전·다음 (11-27): 넓은 화면 = 창 양옆(종목 화면 화살표와 같은 모양), 좁은 화면 = 아래 줄 왼쪽 */
+.rd-ft { display: flex; align-items: center; justify-content: flex-end; gap: 8px; flex-wrap: wrap; }
+.rd-nav { display: inline-flex; align-items: center; gap: 6px; margin-right: auto; }
+.rd-nav .rd-pos { font-size: 12.5px; color: var(--muted); font-variant-numeric: tabular-nums; min-width: 4.5em; text-align: center; }
+.rd-nav.side .rd-pos { position: static; }
+.rd-nav:not(.side) .st-nav { position: static; transform: none; width: 40px; height: 40px; padding: 0; justify-content: center; border-radius: 50%; box-shadow: none; opacity: 1; }
+.rd-nav:not(.side) .st-nav.off { opacity: .28; }
+.rd-nav .st-nav .st-na { font-size: 26px; }
+.rd-day { position: fixed; left: 50%; top: 40px; transform: translate(-50%, -6px); padding: 8px 16px; border-radius: 999px;
+  background: var(--text); color: var(--bg); font-size: 14px; font-weight: 700; opacity: 0; pointer-events: none; transition: opacity .2s, transform .2s; }
+.rd-day.show { opacity: .92; transform: translate(-50%, 0); }

@@ -2311,6 +2311,36 @@
         "................",
         "................"
       ]
+    },
+    "pillbottle": {
+      "bg": [
+        "#1b2a3a",
+        "#2a1c12"
+      ],
+      "palette": {
+        "w": "#f4f6f8",
+        "o": "#f0a040",
+        "h": "#ffd27a",
+        "d": "#9a5412"
+      },
+      "grid": [
+        "................",
+        "....wwwwww......",
+        "....wwwwww......",
+        "....dddddd......",
+        "...hooooood.....",
+        "...hooooood.....",
+        "...hwwwwwwd.....",
+        "...hwdddwwd.....",
+        "...hwwwwwwd.....",
+        "...hooooood.....",
+        "...hooooood.....",
+        "...hooooood.....",
+        "...hoooooodwwoo.",
+        "...hoooooodwwoo.",
+        "...dddddddd.....",
+        "................"
+      ]
     }
   }
 }

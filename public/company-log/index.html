@@ -22,7 +22,7 @@
   // 다크/라이트: 리포트 페이지와 같은 저장값(localStorage 'theme') — 그리기 전에 적용해 깜빡임 없게 (사용자 요청 11-26)
   (function () { try { var t = localStorage.getItem('theme'); if (t === 'dark' || t === 'light') document.documentElement.setAttribute('data-theme', t); } catch (e) {} })();
 </script>
-<link rel="stylesheet" href="assets/style.css?v=20261127l">
+<link rel="stylesheet" href="assets/style.css?v=20261127n">
 <script src="https://cdn.jsdelivr.net/npm/lightweight-charts@4.2.0/dist/lightweight-charts.standalone.production.js"></script>
 </head>
 <body class="t3">
@@ -854,15 +854,21 @@ let stList = null;
 try { stList = JSON.parse(sessionStorage.getItem('cl_stlist') || 'null'); } catch (e) {}
 function stListFrom(a) {
   const pane = a.closest('[role=tabpanel]'); if (!pane || pane.id === 'pane-stock') return;
-  const codes = [], names = {};
+  const codes = [], names = {}, days = {};
   pane.querySelectorAll('a[href^="stock.html?code="]').forEach(x => {
     if (!x.offsetParent) return;
     const c = new URL(x.href).searchParams.get('code'); if (!c) return;
-    if (!(c in names)) { codes.push(c); names[c] = ''; }
+    if (!(c in names)) {
+      codes.push(c); names[c] = '';
+      // 날짜별로 묶인 목록(거래량 신호·의견 전환 등)이면 그 종목의 날짜 — 넘기다 날짜가 바뀌면 알려 준다 (사용자 11-27)
+      const h = x.closest('.day-grp')?.querySelector('.day-h')?.textContent || '';
+      const m = h.match(/\d{1,2}\.\d{1,2}\s*\([월화수목금토일]\)/) || h.match(/\d{1,2}\.\d{1,2}/);
+      if (m) days[c] = m[0];
+    }
     const t = x.textContent.trim();
     if (!names[c] && t && t.length <= 24 && !/[↗→]/.test(t)) names[c] = t;
   });
-  stList = codes.length > 1 ? {codes, names} : null;
+  stList = codes.length > 1 ? {codes, names, days} : null;
   try { sessionStorage.setItem('cl_stlist', JSON.stringify(stList)); } catch (e) {}
 }
 let stNavCode = null;
@@ -870,15 +876,13 @@ function stNavName(c) { return (typeof stocks !== 'undefined' && stocks.find(x =
 function stNavUpdate(code) {
   stNavCode = code;
   const i = stList ? stList.codes.indexOf(code) : -1, n = stList ? stList.codes.length : 0;
+  // 목록 안 종목이면 두 버튼 다 보이고, 더 갈 곳이 없는 쪽은 옅게(눌리지 않음) (사용자 11-27)
   [['stPrev', i - 1, '이전'], ['stNext', i + 1, '다음']].forEach(([id, j, w]) => {
     const b = document.getElementById(id); if (!b) return;
-    const ok = i >= 0 && j >= 0 && j < n;
-    b.hidden = !ok;
-    if (ok) {
-      const nm = stNavName(stList.codes[j]);
-      b.title = `${w} 종목: ${nm} (${j + 1} / ${n}) · 키보드 ${w === '이전' ? '←' : '→'}`;
-      b.querySelector('.st-nn').textContent = nm;
-    }
+    const ok = j >= 0 && j < n;
+    b.hidden = i < 0;
+    b.disabled = !ok; b.classList.toggle('off', !ok);
+    b.title = ok ? `${w} 종목: ${stNavName(stList.codes[j])} (${j + 1} / ${n}) · 키보드 ${w === '이전' ? '←' : '→'}` : `${w} 종목 없음 (목록 ${w === '이전' ? '처음' : '끝'})`;
   });
   stNavPos(); requestAnimationFrame(stNavPos); setTimeout(stNavPos, 400);   // 칸이 화면에 나타난 뒤 다시
 }
@@ -886,17 +890,27 @@ function stGo(d) {
   if (!stList || document.getElementById('pane-stock').hidden) return;
   const i = stList.codes.indexOf(stNavCode), c = stList.codes[i + d];
   if (i < 0 || !c) return;
+  const d0 = stList.days?.[stNavCode], d1 = stList.days?.[c];
+  if (d1 && d0 && d1 !== d0) stDayToast(d1, d < 0);
   history.replaceState(null, '', location.pathname + location.search + '#stock:' + encodeURIComponent(c));
   stOpen(c);
 }
 // 넓은 화면은 본문 양옆 빈 곳 가운데 높이, 좁은 화면(옆이 모자람)은 아래 양 끝 동그란 버튼
+// 넘기다 날짜가 바뀌면 잠깐 알림 (사용자 11-27: 날짜가 지나갈 때만)
+function stDayToast(day, back) {
+  let t = document.getElementById('stDay');
+  if (!t) { t = document.createElement('div'); t.id = 'stDay'; t.setAttribute('role', 'status'); document.getElementById('pane-stock').appendChild(t); }
+  t.textContent = `${back ? '‹ ' : ''}${day}${back ? '' : ' ›'}`;
+  t.classList.remove('show'); void t.offsetWidth; t.classList.add('show');
+  clearTimeout(stDayToast.tm); stDayToast.tm = setTimeout(() => t.classList.remove('show'), 1800);
+}
 // 기준 = 칸 안 종목 본문(.wrap)의 글자 영역 좌우 끝. 양옆 빈 곳이 화살표보다 좁으면 좁은 화면 모양
 function stNavPos() {
   const pane = document.getElementById('pane-stock'); if (pane.hidden) return;
   const fr = document.getElementById('stFrame'), f = fr.getBoundingClientRect();
   let L = f.left, R = f.right;
   try { const w = fr.contentDocument.querySelector('.wrap'); if (w) { const r = w.getBoundingClientRect(); L = f.left + r.left + 16; R = f.left + r.right - 16; } } catch (e) {}
-  const p = document.getElementById('stPrev'), q = document.getElementById('stNext'), W = 56, G = 12;
+  const p = document.getElementById('stPrev'), q = document.getElementById('stNext'), W = 48, G = 32;
   const wide = L - W - G >= 8 && innerWidth - R - W - G >= 8;
   [p, q].forEach(b => b.classList.toggle('narrow', !wide));
   p.style.left = wide ? (L - W - G) + 'px' : '';

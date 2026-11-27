@@ -1730,3 +1730,15 @@ body.t3 .legend { column-gap: 12px; }
 .st-nav.narrow.prev { left: 12px; }
 .st-nav.narrow.next { right: 12px; }
 .st-nav.narrow .st-nn { display: none; }
+/* 화살표만 (11-27 사용자: 종목 이름이 들어가니 별로) — 이름은 마우스를 올리면 뜨는 설명으로만 */
+.st-nav .st-nn { display: none; }
+.st-nav:not(.narrow) { width: 48px; height: 72px; padding: 0; justify-content: center; border-radius: 24px; }
+.st-nav .st-na { line-height: 1; margin-top: -3px; }
+
+/* 더 갈 곳 없는 쪽은 옅게 · 날짜 바뀜 알림 (11-27) */
+.st-nav.off { opacity: .28; cursor: default; box-shadow: none; }
+.st-nav.off:hover { border-color: var(--line); }
+#stDay { position: fixed; left: 50%; top: 120px; transform: translate(-50%, -6px); z-index: 16; padding: 8px 16px; border-radius: 999px;
+  background: var(--text); color: var(--bg); font-size: 14px; font-weight: 700; font-variant-numeric: tabular-nums;
+  opacity: 0; pointer-events: none; transition: opacity .2s, transform .2s; }
+#stDay.show { opacity: .92; transform: translate(-50%, 0); }

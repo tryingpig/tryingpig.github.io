@@ -22,7 +22,7 @@
   // 다크/라이트: 리포트 페이지와 같은 저장값(localStorage 'theme') — 그리기 전에 적용해 깜빡임 없게 (사용자 요청 11-26)
   (function () { try { var t = localStorage.getItem('theme'); if (t === 'dark' || t === 'light') document.documentElement.setAttribute('data-theme', t); } catch (e) {} })();
 </script>
-<link rel="stylesheet" href="assets/style.css?v=20261127n">
+<link rel="stylesheet" href="assets/style.css?v=20261127o">
 <script src="https://cdn.jsdelivr.net/npm/lightweight-charts@4.2.0/dist/lightweight-charts.standalone.production.js"></script>
 </head>
 <body class="t3">
@@ -469,12 +469,12 @@ function relHtml(s, cls) {
     (s.rs ? `${spark(s.rs)}<span class="unit">3개월 흐름</span>` : '') + '</span>';
 }
 
-function rowHtml(s) {
+function rowHtml(s, lastHtml) {
   const hl = k => sort === k ? ' sorted' : '';
   return `<li><a href="stock.html?code=${s.code}">
     <span class="nm">${WATCH.has(s.code) ? '<span class="wstar" title="관심 종목">★</span>' : ''}${esc(s.name)}<small>${s.code}</small>${s.market ? `<span class="mk">${MK[s.market]}</span>` : ''}</span>
     <span class="rt">${edgeBadge(s)}${s.sell5 ? `<span class="sellc" title="최근 5거래일 매도 우위 대량 거래(음봉 + 거래량 2배↑)">▼ 매도 우위 ${s.sell5.d.slice(5).replace('-', '.')}</span>` : ''}${s.sig5 ? `<span class="sigc" title="최근 ${SIG_DAYS_TXT} 강도·거래량 신호">● 신호 ${s.sig5.d.slice(5).replace('-', '.')}</span>` : ''}${flipBadge(s)}${aiTxt(s)}</span>
-    <span class="last"><span class="tag ${s.last_dir}">${({up: '상향', down: '하향', keep: '유지', nr: '목표가 없음'})[s.last_dir] || s.last_dir}</span>${esc(s.last_date.slice(5))} · ${esc(s.last_broker)}${s.last_to != null ? ` · 목표가 ${fmt(s.last_to)}원` : ''}</span>
+    ${lastHtml ?? `<span class="last"><span class="tag ${s.last_dir}">${({up: '상향', down: '하향', keep: '유지', nr: '목표가 없음'})[s.last_dir] || s.last_dir}</span>${esc(s.last_date.slice(5))} · ${esc(s.last_broker)}${s.last_to != null ? ` · 목표가 ${fmt(s.last_to)}원` : ''}</span>`}
     <span class="nums">
       <span class="${hl('cnt')}">3개월 <span class="pos">▲${s.up3 ?? 0}</span> <span class="neg">▼${s.down3 ?? 0}</span> · 증권사 ${s.brokers3 ?? 0}곳</span>
       ${s.wmean ? `<span class="${hl('gap')}">가중 목표가 <b>${fmt(s.wmean)}</b> ${s.gap != null ? `<span class="${s.gap >= 0 ? 'pos' : 'neg'}">(${sg(s.gap)}%)</span>` : ''}</span>` : '<span>가중 목표가 -</span>'}
@@ -486,16 +486,40 @@ function rowHtml(s) {
 
 // ── 관심 종목 ──
 let WATCH = new Set(), watchItems = [], watchChart = {};
+// 추가 후 수익률 (사용자 요청 11-27): 추가한 날 종가에 샀다고 보고 지금 종가까지. 주말·휴일에 넣었으면 직전 거래일 종가.
+// 시장 대비 = 같은 기간 그 종목 시장(코스피·코스닥) 지수 수익률을 뺀 것(%p). 종가는 종목 화면 파일(data/stocks · data/charts)에서
+let watchPx = {}, MKT = null;
+function watchRet(w) {
+  const b = watchPx[w.code]; if (!b?.length || !w.added) return null;
+  let i0 = -1; for (let i = 0; i < b.length; i++) if (b[i].d <= w.added) i0 = i;
+  if (i0 < 0) return null;
+  const base = b[i0], cur = b[b.length - 1], r = (cur.c / base.c - 1) * 100;
+  let x = null;
+  const idx = MKT?.[w.market];
+  if (idx?.length) {
+    const at = d => { let v = null; for (const q of idx) if (q.d <= d) v = q.c; return v; };
+    const m0 = at(base.d), m1 = at(cur.d);
+    if (m0 && m1) x = r - (m1 / m0 - 1) * 100;
+  }
+  return {r, x, base, cur, today: base.d === cur.d};
+}
+function watchLast(w) {
+  const v = watchRet(w);
+  if (!v) return `<span class="last w-ret muted">추가 후 수익률 계산 중${w.added ? '' : ' (추가한 날 기록 없음)'}</span>`;
+  const p = (n, u) => n == null ? '-' : `<b class="${n > 0 ? 'pos' : n < 0 ? 'neg' : ''}">${sg(n)}${u}</b>`;
+  return `<span class="last w-ret"><span class="w-r1">추가 후 ${p(v.r, '%')}<span class="w-x">시장 대비 ${p(v.x, '%p')}</span></span>` +
+    `<span class="w-r2">${v.base.d.slice(5).replace('-', '.')} 종가 ${fmt(v.base.c)} → ${v.today ? '오늘 추가' : `${v.cur.d.slice(5).replace('-', '.')} ${fmt(v.cur.c)}`}</span></span>`;
+}
 function watchRow(w) {
   const s = stocks.find(x => x.code === w.code);
-  if (s) return rowHtml(s);
+  if (s) return rowHtml(s, watchLast(w));
   // 리포트 없는 종목: 있는 정보만 — 매수 에지(전 상장사 계산) · 시총. 차트 화면이 아직 없으면 네이버 차트로
   const e = edges.find(x => x.code === w.code);
   const href = watchChart[w.code] ? `stock.html?code=${w.code}` : `https://finance.naver.com/item/main.naver?code=${w.code}`;
   return `<li><a href="${href}"${watchChart[w.code] ? '' : ' target="_blank" rel="noopener"'}>
     <span class="nm"><span class="wstar" title="관심 종목">★</span>${esc(w.name)}<small>${w.code}</small>${w.market ? `<span class="mk">${MK[w.market] || ''}</span>` : ''}</span>
     <span class="rt">${e ? edgeBadge({code: w.code, edge: {s: e.s, run: e.run, since: e.since}}) : ''}</span>
-    <span class="last muted">리포트 없음${watchChart[w.code] ? '' : w.code.endsWith('0') ? ' · 차트는 네이버 ↗ (종목 화면은 다음 장 마감 계산 뒤)' : ' · 차트는 네이버 ↗'}</span>
+    ${watchPx[w.code] ? watchLast(w) : `<span class="last muted">리포트 없음${watchChart[w.code] ? '' : w.code.endsWith('0') ? ' · 차트는 네이버 ↗ (종목 화면은 다음 장 마감 계산 뒤)' : ' · 차트는 네이버 ↗'}</span>`}
     <span class="nums"><span>시총 <b>${CAP[w.code] ? eok(CAP[w.code]) : '-'}</b></span></span>
   </a></li>`;
 }
@@ -509,13 +533,21 @@ function renderWatch() {
     return;
   }
   const inLog = w => stocks.find(x => x.code === w.code);
-  const rows = [...watchItems].sort((a, b) => {               // 리포트 있는 종목 = 최근 리포트 순, 없는 종목은 뒤에 시총 순
-    const sa = inLog(a), sb = inLog(b);
-    if (sa && sb) return sb.last_date.localeCompare(sa.last_date);
-    if (sa || sb) return sa ? -1 : 1;
-    return (CAP[b.code] || 0) - (CAP[a.code] || 0);
-  });
-  box.innerHTML = `<div class="panel"><ul class="list">${rows.map(watchRow).join('')}</ul></div>`;
+  // 추가한 날짜별로 묶고 최근 날이 위 (사용자 요청 11-27). 날짜 줄 = 그날 넣은 종목 단순 평균(같은 금액씩 샀다고 봄)
+  const avg = a => a.length ? a.reduce((t, v) => t + v, 0) / a.length : null;
+  const pv = (n, u) => n == null ? '-' : `<b class="${n > 0 ? 'pos' : n < 0 ? 'neg' : ''}">${sg(n)}${u}</b>`;
+  const sumTxt = ws => { const v = ws.map(watchRet).filter(Boolean); const r = avg(v.map(q => q.r)), x = avg(v.filter(q => q.x != null).map(q => q.x));
+    return v.length ? `평균 ${pv(r, '%')} · 시장 대비 ${pv(x, '%p')}` : ''; };
+  const days = {};
+  watchItems.forEach(w => (days[w.added || ''] ||= []).push(w));
+  const order = Object.keys(days).sort((a, b) => b.localeCompare(a));
+  box.innerHTML = `<p class="w-all">관심 ${watchItems.length}종목 전체 <span>${sumTxt(watchItems)}</span><small>추가한 날 종가에 같은 금액씩 샀다고 본 단순 평균</small></p>` +
+    order.map(d => {
+      const ws = days[d].sort((a, b) => (watchRet(b)?.r ?? -1e9) - (watchRet(a)?.r ?? -1e9));
+      const dt = d ? new Date(d + 'T00:00:00') : null;
+      return `<section class="w-grp"><h3 class="w-day">${d ? `${d.slice(5).replace('-', '.')} (${WD[dt.getDay()]}) 추가` : '추가한 날 기록 없음'} <span class="w-n">${ws.length}종목</span> <span class="w-sum">${sumTxt(ws)}</span></h3>` +
+        `<div class="panel"><ul class="list">${ws.map(watchRow).join('')}</ul></div></section>`;
+    }).join('');
   // 맨 위 한 줄: 이미 받은 데이터에서 센 것만 (새 기준 없음)
   const eon = watchItems.filter(w => (inLog(w)?.edge?.s === 1) || edges.some(x => x.code === w.code && x.s === 1)).length;
   const sig = watchItems.filter(w => inLog(w)?.sig5).length;
@@ -532,6 +564,13 @@ fetch('data/watch.json', {cache: 'no-cache'}).then(r => r.ok ? r.json() : null).
   await Promise.all(watchItems.map(w => fetch(`data/charts/${w.code}.json`, {method: 'HEAD', cache: 'no-cache'})
     .then(r => { watchChart[w.code] = r.ok; }).catch(() => {})));
   renderWatch(); if (stocks.length) render();
+  // 추가 후 수익률용 종가 + 시장 지수 — 받는 대로 다시 그림 (11-27)
+  const j = u => fetch(u, {cache: 'no-cache'}).then(r => r.ok ? r.json() : null).catch(() => null);
+  const [mk] = await Promise.all([j('data/market.json'), ...watchItems.map(async w => {
+    const d = (await j(`data/stocks/${w.code}.json`)) || (watchChart[w.code] ? await j(`data/charts/${w.code}.json`) : null);
+    if (d?.prices?.length) watchPx[w.code] = d.prices.map(b => ({d: b.d, c: b.c}));
+  })]);
+  MKT = mk; renderWatch();
 }).catch(() => renderWatch());
 
 function dayHead(day, rows) {
@@ -2216,7 +2255,7 @@ function dayBoxes(ol) {
 (() => {
   const H = {
     groups: ['종목', '최근 리포트', '3개월 리포트 · 가중 목표가', '시장 대비 1주 · 1개월 · 3개월 · 3개월 흐름'],
-    watchList: ['종목', '최근 리포트', '3개월 리포트 · 가중 목표가', '시장 대비 1주 · 1개월 · 3개월 · 3개월 흐름'],
+    watchList: ['종목', '추가 후 · 시장 대비', '3개월 리포트 · 가중 목표가', '시장 대비 1주 · 1개월 · 3개월 · 3개월 흐름'],
     sigList: ['종목', '<span class="r">거래량</span>', '<span class="r">그날</span>', '이후 · 시장 대비 · 20일선', '시장 대비 3개월', '몇 번째'],
     sellList: ['종목', '<span class="r">거래량</span>', '<span class="r">그날</span>', '이후 · 시장 대비 · 20일선', '시장 대비 3개월', '추세'],
     earnList: ['종목', '분기', '실적 · 상태', ''],

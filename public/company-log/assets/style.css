@@ -1742,3 +1742,17 @@ body.t3 .legend { column-gap: 12px; }
   background: var(--text); color: var(--bg); font-size: 14px; font-weight: 700; font-variant-numeric: tabular-nums;
   opacity: 0; pointer-events: none; transition: opacity .2s, transform .2s; }
 #stDay.show { opacity: .92; transform: translate(-50%, 0); }
+
+/* 관심 종목: 추가한 날짜별 묶음 + 추가 후 수익률 (11-27) */
+#watchList .w-all { margin: 4px 0 18px; font-size: 15px; font-weight: 700; display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; }
+#watchList .w-all span { font-weight: 400; }
+#watchList .w-all small { font-size: 12px; font-weight: 400; color: var(--muted); }
+#watchList .w-grp + .w-grp { margin-top: 22px; }
+#watchList .w-day { margin: 0; padding: 8px; font-size: 14.5px; font-weight: 700; border-bottom: 1.5px solid var(--text); display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; }
+#watchList .w-day .w-n { font-size: 13px; font-weight: 400; color: var(--muted); }
+#watchList .w-day .w-sum { font-size: 13.5px; font-weight: 400; }
+#watchList .w-ret { display: flex; flex-direction: column; gap: 3px; font-size: 13.5px; }
+#watchList .w-ret .w-r1 b { font-size: 15px; }
+#watchList .w-ret .w-x { margin-left: 10px; color: var(--text-2); }
+#watchList .w-ret .w-x b { font-size: 13.5px; }
+#watchList .w-ret .w-r2 { font-size: 12.5px; color: var(--muted); font-variant-numeric: tabular-nums; }

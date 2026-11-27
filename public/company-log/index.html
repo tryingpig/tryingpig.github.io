@@ -470,12 +470,12 @@ function relHtml(s, cls) {
     (s.rs ? `${spark(s.rs)}<span class="unit">3개월 흐름</span>` : '') + '</span>';
 }
 
-function rowHtml(s, lastHtml) {
+function rowHtml(s, lastHtml) {   // lastHtml = 관심 탭만(최근 리포트 칸 대신). 목록은 map 이 줄 번호를 넘기므로 글자일 때만 씀
   const hl = k => sort === k ? ' sorted' : '';
   return `<li><a href="stock.html?code=${s.code}">
     <span class="nm">${WATCH.has(s.code) ? '<span class="wstar" title="관심 종목">★</span>' : ''}${esc(s.name)}<small>${s.code}</small>${s.market ? `<span class="mk">${MK[s.market]}</span>` : ''}</span>
     <span class="rt">${edgeBadge(s)}${s.sell5 ? `<span class="sellc" title="최근 5거래일 매도 우위 대량 거래(음봉 + 거래량 2배↑)">▼ 매도 우위 ${s.sell5.d.slice(5).replace('-', '.')}</span>` : ''}${s.sig5 ? `<span class="sigc" title="최근 ${SIG_DAYS_TXT} 강도·거래량 신호">● 신호 ${s.sig5.d.slice(5).replace('-', '.')}</span>` : ''}${flipBadge(s)}${aiTxt(s)}</span>
-    ${lastHtml ?? `<span class="last"><span class="tag ${s.last_dir}">${({up: '상향', down: '하향', keep: '유지', nr: '목표가 없음'})[s.last_dir] || s.last_dir}</span>${esc(s.last_date.slice(5))} · ${esc(s.last_broker)}${s.last_to != null ? ` · 목표가 ${fmt(s.last_to)}원` : ''}</span>`}
+    ${typeof lastHtml === 'string' ? lastHtml : `<span class="last"><span class="tag ${s.last_dir}">${({up: '상향', down: '하향', keep: '유지', nr: '목표가 없음'})[s.last_dir] || s.last_dir}</span>${esc(s.last_date.slice(5))} · ${esc(s.last_broker)}${s.last_to != null ? ` · 목표가 ${fmt(s.last_to)}원` : ''}</span>`}
     <span class="nums">
       <span class="${hl('cnt')}">3개월 <span class="pos">▲${s.up3 ?? 0}</span> <span class="neg">▼${s.down3 ?? 0}</span> · 증권사 ${s.brokers3 ?? 0}곳</span>
       ${s.wmean ? `<span class="${hl('gap')}">가중 목표가 <b>${fmt(s.wmean)}</b> ${s.gap != null ? `<span class="${s.gap >= 0 ? 'pos' : 'neg'}">(${sg(s.gap)}%)</span>` : ''}</span>` : '<span>가중 목표가 -</span>'}

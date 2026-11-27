@@ -2221,6 +2221,36 @@
         "................",
         "................"
       ]
+    },
+    "carnavi": {
+      "bg": [
+        "#1b2538",
+        "#0e1420"
+      ],
+      "palette": {
+        "a": "#dde2ea",
+        "b": "#7ad7f0",
+        "c": "#ff9f43",
+        "d": "#3b4452"
+      },
+      "grid": [
+        "................",
+        "..aaaaaaaaaaaa..",
+        ".aaaaaaaaaaaaad.",
+        ".aabbbbbbbbbbad.",
+        ".aabbbbbbbccbad.",
+        ".aabbbbbbbccbad.",
+        ".aabbbbbbbcbbad.",
+        ".aabbbbbbcbbbad.",
+        ".aabbbccccbbbad.",
+        ".aabbccbbbbbbad.",
+        ".aabccbbbbbbbad.",
+        ".aabbbbbbbbbbad.",
+        ".aaaaaaaaaaaaad.",
+        ".aaddaaaaaaddad.",
+        "..dddddddddddd..",
+        "................"
+      ]
     }
   }
 }

@@ -1704,11 +1704,17 @@ html.in-frame #fabToggle, html.in-frame #fabMenu { display: none !important; }
 
 /* 이평선 줄의 에지 조건 표시 (11-27): 5일 10일 > 20일 > 60일 + 기울기 화살표, 안 맞는 것만 주황 (빨강·파랑은 상승·하락 색이라 피함) */
 .legend .ma-rel { display: contents; }
-.legend .ma-op { font-weight: 700; margin-right: 8px; padding: 0 5px; border-radius: 4px; }
+.legend .ma-op { font-weight: 700; margin-right: 5px; padding: 0 3px; border-radius: 4px; }
 .legend .ma-op.gt { color: var(--up); background: var(--up-bg); }
 .legend .ma-op.lt { color: var(--down); background: var(--down-bg); }
 .legend .ma-op.mix { color: var(--muted); background: color-mix(in srgb, var(--muted) 15%, transparent); }
 .legend .ma-ar { font-weight: 700; margin-left: 2px; color: var(--muted); }
-.legend .ma-ar.bad { color: #c2410c; background: #ffedd5; border-radius: 4px; padding: 0 4px; }
+.legend .ma-ar.bad { color: #c2410c; background: #ffedd5; border-radius: 4px; padding: 0 2px; }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .legend .ma-ar.bad { color: #fdba74; background: #431407; } }
 :root[data-theme="dark"] .legend .ma-ar.bad { color: #fdba74; background: #431407; }
+
+/* 이평선 줄이 한 줄에 들어가게(11-27, 회색 ≶·주황 화살표가 겹치면 2줄 되던 것) */
+body.t3 .legend { column-gap: 14px; }
+.legend .ma-rel .sw { width: 10px; margin-right: 4px; }
+.legend .ma-ar { margin-left: 1px; }
+body.t3 .legend { column-gap: 12px; }

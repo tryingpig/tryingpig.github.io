@@ -2341,6 +2341,37 @@
         "...dddddddd.....",
         "................"
       ]
+    },
+    "cavityfilter": {
+      "bg": [
+        "#1b2230",
+        "#0e1219"
+      ],
+      "palette": {
+        "a": "#d4dae2",
+        "b": "#f3f5f8",
+        "c": "#86909c",
+        "d": "#3a414b",
+        "e": "#e3b24c"
+      },
+      "grid": [
+        "................",
+        "................",
+        "................",
+        "...bbbbbbbbbb...",
+        "...baaaaaaaac...",
+        "...baadaadaac...",
+        "...baaaaaaaac...",
+        ".eebaadaadaacee.",
+        ".eebaaaaaaaacee.",
+        "...baadaadaac...",
+        "...baaaaaaaac...",
+        "...baadaadaac...",
+        "...baaaaaaaac...",
+        "...cccccccccc...",
+        "................",
+        "................"
+      ]
     }
   }
 }
